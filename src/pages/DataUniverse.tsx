@@ -12,7 +12,7 @@ import { GraphDataMovement } from "@/components/GraphDataMovement";
 import ReactCountryFlag from "react-country-flag";
 import { Footer } from "@/components/Footer";
 
-const Index = () => {
+const DataUniverse = () => {
   return (
     <div className="min-h-screen  dark:bg-[#020817]">
       <Navbar />
@@ -65,4 +65,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default DataUniverse;

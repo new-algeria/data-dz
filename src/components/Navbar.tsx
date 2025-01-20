@@ -1,11 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import DATA_DZ_LOGO from "../assets/img/data_dz_logo.png";
+import { NavBar } from "./ui/tubelight-navbar";
+import {
+  faBook,
+  faCode,
+  faHome,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+
+  // Items pour la navigation conditionnelle
+  const navItems = [
+    { name: "Accueil API", url: "/api", icon: faCode },
+    //{ name: "API", url: "/api", icon: faCode },
+    { name: "Data", url: "/", icon: faBook },
+    { name: "Contact", url: "/contact", icon: faPhone },
+  ];
+
+  if (location.pathname.includes("/api")) {
+    return <NavBar items={navItems} />;
+  }
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b">

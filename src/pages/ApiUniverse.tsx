@@ -26,7 +26,7 @@ const technologies = [
   "Swagger",
 ];
 
-const Api = () => {
+const ApiUniverse = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -129,4 +129,4 @@ const Api = () => {
   );
 };
 
-export default Api;
+export default ApiUniverse;

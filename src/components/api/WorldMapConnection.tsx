@@ -36,35 +36,35 @@ export function WorldMapConnection() {
               lng: 1.6596,
             }, // Algeria
             end: {
-              lat: 34.0522,
+              lat: 23.0522,
               lng: -118.2437,
             }, // Los Angeles
           },
           {
-            end: { lat: 28.0339, lng: 1.6596 }, // Algeria
-            start: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
+            end: { lat: 20.0339, lng: 2.6596 }, // Algeria
+            start: { lat: -18.7975, lng: -47.8919 }, // Brazil (Brasília)
           },
           {
-            start: { lat: 28.0339, lng: 1.6596 }, // Algeria
-            end: { lat: 38.7223, lng: -9.1393 }, // Lisbon
+            start: { lat: 20.0339, lng: 2.6596 }, // Algeria
+            end: { lat: 43.7223, lng: -2.1393 }, // Londres
           },
           {
-            end: { lat: 28.0339, lng: 1.6596 }, // Algeria
+            end: { lat: 20.0339, lng: 2.6596 }, // Algeria
             // moscou
             start: { lat: 55.7558, lng: 37.6176 },
           },
           {
-            start: { lat: 28.0339, lng: 1.6596 }, // Algeria
+            start: { lat: 20.0339, lng: 2.6596 }, // Algeria
             end: { lat: 28.6139, lng: 77.209 }, // New Delhi
           },
           {
-            end: { lat: 28.0339, lng: 1.6596 }, // Algeria
+            end: { lat: 20.0339, lng: 2.6596 }, // Algeria
             start: { lat: -1.2921, lng: 36.8219 }, // Nairobi
           },
 
           {
-            start: { lat: 28.0339, lng: 1.6596 }, // Algeria
-            end: { lat: -33.8688, lng: 151.2093 }, // sydney
+            start: { lat: 20.0339, lng: 2.6596 }, // Algeria
+            end: { lat: -40.8688, lng: 130.2093 }, // sydney
           },
         ]}
       />
