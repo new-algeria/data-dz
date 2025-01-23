@@ -10,7 +10,6 @@ import ScrollDownArrow from "./components/ScrollDownArrow";
 function App() {
   return (
     <Router>
-      <ScrollDownArrow color="primary" />
       <Routes>
         <Route path="/" element={<DataUniverse />} />
         <Route path="/api" element={<ApiUniverse />} />

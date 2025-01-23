@@ -11,11 +11,13 @@ import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { GraphDataMovement } from "@/components/GraphDataMovement";
 import ReactCountryFlag from "react-country-flag";
 import { Footer } from "@/components/Footer";
+import ScrollDownArrow from "@/components/ScrollDownArrow";
 
 const DataUniverse = () => {
   return (
     <div className="min-h-screen  dark:bg-[#020817]">
       <Navbar />
+      <ScrollDownArrow color="primary" />
 
       {/* Hero Section with Parallax */}
       <HeroParallaxDemo />
