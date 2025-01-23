@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, FileText, Database, User, Sun, Moon } from "lucide-react";
 import { Dataset } from "@/interface/DatasetInterface";
 import { datasets } from "@/data/FakeDataset";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DatasetDetail = () => {
   const { id } = useParams();
@@ -101,6 +103,14 @@ const DatasetDetail = () => {
       <Navbar />
 
       <main className="flex-grow container mx-auto px-4 py-8 mt-24">
+        {/* Button retour */}
+        <Button variant="outline" asChild>
+          <a href="/api">
+            {" "}
+            <FontAwesomeIcon icon={faArrowLeft} />
+            Retour
+          </a>
+        </Button>
         <div className="space-y-8">
           {/* En-tête */}
           <div className="flex justify-between items-start">
