@@ -41,5 +41,19 @@
     "subtitle": "Accédez à des données fiables et à jour sur l'Algérie via notre API simple et puissante. Nous fournissons des données essentielles pour vos applications et services.",
     "searchPlaceholder": "Rechercher des données...",
     "searchButton": "Rechercher"
+  },
+  "api": {
+    "search": {
+      "title": "Rechercher des APIs",
+      "placeholder": "Rechercher une API...",
+      "propose": "Proposer une API"
+    },
+    "card": {
+      "availability": "Disponibilité",
+      "version": "Version"
+    },
+    "technologies": "Technologies Supportées",
+    "connectivity": "Connectivité à distance",
+    "subtitle": "Il est temps pour l'Algérie de se connecter au monde, contribuant à construire un meilleur avenir."
   }
 }

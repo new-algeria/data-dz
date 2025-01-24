@@ -15,6 +15,8 @@ import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import ReactCountryFlag from "react-country-flag";
 import { WorldMapConnection } from "@/components/api/WorldMapConnection";
 import ScrollDownArrow from "@/components/ScrollDownArrow";
+import { ThemeLanguageToggle } from "@/components/ThemeLanguageToggle";
+import { useTranslation } from "react-i18next";
 
 const technologies = [
   "REST API",
@@ -29,11 +31,12 @@ const technologies = [
 
 const ApiUniverse = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <Navbar />
-
+      <ThemeLanguageToggle />
       <ScrollDownArrow color="primary" />
       <div className="relative">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />

@@ -3,16 +3,19 @@ import { Input } from "@/components/ui/input";
 import { Lock, Unlock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { apis } from "@/data/FakeApi";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 
 export const ApiSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { t } = useTranslation();
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6 mt-12 z-10">
-        <h2 className="text-xl font-semibold">Search APIs</h2>
+        <h2 className="text-xl font-semibold">{t('api.search.title')}</h2>
         <Input
-          placeholder="Search for an API..."
+          placeholder={t('api.search.placeholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="max-w-xs dark:bg-gray-800 z-10"
@@ -40,9 +43,9 @@ export const ApiSearch = () => {
                 </p>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-gray-400 dark:text-gray-500">
-                    Availability: {api.availability}%
+                    {t('api.card.availability')}: {api.availability}%
                   </span>
-                  <span className="text-gray-400">{api.version}</span>
+                  <span className="text-gray-400">{t('api.card.version')}: {api.version}</span>
                 </div>
               </div>
             </Link>
