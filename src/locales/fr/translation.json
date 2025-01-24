@@ -1,0 +1,29 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "api": "API",
+    "getStarted": "Commencer",
+    "contact": "Contact",
+    "data": "Données"
+  },
+  "footer": {
+    "about": "À propos",
+    "aboutText": "Data DZ fournit des APIs et données sur l'Algérie pour les développeurs et entreprises.",
+    "quickLinks": "Liens rapides",
+    "contact": "Contact",
+    "contactText": "Email: contact@data-dz.com",
+    "followUs": "Suivez-nous sur les réseaux sociaux",
+    "allRightsReserved": "Tous droits réservés"
+  },
+  "home": {
+    "hero": {
+      "title": "La première plateforme d'API pour l'Algérie",
+      "subtitle": "Et ce n'est que le début.",
+      "getStarted": "Commencer"
+    },
+    "search": {
+      "title": "Salut👋, vous êtes au bon endroit pour trouver",
+      "highlight": "les meilleures APIs d'Algérie"
+    }
+  }
+}

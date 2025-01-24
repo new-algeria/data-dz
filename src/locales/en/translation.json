@@ -1,0 +1,29 @@
+{
+  "navbar": {
+    "home": "Home",
+    "api": "API",
+    "getStarted": "Get Started",
+    "contact": "Contact",
+    "data": "Data"
+  },
+  "footer": {
+    "about": "About",
+    "aboutText": "Data DZ provides APIs and data about Algeria for developers and businesses.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "contactText": "Email: contact@data-dz.com",
+    "followUs": "Follow us on social media",
+    "allRightsReserved": "All rights reserved"
+  },
+  "home": {
+    "hero": {
+      "title": "The first API platform for Algeria",
+      "subtitle": "And this is just the beginning.",
+      "getStarted": "Get Started"
+    },
+    "search": {
+      "title": "Hi👋, you are in the right place to find",
+      "highlight": "the best APIs of Algeria"
+    }
+  }
+}

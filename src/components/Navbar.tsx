@@ -4,6 +4,8 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import DATA_DZ_LOGO from "../assets/img/data_dz_logo.png";
 import { NavBar } from "./ui/tubelight-navbar";
+import { LanguageSelector } from "./LanguageSelector";
+import { useTranslation } from "react-i18next";
 import {
   faBook,
   faCode,
@@ -14,13 +16,12 @@ import {
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+  const { t } = useTranslation();
 
-  // Items pour la navigation conditionnelle
   const navItems = [
-    { name: "Accueil API", url: "/api", icon: faCode },
-    //{ name: "API", url: "/api", icon: faCode },
-    { name: "Data", url: "/", icon: faBook },
-    { name: "Contact", url: "/contact", icon: faPhone },
+    { name: t('navbar.api'), url: "/api", icon: faCode },
+    { name: t('navbar.data'), url: "/", icon: faBook },
+    { name: t('navbar.contact'), url: "/contact", icon: faPhone },
   ];
 
   if (location.pathname.includes("/api")) {
@@ -38,14 +39,15 @@ export const Navbar = () => {
             to="/"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
-            Accueil
+            {t('navbar.home')}
           </Link>
           <Link
             to="/api"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
-            API
+            {t('navbar.api')}
           </Link>
+          <LanguageSelector />
           <Button
             variant="ghost"
             size="icon"
@@ -59,7 +61,7 @@ export const Navbar = () => {
             )}
           </Button>
           <Button variant="default" className="bg-primary text-white">
-            <Link to="/getting-started">Commencer</Link>
+            <Link to="/getting-started">{t('navbar.getStarted')}</Link>
           </Button>
         </div>
       </div>
