@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Marquee } from "@/components/ui/marquee";
 import { Lock, Unlock } from "lucide-react";
-import { apis } from "@/data/FakeApi";
 import { Link } from "react-router-dom";
 import { Footer } from "@/components/Footer";
 import { ApiSearch } from "@/components/api/ApiSearch";
@@ -52,11 +51,11 @@ const ApiUniverse = () => {
             className="relative flex flex-col gap-4 items-center justify-center px-4"
           >
             <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-              The first API platform for Algeria{" "}
+              {t("api.universe.title")}{" "}
               <ReactCountryFlag countryCode="DZ" svg />
             </div>
             <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-              And this is just the beginning.
+              {t("api.universe.subtitle")}
             </div>
             <button
               className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2"
@@ -64,7 +63,7 @@ const ApiUniverse = () => {
                 window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
               }
             >
-              Get Started
+              {t("api.universe.get_started")}
             </button>
           </motion.div>
         </AuroraBackground>
@@ -85,10 +84,9 @@ const ApiUniverse = () => {
               }}
               className="text-4xl px-4 md:text-4xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto "
             >
-              Hi👋, you are in the right place to find{" "}
+              {t("api.universe.hi")}{" "}
               <Highlight className="text-black dark:text-white">
-                the best apis of <ReactCountryFlag countryCode="DZ" svg />{" "}
-                Algeria
+                {t("api.universe.best_apis")}{" "}
               </Highlight>
             </motion.h1>
           </HeroHighlight>
@@ -96,22 +94,21 @@ const ApiUniverse = () => {
           <div className="-mt-36">
             <ApiSearch />
             <div className="mt-8 text-right">
-              <Button
-                variant="outline"
-                size="lg"
-                className="mx-auto text-slate-900 dark:text-white dark:hover:bg-gray-800"
-                onClick={() =>
-                  window.open(
-                    `mailto:new-algeria.org@gmail.com?subject=Proposition%20d%27API&body=Bonjour%2C%0A%0AJe%20souhaite%20proposer%20une%20API%20pour%20votre%20plateforme.%20Voici%20les%20d%C3%A9tails%20%3A%0A%0ANom%20de%20l%27API%20%3A%20%0A%0ADescription%20%3A%20%0A%0AURL%20de%20l%27API%20%3A%20%0A%0ACordialement%2C%0AVotre%20Nom`
-                  )
-                }
+              <a
+                href={`mailto:new-algeria.org@gmail.com?subject=Proposition%20d%27API&body=Bonjour%2C%0A%0AJe%20souhaite%20proposer%20une%20API%20pour%20votre%20plateforme.%20Voici%20les%20d%C3%A9tails%20%3A%0A%0ANom%20de%20l%27API%20%3A%20%0A%0ADescription%20%3A%20%0A%0AURL%20de%20l%27API%20%3A%20%0A%0ACordialement%2C%0AVotre%20Nom`}
               >
-                Proposer une API
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="mx-auto text-slate-900 dark:text-white dark:hover:bg-gray-800"
+                >
+                  {t("api.universe.propose_api")}
+                </Button>
+              </a>
             </div>
             <div className="mt-20">
               <h2 className="text-xl font-semibold mb-4">
-                Technologies Supportées
+                {t("api.universe.supported_technologies")}
               </h2>
               <Marquee className="py-4">
                 {technologies.map((tech) => (

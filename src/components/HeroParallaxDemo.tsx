@@ -1,6 +1,6 @@
 import React from "react";
 import { HeroParallax } from "@/components/ui/hero-parallax";
-import { icon } from "@fortawesome/fontawesome-svg-core";
+import { useTranslation } from "react-i18next";
 import {
   faAddressBook,
   faBriefcase,
@@ -21,91 +21,91 @@ import {
 
 export const products = [
   {
-    title: "Pharmacies de Garde",
+    title: "pharmaciesOnDuty",
     link: "/api/pharmacies",
     thumbnail: "/pharmacy.svg",
     icon: faMedkit,
   },
   {
-    title: "Wilayas",
+    title: "wilayas",
     link: "/api/wilayas",
     thumbnail: "/wilaya.svg",
     icon: faMapLocation,
   },
   {
-    title: "Codes Postaux",
+    title: "postalCodes",
     link: "/api/codes-postaux",
     thumbnail: "/postal-code.svg",
     icon: faLocation,
   },
   {
-    title: "Communes",
+    title: "communes",
     link: "/api/communes",
     thumbnail: "/commune.svg",
     icon: faAddressBook,
   },
   {
-    title: "Hôpitaux",
+    title: "hospitals",
     link: "/api/hopitaux",
     thumbnail: "/hospital.svg",
     icon: faHospital,
   },
   {
-    title: "Universités",
+    title: "universities",
     link: "/api/universites",
     thumbnail: "/university.svg",
     icon: faSchool,
   },
   {
-    title: "Restaurants",
+    title: "restaurants",
     link: "/api/restaurants",
     thumbnail: "/restaurant.svg",
     icon: faUtensils,
   },
   {
-    title: "Banques",
+    title: "banks",
     link: "/api/banques",
     thumbnail: "/bank.svg",
     icon: faUniversity,
   },
   {
-    title: "Administrations",
+    title: "administrations",
     link: "/api/administrations",
     thumbnail: "/administration.svg",
     icon: faBuilding,
   },
   {
-    title: "Transport",
+    title: "transport",
     link: "/api/transport",
     thumbnail: "/transport.svg",
     icon: faBus,
   },
   {
-    title: "Météo",
+    title: "weather",
     link: "/api/meteo",
     thumbnail: "/weather.svg",
     icon: faCloudSun,
   },
   {
-    title: "Entreprises",
+    title: "enterprises",
     link: "/api/entreprises",
     thumbnail: "/enterprise.svg",
     icon: faBriefcase,
   },
   {
-    title: "Marchés",
+    title: "markets",
     link: "/api/marches",
     thumbnail: "/market.svg",
     icon: faShoppingCart,
   },
   {
-    title: "Sports",
+    title: "sports",
     link: "/api/sports",
     thumbnail: "/sports.svg",
     icon: faFootballBall,
   },
   {
-    title: "Culture",
+    title: "culture",
     link: "/api/culture",
     thumbnail: "/culture.svg",
     icon: faPalette,
@@ -113,10 +113,16 @@ export const products = [
 ];
 
 export function HeroParallaxDemo() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen w-full ">
       <div className="absolute top-0 left-0 w-full ">
-        <HeroParallax products={products} />
+        <HeroParallax
+          products={products.map((product) => ({
+            ...product,
+            title: t(`products.${product.title}`),
+          }))}
+        />
       </div>
     </div>
   );

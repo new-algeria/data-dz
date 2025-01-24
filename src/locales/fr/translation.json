@@ -50,10 +50,47 @@
     },
     "card": {
       "availability": "Disponibilité",
-      "version": "Version"
+      "version": "Version",
+      "dataSize": "enregistrements"
     },
     "technologies": "Technologies Supportées",
     "connectivity": "Connectivité à distance",
-    "subtitle": "Il est temps pour l'Algérie de se connecter au monde, contribuant à construire un meilleur avenir."
+    "subtitle": "Il est temps pour l'Algérie de se connecter au monde, contribuant à construire un meilleur avenir.",
+    "universe": {
+      "title": "La 1èreplateforme API pour l'Algérie",
+      "subtitle": "Et ce n'est que le début.",
+      "get_started": "Commencer",
+      "hi": "Salut, tu es au bon endroit pour trouver",
+      "best_apis": "Les meilleures API de l'Algérie",
+      "best_dataset": "les meilleurs ensembles de données de l’Algérie.",
+      "propose_api": "Soumettre une API",
+      "supported_technologies": "Technologies disponibles"
+    }
+  },
+  "dataset": {
+    "search": {
+      "title": "Rechercher des données"
+    }
+  },
+  "contact": {
+    "subject": "Demande de contact - API",
+    "body": "Bonjour,\n\n\nJe souhaite en savoir plus sur l'API"
+  },
+  "products": {
+    "pharmaciesOnDuty": "Pharmacies de Garde",
+    "wilayas": "Wilayas",
+    "postalCodes": "Codes Postaux",
+    "communes": "Communes",
+    "hospitals": "Hôpitaux",
+    "universities": "Universités",
+    "restaurants": "Restaurants",
+    "banks": "Banques",
+    "administrations": "Administrations",
+    "transport": "Transport",
+    "weather": "Météo",
+    "enterprises": "Entreprises",
+    "markets": "Marchés",
+    "sports": "Sports",
+    "culture": "Culture"
   }
 }

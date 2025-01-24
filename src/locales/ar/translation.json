@@ -50,10 +50,47 @@
     },
     "card": {
       "availability": "التوفر",
-      "version": "الإصدار"
+      "version": "الإصدار",
+      "dataSize": "السجلات"
     },
     "technologies": "التقنيات المدعومة",
     "connectivity": "الاتصال عن بعد",
-    "subtitle": "حان الوقت للجزائر للتواصل مع العالم، للمساعدة في بناء مستقبل أفضل."
+    "subtitle": "حان الوقت للجزائر للتواصل مع العالم، للمساعدة في بناء مستقبل أفضل.",
+    "universe": {
+      "title": "أول منصة API للجزائر",
+      "subtitle": "وهذه مجرد البداية.",
+      "get_started": "ابدأ",
+      "hi": "مرحبًا ، أنت في المكان المناسب للعثور عليه",
+      "best_apis": "أفضل أبيس الجزائر",
+      "best_dataset": "أفضل مجموعات البيانات من الجزائر.",
+      "propose_api": "إرسال واجهة برمجة التطبيقات",
+      "supported_technologies": "التقنيات المتاحة"
+    }
+  },
+  "dataset": {
+    "search": {
+      "title": "ابحث عن مجموعات البيانات"
+    }
+  },
+  "contact": {
+    "subject": "طلب الاتصال - API",
+    "body": "مرحبًا،\n\n\nأنا مهتم بمعرفة المزيد عن واجهة برمجة التطبيقات (API)."
+  },
+  "products": {
+    "pharmaciesOnDuty": "الصيدليات المناوبة",
+    "wilayas": "ولايات",
+    "postalCodes": "الرموز البريدية",
+    "communes": "البلديات",
+    "hospitals": "المستشفيات",
+    "universities": "الجامعات",
+    "restaurants": "المطاعم",
+    "banks": "البنوك",
+    "administrations": "الإدارات",
+    "transport": "النقل",
+    "weather": "الطقس",
+    "enterprises": "الشركات",
+    "markets": "الأسواق",
+    "sports": "الرياضة",
+    "culture": "الثقافة"
   }
 }

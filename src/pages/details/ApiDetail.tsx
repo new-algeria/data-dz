@@ -4,21 +4,22 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import ReactMarkdown from "react-markdown";
-import { ApiData } from "@/interface/ApiInterface";
-import { apis } from "@/data/FakeApi";
 import { Button } from "@/components/ui/button";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dataset } from "@/interface/DatasetInterface";
+import { set } from "date-fns";
 
 export default function ApiDetail() {
   const { id } = useParams();
 
   const [fetching, setFetching] = useState(true);
-  const [apiData, setApiData] = useState<ApiData | null>(null);
+  const [dataset, setDataset] = useState<Dataset | null>(null);
 
   useEffect(() => {
-    const selectedApi = apis.find((api) => api.slug === id);
-    setApiData(selectedApi || null);
+    // fetch dataset
+    setFetching(true);
+
     setFetching(false);
   }, [id]);
 
@@ -28,12 +29,14 @@ export default function ApiDetail() {
         Chargement...
       </div>
     );
-  if (!apiData)
+  if (!dataset)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
         API non trouvée
       </div>
     );
+
+  const language = "fr"; // ou 'en', 'ar' selon la langue choisie
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
@@ -50,18 +53,13 @@ export default function ApiDetail() {
         </Button>
         {/* En-tête */}
         <header className="mb-8 mt-2">
-          <h1 className="text-4xl font-bold mb-4">{apiData.title}</h1>
+          <h1 className="text-4xl font-bold mb-4">{dataset.title[language]}</h1>
           <div className="flex items-center gap-4">
             <Badge
-              content={`${apiData.availability}% disponibilité`}
+              content={`${dataset.source} - ${dataset.updatedDate}`}
               type="success"
             />
-            {apiData.requiresCredits && (
-              <Badge content="Nécessite des crédits" type="warning" />
-            )}
-            {!apiData.requiresCredits && (
-              <Badge content="Gratuit" type="success" />
-            )}
+            <Badge content={dataset.category[language]} type="warning" />
           </div>
         </header>
 
@@ -95,12 +93,12 @@ export default function ApiDetail() {
               {/* Contenu des onglets */}
               <TabsContent value="description">
                 <div className="prose dark:prose-invert">
-                  <ReactMarkdown>{apiData.descriptionMD}</ReactMarkdown>
+                  <ReactMarkdown>{dataset.descriptionREADME}</ReactMarkdown>
                 </div>
               </TabsContent>
               <TabsContent value="documentation">
                 <div className="prose dark:prose-invert">
-                  <ReactMarkdown>{apiData.documentationMD}</ReactMarkdown>
+                  <ReactMarkdown>{dataset.descriptionREADME}</ReactMarkdown>
                 </div>
               </TabsContent>
               <TabsContent value="test">
@@ -122,7 +120,7 @@ export default function ApiDetail() {
                       <input
                         type="text"
                         id="endpoint"
-                        placeholder={apiData.baseUrl}
+                        placeholder={dataset.sourceURL}
                         className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                       />
                     </div>
@@ -152,15 +150,11 @@ export default function ApiDetail() {
             <h2 className="text-2xl font-semibold mb-4">Informations</h2>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <img
-                  src={apiData.provider.logo}
-                  alt={apiData.provider.name}
-                  className="w-8 h-8 mr-2 rounded-full"
-                />
-                <span>{apiData.provider.name}</span>
+                <FontAwesomeIcon icon={faUser} className="w-4 h-4 mr-1" />
+                <span>{dataset.provider.name}</span>
               </div>
               <Button variant="outline" asChild>
-                <a href={`mailto:${apiData.provider.contact}`}>
+                <a href={`mailto:${dataset.provider.contact}`}>
                   Contacter le fournisseur
                 </a>
               </Button>
@@ -168,11 +162,11 @@ export default function ApiDetail() {
 
             <div className="space-y-2">
               <p className="text-sm">
-                <strong>Version :</strong> {apiData.version}
+                <strong>Version :</strong> 1.0.0
               </p>
               <p className="text-sm flex ">
                 <strong>Base URL :</strong>{" "}
-                <pre className="ml-2">{apiData.baseUrl}</pre>
+                <pre className="ml-2">{dataset.sourceURL}</pre>
               </p>
             </div>
           </aside>

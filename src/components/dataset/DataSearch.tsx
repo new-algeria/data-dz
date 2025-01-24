@@ -11,9 +11,12 @@ import {
 import { motion } from "framer-motion";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 import { SparklesText } from "../ui/sparkles-text";
-import { datasets } from "@/data/FakeDataset";
 import { DatasetCard } from "./DatasetCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Dataset } from "@/interface/DatasetInterface";
+import { fetchData } from "@/lib/axios";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const placeholders = [
   "Election présidentielle 2024",
@@ -24,8 +27,20 @@ const placeholders = [
 
 export const DataSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredDatasets, setFilteredDatasets] = useState(datasets);
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
   const [sortCriteria, setSortCriteria] = useState("relevance");
+  const { t } = useTranslation();
+
+  const fetchApis = async () => {
+    const data = await fetchData(`${import.meta.env.VITE_API_URL}/info`);
+
+    setDatasets(data);
+    setFilteredDatasets(data);
+  };
+  useEffect(() => {
+    fetchApis();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -41,22 +56,21 @@ export const DataSearch = () => {
   const filterAndSortDatasets = (query: string, sort: string) => {
     let filtered = datasets.filter(
       (dataset) =>
-        dataset.title.toLowerCase().includes(query.toLowerCase()) ||
-        dataset.keywords.some((keyword) =>
+        dataset.title.en.toLowerCase().includes(query.toLowerCase()) ||
+        dataset.keywords.en.some((keyword) =>
           keyword.toLowerCase().includes(query.toLowerCase())
         ) ||
-        dataset.description.toLowerCase().includes(query.toLowerCase()) ||
+        dataset.description.en.toLowerCase().includes(query.toLowerCase()) ||
         dataset.provider.name.toLowerCase().includes(query.toLowerCase())
     );
 
     if (sort === "date") {
       filtered = filtered.sort(
         (a, b) =>
-          new Date(b.fileInfo.lastUpdate).getTime() -
-          new Date(b.fileInfo.lastUpdate).getTime()
+          new Date(b.updatedDate).getTime() - new Date(a.updatedDate).getTime()
       );
     } else if (sort === "popularity") {
-      filtered = filtered.sort((a, b) => b.views - a.views);
+      //filtered = filtered.sort((a, b) => b.views - a.views);
     }
 
     setFilteredDatasets(filtered);
@@ -77,7 +91,7 @@ export const DataSearch = () => {
       >
         <SparklesText
           className="text-2xl font-bold mb-2 text-center"
-          text="Rechercher des données"
+          text={t("dataset.search.title")}
         />
 
         <div className="flex justify-start">
@@ -89,7 +103,7 @@ export const DataSearch = () => {
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <p className="text-gray-600">{filteredDatasets.length} résultats</p>
+          <p className="text-gray-600">{filteredDatasets.length} results</p>
           <Select defaultValue="relevance" onValueChange={handleSortChange}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Trier par" />
@@ -105,7 +119,7 @@ export const DataSearch = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDatasets.map((dataset) => (
             <motion.div
-              key={dataset.title}
+              key={dataset.slug}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}

@@ -4,8 +4,15 @@ import { Calendar, Download, Eye } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Link } from "react-router-dom";
 import { Dataset } from "@/interface/DatasetInterface";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 export function DatasetCard(dataset: Dataset) {
+  const { t } = useTranslation();
+  const [language, setLanguage] = useState("fr");
+
   return (
     <Link to={`/dataset/${dataset.slug}`} className="w-full">
       <Card className="relative group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full">
@@ -19,28 +26,32 @@ export function DatasetCard(dataset: Dataset) {
         <CardHeader>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <img
-                src={dataset.provider.logo}
-                alt={dataset.provider.name}
-                className="w-8 h-8 mr-2 rounded-full"
-              />
+              {dataset.provider.pictureUrl ? (
+                <img
+                  src={dataset.provider.pictureUrl}
+                  alt={dataset.provider.name}
+                  className="w-6 h-6 mr-1 rounded-full border border-gray-300 dark:border-gray-600"
+                />
+              ) : (
+                <FontAwesomeIcon icon={faUser} className="w-6 h-6 mr-1" />
+              )}
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {dataset.provider.name}
               </span>
             </div>
-            <Badge variant="secondary">{dataset.category}</Badge>
+            <Badge variant="secondary">{dataset.category[language]}</Badge>
           </div>
           <CardTitle className="text-lg font-semibold">
-            {dataset.title}
+            {dataset.title[language]}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-gray-600 mb-4 dark:text-gray-400">
-            {dataset.description}
+            {dataset.description[language]}
           </p>
 
           <div className="flex flex-wrap gap-2 mb-4">
-            {dataset.keywords.map((keyword: string) => (
+            {dataset.keywords[language].map((keyword: string) => (
               <Badge
                 key={keyword}
                 variant="outline"
@@ -54,9 +65,9 @@ export function DatasetCard(dataset: Dataset) {
           <div className="flex items-center justify-between text-sm text-gray-500 mb-4 dark:text-gray-400">
             <div className="flex items-center">
               <Calendar className="w-4 h-4 mr-1" />
-              {dataset.fileInfo.lastUpdate}
+              {dataset.updatedDate}
             </div>
-            <div className="flex items-center gap-4">
+            {/*   <div className="flex items-center gap-4">
               <span className="flex items-center">
                 <Download className="w-4 h-4 mr-1" />
                 {dataset.downloads}
@@ -65,12 +76,12 @@ export function DatasetCard(dataset: Dataset) {
                 <Eye className="w-4 h-4 mr-1" />
                 {dataset.views}
               </span>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex items-center justify-between">
             <span className="text-primary font-semibold dark:text-secondary">
-              {dataset.price}✨/requête
+              1✨/requête
             </span>
           </div>
         </CardContent>

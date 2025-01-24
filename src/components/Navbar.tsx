@@ -19,9 +19,9 @@ export const Navbar = () => {
   const { t } = useTranslation();
 
   const navItems = [
-    { name: t('navbar.api'), url: "/api", icon: faCode },
-    { name: t('navbar.data'), url: "/", icon: faBook },
-    { name: t('navbar.contact'), url: "/contact", icon: faPhone },
+    { name: t("navbar.api"), url: "/api", icon: faCode },
+    { name: t("navbar.data"), url: "/", icon: faBook },
+    { name: t("navbar.contact"), url: "/contact", icon: faPhone },
   ];
 
   if (location.pathname.includes("/api")) {
@@ -39,13 +39,13 @@ export const Navbar = () => {
             to="/"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
-            {t('navbar.home')}
+            {t("navbar.home")}
           </Link>
           <Link
             to="/api"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
-            {t('navbar.api')}
+            {t("navbar.api")}
           </Link>
           <LanguageSelector />
           <Button
@@ -61,7 +61,7 @@ export const Navbar = () => {
             )}
           </Button>
           <Button variant="default" className="bg-primary text-white">
-            <Link to="/getting-started">{t('navbar.getStarted')}</Link>
+            <Link to="/getting-started">{t("navbar.getStarted")}</Link>
           </Button>
         </div>
       </div>

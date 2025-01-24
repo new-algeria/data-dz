@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, FileText, Database, User, Sun, Moon } from "lucide-react";
 import { Dataset } from "@/interface/DatasetInterface";
-import { datasets } from "@/data/FakeDataset";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fetchData } from "@/lib/axios";
 
 const DatasetDetail = () => {
   const { id } = useParams();
@@ -17,13 +17,19 @@ const DatasetDetail = () => {
   const [dataset, setDataset] = useState<Dataset>(null as any);
   const [displayFormat, setDisplayFormat] = useState("table");
 
-  useEffect(() => {
-    datasets.forEach((dataset) => {
+  const fetchApis = async () => {
+    const data: Dataset[] = await fetchData(
+      `${import.meta.env.VITE_API_URL}/info`
+    );
+    data.forEach((dataset) => {
       if (dataset.slug === id) {
         setDataset(dataset);
         setFetching(false);
       }
     });
+  };
+  useEffect(() => {
+    fetchApis();
   }, [id]);
 
   const renderContent = () => {
@@ -50,7 +56,7 @@ const DatasetDetail = () => {
                   >
                     {Object.values(item).map((value, colIndex) => (
                       <td key={colIndex} className="p-2">
-                        {value}
+                        {/*       {value} */}
                       </td>
                     ))}
                   </tr>
@@ -115,25 +121,25 @@ const DatasetDetail = () => {
           {/* En-tête */}
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold mb-4">{dataset.title}</h1>
+              <h1 className="text-4xl font-bold mb-4">{dataset.title.en}</h1>
               <div className="flex gap-4 items-center">
                 <Badge variant="secondary">
                   <FileText className="w-4 h-4 mr-2" />
-                  {dataset.fileInfo.format}
+                  {dataset.source}
                 </Badge>
                 <span className="flex items-center">
                   <Database className="w-4 h-4 mr-2" />
-                  {dataset.fileInfo.records} enregistrements
+                  {dataset.dataSize} enregistrements
                 </span>
                 <span className="flex items-center">
                   <Calendar className="w-4 h-4 mr-2" />
-                  Mis à jour le {dataset.fileInfo.lastUpdate}
+                  Mis à jour le {dataset.updatedDate}
                 </span>
               </div>
             </div>
 
-            {dataset.relatedApi && (
-              <Link to={dataset.relatedApi}>
+            {dataset.sourceURL && (
+              <Link to={dataset.sourceURL}>
                 <Button>Voir l'API associée</Button>
               </Link>
             )}
@@ -141,7 +147,7 @@ const DatasetDetail = () => {
 
           {/* Description */}
           <div className="p-6 rounded-lg prose bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100">
-            <div className="markdown-content">{dataset.description}</div>
+            <div className="markdown-content">{dataset.description.en}</div>
           </div>
 
           {/* Sélecteur de format d'affichage */}
@@ -197,7 +203,7 @@ const DatasetDetail = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <img
-                  src={dataset.provider.logo}
+                  src={dataset.provider.pictureUrl}
                   alt={dataset.provider.name}
                   className="w-8 h-8 mr-2 rounded-full"
                 />

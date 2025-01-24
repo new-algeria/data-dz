@@ -32,7 +32,7 @@ const ScrollDownArrow: React.FC<ScrollDownArrowProps> = ({
 
   return (
     <div
-      className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 transition-opacity duration-500 z-50 ${
+      className={`fixed bottom-20 md:bottom-10 left-1/2 transform -translate-x-1/2 transition-opacity duration-500 z-50 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >

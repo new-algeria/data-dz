@@ -12,6 +12,7 @@ import { GraphDataMovement } from "@/components/GraphDataMovement";
 import ReactCountryFlag from "react-country-flag";
 import { Footer } from "@/components/Footer";
 import ScrollDownArrow from "@/components/ScrollDownArrow";
+import { t } from "i18next";
 
 const DataUniverse = () => {
   return (
@@ -41,10 +42,9 @@ const DataUniverse = () => {
               }}
               className="text-4xl px-4 md:text-4xl lg:text-5xl font-bold text-neutral-700 dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto "
             >
-              Hi👋, you are in the right place to find{" "}
+              {t("api.universe.hi")}{" "}
               <Highlight className="text-black dark:text-white">
-                the best datasets of <ReactCountryFlag countryCode="DZ" svg />{" "}
-                Algeria .
+                {t("api.universe.best_dataset")}{" "}
               </Highlight>
             </motion.h1>
           </HeroHighlight>
