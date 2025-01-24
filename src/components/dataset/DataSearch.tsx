@@ -15,7 +15,6 @@ import { DatasetCard } from "./DatasetCard";
 import { useEffect, useState } from "react";
 import { Dataset } from "@/interface/DatasetInterface";
 import { fetchData } from "@/lib/axios";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 const placeholders = [
@@ -30,6 +29,7 @@ export const DataSearch = () => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
   const [sortCriteria, setSortCriteria] = useState("relevance");
+  const [visibleCount, setVisibleCount] = useState(9);
   const { t } = useTranslation();
 
   const fetchApis = async () => {
@@ -81,6 +81,10 @@ export const DataSearch = () => {
     console.log("submitted");
   };
 
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 9);
+  };
+
   return (
     <section className="py-6 px-4 mt-5 bg-accent dark:bg-inherit">
       <motion.div
@@ -103,21 +107,23 @@ export const DataSearch = () => {
         </div>
 
         <div className="flex justify-between items-center mb-6">
-          <p className="text-gray-600">{filteredDatasets.length} results</p>
+          <p className="text-gray-600">
+            {filteredDatasets.length} {t("results")}
+          </p>
           <Select defaultValue="relevance" onValueChange={handleSortChange}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Trier par" />
+              <SelectValue placeholder={t("sortBy")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="relevance">Pertinence</SelectItem>
-              <SelectItem value="date">Date</SelectItem>
-              <SelectItem value="popularity">Popularité</SelectItem>
+              <SelectItem value="relevance">{t("relevance")}</SelectItem>
+              <SelectItem value="date">{t("date")}</SelectItem>
+              <SelectItem value="popularity">{t("popularity")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDatasets.map((dataset) => (
+          {filteredDatasets.slice(0, visibleCount).map((dataset) => (
             <motion.div
               key={dataset.slug}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -128,6 +134,12 @@ export const DataSearch = () => {
             </motion.div>
           ))}
         </div>
+
+        {visibleCount < filteredDatasets.length && (
+          <div className="flex justify-center mt-6">
+            <Button onClick={handleShowMore}>{t("showMore")}</Button>
+          </div>
+        )}
       </motion.div>
     </section>
   );

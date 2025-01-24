@@ -92,5 +92,12 @@
     "markets": "Marchés",
     "sports": "Sports",
     "culture": "Culture"
-  }
+  },
+  "currentLanguage": "fr",
+  "results": "résultats",
+  "sortBy": "Trier par",
+  "relevance": "Pertinence",
+  "date": "Date",
+  "popularity": "Popularité",
+  "showMore": "Afficher plus"
 }

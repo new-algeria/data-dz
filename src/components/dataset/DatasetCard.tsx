@@ -11,7 +11,11 @@ import { useEffect, useState } from "react";
 
 export function DatasetCard(dataset: Dataset) {
   const { t } = useTranslation();
-  const [language, setLanguage] = useState("fr");
+  const [language, setLanguage] = useState("en");
+
+  useEffect(() => {
+    setLanguage(t("currentLanguage"));
+  }, [t]);
 
   return (
     <Link to={`/dataset/${dataset.slug}`} className="w-full">
@@ -79,11 +83,11 @@ export function DatasetCard(dataset: Dataset) {
             </div> */}
           </div>
 
-          <div className="flex items-center justify-between">
+          {/*   <div className="flex items-center justify-between">
             <span className="text-primary font-semibold dark:text-secondary">
               1✨/requête
             </span>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </Link>

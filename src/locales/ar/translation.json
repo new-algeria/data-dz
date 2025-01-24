@@ -92,5 +92,12 @@
     "markets": "الأسواق",
     "sports": "الرياضة",
     "culture": "الثقافة"
-  }
+  },
+  "currentLanguage": "ar",
+  "results": "نتائج",
+  "sortBy": "ترتيب حسب",
+  "relevance": "الأهمية",
+  "date": "التاريخ",
+  "popularity": "الشعبية",
+  "showMore": "عرض المزيد"
 }

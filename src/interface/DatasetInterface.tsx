@@ -29,6 +29,7 @@ export interface Dataset {
   keywords: LanguageTranslationArray;
   category: LanguageTranslationText;
   provider: Provider;
+
   preview?: any;
   dataSize?: number;
 }

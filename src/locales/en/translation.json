@@ -95,5 +95,12 @@
     "markets": "Markets",
     "sports": "Sports",
     "culture": "Culture"
-  }
+  },
+  "currentLanguage": "en",
+  "results": "results",
+  "sortBy": "Sort by",
+  "relevance": "Relevance",
+  "date": "Date",
+  "popularity": "Popularity",
+  "showMore": "Show More"
 }
