@@ -35,5 +35,11 @@
   },
   "supporters": {
     "title": "Ils nous font confiance"
+  },
+  "hero": {
+    "title": "La plus grande base de données d'Algérie",
+    "subtitle": "Accédez à des données fiables et à jour sur l'Algérie via notre API simple et puissante. Nous fournissons des données essentielles pour vos applications et services.",
+    "searchPlaceholder": "Rechercher des données...",
+    "searchButton": "Rechercher"
   }
 }

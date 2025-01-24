@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 export const HeroParallax = ({
   products,
@@ -19,7 +19,7 @@ export const HeroParallax = ({
     title: string;
     link: string;
     thumbnail: string;
-    icon?: any; // icon fontawesome
+    icon?: any;
   }[];
 }) => {
   const firstRow = products.slice(0, 5);
@@ -106,16 +106,15 @@ export const HeroParallax = ({
 };
 
 export const Header = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
       <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
-        La plus grande base <br /> de données d'Algérie{" "}
-        <ReactCountryFlag countryCode="DZ" svg />
+        {t('hero.title')} <ReactCountryFlag countryCode="DZ" svg />
       </h1>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
-        Accédez à des données fiables et à jour sur l'Algérie via notre API
-        simple et puissante. Nous fournissons des données essentielles pour vos
-        applications et services.
+        {t('hero.subtitle')}
       </p>
     </div>
   );
@@ -141,7 +140,7 @@ export const ProductCard = ({
     title: string;
     link: string;
     thumbnail: string;
-    icon?: any; // icon fontawesome
+    icon?: any;
   };
   translate: MotionValue<number>;
 }) => {

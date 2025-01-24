@@ -22,7 +22,7 @@
       "getStarted": "Get Started"
     },
     "search": {
-      "title": "Hi👋, you are in the right place to find",
+      "title": "Hi👋, you're in the right place to find",
       "highlight": "the best APIs of Algeria"
     }
   },
@@ -35,5 +35,11 @@
   },
   "supporters": {
     "title": "They trust us"
+  },
+  "hero": {
+    "title": "The largest database of Algeria",
+    "subtitle": "Access reliable and up-to-date data about Algeria through our simple and powerful API. We provide essential data for your applications and services.",
+    "searchPlaceholder": "Search data...",
+    "searchButton": "Search"
   }
 }
