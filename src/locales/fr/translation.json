@@ -25,5 +25,15 @@
       "title": "Salut👋, vous êtes au bon endroit pour trouver",
       "highlight": "les meilleures APIs d'Algérie"
     }
+  },
+  "statistics": {
+    "title": "Nos chiffres clés",
+    "activeUsers": "Utilisateurs actifs",
+    "datasets": "Jeux de données",
+    "organizations": "Organisations",
+    "downloads": "Téléchargements"
+  },
+  "supporters": {
+    "title": "Ils nous font confiance"
   }
 }

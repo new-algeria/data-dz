@@ -1,4 +1,5 @@
 import { Marquee } from "@/components/ui/marquee";
+import { useTranslation } from "react-i18next";
 
 const supporters = [
   {
@@ -28,11 +29,13 @@ const supporters = [
 ];
 
 export const Supporters = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-16 bg-white dark:bg-[#020817]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8">
-          Ils nous font confiance
+          {t('supporters.title')}
         </h2>
         <div className="relative mt-6">
           <Marquee

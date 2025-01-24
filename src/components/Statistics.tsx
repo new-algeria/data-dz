@@ -1,35 +1,38 @@
 import { motion } from "framer-motion";
 import { Users, Database, Building2, Download } from "lucide-react";
-
-const stats = [
-  {
-    label: "Utilisateurs actifs",
-    value: "2,500+",
-    icon: Users,
-  },
-  {
-    label: "Jeux de données",
-    value: "150+",
-    icon: Database,
-  },
-  {
-    label: "Organisations",
-    value: "45+",
-    icon: Building2,
-  },
-  {
-    label: "Téléchargements",
-    value: "10,000+",
-    icon: Download,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const Statistics = () => {
+  const { t } = useTranslation();
+
+  const stats = [
+    {
+      label: t('statistics.activeUsers'),
+      value: "2,500+",
+      icon: Users,
+    },
+    {
+      label: t('statistics.datasets'),
+      value: "150+",
+      icon: Database,
+    },
+    {
+      label: t('statistics.organizations'),
+      value: "45+",
+      icon: Building2,
+    },
+    {
+      label: t('statistics.downloads'),
+      value: "10,000+",
+      icon: Download,
+    },
+  ];
+
   return (
-    <section className="py-16 ">
+    <section className="py-16">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">
-          Nos chiffres clés
+          {t('statistics.title')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (

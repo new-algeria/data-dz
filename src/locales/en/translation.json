@@ -25,5 +25,15 @@
       "title": "Hi👋, you are in the right place to find",
       "highlight": "the best APIs of Algeria"
     }
+  },
+  "statistics": {
+    "title": "Key Figures",
+    "activeUsers": "Active Users",
+    "datasets": "Datasets",
+    "organizations": "Organizations",
+    "downloads": "Downloads"
+  },
+  "supporters": {
+    "title": "They trust us"
   }
 }
