@@ -57,12 +57,12 @@
     "connectivity": "Connectivité à distance",
     "subtitle": "Il est temps pour l'Algérie de se connecter au monde, contribuant à construire un meilleur avenir.",
     "universe": {
-      "title": "La 1èreplateforme API pour l'Algérie",
+      "title": "La 1ère plateforme API pour l'Algérie",
       "subtitle": "Et ce n'est que le début.",
       "get_started": "Commencer",
-      "hi": "Salut, tu es au bon endroit pour trouver",
-      "best_apis": "Les meilleures API de l'Algérie",
-      "best_dataset": "les meilleurs ensembles de données de l’Algérie.",
+      "hi": "Salut👋, tu es au bon endroit pour trouver",
+      "best_apis": "les meilleures API de l'Algérie",
+      "best_dataset": "les meilleurs datasets de l’Algérie.",
       "propose_api": "Soumettre une API",
       "supported_technologies": "Technologies disponibles"
     }
