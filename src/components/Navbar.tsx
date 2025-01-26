@@ -13,6 +13,7 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import JoinUsBtn from "./JoinUsBtn";
+import { ThemeLanguageToggle } from "./ThemeLanguageToggle";
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -26,7 +27,12 @@ export const Navbar = () => {
   ];
 
   if (location.pathname.includes("/api")) {
-    return <NavBar items={navItems} />;
+    return (
+      <>
+        <ThemeLanguageToggle />
+        <NavBar items={navItems} />
+      </>
+    );
   }
 
   return (

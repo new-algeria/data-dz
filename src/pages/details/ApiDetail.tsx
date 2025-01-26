@@ -9,6 +9,7 @@ import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dataset } from "@/interface/DatasetInterface";
 import { set } from "date-fns";
+import { fetchData } from "@/lib/axios";
 
 export default function ApiDetail() {
   const { id } = useParams();
@@ -16,10 +17,18 @@ export default function ApiDetail() {
   const [fetching, setFetching] = useState(true);
   const [dataset, setDataset] = useState<Dataset | null>(null);
 
+  const fetchApis = async () => {
+    const data: Dataset = await fetchData(
+      `${import.meta.env.VITE_API_URL}/details/${id}`
+    );
+
+    setDataset(data);
+  };
+
   useEffect(() => {
     // fetch dataset
-    setFetching(true);
 
+    fetchApis();
     setFetching(false);
   }, [id]);
 
