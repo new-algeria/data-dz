@@ -18,8 +18,11 @@ export interface Provider {
 }
 
 export interface Dataset {
+  type: string; // file, api, database...
+
   title: LanguageTranslationText;
   slug: string;
+  link: string | null;
   path: string;
   description: LanguageTranslationText;
   descriptionREADME: string;
@@ -30,6 +33,7 @@ export interface Dataset {
   category: LanguageTranslationText;
   provider: Provider;
 
+  lastEdited?: string;
+  length?: number;
   preview?: any;
-  dataSize?: number;
 }

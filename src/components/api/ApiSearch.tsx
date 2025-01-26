@@ -8,6 +8,7 @@ import { Dataset } from "@/interface/DatasetInterface";
 import { fetchData } from "@/lib/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileAlt, faFileCode } from "@fortawesome/free-solid-svg-icons";
+import { FaCircle } from "react-icons/fa";
 
 export const ApiSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,7 +28,7 @@ export const ApiSearch = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6 mt-12 z-10">
+      <div className="flex justify-between items-center mb-6 mt-12 z-30">
         <h2 className="text-xl font-semibold">{t("api.search.title")}</h2>
         <Input
           placeholder={t("api.search.placeholder")}
@@ -37,7 +38,7 @@ export const ApiSearch = () => {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 z-10">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
         {filteredApis
           .filter(
             (api) =>
@@ -47,22 +48,25 @@ export const ApiSearch = () => {
                 .includes(searchQuery.toLowerCase())
           )
           .map((api) => (
-            <Link to={`/api/${api.slug}`} key={api.slug}>
-              <div className="p-6 rounded-lg border border-gray-800 dark:bg-gray-900/50">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-semibold">{api.title.en}</h3>
-                  {/*   {api.requiresCredits ? (
-                    <Lock className="text-yellow-500" />
-                  ) : (
-                    <Unlock className="text-green-500" />
-                  )} */}
+            <Link to={`/api/${api.slug}`} key={api.slug} className="z-30">
+              <div className="p-6 rounded-lg border border-gray-800 dark:bg-gray-900/50 h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-lg font-semibold">{api.title.en}</h3>
+                    {/*   {api.requiresCredits ? (
+                  <Lock className="text-yellow-500" />
+                ) : (
+                  <Unlock className="text-green-500" />
+                )} */}
+                  </div>
+                  <p className="text-gray-700 mb-4 dark:text-gray-400">
+                    {api.description.en}
+                  </p>
                 </div>
-                <p className="text-gray-700 mb-4 dark:text-gray-400">
-                  {api.description.en}
-                </p>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-400 dark:text-gray-500">
-                    version:{api.updatedDate}
+                <div className="flex justify-between items-center text-sm mt-auto">
+                  <span className="flex items-center animate-pulse text-green-500">
+                    <FaCircle className="w-3 h-3 mr-1 " />
+                    ready
                   </span>
                   <span className="text-gray-400">
                     {/*  {api.dataSize} {t("api.card.dataSize")} */}
