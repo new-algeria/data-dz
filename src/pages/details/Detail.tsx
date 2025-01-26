@@ -303,7 +303,10 @@ const Detail = () => {
                 </>
               ) : (
                 <>
-                  <a href={"www.google.com"} target="_blank">
+                  <a
+                    href={"https://rapidapi.com/Newalgeria/api/api-dz/pricing"}
+                    target="_blank"
+                  >
                     <Button
                       className="bg-green-500 text-white hover:bg-green-600"
                       onClick={paymentProcess}
