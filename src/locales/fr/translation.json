@@ -99,5 +99,22 @@
   "relevance": "Pertinence",
   "date": "Date",
   "popularity": "Popularité",
-  "showMore": "Afficher plus"
+  "showMore": "Afficher plus",
+  "joinUs": {
+    "joinUs": "Rejoignez-nous",
+    "modalHeader": "Que souhaitez-vous faire ?",
+    "joinGithub": "Rejoindre l'organisation Github",
+    "emailPlaceholder": "vous@example.com",
+    "join": "Rejoindre",
+    "writeUs": "Écrivez-nous !",
+    "writeToUs": "Écrivez-nous",
+    "connectWithUs": "Connectez-vous avec nous",
+    "invitationSuccess": "Invitation envoyée avec succès !",
+    "invitationFailure": "Échec de l'envoi de l'invitation. Veuillez réessayer plus tard.",
+    "writeAlert": "Écrivez-nous !",
+    "emailSubject": "Demande de Contact - NewAlgeria",
+    "emailBody": "Bonjour,\n\nJe suis intéressé(e) par en savoir plus sur la Plateforme Numérique NewAlgeria.\n\nCordialement,",
+    "motivations": "Les développeurs, les data scientists, les enseignants, les concepteurs et bien plus encore sont tous invités à nous rejoindre.  \nImpliquez-vous dans la communauté et aidez-nous à construire l’avenir de l’Algérie.",
+    "motivations2": "Trouvez également des partenaires et des collaborateurs avec lesquels travailler."
+  }
 }

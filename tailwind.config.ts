@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const flowbite = require("flowbite-react/tailwind");
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -10,6 +11,7 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    flowbite.content(),
   ],
   prefix: "",
   theme: {
@@ -184,6 +186,7 @@ export default {
     require("tailwindcss-animate"),
     require("@tailwindcss/typography"),
     addVariablesForColors,
+    flowbite.plugin(),
   ],
 } satisfies Config;
 

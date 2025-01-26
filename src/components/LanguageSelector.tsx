@@ -12,9 +12,9 @@ export const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
   const languages = [
-    { code: 'fr', name: 'Français' },
-    { code: 'en', name: 'English' },
-    { code: 'ar', name: 'العربية' }
+    { code: "fr", name: "Français" },
+    { code: "en", name: "English" },
+    { code: "ar", name: "العربية" },
   ];
 
   return (
@@ -29,7 +29,11 @@ export const LanguageSelector = () => {
           <DropdownMenuItem
             key={lang.code}
             onClick={() => i18n.changeLanguage(lang.code)}
-            className={i18n.language === lang.code ? "bg-accent" : ""}
+            className={
+              i18n.language === lang.code
+                ? "bg-accent text-accent-foreground"
+                : ""
+            }
           >
             {lang.name}
           </DropdownMenuItem>
