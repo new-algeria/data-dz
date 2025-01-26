@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
@@ -12,6 +12,7 @@ import {
   faHome,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import JoinUsBtn from "./JoinUsBtn";
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -31,22 +32,22 @@ export const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-primary">
+        <a href="/" className="text-2xl font-bold text-primary">
           <img src={DATA_DZ_LOGO} alt="Data DZ" className="h-20" />
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link
-            to="/"
+        </a>
+        <div className="flex items-center gap-2">
+          {/* <a
+            href="/"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
             {t("navbar.home")}
-          </Link>
-          <Link
-            to="/api"
+          </a> */}
+          <a
+            href="/api"
             className="text-gray-600 dark:text-gray-300 hover:text-primary"
           >
             {t("navbar.api")}
-          </Link>
+          </a>
           <LanguageSelector />
           <Button
             variant="ghost"
@@ -60,9 +61,7 @@ export const Navbar = () => {
               <Moon className="h-5 w-5" />
             )}
           </Button>
-          <Button variant="default" className="bg-primary text-white">
-            <Link to="/getting-started">{t("navbar.getStarted")}</Link>
-          </Button>
+          <JoinUsBtn />
         </div>
       </div>
     </nav>

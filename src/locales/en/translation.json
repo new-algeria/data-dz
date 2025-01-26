@@ -102,5 +102,22 @@
   "relevance": "Relevance",
   "date": "Date",
   "popularity": "Popularity",
-  "showMore": "Show More"
+  "showMore": "Show More",
+  "joinUs": {
+    "joinUs": "Join Us",
+    "modalHeader": "What would you like to do?",
+    "joinGithub": "Join Github Organization",
+    "emailPlaceholder": "you@example.com",
+    "join": "Join",
+    "writeUs": "Write Us!",
+    "writeToUs": "Write to Us",
+    "connectWithUs": "Connect with us",
+    "invitationSuccess": "Invitation sent successfully!",
+    "invitationFailure": "Failed to send invitation. Please try again later.",
+    "writeAlert": "Write to us!",
+    "emailSubject": "Contact Request - New Algeria",
+    "emailBody": "Hello,\n\nI am interested in learning more about the New Algeria Digital Platform.\n\nBest regards,",
+    "motivations": "Developers, Data Scientists, Teachers, Designers, and more are all welcome to join us.  Get involved in the community and help us to build the future of Algeria.",
+    "motivations2": "Find also partners and collaborators to work with."
+  }
 }
