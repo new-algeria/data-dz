@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,7 @@ import { Calendar, Database } from "lucide-react";
 import { Dataset } from "@/interface/DatasetInterface";
 import { fetchData } from "@/lib/axios";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-
-import { FaCircle, FaNetworkWired } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faCode,
@@ -18,19 +17,19 @@ import {
   faGlobe,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaCircle } from "react-icons/fa";
 import { DataSearch } from "@/components/dataset/DataSearch";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { ApiSearch } from "@/components/api/ApiSearch";
 import CustomMarkdown from "@/components/CustomMarkdown";
+import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const Detail = () => {
   const { id } = useParams();
-
   const [fetching, setFetching] = useState(true);
-  const [dataset, setDataset] = useState<Dataset>(null as any);
+  const [dataset, setDataset] = useState<Dataset | null>(null);
   const [displayFormat, setDisplayFormat] = useState("json");
-  const [availableFormats, setAvailableFormats] = useState<string[]>([
+  const [availableFormats, setAvailableFormats] = useState([
     "table",
     "json",
     "csv",
@@ -38,68 +37,43 @@ const Detail = () => {
   const [weAreInDataPortal, setWeAreInDataPortal] = useState(false);
   const [isDynamicRessource, setIsDynamicRessource] = useState(false);
 
-  function isMultiDimensional(data: Dataset) {
-    // Analyse des dimensions des données
-    let isMultiDimensional = false;
-
-    if (data.preview) {
-      if (Array.isArray(data.preview)) {
-        // Cas où preview est une liste
-        for (const item of data.preview) {
-          for (const value of Object.values(item)) {
-            if (
-              (value !== null && typeof value === "object") ||
-              Array.isArray(value)
-            ) {
-              console.log("Multi-dimensional dataset detected in array!");
-              isMultiDimensional = true;
-              break;
-            }
-          }
-          if (isMultiDimensional) break;
-        }
-      } else if (typeof data.preview === "object" && data.preview !== null) {
-        // Cas où preview est un objet direct
-        for (const value of Object.values(data.preview)) {
-          if (
-            (value !== null && typeof value === "object") ||
-            Array.isArray(value)
-          ) {
-            console.log("Multi-dimensional dataset detected in object!");
-            isMultiDimensional = true;
-            break;
-          }
-        }
+  const isMultiDimensional = (data: Dataset) => {
+    if (!data?.preview) return false;
+    let multi = false;
+    const checkObj = (val: any) => {
+      if ((val && typeof val === "object") || Array.isArray(val)) {
+        multi = true;
       }
+    };
+    if (Array.isArray(data.preview)) {
+      data.preview.forEach((item) => {
+        Object.values(item).forEach(checkObj);
+      });
+    } else {
+      Object.values(data.preview).forEach(checkObj);
     }
-    return isMultiDimensional;
-  }
-
-  const paymentProcess = async () => {
-    // Payment process
+    return multi;
   };
+
+  const paymentProcess = async () => {};
 
   const fetchApis = async () => {
     if (!window.location.pathname.includes("api")) {
       setWeAreInDataPortal(true);
     }
-
     const data: Dataset = await fetchData(
       `${import.meta.env.VITE_API_URL}/details/${id}`
     );
-
-    // Analyse des dimensions des données
-    const multiDimensional = isMultiDimensional(data);
-
-    if (multiDimensional) {
-      setAvailableFormats(["json"]); // Limiter aux formats supportés
-      setDisplayFormat("json"); // Précoche JSON
+    if (isMultiDimensional(data)) {
+      if (data.path.includes("geojson")) {
+        setAvailableFormats(["json", "geojson"]);
+        setDisplayFormat("json");
+      } else {
+        setAvailableFormats(["json"]);
+        setDisplayFormat("json");
+      }
     }
-
-    if (data.type !== "file") {
-      setIsDynamicRessource(true);
-    }
-
+    if (data.type !== "file") setIsDynamicRessource(true);
     setDataset(data);
     setFetching(false);
   };
@@ -108,40 +82,46 @@ const Detail = () => {
     fetchApis();
   }, [id]);
 
+  const renderTable = (preview: any[]) => (
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead>
+          <tr className="border-b border-gray-300 dark:border-gray-700">
+            {preview.length > 0 &&
+              Object.keys(preview[0]).map((col) => (
+                <th key={col} className="text-left p-2 capitalize">
+                  {col.replace(/_/g, " ")}
+                </th>
+              ))}
+          </tr>
+        </thead>
+        <tbody>
+          {preview.map((item, idx) => (
+            <tr
+              key={idx}
+              className="border-b border-gray-300 dark:border-gray-700"
+            >
+              {Object.values(item).map((val, colIndex) => (
+                <td key={colIndex} className="p-2">
+                  {String(val)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   const renderContent = () => {
+    if (!dataset?.preview) return <div>Aucun aperçu</div>;
+
     switch (displayFormat) {
       case "table":
-        return (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-300 dark:border-gray-700">
-                  {dataset.preview.length > 0 &&
-                    Object.keys(dataset.preview[0]).map((column) => (
-                      <th key={column} className="text-left p-2 capitalize">
-                        {column.replace(/_/g, " ")}
-                      </th>
-                    ))}
-                </tr>
-              </thead>
-              <tbody>
-                {dataset.preview.map(
-                  (item: Record<string, unknown>, index: number) => (
-                    <tr
-                      key={index}
-                      className="border-b border-gray-300 dark:border-gray-700"
-                    >
-                      {Object.values(item).map((value, colIndex) => (
-                        <td key={colIndex} className="p-2">
-                          {String(value)}
-                        </td>
-                      ))}
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
+        return Array.isArray(dataset.preview) ? (
+          renderTable(dataset.preview)
+        ) : (
+          <div>Aucun tableau disponible</div>
         );
       case "json":
         return (
@@ -150,16 +130,20 @@ const Detail = () => {
               maxHeight: "400px",
               overflow: "auto",
               scrollbarColor: "#6F15E6FF #f3f4f6",
-              scrollbarWidth: "thin",
+              //scrollbarWidth: "",
               scrollBehavior: "smooth",
 
               borderRadius: "5px",
             }}
           >
-            <pre>{JSON.stringify(dataset.preview, null, 2)}</pre>
+            <div className="rounded-md">
+              <pre>{JSON.stringify(dataset.preview, null, 2)}</pre>
+            </div>
           </div>
         );
       case "csv":
+        if (!Array.isArray(dataset.preview))
+          return <div>Aucun CSV possible</div>;
         const csvData = [
           Object.keys(dataset.preview[0]).join(","),
           ...dataset.preview.map((row) =>
@@ -169,10 +153,99 @@ const Detail = () => {
           ),
         ].join("\n");
         return <pre>{csvData}</pre>;
+      case "geojson":
+        console.log(dataset.preview);
+        return <div>Bientôt disponible</div>;
+        return (
+          <MapContainer
+          //center={[25.513483, -5.668261]}
+          //zoom={5}
+          //style={{ height: "400px", width: "100%" }}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <GeoJSON data={dataset.preview} />
+          </MapContainer>
+        );
+      //return <div>Aucun geojson possible</div>;
+      /*  return (
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[51.505, -0.09]}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
+        ); */
+
       default:
         return <div>Format non supporté</div>;
     }
   };
+
+  const FormatSelector = () => (
+    <div className="flex flex-wrap gap-4 mb-4">
+      {availableFormats.includes("table") && (
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="format"
+            value="table"
+            checked={displayFormat === "table"}
+            onChange={() => setDisplayFormat("table")}
+            className="mr-2"
+          />
+          Tableau
+        </label>
+      )}
+      {availableFormats.includes("json") && (
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="format"
+            value="json"
+            checked={displayFormat === "json"}
+            onChange={() => setDisplayFormat("json")}
+            className="mr-2"
+          />
+          JSON
+        </label>
+      )}
+      {availableFormats.includes("csv") && (
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="format"
+            value="csv"
+            checked={displayFormat === "csv"}
+            onChange={() => setDisplayFormat("csv")}
+            className="mr-2"
+          />
+          CSV
+        </label>
+      )}
+      {availableFormats.includes("geojson") && (
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="format"
+            value="geojson"
+            checked={displayFormat === "geojson"}
+            onChange={() => setDisplayFormat("geojson")}
+            className="mr-2"
+          />
+          GeoJSON
+        </label>
+      )}
+    </div>
+  );
 
   if (fetching) {
     return (
@@ -187,13 +260,9 @@ const Detail = () => {
   }
 
   return (
-    <div
-      className={`min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors`}
-    >
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
       <Navbar />
-
       <main className="flex-grow container mx-auto px-4 py-8 mt-20">
-        {/* Button retour */}
         <Button variant="outline" asChild>
           <a href="/">
             <FontAwesomeIcon icon={faArrowLeft} />
@@ -201,23 +270,18 @@ const Detail = () => {
           </a>
         </Button>
         <div className="space-y-8 mt-2">
-          {/* En-tête */}
-          <div className="flex justify-between items-start">
-            <div className="flex flex-col">
-              <h1 className="text-4xl font-bold mb-4">{dataset.title.en} </h1>
-
-              {/* Mots clés */}
-              <div className="gap-4">
-                <div className="flex flex-wrap gap-2">
-                  {dataset.keywords.en.map((keyword: string) => (
-                    <Badge key={keyword} variant="outline">
-                      {keyword}
-                    </Badge>
-                  ))}
-                </div>
+          <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">{dataset.title.en}</h1>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {dataset.keywords.en.map((keyword) => (
+                  <Badge key={keyword} variant="outline">
+                    {keyword}
+                  </Badge>
+                ))}
               </div>
               <div className="mt-4 text-gray-600 dark:text-gray-400">
-                <div>{dataset.description.en}</div>
+                {dataset.description.en}
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -230,7 +294,6 @@ const Detail = () => {
                     <FontAwesomeIcon icon={faDownload} />
                     Télécharger
                   </Button>
-
                   <a href={"/api/" + dataset.slug}>
                     <Button className="bg-purple-500 text-white hover:bg-purple-600">
                       <FontAwesomeIcon icon={faCode} />
@@ -246,7 +309,7 @@ const Detail = () => {
                       onClick={paymentProcess}
                     >
                       <FontAwesomeIcon icon={faCode} />
-                      Utiliser via{" "}
+                      Utiliser via
                       <img
                         src={
                           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/RapidAPI_logo.svg/2560px-RapidAPI_logo.svg.png"
@@ -256,23 +319,15 @@ const Detail = () => {
                       />
                     </Button>
                   </a>
-                  {/*   <Button
-                    className="bg-blue-500 text-white hover:bg-blue-600"
-                    onClick={paymentProcess}
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                    Voir le dataset
-                  </Button> */}
                 </>
               )}
             </div>
           </div>
 
-          {/* Meta DATAS*/}
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-wrap gap-4 items-center">
             {isDynamicRessource ? (
               <span className="flex items-center animate-pulse text-green-500">
-                <FaCircle className="w-3 h-3 mr-1 " />
+                <FaCircle className="w-3 h-3 mr-1" />
                 ready
               </span>
             ) : (
@@ -287,7 +342,6 @@ const Detail = () => {
                 </span>
               </>
             )}
-
             {weAreInDataPortal ? (
               <span className="flex items-center">
                 {dataset.type === "file" ? (
@@ -315,148 +369,49 @@ const Detail = () => {
             )}
             {!weAreInDataPortal && (
               <span className="flex items-center animate-pulse text-green-500">
-                <FaCircle className="w-3 h-3 mr-1 " />
+                <FaCircle className="w-3 h-3 mr-1" />
                 ready
               </span>
             )}
           </div>
 
-          {/* Sélecteur de format d'affichage */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Colonne gauche : Menu d'onglets */}
             <main className="col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              {weAreInDataPortal && (
+              {weAreInDataPortal ? (
                 <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center">
-                      <h2 className="text-2xl font-semibold mr-4">
-                        Extrait des données
-                      </h2>
-                      <div className="flex space-x-4">
-                        {availableFormats.includes("table") && (
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="format"
-                              value="table"
-                              checked={displayFormat === "table"}
-                              onChange={() => setDisplayFormat("table")}
-                              className="mr-2"
-                            />
-                            Tableau
-                          </label>
-                        )}
-                        {availableFormats.includes("json") && (
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="format"
-                              value="json"
-                              checked={displayFormat === "json"}
-                              onChange={() => setDisplayFormat("json")}
-                              className="mr-2"
-                            />
-                            JSON
-                          </label>
-                        )}
-                        {availableFormats.includes("csv") && (
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              name="format"
-                              value="csv"
-                              checked={displayFormat === "csv"}
-                              onChange={() => setDisplayFormat("csv")}
-                              className="mr-2"
-                            />
-                            CSV
-                          </label>
-                        )}
-                      </div>
-                    </div>
+                    <h2 className="text-2xl font-semibold">
+                      Extrait des données
+                    </h2>
                   </div>
+                  <FormatSelector />
                   <div className="prose dark:prose-invert">
                     {renderContent()}
                   </div>
                 </div>
-              )}
-              {!weAreInDataPortal && (
+              ) : (
                 <Tabs defaultValue="Documentation">
-                  {/* Liste des onglets */}
                   <TabsList className="flex space-x-4 mb-6 border-b border-gray-300 dark:border-gray-700">
-                    {/*  <TabsTrigger
-                      value="description"
-                      className="px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700"
-                    >
-                      Description
-                    </TabsTrigger> */}
                     <TabsTrigger
                       value="Documentation"
-                      className="px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="px-4 py-2 text-sm font-medium"
                     >
                       🗒️ Documentation
                     </TabsTrigger>
                     <TabsTrigger
                       value="data"
-                      className="px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="px-4 py-2 text-sm font-medium"
                     >
                       🚀 Retour API
                     </TabsTrigger>
                   </TabsList>
-
-                  {/* Contenu des onglets */}
                   <TabsContent value="Documentation">
                     <div className="prose dark:prose-invert">
                       <CustomMarkdown content={dataset.descriptionREADME} />
                     </div>
                   </TabsContent>
-                  {/*   <TabsContent value="documentation">
-                    <div className="prose dark:prose-invert">
-                      <CustomMarkdown content={dataset.descriptionREADME} />
-                    </div>
-                  </TabsContent> */}
                   <TabsContent value="data">
-                    <div className="flex space-x-4">
-                      {availableFormats.includes("table") && (
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="format"
-                            value="table"
-                            checked={displayFormat === "table"}
-                            onChange={() => setDisplayFormat("table")}
-                            className="mr-2"
-                          />
-                          Tableau
-                        </label>
-                      )}
-                      {availableFormats.includes("json") && (
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="format"
-                            value="json"
-                            checked={displayFormat === "json"}
-                            onChange={() => setDisplayFormat("json")}
-                            className="mr-2"
-                          />
-                          JSON
-                        </label>
-                      )}
-                      {availableFormats.includes("csv") && (
-                        <label className="flex items-center">
-                          <input
-                            type="radio"
-                            name="format"
-                            value="csv"
-                            checked={displayFormat === "csv"}
-                            onChange={() => setDisplayFormat("csv")}
-                            className="mr-2"
-                          />
-                          CSV
-                        </label>
-                      )}
-                    </div>
+                    <FormatSelector />
                     <div className="prose dark:prose-invert">
                       {renderContent()}
                     </div>
@@ -464,7 +419,7 @@ const Detail = () => {
                 </Tabs>
               )}
             </main>
-            {/* Colonne droite : Informations */}
+
             <aside className="col-span-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-6">
               <h2 className="text-2xl font-semibold mb-4">Informations</h2>
               <div className="flex items-center justify-between mb-4">
@@ -489,7 +444,6 @@ const Detail = () => {
                   </a>
                 </Button>
               </div>
-
               <div className="space-y-2">
                 {dataset.source && (
                   <p className="text-sm">
@@ -502,10 +456,8 @@ const Detail = () => {
         </div>
       </main>
 
-      {/* Ou rechercher d'autres */}
-
       <hr className="my-8 dark:border-gray-700 border-gray-300 w-1/3 mx-auto" />
-      <div className=" py-8">
+      <div className="py-8">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-semibold mb-4">
             En rechercher d'autres...
@@ -521,7 +473,6 @@ const Detail = () => {
           )}
         </div>
       </div>
-
       <Footer />
     </div>
   );
