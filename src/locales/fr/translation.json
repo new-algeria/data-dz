@@ -115,6 +115,7 @@
     "emailSubject": "Demande de Contact - NewAlgeria",
     "emailBody": "Bonjour,\n\nJe suis intéressé(e) par en savoir plus sur la Plateforme Numérique NewAlgeria.\n\nCordialement,",
     "motivations": "Les développeurs, les data scientists, les enseignants, les concepteurs et bien plus encore sont tous invités à nous rejoindre.  \nImpliquez-vous dans la communauté et aidez-nous à construire l’avenir de l’Algérie.",
-    "motivations2": "Trouvez également des partenaires et des collaborateurs avec lesquels travailler."
+    "motivations2": "Trouvez également des partenaires et des collaborateurs avec lesquels travailler.",
+    "invitationSent": "Vérifiez votre boîte aux lettres, un e-mail a été envoyé!"
   }
 }
