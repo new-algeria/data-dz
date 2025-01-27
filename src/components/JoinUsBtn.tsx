@@ -80,8 +80,10 @@ const JoinUsBtn = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                     placeholder={t("joinUs.emailPlaceholder")}
-                  />
+                    onKeyDown={(e) => { if (e.key === "Enter") handleJoinOrganization() }}
+                    />
                   <button
+                   id="joinButton"
                     onClick={handleJoinOrganization}
                     disabled={!email}
                     className="bg-green-500 text-white hover:bg-green-600 py-2 px-4 rounded-lg disabled:opacity-50"
