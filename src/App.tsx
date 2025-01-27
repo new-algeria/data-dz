@@ -17,6 +17,7 @@ function App() {
         <Route path="/dataset/:id" element={<Detail />} />
         {/*    <Route path="/getting-started" element={<GettingStarted />} />
         <Route path="/auth" element={<Auth />} /> */}
+        <Route path="*" element={<DataUniverse />} />
       </Routes>
     </Router>
   );
