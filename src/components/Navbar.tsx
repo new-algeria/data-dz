@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { ChevronRight, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import DATA_DZ_LOGO from "../assets/img/data_dz_logo.png";
 import { NavBar } from "./ui/tubelight-navbar";
@@ -14,6 +14,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import JoinUsBtn from "./JoinUsBtn";
 import { ThemeLanguageToggle } from "./ThemeLanguageToggle";
+import { cn } from "@/lib/utils";
+import { AnimatedGradientText } from "./ui/announcment";
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -31,6 +33,7 @@ export const Navbar = () => {
       <>
         <ThemeLanguageToggle />
         <NavBar items={navItems} />
+        <Announcment />
       </>
     );
   }
@@ -71,5 +74,29 @@ export const Navbar = () => {
         </div>
       </div>
     </nav>
+  );
+};
+
+export const Announcment = () => {
+  return (
+    <a
+      href="https://rapidapi.com/Newalgeria/api/api-dz/pricing"
+      className="fixed top-20 w-full text-white z-50"
+      target="_blank"
+    >
+      <div className="fixed top-12 w-full text-white z-50 flex items-center justify-center py-2 md:top-20 ">
+        <AnimatedGradientText>
+          🎉 <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
+          <span
+            className={cn(
+              `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`
+            )}
+          >
+            -70% sur notre API pour l'ouverture !
+          </span>
+          <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+        </AnimatedGradientText>
+      </div>
+    </a>
   );
 };
