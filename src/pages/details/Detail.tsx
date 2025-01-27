@@ -265,188 +265,199 @@ const Detail = () => {
         </div>
       )}
       {!fetching && (
-        <main className="flex-grow container mx-auto px-4 py-8 mt-20">
-          <Button variant="outline" asChild>
-            <a href="/">
-              <FontAwesomeIcon icon={faArrowLeft} />
-              {t("detail.back")}
-            </a>
-          </Button>
-          <div className="space-y-8 mt-2">
-            <BoxReveal boxColor={"#5046e6"} duration={0.5}>
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                <div>
-                  <h1 className="text-4xl font-bold mb-4">
-                    {dataset.title[t("common.language")]}
-                  </h1>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {dataset.keywords.en.map((keyword) => (
-                      <Badge key={keyword} variant="outline">
-                        {keyword}
-                      </Badge>
-                    ))}
+        <>
+          <main className="flex-grow container mx-auto px-4 py-8 mt-20">
+            <Button variant="outline" asChild>
+              <a href="/">
+                <FontAwesomeIcon icon={faArrowLeft} />
+                {t("detail.back")}
+              </a>
+            </Button>
+            <div className="space-y-8 mt-2">
+              <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                  <div>
+                    <h1 className="text-4xl font-bold mb-4">
+                      {dataset.title[t("common.language")]}
+                    </h1>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {dataset.keywords.en.map((keyword) => (
+                        <Badge key={keyword} variant="outline">
+                          {keyword}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="mt-4 text-gray-600 dark:text-gray-400">
+                      {dataset.description[t("common.language")]}
+                    </div>
                   </div>
-                  <div className="mt-4 text-gray-600 dark:text-gray-400">
-                    {dataset.description[t("common.language")]}
+                  <div className="flex items-center gap-4">
+                    {weAreInDataPortal ? (
+                      <>
+                        <BtnDownloadAPI />
+                        <BtnGoToAPI slug={dataset.slug} />
+                      </>
+                    ) : (
+                      <BtnSubscribeAPI />
+                    )}
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  {weAreInDataPortal ? (
-                    <>
-                      <BtnDownloadAPI />
-                      <a href={"/api/" + dataset.slug}>
-                        <Button className="bg-purple-500 text-white hover:bg-purple-600">
-                          <FontAwesomeIcon icon={faCode} />
-                          {t("detail.viewAssociatedAPI")}
-                        </Button>
-                      </a>
-                    </>
+              </BoxReveal>
+
+              <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+                <div className="flex flex-wrap gap-4 items-center">
+                  {isDynamicRessource ? (
+                    <span className="flex items-center animate-pulse text-green-500">
+                      <FaCircle className="w-3 h-3 mr-1" />
+                      {t("detail.ready")}
+                    </span>
                   ) : (
-                    <BtnSubscribeAPI />
+                    <>
+                      <span className="flex items-center">
+                        <Database className="w-4 h-4 mr-2" />
+                        {dataset.length} {t("detail.records")}
+                      </span>
+                      <span className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        {t("detail.updatedOn")} {dataset.updatedDate}
+                      </span>
+                    </>
+                  )}
+                  {weAreInDataPortal ? (
+                    <span className="flex items-center">
+                      {dataset.type === "file" ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {t("detail.formats")} :
+                          </span>
+                          <Badge className="bg-blue-500 text-white">CSV</Badge>
+                          <Badge className="bg-yellow-300 text-white">
+                            JSON
+                          </Badge>
+                          <Badge className="bg-red-500 text-white">XML</Badge>
+                          <Badge className="bg-green-500 text-white">XLS</Badge>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {t("detail.api")}
+                          </span>
+                          <Badge className="bg-blue-500 text-white">JSON</Badge>
+                        </div>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <FontAwesomeIcon icon={faGlobe} className="mr-2" />
+                      {dataset.source}
+                    </span>
+                  )}
+                  {!weAreInDataPortal && (
+                    <span className="flex items-center animate-pulse text-green-500">
+                      <FaCircle className="w-3 h-3 mr-1" />
+                      {t("detail.ready")}
+                    </span>
                   )}
                 </div>
-              </div>
-            </BoxReveal>
+              </BoxReveal>
 
-            <BoxReveal boxColor={"#5046e6"} duration={0.5}>
-              <div className="flex flex-wrap gap-4 items-center">
-                {isDynamicRessource ? (
-                  <span className="flex items-center animate-pulse text-green-500">
-                    <FaCircle className="w-3 h-3 mr-1" />
-                    {t("detail.ready")}
-                  </span>
-                ) : (
-                  <>
-                    <span className="flex items-center">
-                      <Database className="w-4 h-4 mr-2" />
-                      {dataset.length} {t("detail.records")}
-                    </span>
-                    <span className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {t("detail.updatedOn")} {dataset.updatedDate}
-                    </span>
-                  </>
-                )}
-                {weAreInDataPortal ? (
-                  <span className="flex items-center">
-                    {dataset.type === "file" ? (
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {t("detail.formats")} :
-                        </span>
-                        <Badge className="bg-blue-500 text-white">CSV</Badge>
-                        <Badge className="bg-yellow-300 text-white">JSON</Badge>
-                        <Badge className="bg-red-500 text-white">XML</Badge>
-                        <Badge className="bg-green-500 text-white">XLS</Badge>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <main className="col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                  {weAreInDataPortal ? (
+                    <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
+                      <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-2xl font-semibold">
+                          {t("detail.dataExcerpt")}
+                        </h2>
                       </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {t("detail.api")}
-                        </span>
-                        <Badge className="bg-blue-500 text-white">JSON</Badge>
-                      </div>
-                    )}
-                  </span>
-                ) : (
-                  <span className="flex items-center">
-                    <FontAwesomeIcon icon={faGlobe} className="mr-2" />
-                    {dataset.source}
-                  </span>
-                )}
-                {!weAreInDataPortal && (
-                  <span className="flex items-center animate-pulse text-green-500">
-                    <FaCircle className="w-3 h-3 mr-1" />
-                    {t("detail.ready")}
-                  </span>
-                )}
-              </div>
-            </BoxReveal>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <main className="col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                {weAreInDataPortal ? (
-                  <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-2xl font-semibold">
-                        {t("detail.dataExcerpt")}
-                      </h2>
-                    </div>
-                    <FormatSelector />
-                    <div className="prose dark:prose-invert">
-                      {renderContent()}
-                    </div>
-                  </div>
-                ) : (
-                  <Tabs defaultValue="Documentation">
-                    <TabsList className="flex space-x-4 mb-6 border-b border-gray-300 dark:border-gray-700">
-                      <TabsTrigger
-                        value="Documentation"
-                        className="px-4 py-2 text-sm font-medium"
-                      >
-                        🗒️ {t("detail.documentation")}
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="data"
-                        className="px-4 py-2 text-sm font-medium"
-                      >
-                        🚀 {t("detail.apiReturn")}
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="Documentation">
-                      <div className="prose dark:prose-invert">
-                        <CustomMarkdown content={dataset.descriptionREADME} />
-                      </div>
-                    </TabsContent>
-                    <TabsContent value="data">
                       <FormatSelector />
                       <div className="prose dark:prose-invert">
                         {renderContent()}
                       </div>
-                    </TabsContent>
-                  </Tabs>
-                )}
-              </main>
+                    </div>
+                  ) : (
+                    <Tabs defaultValue="Documentation">
+                      <TabsList className="flex space-x-4 mb-6 border-b border-gray-300 dark:border-gray-700">
+                        <TabsTrigger
+                          value="Documentation"
+                          className="px-4 py-2 text-sm font-medium"
+                        >
+                          🗒️ {t("detail.documentation")}
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="data"
+                          className="px-4 py-2 text-sm font-medium"
+                        >
+                          🚀 {t("detail.apiReturn")}
+                        </TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="Documentation">
+                        <div className="prose dark:prose-invert">
+                          <CustomMarkdown content={dataset.descriptionREADME} />
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="data">
+                        <FormatSelector />
+                        <div className="prose dark:prose-invert">
+                          {renderContent()}
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+                  )}
+                </main>
 
-              <aside className="col-span-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-6">
-                <h2 className="text-2xl font-semibold mb-4">
-                  {t("detail.information")}
-                </h2>
-                <div className="flex items-center mb-4">
-                  <img
-                    src={dataset.provider.pictureUrl}
-                    alt={dataset.provider.name}
-                    className="w-6 h-6 mr-1 rounded-full border border-gray-300 dark:border-gray-600"
-                  />
-                  <span className="text-lg ml-2">{dataset.provider.name}</span>
-                </div>
-                <div className="flex items-center justify-evenly mb-4">
-                  <Button variant="outline" asChild>
-                    <a href={`mailto:${dataset.provider.contact}`}>
-                      <FontAwesomeIcon icon={faPen} />
-                      {t("detail.contactProvider")}
-                    </a>
-                  </Button>
-                  {dataset.provider.website && (
+                <aside className="col-span-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-6">
+                  <h2 className="text-2xl font-semibold mb-4">
+                    {t("detail.information")}
+                  </h2>
+                  <div className="flex items-center mb-4">
+                    <img
+                      src={dataset.provider.pictureUrl}
+                      alt={dataset.provider.name}
+                      className="w-6 h-6 mr-1 rounded-full border border-gray-300 dark:border-gray-600"
+                    />
+                    <span className="text-lg ml-2">
+                      {dataset.provider.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-evenly mb-4">
                     <Button variant="outline" asChild>
-                      <a href={dataset.provider.website}>
-                        <FontAwesomeIcon icon={faGlobe} />
-                        {t("detail.website")}
+                      <a href={`mailto:${dataset.provider.contact}`}>
+                        <FontAwesomeIcon icon={faPen} />
+                        {t("detail.contactProvider")}
                       </a>
                     </Button>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  {dataset.source && (
-                    <p className="text-sm">
-                      <strong>{t("detail.source")} :</strong> {dataset.source}
-                    </p>
-                  )}
-                </div>
-              </aside>
+                    {dataset.provider.website && (
+                      <Button variant="outline" asChild>
+                        <a href={dataset.provider.website}>
+                          <FontAwesomeIcon icon={faGlobe} />
+                          {t("detail.website")}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    {dataset.source && (
+                      <p className="text-sm">
+                        <strong>{t("detail.source")} :</strong> {dataset.source}
+                      </p>
+                    )}
+                  </div>
+                </aside>
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+          {/* Vous cherchez à  */}
+          {weAreInDataPortal && (
+            <div className="text-center flex flex-col gap-4 items-center justify-center md:flex-row">
+              <span className="text-xl font-semibold text-gray-600 dark:text-gray-400">
+                {t("une-derniere-chance")}{" "}
+              </span>
+              <BtnDownloadAPI /> {/* <BtnSubscribeAPI /> */}
+              {/*  <BtnGoToAPI slug={dataset.slug} /> */}
+            </div>
+          )}
+        </>
       )}
 
       <hr className="my-8 dark:border-gray-700 border-gray-300 w-1/3 mx-auto" />
@@ -502,5 +513,17 @@ export function BtnDownloadAPI() {
       <FontAwesomeIcon icon={faDownload} className="mr-2 " />
       {t("download")}{" "}
     </RainbowButton>
+  );
+}
+
+export function BtnGoToAPI({ slug = "a" }: { slug: string }) {
+  const { t } = useTranslation();
+  return (
+    <a href={"/api/" + slug}>
+      <Button className="bg-purple-500 text-white hover:bg-purple-600">
+        <FontAwesomeIcon icon={faCode} />
+        {t("detail.viewAssociatedAPI")}
+      </Button>
+    </a>
   );
 }
