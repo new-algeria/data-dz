@@ -28,8 +28,10 @@ import "leaflet/dist/leaflet.css";
 import { Spinner } from "flowbite-react/components/Spinner";
 import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
+import { useTranslation } from "react-i18next";
 
 const Detail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [fetching, setFetching] = useState(true);
   const [dataset, setDataset] = useState<Dataset | null>(null);
@@ -119,14 +121,14 @@ const Detail = () => {
   );
 
   const renderContent = () => {
-    if (!dataset?.preview) return <div>Aucun aperçu</div>;
+    if (!dataset?.preview) return <div>{t("detail.noPreview")}</div>;
 
     switch (displayFormat) {
       case "table":
         return Array.isArray(dataset.preview) ? (
           renderTable(dataset.preview)
         ) : (
-          <div>Aucun tableau disponible</div>
+          <div>{t("detail.noTable")}</div>
         );
       case "json":
         return (
@@ -136,7 +138,7 @@ const Detail = () => {
               overflow: "auto",
               paddingRight: "10px",
               scrollbarColor: "#6F15E6FF #f3f4f6",
-              //scrollbarWidth: "",
+
               scrollBehavior: "smooth",
 
               borderRadius: "5px",
@@ -149,7 +151,7 @@ const Detail = () => {
         );
       case "csv":
         if (!Array.isArray(dataset.preview))
-          return <div>Aucun CSV possible</div>;
+          return <div>{t("detail.noCSV")}</div>;
         const csvData = [
           Object.keys(dataset.preview[0]).join(","),
           ...dataset.preview.map((row) =>
@@ -161,7 +163,7 @@ const Detail = () => {
         return <pre>{csvData}</pre>;
       case "geojson":
         console.log(dataset.preview);
-        return <div>Bientôt disponible</div>;
+        return <div>{t("detail.geojsonComingSoon")}</div>;
         return (
           <MapContainer
           //center={[25.513483, -5.668261]}
@@ -192,7 +194,7 @@ const Detail = () => {
         ); */
 
       default:
-        return <div>Format non supporté</div>;
+        return <div>{t("detail.unsupportedFormat")}</div>;
     }
   };
 
@@ -208,7 +210,7 @@ const Detail = () => {
             onChange={() => setDisplayFormat("table")}
             className="mr-2"
           />
-          Tableau
+          {t("detail.table")}
         </label>
       )}
       {availableFormats.includes("json") && (
@@ -221,7 +223,7 @@ const Detail = () => {
             onChange={() => setDisplayFormat("json")}
             className="mr-2"
           />
-          JSON
+          {t("detail.json")}
         </label>
       )}
       {availableFormats.includes("csv") && (
@@ -234,7 +236,7 @@ const Detail = () => {
             onChange={() => setDisplayFormat("csv")}
             className="mr-2"
           />
-          CSV
+          {t("detail.csv")}
         </label>
       )}
       {availableFormats.includes("geojson") && (
@@ -247,7 +249,7 @@ const Detail = () => {
             onChange={() => setDisplayFormat("geojson")}
             className="mr-2"
           />
-          GeoJSON
+          {t("detail.geojson")}
         </label>
       )}
     </div>
@@ -259,7 +261,7 @@ const Detail = () => {
 
       {fetching && (
         <div className="flex justify-center items-center h-screen">
-          <Spinner aria-label="Default status example" className="w-16 h-16" />
+          <Spinner aria-label={t("detail.loading")} className="w-16 h-16" />
         </div>
       )}
       {!fetching && (
@@ -267,7 +269,7 @@ const Detail = () => {
           <Button variant="outline" asChild>
             <a href="/">
               <FontAwesomeIcon icon={faArrowLeft} />
-              Retour
+              {t("detail.back")}
             </a>
           </Button>
           <div className="space-y-8 mt-2">
@@ -275,7 +277,7 @@ const Detail = () => {
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                 <div>
                   <h1 className="text-4xl font-bold mb-4">
-                    {dataset.title.en}
+                    {dataset.title[t("common.language")]}
                   </h1>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {dataset.keywords.en.map((keyword) => (
@@ -285,7 +287,7 @@ const Detail = () => {
                     ))}
                   </div>
                   <div className="mt-4 text-gray-600 dark:text-gray-400">
-                    {dataset.description.en}
+                    {dataset.description[t("common.language")]}
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -295,7 +297,7 @@ const Detail = () => {
                       <a href={"/api/" + dataset.slug}>
                         <Button className="bg-purple-500 text-white hover:bg-purple-600">
                           <FontAwesomeIcon icon={faCode} />
-                          Voir l'API associée
+                          {t("detail.viewAssociatedAPI")}
                         </Button>
                       </a>
                     </>
@@ -311,17 +313,17 @@ const Detail = () => {
                 {isDynamicRessource ? (
                   <span className="flex items-center animate-pulse text-green-500">
                     <FaCircle className="w-3 h-3 mr-1" />
-                    ready
+                    {t("detail.ready")}
                   </span>
                 ) : (
                   <>
                     <span className="flex items-center">
                       <Database className="w-4 h-4 mr-2" />
-                      {dataset.length} enregistrements
+                      {dataset.length} {t("detail.records")}
                     </span>
                     <span className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
-                      Mis à jour le {dataset.updatedDate}
+                      {t("detail.updatedOn")} {dataset.updatedDate}
                     </span>
                   </>
                 )}
@@ -330,7 +332,7 @@ const Detail = () => {
                     {dataset.type === "file" ? (
                       <div className="flex items-center gap-2">
                         <span className="text-gray-500 dark:text-gray-400">
-                          Formats :
+                          {t("detail.formats")} :
                         </span>
                         <Badge className="bg-blue-500 text-white">CSV</Badge>
                         <Badge className="bg-yellow-300 text-white">JSON</Badge>
@@ -340,7 +342,7 @@ const Detail = () => {
                     ) : (
                       <div className="flex items-center gap-2">
                         <span className="text-gray-500 dark:text-gray-400">
-                          Ea
+                          {t("detail.api")}
                         </span>
                         <Badge className="bg-blue-500 text-white">JSON</Badge>
                       </div>
@@ -355,7 +357,7 @@ const Detail = () => {
                 {!weAreInDataPortal && (
                   <span className="flex items-center animate-pulse text-green-500">
                     <FaCircle className="w-3 h-3 mr-1" />
-                    ready
+                    {t("detail.ready")}
                   </span>
                 )}
               </div>
@@ -367,7 +369,7 @@ const Detail = () => {
                   <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
                     <div className="flex items-center justify-between mb-4">
                       <h2 className="text-2xl font-semibold">
-                        Extrait des données
+                        {t("detail.dataExcerpt")}
                       </h2>
                     </div>
                     <FormatSelector />
@@ -382,13 +384,13 @@ const Detail = () => {
                         value="Documentation"
                         className="px-4 py-2 text-sm font-medium"
                       >
-                        🗒️ Documentation
+                        🗒️ {t("detail.documentation")}
                       </TabsTrigger>
                       <TabsTrigger
                         value="data"
                         className="px-4 py-2 text-sm font-medium"
                       >
-                        🚀 Retour API
+                        🚀 {t("detail.apiReturn")}
                       </TabsTrigger>
                     </TabsList>
                     <TabsContent value="Documentation">
@@ -407,7 +409,9 @@ const Detail = () => {
               </main>
 
               <aside className="col-span-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-6">
-                <h2 className="text-2xl font-semibold mb-4">Informations</h2>
+                <h2 className="text-2xl font-semibold mb-4">
+                  {t("detail.information")}
+                </h2>
                 <div className="flex items-center mb-4">
                   <img
                     src={dataset.provider.pictureUrl}
@@ -420,14 +424,14 @@ const Detail = () => {
                   <Button variant="outline" asChild>
                     <a href={`mailto:${dataset.provider.contact}`}>
                       <FontAwesomeIcon icon={faPen} />
-                      Contacter le fournisseur
+                      {t("detail.contactProvider")}
                     </a>
                   </Button>
                   {dataset.provider.website && (
                     <Button variant="outline" asChild>
                       <a href={dataset.provider.website}>
                         <FontAwesomeIcon icon={faGlobe} />
-                        Website
+                        {t("detail.website")}
                       </a>
                     </Button>
                   )}
@@ -435,7 +439,7 @@ const Detail = () => {
                 <div className="space-y-2">
                   {dataset.source && (
                     <p className="text-sm">
-                      <strong>Source :</strong> {dataset.source}
+                      <strong>{t("detail.source")} :</strong> {dataset.source}
                     </p>
                   )}
                 </div>
@@ -449,7 +453,7 @@ const Detail = () => {
       <div className="py-8">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-semibold mb-4">
-            En rechercher d'autres...
+            {t("detail.searchMore")}
           </h2>
         </div>
         <div className="">
@@ -470,6 +474,7 @@ const Detail = () => {
 export default Detail;
 
 export function BtnSubscribeAPI() {
+  const { t } = useTranslation();
   return (
     <a
       href={"https://rapidapi.com/Newalgeria/api/api-dz/pricing"}
@@ -478,26 +483,24 @@ export function BtnSubscribeAPI() {
       <div className="flex flex-col items-start">
         <RainbowButton className="text-white bg-gradient-to-r from-green-500 to-green-700 dark:bg-gradient-to-r">
           <FontAwesomeIcon icon={faKey} className="mr-2 text-yellow-300" />
-          S'abonner sur{" "}
+          {t("sabonner-sur")}{" "}
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/RapidAPI_logo.svg/2560px-RapidAPI_logo.svg.png"
             className="w-22 h-6 ml-1 mt-1"
             alt="RapidAPI"
           />
         </RainbowButton>
-        {/*   <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-lg mt-2">
-        -70% pour le lancement
-      </span> */}
       </div>
     </a>
   );
 }
 
 export function BtnDownloadAPI() {
+  const { t } = useTranslation();
   return (
     <RainbowButton className=" text-white dark:bg-gradient-to-r  bg-gradient-to-r from-green-500 to-green-700">
       <FontAwesomeIcon icon={faDownload} className="mr-2 " />
-      Télécharger
+      {t("download")}{" "}
     </RainbowButton>
   );
 }
