@@ -36,7 +36,7 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50 border-b">
+    <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <a href="/" className="text-2xl font-bold text-primary">
           <img src={DATA_DZ_LOGO} alt="Data DZ" className="h-20" />

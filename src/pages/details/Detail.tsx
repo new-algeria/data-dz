@@ -130,6 +130,7 @@ const Detail = () => {
             style={{
               maxHeight: "400px",
               overflow: "auto",
+              paddingRight: "10px",
               scrollbarColor: "#6F15E6FF #f3f4f6",
               //scrollbarWidth: "",
               scrollBehavior: "smooth",

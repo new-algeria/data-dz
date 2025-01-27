@@ -6,10 +6,12 @@ import DataUniverse from "./pages/DataUniverse";
 import ApiUniverse from "./pages/ApiUniverse";
 import ScrollDownArrow from "./components/ScrollDownArrow";
 import Detail from "./pages/details/Detail";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<DataUniverse />} />
         <Route path="/api" element={<ApiUniverse />} />
