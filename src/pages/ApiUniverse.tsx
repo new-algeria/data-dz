@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Marquee } from "@/components/ui/marquee";
 import { Lock, Unlock } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 import { ApiSearch } from "@/components/api/ApiSearch";
 import { AuroraBackground } from "@/components/ui/aurora-bg";
 import { motion } from "framer-motion";

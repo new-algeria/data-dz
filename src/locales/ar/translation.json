@@ -13,7 +13,13 @@
     "contact": "اتصل بنا",
     "contactText": "البريد الإلكتروني: contact@data-dz.com",
     "followUs": "تابعنا على وسائل التواصل الاجتماعي",
-    "allRightsReserved": "جميع الحقوق محفوظة"
+    "allRightsReserved": "جميع الحقوق محفوظة",
+    "community": "مجتمع",
+    "copyright": "جميع الحقوق محفوظة.",
+    "features": "سمات",
+    "pricing": "التسعير",
+    "product": "المشاريع",
+    "resources": "موارد"
   },
   "home": {
     "hero": {
@@ -34,7 +40,7 @@
     "downloads": "التحميلات"
   },
   "supporters": {
-    "title": "يثقون بنا"
+    "title": "يحتاجون أيضًا إلى بيانات ..."
   },
   "hero": {
     "title": "أكبر قاعدة بيانات في الجزائر",
@@ -150,5 +156,6 @@
   "common": {
     "language": "ar"
   },
-  "une-derniere-chance": "✨ فرصة أخيرة؟"
+  "une-derniere-chance": "✨ فرصة أخيرة؟",
+  "download": "تحميل"
 }

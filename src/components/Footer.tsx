@@ -1,54 +1,86 @@
-import { Link } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import {
+  faGithub,
+  faLinkedin,
+  faTwitter,
+  faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Footer = () => {
+const Footer = () => {
   const { t } = useTranslation();
 
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              {t('footer.about')}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {t('footer.aboutText')}
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              {t('footer.quickLinks')}
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/api" className="text-gray-600 dark:text-gray-300 hover:text-primary">
-                  APIs
-                </Link>
-              </li>
-              <li>
-                <Link to="/getting-started" className="text-gray-600 dark:text-gray-300 hover:text-primary">
-                  {t('navbar.getStarted')}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              {t('footer.contact')}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {t('footer.contactText')}<br />
-              {t('footer.followUs')}
-            </p>
-          </div>
-        </div>
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
-          <p className="text-center text-gray-600 dark:text-gray-300">
-            © {new Date().getFullYear()} Data DZ. {t('footer.allRightsReserved')}
-          </p>
-        </div>
+    <footer className="container mx-auto pb-16 pt-10 text-gray-500 flex flex-col items-center text-center gap-6 bg-accent/90 dark:bg-black/25">
+      <img
+        src="https://storage.berachem.dev/branding/logo_horizontal.png"
+        alt="New Algeria"
+        className="w-64 h-15 -mb-6"
+      />
+
+      <div className="flex items-center gap-5">
+        <a
+          href="https://github.com/new-algeria"
+          className="hover:text-foreground"
+        >
+          <FontAwesomeIcon icon={faGithub} className="text-2xl" />
+        </a>
+        <a
+          href="https://x.com/newalgeria_org"
+          className="hover:text-foreground"
+        >
+          <FontAwesomeIcon icon={faXTwitter} className="text-2xl" />
+        </a>
+        <a
+          href="https://www.linkedin.com/company/106182021/"
+          className="hover:text-foreground"
+        >
+          <FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
+        </a>
+      </div>
+
+      {/*   <div className="flex flex-col gap-2">
+        <h3 className="font-semibold text-white">{t("footer.product")}</h3>
+        <a
+          href="https://www.data-dz.com"
+          className="text-sm hover:text-foreground"
+        >
+          Data-dz
+        </a>
+        <a
+          href="https://www.data-dz.com/api"
+          className="text-sm hover:text-foreground"
+        >
+          Api-dz
+        </a>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h3 className="font-semibold text-white">{t("footer.resources")}</h3>
+        <a
+          href="https://github.com/new-algeria"
+          className="text-sm hover:text-foreground"
+        >
+          {t("footer.community")}
+        </a>
+        <a
+          href="mailto:admin@newalgeria.org"
+          className="text-sm hover:text-foreground"
+        >
+          {t("footer.contact")}
+        </a>
+      </div> */}
+
+      <hr className="w-1/4 border-primary/10 dark:border-primary-foreground/10" />
+
+      <div className="text-muted-foreground">
+        ©{year} {t("footer.copyright")}
       </div>
     </footer>
   );
 };
+
+export default Footer;
