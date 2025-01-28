@@ -24,6 +24,8 @@ export default {
     },
     extend: {
       animation: {
+        gradient: "gradient 8s linear infinite",
+        rainbow: "rainbow var(--speed, 2s) infinite linear",
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
@@ -114,6 +116,15 @@ export default {
         },
       },
       keyframes: {
+        gradient: {
+          to: {
+            backgroundPosition: "var(--bg-size) 0",
+          },
+        },
+        rainbow: {
+          "0%": { "background-position": "0%" },
+          "100%": { "background-position": "200%" },
+        },
         aurora: {
           from: {
             backgroundPosition: "50% 50%, 50% 50%",

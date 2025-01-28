@@ -118,6 +118,38 @@
     "emailSubject": "Contact Request - New Algeria",
     "emailBody": "Hello,\n\nI am interested in learning more about the New Algeria Digital Platform.\n\nBest regards,",
     "motivations": "Developers, Data Scientists, Teachers, Designers, and more are all welcome to join us.  Get involved in the community and help us to build the future of Algeria.",
-    "motivations2": "Find also partners and collaborators to work with."
-  }
+    "motivations2": "Find also partners and collaborators to work with.",
+    "invitationSent": "Check your mailbox, an email has been sent!"
+  },
+  "70-sur-notre-api-pour-louverture": "-70% off our API for the opening!",
+  "detail": {
+    "noPreview": "No preview",
+    "noTable": "No table available",
+    "noCSV": "No CSV possible",
+    "geojsonComingSoon": "Coming soon",
+    "unsupportedFormat": "Unsupported format",
+    "table": "Table",
+    "json": "JSON",
+    "csv": "CSV",
+    "geojson": "GeoJSON",
+    "loading": "Loading...",
+    "back": "Back",
+    "viewAssociatedAPI": "View associated API",
+    "ready": "ready",
+    "records": "records",
+    "updatedOn": "Updated on",
+    "formats": "Formats",
+    "api": "API",
+    "dataExcerpt": "Data excerpt",
+    "documentation": "Documentation",
+    "apiReturn": "API Return",
+    "information": "Information",
+    "contactProvider": "Contact provider",
+    "website": "Website",
+    "source": "Source",
+    "searchMore": "Search for more..."
+  },
+  "sabonner-sur": "Subscribe on",
+  "download": "Download",
+  "une-derniere-chance": "✨ One last chance ?"
 }
