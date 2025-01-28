@@ -10,7 +10,7 @@ import { SparklesText } from "@/components/ui/sparkles-text";
 import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { GraphDataMovement } from "@/components/GraphDataMovement";
 import ReactCountryFlag from "react-country-flag";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 import ScrollDownArrow from "@/components/ScrollDownArrow";
 import { t } from "i18next";
 

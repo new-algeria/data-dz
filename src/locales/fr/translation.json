@@ -13,7 +13,13 @@
     "contact": "Contact",
     "contactText": "Email: contact@data-dz.com",
     "followUs": "Suivez-nous sur les réseaux sociaux",
-    "allRightsReserved": "Tous droits réservés"
+    "allRightsReserved": "Tous droits réservés",
+    "community": "Communauté",
+    "copyright": "Tous droits réservés.",
+    "features": "Caractéristiques",
+    "pricing": "Prix",
+    "product": "Projets",
+    "resources": "Ressources"
   },
   "home": {
     "hero": {
@@ -34,7 +40,7 @@
     "downloads": "Téléchargements"
   },
   "supporters": {
-    "title": "Ils nous font confiance"
+    "title": "Ils ont également besoin de données ..."
   },
   "hero": {
     "title": "La plus grande base de données d'Algérie",
@@ -150,5 +156,6 @@
   "common": {
     "language": "fr"
   },
-  "une-derniere-chance": "✨ Une dernière chance?"
+  "une-derniere-chance": "✨ Une dernière chance?",
+  "download": "Télécharger"
 }

@@ -13,8 +13,16 @@
     "contact": "Contact",
     "contactText": "Email: contact@data-dz.com",
     "followUs": "Follow us on social media",
-    "allRightsReserved": "All rights reserved"
+    "allRightsReserved": "All rights reserved",
+    "product": "Projects",
+    "resources": "Resources",
+    "features": "Features",
+    "pricing": "Pricing",
+    "community": "Community",
+    "copyright": "All rights reserved."
   },
+
+
   "home": {
     "hero": {
       "title": "The first API platform for Algeria",
@@ -34,7 +42,7 @@
     "downloads": "Downloads"
   },
   "supporters": {
-    "title": "They trust us"
+    "title": "They also need data..."
   },
   "hero": {
     "title": "The largest database of Algeria",
