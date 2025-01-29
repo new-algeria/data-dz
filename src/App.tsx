@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DatasetDetail from "./pages/details/Detail";
 
-import ApiDetail from "./pages/details/ApiDetail";
 import DataUniverse from "./pages/DataUniverse";
 import ApiUniverse from "./pages/ApiUniverse";
 import ScrollDownArrow from "./components/ScrollDownArrow";

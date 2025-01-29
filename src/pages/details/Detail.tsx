@@ -29,6 +29,7 @@ import { Spinner } from "flowbite-react/components/Spinner";
 import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { useTranslation } from "react-i18next";
+import { renderTable, GraphComponent } from "./DetailCharts";
 
 const Detail = () => {
   const { t } = useTranslation();
@@ -37,12 +38,18 @@ const Detail = () => {
   const [dataset, setDataset] = useState<Dataset | null>(null);
   const [displayFormat, setDisplayFormat] = useState("json");
   const [availableFormats, setAvailableFormats] = useState([
+    "graph",
     "table",
     "json",
     "csv",
   ]);
   const [weAreInDataPortal, setWeAreInDataPortal] = useState(false);
   const [isDynamicRessource, setIsDynamicRessource] = useState(false);
+
+  // Pour les graphiques
+  /*   const [numericalColumns, setNumericalColumns] = useState<string[]>([]);
+  const [absisColumn, setAbsisColumn] = useState<string>("");
+  const [ordinateColumn, setOrdinateColumn] = useState<string>(""); */
 
   const isMultiDimensional = (data: Dataset) => {
     if (!data?.preview) return false;
@@ -72,6 +79,8 @@ const Detail = () => {
       const data: Dataset = await fetchData(
         `${import.meta.env.VITE_API_URL}/details/${id}`
       );
+
+      // Check if the data is multi-dimensional => if so, we can't display it as a table, only as JSON
       if (isMultiDimensional(data)) {
         if (data.path.includes("geojson")) {
           setAvailableFormats(["json", "geojson"]);
@@ -94,41 +103,21 @@ const Detail = () => {
     fetchApis();
   }, [id]);
 
-  const renderTable = (preview: any[]) => (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-gray-300 dark:border-gray-700">
-            {preview.length > 0 &&
-              Object.keys(preview[0]).map((col) => (
-                <th key={col} className="text-left p-2 capitalize">
-                  {col.replace(/_/g, " ")}
-                </th>
-              ))}
-          </tr>
-        </thead>
-        <tbody>
-          {preview.map((item, idx) => (
-            <tr
-              key={idx}
-              className="border-b border-gray-300 dark:border-gray-700"
-            >
-              {Object.values(item).map((val, colIndex) => (
-                <td key={colIndex} className="p-2">
-                  {String(val)}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-
   const renderContent = () => {
     if (!dataset?.preview) return <div>{t("detail.noPreview")}</div>;
 
     switch (displayFormat) {
+      case "graph":
+        return Array.isArray(dataset.preview) ? (
+          <GraphComponent data={dataset.preview} />
+        ) : (
+          <div>
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon icon={faEye} />
+              <span>{t("detail.graphComingSoon")}</span>
+            </div>
+          </div>
+        );
       case "table":
         return Array.isArray(dataset.preview) ? (
           renderTable(dataset.preview)
@@ -205,6 +194,19 @@ const Detail = () => {
 
   const FormatSelector = () => (
     <div className="flex flex-wrap gap-4 mb-4">
+      {availableFormats.includes("graph") && (
+        <label className="flex items-center">
+          <input
+            type="radio"
+            name="format"
+            value="graph"
+            checked={displayFormat === "graph"}
+            onChange={() => setDisplayFormat("graph")}
+            className="mr-2"
+          />
+          {t("detail.graph")}
+        </label>
+      )}
       {availableFormats.includes("table") && (
         <label className="flex items-center">
           <input
@@ -285,6 +287,9 @@ const Detail = () => {
                     <h1 className="text-4xl font-bold mb-4">
                       {dataset.title[t("common.language")]}
                     </h1>
+                    {/*    <pre className="text-lg font-semibold text-green-400 dark:text-green-300 -mt-3">
+                      {`{${dataset.slug}}`}
+                    </pre> */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {dataset.keywords.en.map((keyword) => (
                         <Badge key={keyword} variant="outline">
