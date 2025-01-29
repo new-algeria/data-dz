@@ -30,21 +30,40 @@ import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { useTranslation } from "react-i18next";
 import { renderTable, GraphComponent } from "./DetailCharts";
+import { AnimatedTabs } from "@/components/ui/animated-tabs";
+
+enum DisplayFormat {
+  GRAPH = "graph",
+  TABLE = "table",
+  JSON = "json",
+  CSV = "csv",
+  GEOJSON = "geojson",
+}
 
 const Detail = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const [fetching, setFetching] = useState(true);
   const [dataset, setDataset] = useState<Dataset | null>(null);
-  const [displayFormat, setDisplayFormat] = useState("json");
-  const [availableFormats, setAvailableFormats] = useState([
-    "graph",
-    "table",
-    "json",
-    "csv",
+  const [displayFormat, setDisplayFormat] = useState(DisplayFormat.GRAPH);
+  const [availableFormats, setAvailableFormats] = useState<DisplayFormat[]>([
+    DisplayFormat.GRAPH,
+    DisplayFormat.TABLE,
+    DisplayFormat.JSON,
+    DisplayFormat.CSV,
   ]);
+  const [tabs, setTabs] = useState<{ id: string; label: string }[]>([]);
   const [weAreInDataPortal, setWeAreInDataPortal] = useState(false);
   const [isDynamicRessource, setIsDynamicRessource] = useState(false);
+
+  useEffect(() => {
+    setTabs(
+      availableFormats.map((format) => ({
+        id: format,
+        label: t(`detail.${format.toLowerCase()}`),
+      }))
+    );
+  }, [availableFormats, t]);
 
   // Pour les graphiques
   /*   const [numericalColumns, setNumericalColumns] = useState<string[]>([]);
@@ -83,13 +102,14 @@ const Detail = () => {
       // Check if the data is multi-dimensional => if so, we can't display it as a table, only as JSON
       if (isMultiDimensional(data)) {
         if (data.path.includes("geojson")) {
-          setAvailableFormats(["json", "geojson"]);
-          setDisplayFormat("json");
+          setAvailableFormats([DisplayFormat.JSON, DisplayFormat.GEOJSON]);
+          setDisplayFormat(DisplayFormat.JSON);
         } else {
-          setAvailableFormats(["json"]);
-          setDisplayFormat("json");
+          setAvailableFormats([DisplayFormat.JSON]);
+          setDisplayFormat(DisplayFormat.JSON);
         }
       }
+
       if (data.type !== "file") setIsDynamicRessource(true);
       setDataset(data);
       setFetching(false);
@@ -193,73 +213,11 @@ const Detail = () => {
   };
 
   const FormatSelector = () => (
-    <div className="flex flex-wrap gap-4 mb-4">
-      {availableFormats.includes("graph") && (
-        <label className="flex items-center">
-          <input
-            type="radio"
-            name="format"
-            value="graph"
-            checked={displayFormat === "graph"}
-            onChange={() => setDisplayFormat("graph")}
-            className="mr-2"
-          />
-          {t("detail.graph")}
-        </label>
-      )}
-      {availableFormats.includes("table") && (
-        <label className="flex items-center">
-          <input
-            type="radio"
-            name="format"
-            value="table"
-            checked={displayFormat === "table"}
-            onChange={() => setDisplayFormat("table")}
-            className="mr-2"
-          />
-          {t("detail.table")}
-        </label>
-      )}
-      {availableFormats.includes("json") && (
-        <label className="flex items-center">
-          <input
-            type="radio"
-            name="format"
-            value="json"
-            checked={displayFormat === "json"}
-            onChange={() => setDisplayFormat("json")}
-            className="mr-2"
-          />
-          {t("detail.json")}
-        </label>
-      )}
-      {availableFormats.includes("csv") && (
-        <label className="flex items-center">
-          <input
-            type="radio"
-            name="format"
-            value="csv"
-            checked={displayFormat === "csv"}
-            onChange={() => setDisplayFormat("csv")}
-            className="mr-2"
-          />
-          {t("detail.csv")}
-        </label>
-      )}
-      {availableFormats.includes("geojson") && (
-        <label className="flex items-center">
-          <input
-            type="radio"
-            name="format"
-            value="geojson"
-            checked={displayFormat === "geojson"}
-            onChange={() => setDisplayFormat("geojson")}
-            className="mr-2"
-          />
-          {t("detail.geojson")}
-        </label>
-      )}
-    </div>
+    <AnimatedTabs
+      tabs={tabs}
+      defaultTab={displayFormat}
+      onChange={(tabId) => setDisplayFormat(tabId as DisplayFormat)}
+    />
   );
 
   return (
@@ -379,8 +337,9 @@ const Detail = () => {
                         <h2 className="text-2xl font-semibold">
                           {t("detail.dataExcerpt")}
                         </h2>
+                        <FormatSelector />
                       </div>
-                      <FormatSelector />
+
                       <div className="prose dark:prose-invert">
                         {renderContent()}
                       </div>

@@ -67,7 +67,7 @@ export const GraphComponent: React.FC<{ data: DataItem[] }> = ({ data }) => {
         series,
         options: {
           chart: { type: "area" as const, height: 350 },
-          dataLabels: { enabled: true },
+          dataLabels: { enabled: false },
           stroke: { curve: "smooth" as const },
           xaxis: {
             type: (hasTimeXAxis ? "datetime" : "category") as
