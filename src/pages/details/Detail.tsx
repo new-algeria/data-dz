@@ -23,16 +23,16 @@ import { FaCircle } from "react-icons/fa";
 import { DataSearch, SubmitDatasetBtn } from "@/components/dataset/DataSearch";
 import { ApiSearch } from "@/components/api/ApiSearch";
 import CustomMarkdown from "@/components/CustomMarkdown";
-import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+
 import { Spinner } from "flowbite-react/components/Spinner";
 import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { useTranslation } from "react-i18next";
-import { renderTable, GraphComponent } from "./DetailCharts";
+import { renderTable, GraphComponent, MapComponent } from "./DetailCharts";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 
 enum DisplayFormat {
+  MAP = "map",
   GRAPH = "graph",
   TABLE = "table",
   JSON = "json",
@@ -45,6 +45,7 @@ const Detail = () => {
   const { id } = useParams();
   const [fetching, setFetching] = useState(true);
   const [dataset, setDataset] = useState<Dataset | null>(null);
+
   const [displayFormat, setDisplayFormat] = useState(DisplayFormat.GRAPH);
   const [availableFormats, setAvailableFormats] = useState<DisplayFormat[]>([
     DisplayFormat.GRAPH,
@@ -102,8 +103,8 @@ const Detail = () => {
       // Check if the data is multi-dimensional => if so, we can't display it as a table, only as JSON
       if (isMultiDimensional(data)) {
         if (data.path.includes("geojson")) {
-          setAvailableFormats([DisplayFormat.JSON, DisplayFormat.GEOJSON]);
-          setDisplayFormat(DisplayFormat.JSON);
+          setAvailableFormats([DisplayFormat.MAP, DisplayFormat.GEOJSON]);
+          setDisplayFormat(DisplayFormat.MAP);
         } else {
           setAvailableFormats([DisplayFormat.JSON]);
           setDisplayFormat(DisplayFormat.JSON);
@@ -127,7 +128,7 @@ const Detail = () => {
     if (!dataset?.preview) return <div>{t("detail.noPreview")}</div>;
 
     switch (displayFormat) {
-      case "graph":
+      case DisplayFormat.GRAPH:
         return Array.isArray(dataset.preview) ? (
           <GraphComponent data={dataset.preview} />
         ) : (
@@ -138,13 +139,14 @@ const Detail = () => {
             </div>
           </div>
         );
-      case "table":
+      case DisplayFormat.TABLE:
         return Array.isArray(dataset.preview) ? (
           renderTable(dataset.preview)
         ) : (
           <div>{t("detail.noTable")}</div>
         );
-      case "json":
+      case DisplayFormat.GEOJSON:
+      case DisplayFormat.JSON:
         return (
           <div
             style={{
@@ -163,7 +165,7 @@ const Detail = () => {
             </div>
           </div>
         );
-      case "csv":
+      case DisplayFormat.CSV:
         if (!Array.isArray(dataset.preview))
           return <div>{t("detail.noCSV")}</div>;
         const csvData = [
@@ -175,37 +177,10 @@ const Detail = () => {
           ),
         ].join("\n");
         return <pre>{csvData}</pre>;
-      case "geojson":
+      case DisplayFormat.MAP:
         console.log(dataset.preview);
-        return <div>{t("detail.geojsonComingSoon")}</div>;
-        return (
-          <MapContainer
-          //center={[25.513483, -5.668261]}
-          //zoom={5}
-          //style={{ height: "400px", width: "100%" }}
-          >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <GeoJSON data={dataset.preview} />
-          </MapContainer>
-        );
-      //return <div>Aucun geojson possible</div>;
-      /*  return (
-          <MapContainer
-            center={[51.505, -0.09]}
-            zoom={13}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          </MapContainer>
-        ); */
+
+        return <MapComponent geojson={dataset.preview} />;
 
       default:
         return <div>{t("detail.unsupportedFormat")}</div>;
