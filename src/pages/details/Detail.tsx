@@ -28,7 +28,12 @@ import { Spinner } from "flowbite-react/components/Spinner";
 import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { useTranslation } from "react-i18next";
-import { renderTable, GraphComponent, MapComponent } from "./DetailCharts";
+import {
+  renderTable,
+  GraphComponent,
+  MapComponent,
+  CodeBlockArea,
+} from "./DetailCharts";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 
 enum DisplayFormat {
@@ -148,22 +153,11 @@ const Detail = () => {
       case DisplayFormat.GEOJSON:
       case DisplayFormat.JSON:
         return (
-          <div
-            style={{
-              maxHeight: "400px",
-              overflow: "auto",
-              paddingRight: "10px",
-              scrollbarColor: "#6F15E6FF #f3f4f6",
-
-              scrollBehavior: "smooth",
-
-              borderRadius: "5px",
-            }}
-          >
-            <div className="rounded-md">
-              <pre>{JSON.stringify(dataset.preview, null, 2)}</pre>
-            </div>
-          </div>
+          <CodeBlockArea
+            data={dataset.preview}
+            fileName={dataset.slug}
+            extension={displayFormat}
+          />
         );
       case DisplayFormat.CSV:
         if (!Array.isArray(dataset.preview))
