@@ -2,11 +2,12 @@ import { faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 interface DataItem {
   [key: string]: any;
 }
-
+// #region GraphComponent
 export const GraphComponent: React.FC<{ data: DataItem[] }> = ({ data }) => {
   const numericCols: string[] = [];
   let defaultXAxis = "";
@@ -248,6 +249,8 @@ export const GraphComponent: React.FC<{ data: DataItem[] }> = ({ data }) => {
   );
 };
 
+// #region TableComponent
+
 export const renderTable = (preview: any[]) => (
   <div className="overflow-x-auto mb-4">
     <table className="w-full border-collapse text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800">
@@ -278,3 +281,66 @@ export const renderTable = (preview: any[]) => (
     </table>
   </div>
 );
+
+// #region MapComponent
+
+export const MapComponent: React.FC<{ geojson: any }> = ({ geojson }) => {
+  const [tileLayer, setTileLayerUrl] = React.useState<string>(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  );
+  /* Skin de map */
+  const items = [
+    {
+      label: "OpenStreetMap",
+      icon: "pi pi-map",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    },
+    {
+      label: "Dark Mode",
+      icon: "pi pi-moon",
+      url: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+    },
+    {
+      label: "Esri World Imagery",
+      icon: "pi pi-globe",
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    },
+    {
+      label: "CartoDB Positron",
+      icon: "pi pi-map",
+      url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    },
+    {
+      label: "CartoDB Dark Matter",
+      icon: "pi pi-moon",
+      url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    },
+  ];
+
+  return (
+    <div className="h-96 ">
+      <select
+        onChange={(e) => setTileLayerUrl(e.target.value)}
+        className="p-1 bg-white dark:bg-gray-700 border dark:border-gray-600 mb-2"
+      >
+        {items.map((item, index) => (
+          <option key={index} value={item.url}>
+            {item.label}
+          </option>
+        ))}
+      </select>
+      <pre className="text-sm font-semibold mb-4">{tileLayer}</pre>
+      {/* <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url={tileLayer}
+        />
+        <Marker position={[51.505, -0.09]}>
+          <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup>
+        </Marker>
+      </MapContainer> */}
+    </div>
+  );
+};
