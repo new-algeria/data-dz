@@ -1,4 +1,10 @@
-import { faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
+import { CodeBlock } from "@/components/ui/code-block";
+import {
+  faCheck,
+  faCopy,
+  faPlus,
+  faRemove,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
@@ -341,6 +347,69 @@ export const MapComponent: React.FC<{ geojson: any }> = ({ geojson }) => {
           </Popup>
         </Marker>
       </MapContainer> */}
+    </div>
+  );
+};
+
+// #region CodeJson
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+
+interface CodeJsonProps {
+  data: any;
+  fileName: string;
+  extension: string;
+}
+
+export const CodeBlockArea: React.FC<CodeJsonProps> = ({
+  data,
+  fileName,
+  extension,
+}) => {
+  const [copied, setCopied] = useState(false);
+  const code = JSON.stringify(data, null, 2);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div
+      style={{
+        maxHeight: "400px",
+        overflow: "auto",
+        paddingRight: "10px",
+        scrollbarColor: "#6F15E6FF #f3f4f6",
+        scrollBehavior: "smooth",
+        borderRadius: "5px",
+      }}
+    >
+      <div className="rounded-md relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => copyToClipboard(code)}
+          className="h-8 w-8 absolute top-2 right-2 bg-green-500 text-white"
+        >
+          {copied ? (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+            >
+              <FontAwesomeIcon icon={faCheck} className="h-4 w-4" />
+            </motion.div>
+          ) : (
+            <FontAwesomeIcon icon={faCopy} className="h-4 w-4" />
+          )}
+        </Button>
+        <pre>{code}</pre>
+      </div>
     </div>
   );
 };
