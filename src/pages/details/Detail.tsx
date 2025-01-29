@@ -20,7 +20,7 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FaCircle } from "react-icons/fa";
-import { DataSearch } from "@/components/dataset/DataSearch";
+import { DataSearch, SubmitDatasetBtn } from "@/components/dataset/DataSearch";
 import { ApiSearch } from "@/components/api/ApiSearch";
 import CustomMarkdown from "@/components/CustomMarkdown";
 import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -65,24 +65,29 @@ const Detail = () => {
   const paymentProcess = async () => {};
 
   const fetchApis = async () => {
-    if (!window.location.pathname.includes("api")) {
-      setWeAreInDataPortal(true);
-    }
-    const data: Dataset = await fetchData(
-      `${import.meta.env.VITE_API_URL}/details/${id}`
-    );
-    if (isMultiDimensional(data)) {
-      if (data.path.includes("geojson")) {
-        setAvailableFormats(["json", "geojson"]);
-        setDisplayFormat("json");
-      } else {
-        setAvailableFormats(["json"]);
-        setDisplayFormat("json");
+    try {
+      if (!window.location.pathname.includes("api")) {
+        setWeAreInDataPortal(true);
       }
+      const data: Dataset = await fetchData(
+        `${import.meta.env.VITE_API_URL}/details/${id}`
+      );
+      if (isMultiDimensional(data)) {
+        if (data.path.includes("geojson")) {
+          setAvailableFormats(["json", "geojson"]);
+          setDisplayFormat("json");
+        } else {
+          setAvailableFormats(["json"]);
+          setDisplayFormat("json");
+        }
+      }
+      if (data.type !== "file") setIsDynamicRessource(true);
+      setDataset(data);
+      setFetching(false);
+    } catch (error) {
+      console.log(error);
+      setFetching(false);
     }
-    if (data.type !== "file") setIsDynamicRessource(true);
-    setDataset(data);
-    setFetching(false);
   };
 
   useEffect(() => {
@@ -264,7 +269,7 @@ const Detail = () => {
           <Spinner aria-label={t("detail.loading")} className="w-16 h-16" />
         </div>
       )}
-      {!fetching && (
+      {!fetching && dataset && (
         <>
           <main className="flex-grow container mx-auto px-4 py-8 mt-20">
             <Button variant="outline" asChild>
@@ -458,6 +463,16 @@ const Detail = () => {
             </div>
           )}
         </>
+      )}
+
+      {!fetching && !dataset && (
+        <div className="flex flex-col justify-center items-center h-80">
+          <h1 className="text-2xl flex flex-col gap-2 items-center text-center">
+            <pre className="text-2xl font-semibold">{id}</pre>
+            {t("detail.notFound")}
+            <SubmitDatasetBtn />
+          </h1>
+        </div>
       )}
 
       <hr className="my-8 dark:border-gray-700 border-gray-300 w-1/3 mx-auto" />

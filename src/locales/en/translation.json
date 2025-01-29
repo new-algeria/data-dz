@@ -21,8 +21,6 @@
     "community": "Community",
     "copyright": "All rights reserved."
   },
-
-
   "home": {
     "hero": {
       "title": "The first API platform for Algeria",
@@ -80,7 +78,8 @@
   },
   "dataset": {
     "search": {
-      "title": "Search for datasets"
+      "title": "Search for datasets",
+      "proposeDataset": "Submit a dataset"
     }
   },
   "contact": {
@@ -155,7 +154,8 @@
     "contactProvider": "Contact provider",
     "website": "Website",
     "source": "Source",
-    "searchMore": "Search for more..."
+    "searchMore": "Search for more...",
+    "notFound": "doesn't exist for the moment... But if you have it : "
   },
   "sabonner-sur": "Subscribe on",
   "download": "Download",

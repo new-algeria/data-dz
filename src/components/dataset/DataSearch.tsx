@@ -24,6 +24,23 @@ const placeholders = [
   "Météo Oran",
 ];
 
+export const SubmitDatasetBtn = () => {
+  const { t } = useTranslation();
+  return (
+    <a
+      href={`mailto:new-algeria.org@gmail.com?subject=Proposition%20d%27API&body=Bonjour%2C%0A%0AJe%20souhaite%20proposer%20une%20API%20pour%20votre%20plateforme.%20Voici%20les%20d%C3%A9tails%20%3A%0A%0ANom%20de%20l%27API%20%3A%20%0A%0ADescription%20%3A%20%0A%0AURL%20de%20l%27API%20%3A%20%0A%0ACordialement%2C%0AVotre%20Nom`}
+    >
+      <Button
+        variant="outline"
+        size="lg"
+        className="mx-auto text-slate-900 dark:text-white dark:hover:bg-gray-800"
+      >
+        🚀 {t("dataset.search.proposeDataset")}
+      </Button>
+    </a>
+  );
+};
+
 export const DataSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [datasets, setDatasets] = useState<Dataset[]>([]);
@@ -133,6 +150,9 @@ export const DataSearch = () => {
               <DatasetCard {...dataset} />
             </motion.div>
           ))}
+        </div>
+        <div className="mt-8 text-right">
+          <SubmitDatasetBtn />
         </div>
 
         {visibleCount < filteredDatasets.length && (
