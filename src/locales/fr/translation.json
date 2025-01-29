@@ -75,7 +75,8 @@
   },
   "dataset": {
     "search": {
-      "title": "Rechercher des données"
+      "title": "Rechercher des données",
+      "proposeDataset": "Soumettre un dataset"
     }
   },
   "contact": {
@@ -150,7 +151,8 @@
     "contactProvider": "Contacter le fournisseur",
     "website": "Site web",
     "source": "Source",
-    "searchMore": "En rechercher d'autres..."
+    "searchMore": "En rechercher d'autres...",
+    "notFound": "n'existe pas pour le moment ... mais si vous l'avez:"
   },
   "sabonner-sur": "Abonner à",
   "common": {
