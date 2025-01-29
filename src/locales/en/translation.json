@@ -155,7 +155,9 @@
     "website": "Website",
     "source": "Source",
     "searchMore": "Search for more...",
-    "notFound": "doesn't exist for the moment... But if you have it : "
+    "notFound": "doesn't exist for the moment... But if you have it : ",
+    "graphComingSoon": "👀 Graph section coming soon",
+    "graph": "Chart"
   },
   "sabonner-sur": "Subscribe on",
   "download": "Download",

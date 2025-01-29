@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Download, Eye } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { Link } from "react-router-dom";
+
 import { Dataset } from "@/interface/DatasetInterface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +18,7 @@ export function DatasetCard(dataset: Dataset) {
   }, [t]);
 
   return (
-    <Link to={`/dataset/${dataset.slug}`} className="w-full">
+    <a href={`/dataset/${dataset.slug}`} className="w-full">
       <Card className="relative group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full">
         <BorderBeam
           size={300}
@@ -90,6 +90,6 @@ export function DatasetCard(dataset: Dataset) {
           </div> */}
         </CardContent>
       </Card>
-    </Link>
+    </a>
   );
 }
