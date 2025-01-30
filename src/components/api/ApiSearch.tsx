@@ -48,7 +48,7 @@ export const ApiSearch = () => {
                 .includes(searchQuery.toLowerCase())
           )
           .map((api) => (
-            <Link to={`/api/${api.slug}`} key={api.slug} className="z-30">
+            <a href={`/api/${api.slug}`} key={api.slug} className="z-30">
               <div className="p-6 rounded-lg border border-gray-800 dark:bg-gray-900/50 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
@@ -83,7 +83,7 @@ export const ApiSearch = () => {
                   </span>
                 </div>
               </div>
-            </Link>
+            </a>
           ))}
       </div>
     </div>

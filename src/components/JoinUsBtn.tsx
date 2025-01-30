@@ -48,7 +48,8 @@ const JoinUsBtn = () => {
         className="bg-black text-primary-foreground hover:bg-primary/90 dark:bg-accent dark:hover:bg-accent/90 py-2 px-4 rounded-lg dark:text-black"
         onClick={() => setIsModalOpen(true)}
       >
-        ✨ {t("joinUs.joinUs")}
+        <span className="hidden sm:inline">✨ {t("joinUs.joinUs")}</span>
+        <span className="sm:hidden">✨</span>
       </button>
 
       {isModalOpen && (

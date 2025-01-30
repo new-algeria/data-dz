@@ -32,7 +32,7 @@ export const LanguageSelector = () => {
             className={
               i18n.language === lang.code
                 ? "bg-accent text-accent-foreground"
-                : ""
+                : "bg-white text-black dark:bg-gray-800 dark:text-white"
             }
           >
             {lang.name}

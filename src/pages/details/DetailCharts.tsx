@@ -389,7 +389,7 @@ export const CodeBlockArea: React.FC<CodeJsonProps> = ({
         borderRadius: "5px",
       }}
     >
-      <div className="rounded-md relative">
+      <div className="rounded-md relative -mt-5">
         <Button
           variant="ghost"
           size="icon"
