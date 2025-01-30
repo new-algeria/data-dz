@@ -35,6 +35,7 @@ import {
   CodeBlockArea,
 } from "./DetailCharts";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
+import { CustomMetaTags } from "@/components/MetaTags";
 
 enum DisplayFormat {
   MAP = "map",
@@ -204,6 +205,20 @@ const Detail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
       <Navbar />
+      {/*    <CustomMetaTags
+        title="Api-dz - Connect with Algeria's Data"
+        description="Explore and integrate with Data DZ's powerful APIs. Access real-time data about Algeria for your applications and services."
+        path="/api"
+      /> */}
+      {dataset && (
+        <CustomMetaTags
+          title={
+            dataset ? dataset.title["en"] + " on Data|Api-dz" : id + " - Api-dz"
+          }
+          description={dataset ? dataset.description["en"] : "Api-dz"}
+          path={`/details/${id}`}
+        />
+      )}
 
       {fetching && (
         <div className="flex justify-center items-center h-screen">
