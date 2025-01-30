@@ -25,18 +25,21 @@ const Footer = () => {
         <a
           href="https://github.com/new-algeria"
           className="hover:text-foreground"
+          target="_blank"
         >
           <FontAwesomeIcon icon={faGithub} className="text-2xl" />
         </a>
         <a
           href="https://x.com/newalgeria_org"
           className="hover:text-foreground"
+          target="_blank"
         >
           <FontAwesomeIcon icon={faXTwitter} className="text-2xl" />
         </a>
         <a
           href="https://www.linkedin.com/company/106182021/"
           className="hover:text-foreground"
+          target="_blank"
         >
           <FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
         </a>

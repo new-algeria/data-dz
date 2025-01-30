@@ -46,7 +46,18 @@ export const DataSearch = () => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
   const [sortCriteria, setSortCriteria] = useState("relevance");
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(
+    window.innerWidth >= 768 ? 9 : 6
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth >= 768 ? 9 : 6);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const { t } = useTranslation();
 
   const fetchApis = async () => {
