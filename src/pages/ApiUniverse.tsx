@@ -16,6 +16,7 @@ import { WorldMapConnection } from "@/components/api/WorldMapConnection";
 import ScrollDownArrow from "@/components/ScrollDownArrow";
 import { ThemeLanguageToggle } from "@/components/ThemeLanguageToggle";
 import { useTranslation } from "react-i18next";
+import { CustomMetaTags } from "@/components/MetaTags";
 
 const technologies = [
   "REST API",
@@ -34,6 +35,11 @@ const ApiUniverse = () => {
 
   return (
     <div className="min-h-screen">
+      <CustomMetaTags 
+        title="Data DZ APIs - Connect with Algeria's Data"
+        description="Explore and integrate with Data DZ's powerful APIs. Access real-time data about Algeria for your applications and services."
+        path="/api"
+      />
       <Navbar />
 
       <ScrollDownArrow color="primary" />
