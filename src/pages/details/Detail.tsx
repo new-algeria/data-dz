@@ -465,7 +465,9 @@ export function BtnSubscribeAPI() {
   const { t } = useTranslation();
   return (
     <a
-      href={"https://rapidapi.com/Newalgeria/api/api-dz/pricing"}
+      href={
+        "https://rapidapi.com/new-algeria-new-algeria-default/api/api-dz/pricing"
+      }
       target="_blank"
     >
       <div className="flex flex-col items-start">
