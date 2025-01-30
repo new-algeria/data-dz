@@ -87,11 +87,6 @@ const Detail = () => {
     );
   }, [availableFormats, t]);
 
-  // Pour les graphiques
-  /*   const [numericalColumns, setNumericalColumns] = useState<string[]>([]);
-  const [absisColumn, setAbsisColumn] = useState<string>("");
-  const [ordinateColumn, setOrdinateColumn] = useState<string>(""); */
-
   const isMultiDimensional = (data: Dataset) => {
     if (!data?.preview) return false;
     let multi = false;
@@ -120,6 +115,8 @@ const Detail = () => {
       const data: Dataset = await fetchData(
         `${import.meta.env.VITE_API_URL}/details/${id}`
       );
+      setDataset(data);
+      setFetching(false);
 
       // Check if the data is multi-dimensional => if so, we can't display it as a table, only as JSON
       if (isMultiDimensional(data)) {
@@ -133,8 +130,6 @@ const Detail = () => {
       }
 
       if (data.type !== "file") setIsDynamicRessource(true);
-      setDataset(data);
-      setFetching(false);
     } catch (error) {
       console.log(error);
       setFetching(false);
@@ -212,7 +207,11 @@ const Detail = () => {
 
       {fetching && (
         <div className="flex justify-center items-center h-screen">
-          <Spinner aria-label={t("detail.loading")} className="w-16 h-16" />
+          <Spinner
+            aria-label={t("detail.loading")}
+            className="w-16 h-16"
+            color="success"
+          />
         </div>
       )}
       {!fetching && dataset && (
@@ -316,7 +315,7 @@ const Detail = () => {
               </BoxReveal>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <main className="col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                   {weAreInDataPortal ? (
                     <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
                       <div className="flex items-center justify-between mb-4">
