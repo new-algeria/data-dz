@@ -162,5 +162,11 @@
     "language": "fr"
   },
   "une-derniere-chance": "✨ Une dernière chance?",
-  "download": "Télécharger"
+  "download": "Télécharger",
+  "cartography": {
+    "title": "Cartographie & Données Spatiales",
+    "subtitle": "Explorez la carte de l’Algérie et accédez à des données géospatiales.",
+    "cta": "Explorer la carte",
+    "best_maps": "Les meilleures cartes de l'Algérie"
+  }
 }

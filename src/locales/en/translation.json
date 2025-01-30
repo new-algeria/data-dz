@@ -162,5 +162,11 @@
   },
   "sabonner-sur": "Subscribe on",
   "download": "Download",
-  "une-derniere-chance": "✨ One last chance ?"
+  "une-derniere-chance": "✨ One last chance ?",
+  "cartography": {
+    "title": "Cartography & Spatial Data",
+    "subtitle": "Explore Algeria's map and access geospatial data.",
+    "cta": "Explore the map",
+    "best_maps": "the best maps of Algeria"
+  }
 }
