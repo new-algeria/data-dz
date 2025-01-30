@@ -9,12 +9,14 @@ interface Tab {
 }
 
 interface AnimatedTabsProps {
+  id: string;
   tabs: Tab[];
   defaultTab?: string;
   onChange?: (tabId: string) => void;
 }
 
 export function AnimatedTabs({
+  id,
   tabs,
   defaultTab,
   onChange,
@@ -27,7 +29,7 @@ export function AnimatedTabs({
   };
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex space-x-1" id={id}>
       {tabs.map((tab) => (
         <button
           key={tab.id}

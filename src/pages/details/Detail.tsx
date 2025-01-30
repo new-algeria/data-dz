@@ -58,9 +58,25 @@ const Detail = () => {
     DisplayFormat.JSON,
     DisplayFormat.CSV,
   ]);
+
+  const [apiTabActive, setApiTabActive] = useState<string>();
+  const [apiTbs, setApiTbs] = useState<{ id: string; label: string }[]>([]);
   const [tabs, setTabs] = useState<{ id: string; label: string }[]>([]);
   const [weAreInDataPortal, setWeAreInDataPortal] = useState(false);
   const [isDynamicRessource, setIsDynamicRessource] = useState(false);
+
+  useEffect(() => {
+    // Documentation and api return tabs
+    const tabs = ["documentation", "apiReturn"];
+    setApiTbs(
+      tabs.map((tab) => ({
+        id: tab,
+        label: t(`detail.${tab}`),
+      }))
+    );
+
+    setApiTabActive(tabs[0]);
+  }, [t]);
 
   useEffect(() => {
     setTabs(
@@ -183,6 +199,7 @@ const Detail = () => {
 
   const FormatSelector = () => (
     <AnimatedTabs
+      id="formatTabs"
       tabs={tabs}
       defaultTab={displayFormat}
       onChange={(tabId) => setDisplayFormat(tabId as DisplayFormat)}
@@ -314,33 +331,31 @@ const Detail = () => {
                       </div>
                     </div>
                   ) : (
-                    <Tabs defaultValue="Documentation">
-                      <TabsList className="flex space-x-4 mb-6 border-b border-gray-300 dark:border-gray-700">
-                        <TabsTrigger
-                          value="Documentation"
-                          className="px-4 py-2 text-sm font-medium"
-                        >
-                          🗒️ {t("detail.documentation")}
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="data"
-                          className="px-4 py-2 text-sm font-medium"
-                        >
-                          🚀 {t("detail.apiReturn")}
-                        </TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="Documentation">
+                    <>
+                      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <AnimatedTabs
+                          id="apiTabs"
+                          tabs={apiTbs}
+                          defaultTab={apiTabActive}
+                          onChange={(tabId) => setApiTabActive(tabId as string)}
+                        />
+                        {apiTabActive === "apiReturn" && (
+                          <div className="flex items-end justify-end">
+                            <FormatSelector />
+                          </div>
+                        )}
+                      </div>
+                      {apiTabActive === "documentation" && (
                         <div className="prose dark:prose-invert">
                           <CustomMarkdown content={dataset.descriptionREADME} />
                         </div>
-                      </TabsContent>
-                      <TabsContent value="data">
-                        <FormatSelector />
-                        <div className="prose dark:prose-invert">
+                      )}
+                      {apiTabActive === "apiReturn" && (
+                        <div className="prose dark:prose-invert mt-2">
                           {renderContent()}
                         </div>
-                      </TabsContent>
-                    </Tabs>
+                      )}
+                    </>
                   )}
                 </main>
 
