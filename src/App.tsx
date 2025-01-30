@@ -6,6 +6,7 @@ import ApiUniverse from "./pages/ApiUniverse";
 import ScrollDownArrow from "./components/ScrollDownArrow";
 import Detail from "./pages/details/Detail";
 import ScrollToTop from "./components/ScrollToTop";
+import GeoUniverse from "./pages/GeoUniverse";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<DataUniverse />} />
+        <Route path="/geo" element={<GeoUniverse />} />
         <Route path="/api" element={<ApiUniverse />} />
         <Route path="/api/:id" element={<Detail />} />
         <Route path="/dataset/:id" element={<Detail />} />
