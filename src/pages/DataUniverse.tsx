@@ -13,6 +13,7 @@ import ReactCountryFlag from "react-country-flag";
 import Footer from "@/components/Footer";
 import ScrollDownArrow from "@/components/ScrollDownArrow";
 import { t } from "i18next";
+import { CustomMetaTags } from "@/components/MetaTags";
 
 const DataUniverse = () => {
   return (
