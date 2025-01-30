@@ -35,8 +35,8 @@ const ApiUniverse = () => {
 
   return (
     <div className="min-h-screen">
-      <CustomMetaTags 
-        title="Data DZ APIs - Connect with Algeria's Data"
+      <CustomMetaTags
+        title="Api-dz - Connect with Algeria's Data"
         description="Explore and integrate with Data DZ's powerful APIs. Access real-time data about Algeria for your applications and services."
         path="/api"
       />
