@@ -25,7 +25,13 @@ export const Navbar = () => {
   const navItems = [
     { name: t("navbar.api"), url: "/api", icon: faCode },
     { name: t("navbar.data"), url: "/", icon: faBook },
-    { name: t("navbar.contact"), url: "/contact", icon: faPhone },
+    {
+      name: t("navbar.contact"),
+      url: `mailto:admin@newalgeria.org?subject=${t(
+        "joinUs.emailSubject"
+      )}&body=${t("contact.body")}`,
+      icon: faPhone,
+    },
   ];
 
   if (location.pathname.includes("/api")) {

@@ -333,8 +333,8 @@ const Detail = () => {
                 <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                   {weAreInDataPortal ? (
                     <div className="p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
-                      <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-semibold">
+                      <div className="flex flex-col  md:flex-row items-center justify-between mb-4">
+                        <h2 className="text-2xl font-semibold mb-1">
                           {t("detail.dataExcerpt")}
                         </h2>
                         <FormatSelector />

@@ -15,11 +15,24 @@ export const ApiSearch = () => {
   const { t } = useTranslation();
   const [apis, setApis] = useState<Dataset[]>([]);
   const [filteredApis, setFilteredApis] = useState<Dataset[]>([]);
+  const [visibleCount, setVisibleCount] = useState(
+    window.innerWidth >= 768 ? 9 : 6
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth >= 768 ? 9 : 6);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchApis = async () => {
     const data = await fetchData(`${import.meta.env.VITE_API_URL}/info`);
 
     setApis(data);
+
     setFilteredApis(data);
   };
   useEffect(() => {
@@ -47,17 +60,13 @@ export const ApiSearch = () => {
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase())
           )
+          .slice(0, visibleCount)
           .map((api) => (
             <a href={`/api/${api.slug}`} key={api.slug} className="z-30">
               <div className="p-6 rounded-lg border border-gray-800 dark:bg-gray-900/50 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-lg font-semibold">{api.title.en}</h3>
-                    {/*   {api.requiresCredits ? (
-                  <Lock className="text-yellow-500" />
-                ) : (
-                  <Unlock className="text-green-500" />
-                )} */}
                   </div>
                   <p className="text-gray-700 mb-4 dark:text-gray-400">
                     {api.description.en}
@@ -69,7 +78,6 @@ export const ApiSearch = () => {
                     ready
                   </span>
                   <span className="text-gray-400">
-                    {/*  {api.dataSize} {t("api.card.dataSize")} */}
                     {api.descriptionREADME && (
                       <FontAwesomeIcon
                         icon={faFileAlt}
@@ -86,6 +94,13 @@ export const ApiSearch = () => {
             </a>
           ))}
       </div>
+      {filteredApis.length > 8 && filteredApis.length > visibleCount && (
+        <div className="flex justify-center w-full mt-8">
+          <Button onClick={() => setVisibleCount((prev) => prev + 9)}>
+            Show More
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
