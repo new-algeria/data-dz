@@ -42,6 +42,7 @@ const GeoUniverse = () => {
         title="Geo-dz - Vizualize Algeria's Data"
         description="Explore and integrate with Data DZ's powerful Maps. Access real-time data about Algeria for your applications and services."
         path="/geo"
+        logo="geo-dz-logo.png"
       />
       <Navbar />
 

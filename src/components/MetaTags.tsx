@@ -4,14 +4,16 @@ interface MetaTagsProps {
   title: string;
   description: string;
   path?: string;
+  logo?: string;
 }
 
 export const CustomMetaTags = ({
   title,
   description,
   path = "",
+  logo = "data-dz-logo.png",
 }: MetaTagsProps) => {
-  const logoURL = `${import.meta.env.VITE_R2_BUCKET_URI}/logo/data-dz-logo.png`;
+  const logoURL = `${import.meta.env.VITE_R2_BUCKET_URI}/logo/${logo}`;
   const baseUrl = "https://www.data-dz.com";
   const fullUrl = `${baseUrl}${path}`;
 
