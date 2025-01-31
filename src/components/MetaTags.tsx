@@ -11,7 +11,7 @@ export const CustomMetaTags = ({
   description,
   path = "",
 }: MetaTagsProps) => {
-  const logoURL = `${import.meta.env.VITE_R2_BUCKET_URI}/branding/data-dz-logo.png`;
+  const logoURL = `${import.meta.env.VITE_R2_BUCKET_URI}/logo/data-dz-logo.png`;
   const baseUrl = "https://www.data-dz.com";
   const fullUrl = `${baseUrl}${path}`;
 
