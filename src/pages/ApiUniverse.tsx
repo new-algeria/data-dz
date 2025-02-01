@@ -65,7 +65,7 @@ const ApiUniverse = () => {
               {t("api.universe.subtitle")}
             </div>
             <button
-              className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 z-50"
+              className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 z-20"
               onClick={() =>
                 window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
               }
