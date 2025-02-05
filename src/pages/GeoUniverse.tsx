@@ -18,6 +18,7 @@ import { ThemeLanguageToggle } from "@/components/ThemeLanguageToggle";
 import { useTranslation } from "react-i18next";
 import { CustomMetaTags } from "@/components/MetaTags";
 import axios from "axios";
+import { MapCard } from "@/components/geo/MapCard";
 
 const technologies = [
   "REST API",
@@ -100,16 +101,18 @@ const GeoUniverse = () => {
             </motion.h1>
           </HeroHighlight>
 
-          <div className="border rounded-lg shadow-md p-4 bg-white">
+          {/*     <div className="border rounded-lg shadow-md p-4 bg-white">
             <iframe
               src={"./maps/test_carte_barcelone.html"}
               className="w-full h-96 border-none"
             />
-          </div>
+          </div> */}
 
-          <div className="-mt-36">
+          <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+
+          {/*  <div className="-mt-36">
             <WorldMapConnection />
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />
