@@ -1,0 +1,16 @@
+{
+  "title": "Algeria: Natural and Cultural Heritage Map",
+  "description": "An interactive map showcasing Algeria's 58 wilayas, major cities, natural sites, and cultural heritage locations.",
+  "data_source": [
+    "WILAYAS.geojson",
+    "LIEU_DIT_HABITE.geojson",
+    "AIRE_PROTEGEE.geojson",
+    "PAI_CULTURE_LOISIRS.geojson"
+  ],
+  "provider": {
+    "name": "Hani BAHIDJ",
+    "pictureUrl": "https://avatars.githubusercontent.com/u/195878584?v=4",
+    "website": "https://github.com/HaniBAHIDJ",
+    "contact": "hanibahidj7@gmail.com"
+  }
+}
