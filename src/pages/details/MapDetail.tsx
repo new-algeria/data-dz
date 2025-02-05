@@ -15,6 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { CustomMetaTags } from "@/components/MetaTags";
+import axios from "axios"; // Ajout de l'importation d'axios
 
 interface MapData {
   title: string;
@@ -28,12 +29,13 @@ const MapDetail = () => {
   const { id } = useParams();
   const [mapData, setMapData] = useState<MapData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mapHtmlUrl, setMapHtmlUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchMapData() {
       try {
-        const response = await fetch(`/maps/${id}/description.json`);
-        const data = await response.json();
+        const response = await axios.get(`/maps/${id}/description.json`);
+        const data = response.data;
         setMapData(data);
       } catch (error) {
         console.error("Error fetching map data:", error);
@@ -42,7 +44,20 @@ const MapDetail = () => {
       }
     }
 
+    async function fetchMapHtml() {
+      try {
+        const response = await axios.get(`/maps/${id}/map.html`, {
+          responseType: "blob",
+        });
+        const htmlUrl = URL.createObjectURL(response.data);
+        setMapHtmlUrl(htmlUrl);
+      } catch (error) {
+        console.error("Error fetching map HTML:", error);
+      }
+    }
+
     fetchMapData();
+    fetchMapHtml();
   }, [id]);
 
   if (loading) {
@@ -85,7 +100,7 @@ const MapDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <iframe
-                src={`/maps/${id}/map.html`}
+                src={mapHtmlUrl}
                 className="w-full h-[600px] rounded-lg"
                 title={mapData.title}
               />

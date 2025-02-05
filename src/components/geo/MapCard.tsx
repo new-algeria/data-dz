@@ -3,6 +3,7 @@ import { Modal } from "flowbite-react";
 import { Provider } from "@/interface/DatasetInterface";
 import { GlareCard } from "@/components/ui/glare-card";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Ajout de l'importation d'axios
 
 interface MapCardProps {
   folderPath: string;
@@ -24,15 +25,28 @@ export function MapCard({ folderPath }: MapCardProps) {
   useEffect(() => {
     async function fetchJsonData() {
       try {
-        const response = await fetch(`${folderPath}/description.json`);
-        const data = await response.json();
+        const response = await axios.get(`${folderPath}/description.json`);
+        const data = response.data;
         setJsonData(data);
       } catch (error) {
         console.error("Error fetching JSON data:", error);
       }
     }
 
+    async function fetchThumbnail() {
+      try {
+        const response = await axios.get(`${folderPath}/preview.png`, {
+          responseType: "blob",
+        });
+        const imageUrl = URL.createObjectURL(response.data);
+        setThumbnail(imageUrl);
+      } catch (error) {
+        console.error("Error fetching thumbnail:", error);
+      }
+    }
+
     fetchJsonData();
+    fetchThumbnail();
   }, [folderPath]);
 
   const handleClick = () => {
