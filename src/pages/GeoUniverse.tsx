@@ -101,18 +101,12 @@ const GeoUniverse = () => {
             </motion.h1>
           </HeroHighlight>
 
-          {/*     <div className="border rounded-lg shadow-md p-4 bg-white">
-            <iframe
-              src={"./maps/test_carte_barcelone.html"}
-              className="w-full h-96 border-none"
-            />
-          </div> */}
-
-          <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
-
-          {/*  <div className="-mt-36">
-            <WorldMapConnection />
-          </div> */}
+          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+          </div>
         </div>
       </div>
       <Footer />
