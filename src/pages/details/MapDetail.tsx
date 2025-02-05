@@ -7,7 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Database } from "lucide-react";
 import { Provider } from "@/interface/DatasetInterface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faDatabase,
+  faGlobe,
+} from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -80,7 +84,7 @@ const MapDetail = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <iframe 
+              <iframe
                 src={`/maps/${id}/map.html`}
                 className="w-full h-[600px] rounded-lg"
                 title={mapData.title}
@@ -116,11 +120,21 @@ const MapDetail = () => {
               </div>
               <div className="space-y-2">
                 <h3 className="font-semibold">Data Sources:</h3>
-                <ul className="list-disc pl-5">
-                  {mapData.data_source.map((source, index) => (
-                    <li key={index}>{source}</li>
-                  ))}
-                </ul>
+                <div className="flex flex-wrap gap-2">
+                  {mapData.data_source.map((source, index) => {
+                    const fileName = source
+                      .toLowerCase()
+                      .replace(/\.[^/.]+$/, "");
+                    return (
+                      <a href={`/dataset/${fileName}`} key={index}>
+                        <Button className="text-sm bg-green-400 dark:bg-green-600">
+                          <FontAwesomeIcon icon={faDatabase} className="mr-2" />
+                          {source}
+                        </Button>
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
             </aside>
           </div>
