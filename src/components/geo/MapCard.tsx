@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Modal } from "flowbite-react";
 import { Provider } from "@/interface/DatasetInterface";
+import { GlareCard } from "@/components/ui/glare-card";
+import { useNavigate } from "react-router-dom";
 
 interface MapCardProps {
   folderPath: string;
@@ -14,6 +16,7 @@ interface MapData {
 }
 
 export function MapCard({ folderPath }: MapCardProps) {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [thumbnail, setThumbnail] = useState(`${folderPath}/preview.png`);
   const [mapFile, setMapFile] = useState(`${folderPath}/map.html`);
@@ -33,16 +36,15 @@ export function MapCard({ folderPath }: MapCardProps) {
     fetchJsonData();
   }, [folderPath]);
 
+  const handleClick = () => {
+    navigate(`/map/${folderPath.split('/').pop()}`);
+  };
+
   return (
-    <div className="card" onClick={() => setShowModal(true)}>
-      <img src={thumbnail} alt="thumbnail" />
-      <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <Modal.Header>Informations</Modal.Header>
-        <Modal.Body>
-          {/*      <pre>{JSON.stringify(jsonData, null, 2)}</pre> */}
-          {mapFile && <iframe src={mapFile} width="100%" height="400px" />}
-        </Modal.Body>
-      </Modal>
+    <div onClick={handleClick} className="cursor-pointer">
+      <GlareCard className="flex flex-col items-center justify-center">
+        <img src={thumbnail} alt="thumbnail" className="h-full w-full object-cover" />
+      </GlareCard>
     </div>
   );
 }
