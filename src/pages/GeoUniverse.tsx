@@ -34,8 +34,27 @@ const technologies = [
 const GeoUniverse = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
+  const [mapCards, setMapCards] = useState<JSX.Element[]>([]);
 
-  const filePath = "./maps/test_carte_barcelone.html";
+  useEffect(() => {
+    const fetchMaps = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.github.com/repos/new-algeria/geomatics/contents/maps"
+        );
+        const maps = response.data;
+        setMapCards(
+          maps.map((map: any) => (
+            <MapCard key={map.path} folderPath={map.path} />
+          ))
+        );
+      } catch (error) {
+        console.error("Error fetching maps:", error);
+      }
+    };
+
+    fetchMaps();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -102,10 +121,7 @@ const GeoUniverse = () => {
           </HeroHighlight>
 
           <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
-            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
-            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
-            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
-            <MapCard folderPath="./maps/algeria-natural-cultural-heritage" />
+            {mapCards}
           </div>
         </div>
       </div>
