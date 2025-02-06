@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { CustomMetaTags } from "@/components/MetaTags";
 import axios from "axios"; // Ajout de l'importation d'axios
+import { Octokit } from "@octokit/core"; // Ajout de l'importation d'Octokit
+import { Spinner } from "flowbite-react";
 
 interface MapData {
   title: string;
@@ -30,6 +32,10 @@ const MapDetail = () => {
   const [mapData, setMapData] = useState<MapData | null>(null);
   const [loading, setLoading] = useState(true);
   const [mapHtmlUrl, setMapHtmlUrl] = useState<string | null>(null);
+
+  const octokit = new Octokit({
+    auth: import.meta.env.VITE_GITHUB_COLLABORATORS_TOKEN,
+  });
 
   useEffect(() => {
     async function fetchMapData() {
@@ -46,11 +52,22 @@ const MapDetail = () => {
 
     async function fetchMapHtml() {
       try {
-        const response = await axios.get(`/maps/${id}/map.html`, {
-          responseType: "blob",
-        });
-        const htmlUrl = URL.createObjectURL(response.data);
-        setMapHtmlUrl(htmlUrl);
+        const githubResponse = (await octokit.request(
+          "GET /repos/{owner}/{repo}/contents/maps/{path}",
+          {
+            owner: "new-algeria",
+            repo: "geomatics",
+            path: `${id}/map.html`,
+          }
+        )) as any;
+        const rawUrl = githubResponse.data.download_url;
+        if (rawUrl) {
+          const fileResponse = await axios.get(rawUrl, {
+            responseType: "text",
+          });
+          const blob = new Blob([fileResponse.data], { type: "text/html" });
+          setMapHtmlUrl(URL.createObjectURL(blob));
+        }
       } catch (error) {
         console.error("Error fetching map HTML:", error);
       }
@@ -59,10 +76,6 @@ const MapDetail = () => {
     fetchMapData();
     fetchMapHtml();
   }, [id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (!mapData) {
     return <div>Map not found</div>;
@@ -99,11 +112,21 @@ const MapDetail = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <iframe
-                src={mapHtmlUrl}
-                className="w-full h-[600px] rounded-lg"
-                title={mapData.title}
-              />
+              {loading ? (
+                <div className="flex justify-center items-center h-[600px]">
+                  <Spinner
+                    aria-label={t("detail.loading")}
+                    className="w-16 h-16"
+                    color="success"
+                  />
+                </div>
+              ) : (
+                <iframe
+                  src={mapHtmlUrl}
+                  className="w-full h-[600px] rounded-lg"
+                  title={mapData.title}
+                />
+              )}
             </main>
 
             <aside className="col-span-1 bg-gray-100 dark:bg-gray-800 rounded-lg shadow p-6">

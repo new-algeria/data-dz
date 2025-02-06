@@ -3,7 +3,7 @@ import { Modal } from "flowbite-react";
 import { Provider } from "@/interface/DatasetInterface";
 import { GlareCard } from "@/components/ui/glare-card";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Ajout de l'importation d'axios
+import { Octokit } from "@octokit/core"; // Ajout de l'importation d'Octokit
 
 interface MapCardProps {
   folderPath: string;
@@ -16,17 +16,31 @@ interface MapData {
   provider: Provider;
 }
 
+const octokit = new Octokit({
+  auth: import.meta.env.VITE_GITHUB_COLLABORATORS_TOKEN,
+});
+
 export function MapCard({ folderPath }: MapCardProps) {
   const navigate = useNavigate();
-  const [thumbnail, setThumbnail] = useState(`${folderPath}/preview.png`);
-  // const [mapFile, setMapFile] = useState(`${folderPath}/map.html`);
+  const [thumbnail, setThumbnail] = useState("");
   const [jsonData, setJsonData] = useState<MapData | null>(null);
 
   useEffect(() => {
     async function fetchJsonData() {
       try {
-        const response = await axios.get(`${folderPath}/description.json`);
-        const data = response.data;
+        const response = (await octokit.request(
+          "GET /repos/{owner}/{repo}/contents/{path}",
+          {
+            owner: "new-algeria",
+            repo: "geomatics",
+            path: `${folderPath}/description.json`,
+            headers: {
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          }
+        )) as any;
+        console.log(response.data);
+        const data = JSON.parse(atob(response.data.content));
         setJsonData(data);
       } catch (error) {
         console.error("Error fetching JSON data:", error);
@@ -35,10 +49,18 @@ export function MapCard({ folderPath }: MapCardProps) {
 
     async function fetchThumbnail() {
       try {
-        const response = await axios.get(`${folderPath}/preview.png`, {
-          responseType: "blob",
-        });
-        const imageUrl = URL.createObjectURL(response.data);
+        const response = (await octokit.request(
+          "GET /repos/{owner}/{repo}/contents/{path}",
+          {
+            owner: "new-algeria",
+            repo: "geomatics",
+            path: `${folderPath}/preview.png`,
+            headers: {
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          }
+        )) as any;
+        const imageUrl = `data:image/png;base64,${response.data.content}`;
         setThumbnail(imageUrl);
       } catch (error) {
         console.error("Error fetching thumbnail:", error);
