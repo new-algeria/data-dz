@@ -38,13 +38,25 @@ const MapDetail = () => {
   });
 
   useEffect(() => {
-    async function fetchMapData() {
+    async function fetchMapDataFromGitHub() {
       try {
-        const response = await axios.get(`/maps/${id}/description.json`);
-        const data = response.data;
-        setMapData(data);
+        const githubResponse = (await octokit.request(
+          "GET /repos/{owner}/{repo}/contents/maps/{path}/description.json",
+          {
+            owner: "new-algeria",
+            repo: "geomatics",
+            path: id,
+          }
+        )) as any;
+        const rawUrl = githubResponse.data.download_url;
+        if (rawUrl) {
+          const fileResponse = await axios.get(rawUrl, {
+            responseType: "json",
+          });
+          setMapData(fileResponse.data);
+        }
       } catch (error) {
-        console.error("Error fetching map data:", error);
+        console.error("Error fetching map data from GitHub:", error);
       } finally {
         setLoading(false);
       }
@@ -72,8 +84,7 @@ const MapDetail = () => {
         console.error("Error fetching map HTML:", error);
       }
     }
-
-    fetchMapData();
+    fetchMapDataFromGitHub();
     fetchMapHtml();
   }, [id]);
 
