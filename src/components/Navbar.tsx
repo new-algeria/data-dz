@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import DATA_DZ_LOGO from "../assets/img/data_dz_logo.png";
+import API_DZ_LOGO from "../assets/img/api_dz_logo.png";
 import { NavBar } from "./ui/tubelight-navbar";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
 import {
   faBook,
   faCode,
+  faGlobe,
   faHome,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +26,9 @@ export const Navbar = () => {
 
   const navItems = [
     { name: t("navbar.api"), url: "/api", icon: faCode },
+
     { name: t("navbar.data"), url: "/", icon: faBook },
+    { name: t("geomatics"), url: "/geo", icon: faGlobe },
     {
       name: t("navbar.contact"),
       url: `mailto:admin@newalgeria.org?subject=${t(
@@ -37,6 +41,11 @@ export const Navbar = () => {
   if (location.pathname.includes("/api")) {
     return (
       <>
+        <img
+          src={API_DZ_LOGO}
+          alt="API DZ"
+          className="fixed top-0 left-0 w-56 h-50 p-2 z-50"
+        />
         <ThemeLanguageToggle />
         <NavBar items={navItems} />
         <Announcment />
@@ -88,10 +97,10 @@ export const Announcment = () => {
   return (
     <a
       href="https://rapidapi.com/Newalgeria/api/api-dz/pricing"
-      className="fixed top-20 w-full text-white z-50"
+      className="fixed top-20 w-full text-white z-50 "
       target="_blank"
     >
-      <div className="fixed top-12 w-full text-white z-50 flex items-center justify-center py-2 md:top-20 ">
+      <div className="fixed top-12 w-full text-white z-50 flex items-center justify-center py-2 md:top-20 mt-8">
         <AnimatedGradientText>
           🎉 <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{" "}
           <span
