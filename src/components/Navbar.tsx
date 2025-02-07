@@ -29,6 +29,10 @@ export const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const weAreInDataPage = location.pathname === "/";
+  const weAreInApiPage = location.pathname.includes("/api");
+  const weAreInGeoPage = location.pathname.includes("/geo");
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
@@ -67,7 +71,7 @@ export const Navbar = () => {
     },
   ];
 
-  if (location.pathname.includes("/api")) {
+  if (weAreInApiPage) {
     return (
       <>
         <Link to="/api">
@@ -92,27 +96,47 @@ export const Navbar = () => {
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b">
       <div className="container mx-auto px-2 h-16 flex items-center justify-between">
         <a href="/" className="text-2xl font-bold text-primary">
-          <img
-            src={`${
-              import.meta.env.VITE_R2_BUCKET_URI
-            }/logo/data-dz-logo-removebg.png`}
-            alt="Data DZ"
-            className="h-24 md:h-28 -ml-3 md:-ml-0"
-          />
+          {weAreInDataPage ? (
+            <img
+              src={`${
+                import.meta.env.VITE_R2_BUCKET_URI
+              }/logo/data-dz-logo-removebg.png`}
+              alt="Data DZ"
+              className="h-24 md:h-28 -ml-3 md:-ml-0"
+            />
+          ) : (
+            <img
+              src={`${import.meta.env.VITE_R2_BUCKET_URI}/logo/geo-dz-logo.png`}
+              alt="API DZ"
+              className="h-16 md:h-22 -ml-3 md:-ml-0"
+            />
+          )}
         </a>
         <div className="flex items-center gap-4">
-          <a
-            href="/api"
-            className="text-gray-600 dark:text-gray-300 hover:text-primary"
-          >
-            {t("navbar.api")}
-          </a>
-          <a
-            href="/geo"
-            className="text-gray-600 dark:text-gray-300 hover:text-primary"
-          >
-            Geo
-          </a>
+          {!weAreInDataPage && (
+            <a
+              href="/"
+              className="text-gray-600 dark:text-gray-300 hover:text-primary"
+            >
+              {t("navbar.data")}
+            </a>
+          )}
+          {!weAreInApiPage && (
+            <a
+              href="/api"
+              className="text-gray-600 dark:text-gray-300 hover:text-primary"
+            >
+              {t("navbar.api")}
+            </a>
+          )}
+          {!weAreInGeoPage && (
+            <a
+              href="/geo"
+              className="text-gray-600 dark:text-gray-300 hover:text-primary"
+            >
+              Geo
+            </a>
+          )}
           <div className="relative md:hidden dropdown-menu">
             <FontAwesomeIcon
               icon={faSliders}
