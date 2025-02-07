@@ -233,7 +233,7 @@ const Detail = () => {
         <>
           <main className="flex-grow container mx-auto px-4 py-8 mt-20">
             <Button variant="outline" asChild>
-              <a href="/">
+              <a href={weAreInDataPortal ? "/data" : "/api"}>
                 <FontAwesomeIcon icon={faArrowLeft} />
                 {t("detail.back")}
               </a>
@@ -428,12 +428,13 @@ const Detail = () => {
       )}
 
       {!fetching && !dataset && (
-        <div className="flex flex-col justify-center items-center h-80">
-          <h1 className="text-2xl flex flex-col gap-2 items-center text-center">
-            <pre className="text-2xl font-semibold">{id}</pre>
+        <div className="flex flex-col justify-center items-center h-80 mt-16">
+          <pre className="text-2xl font-semibold">{id}</pre>
+          <h1 className="text-lg items-center text-center w-2/3">
             {t("detail.notFound")}
-            <SubmitDatasetBtn />
           </h1>
+
+          <SubmitDatasetBtn />
         </div>
       )}
 
