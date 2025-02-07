@@ -190,7 +190,7 @@ export const Announcment = () => {
   const { t } = useTranslation();
   return (
     <a
-      href="https://rapidapi.com/Newalgeria/api/api-dz/pricing"
+      href="https://rapidapi.com/new-algeria-new-algeria-default/api/api-dz/pricing"
       className="block w-full text-white z-50 fixed top-8 "
       target="_blank"
     >
