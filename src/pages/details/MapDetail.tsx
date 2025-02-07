@@ -89,7 +89,15 @@ const MapDetail = () => {
   }, [id]);
 
   if (!mapData) {
-    return <div>Map not found</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Spinner
+          aria-label={t("detail.loading")}
+          className="w-16 h-16"
+          color="success"
+        />
+      </div>
+    );
   }
 
   return (
