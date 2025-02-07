@@ -65,14 +65,14 @@ const ApiUniverse = () => {
             <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
               {t("api.universe.subtitle")}
             </div>
-            <button
+            {/*     <button
               className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 z-20"
               onClick={() =>
                 window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
               }
             >
               {t("api.universe.get_started")}
-            </button>
+            </button> */}
           </motion.div>
         </AuroraBackground>
         <div className="container relative pb-16 -mt-32 ">

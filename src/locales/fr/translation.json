@@ -165,9 +165,9 @@
   "download": "Télécharger",
   "cartography": {
     "title": "Cartographie & Données Spatiales",
-    "subtitle": "Explorez la carte de l’Algérie et accédez à des données géospatiales.",
+    "subtitle": "Explorez la carte de l’Algérie et accédez aux données géospatiales.",
     "cta": "Explorer la carte",
-    "best_maps": "Les meilleures cartes de l'Algérie"
+    "best_maps": "les meilleures cartes de l'Algérie"
   },
   "geomatics": "Géomatique"
 }

@@ -77,7 +77,7 @@ export const Navbar = () => {
             className={`fixed ${
               isScrolled || !location.pathname.endsWith("/api")
                 ? "top-0 left-0 -mt-5"
-                : "top-1/4 left-1/2 transform -translate-x-1/2 w-80 -mt-8"
+                : "top-1/4 left-1/2 transform -translate-x-1/2 w-40 -mt-8 md:w-80"
             } w-56 h-50 p-2 z-50  md:-mt-0`}
           />
         </Link>
