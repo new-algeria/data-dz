@@ -56,7 +56,7 @@ export const ApiSearch = () => {
           .filter(
             (api) =>
               api.title.en.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              api.description.en
+              api.description[t("common.language")]
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase())
           )
@@ -66,10 +66,12 @@ export const ApiSearch = () => {
               <div className="p-6 rounded-lg border border-gray-800 dark:bg-gray-900/50 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold">{api.title.en}</h3>
+                    <h3 className="text-lg font-semibold">
+                      {api.title[t("common.language")]}
+                    </h3>
                   </div>
                   <p className="text-gray-700 mb-4 dark:text-gray-400">
-                    {api.description.en}
+                    {api.description[t("common.language")]}
                   </p>
                 </div>
                 <div className="flex justify-between items-center text-sm mt-auto">

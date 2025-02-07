@@ -17,6 +17,7 @@ import ScrollDownArrow from "@/components/ScrollDownArrow";
 import { ThemeLanguageToggle } from "@/components/ThemeLanguageToggle";
 import { useTranslation } from "react-i18next";
 import { CustomMetaTags } from "@/components/MetaTags";
+import { Supporters } from "@/components/Supporters";
 
 const technologies = [
   "REST API",
@@ -129,8 +130,10 @@ const ApiUniverse = () => {
               </Marquee>
             </div>
           </div>
+          {/* Supporters Section */}
+          <Supporters />
 
-          <WorldMapConnection />
+          {/*   <WorldMapConnection /> */}
         </div>
       </div>
       <Footer />
