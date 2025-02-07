@@ -157,7 +157,8 @@ export const ProductCard = ({
         product.icon ? randomColor() : ""
       }`}
     >
-      <Link to={product.link} className="block group-hover/product:shadow-2xl ">
+      {/* <Link to={product.link} className="block group-hover/product:shadow-2xl "> */}
+      <span className="block group-hover/product:shadow-2xl ">
         {product.icon && (
           <FontAwesomeIcon
             icon={product.icon}
@@ -171,7 +172,7 @@ export const ProductCard = ({
             alt={product.title}
           />
         )}
-      </Link>
+      </span>
       <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
         {product.title}
