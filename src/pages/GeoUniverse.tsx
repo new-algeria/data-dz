@@ -8,7 +8,6 @@ import { Lock, Unlock } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import { ApiSearch } from "@/components/api/ApiSearch";
-import { AuroraBackground } from "@/components/ui/aurora-bg";
 import { motion } from "framer-motion";
 import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import ReactCountryFlag from "react-country-flag";
@@ -69,10 +68,11 @@ const GeoUniverse = () => {
       <ScrollDownArrow color="primary" />
       <div className="relative">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-        <AuroraBackground>
+        <div className="relative w-full h-screen">
           <video
             autoPlay
             muted
+            playsInline
             className="absolute inset-0 w-full h-full object-cover"
           >
             <source
@@ -91,24 +91,30 @@ const GeoUniverse = () => {
               duration: 0.8,
               ease: "easeInOut",
             }}
-            className="relative flex flex-col gap-4 items-center justify-center px-4"
+            className="relative flex flex-col gap-4 items-center justify-center px-4 h-full"
           >
-            <div className="text-3xl md:text-7xl font-bold text-center">
+            <div
+              className="text-3xl md:text-7xl font-bold text-center text-white"
+              style={{ textShadow: "0 0 1px black" }}
+            >
               {t("cartography.title")} <ReactCountryFlag countryCode="DZ" svg />
             </div>
-            <div className=" text-base md:text-4xl  py-4">
+            <div
+              className="font-bold text-base md:text-4xl py-4 text-center text-primary"
+              style={{ textShadow: "0 0 1px white" }}
+            >
               {t("cartography.subtitle")}
             </div>
-            <button
-              className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 z-50"
+            {/*     <button
+              className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2 z-10"
               onClick={() =>
                 window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
               }
             >
               {t("cartography.cta")}
-            </button>
+            </button> */}
           </motion.div>
-        </AuroraBackground>
+        </div>
         <div className="container relative pb-16 -mt-32 ">
           <HeroHighlight className="">
             <motion.h1
