@@ -29,7 +29,8 @@ export const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const weAreInDataPage = location.pathname === "/";
+  const weAreInDataPage =
+    location.pathname === "/" || location.pathname.includes("/dataset");
   const weAreInApiPage = location.pathname.includes("/api");
   const weAreInGeoPage = location.pathname.includes("/geo");
 
