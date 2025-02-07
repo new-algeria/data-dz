@@ -70,6 +70,19 @@ const GeoUniverse = () => {
       <div className="relative">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
         <AuroraBackground>
+          <video
+            autoPlay
+            muted
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source
+              src={`${
+                import.meta.env.VITE_R2_BUCKET_URI
+              }/videos/zoom_algerie_droit_sans_texte.mp4`}
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
           <motion.div
             initial={{ opacity: 0.0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -80,10 +93,10 @@ const GeoUniverse = () => {
             }}
             className="relative flex flex-col gap-4 items-center justify-center px-4"
           >
-            <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
+            <div className="text-3xl md:text-7xl font-bold text-center">
               {t("cartography.title")} <ReactCountryFlag countryCode="DZ" svg />
             </div>
-            <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
+            <div className=" text-base md:text-4xl  py-4">
               {t("cartography.subtitle")}
             </div>
             <button
