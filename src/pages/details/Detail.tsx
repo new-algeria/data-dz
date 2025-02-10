@@ -121,7 +121,7 @@ const Detail = () => {
 
       // Check if the data is multi-dimensional => if so, we can't display it as a table, only as JSON
       if (isMultiDimensional(data)) {
-        if (data.path.includes("geojson")) {
+        if (data.dataFormat.includes("geojson")) {
           setAvailableFormats([DisplayFormat.MAP, DisplayFormat.GEOJSON]);
           setDisplayFormat(DisplayFormat.MAP);
         } else {
