@@ -33,7 +33,9 @@ export interface Dataset {
   category: LanguageTranslationText;
   provider: Provider;
 
+  // custom fields
   lastEdited?: string;
   length?: number;
   preview?: any;
+  dataFormat?: string;
 }
