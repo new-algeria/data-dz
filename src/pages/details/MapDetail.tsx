@@ -38,53 +38,37 @@ const MapDetail = () => {
   });
 
   useEffect(() => {
-    async function fetchMapDataFromGitHub() {
+    async function fetchMapData() {
       try {
-        const githubResponse = (await octokit.request(
-          "GET /repos/{owner}/{repo}/contents/maps/{path}/description.json",
-          {
-            owner: "new-algeria",
-            repo: "geomatics",
-            path: id,
-          }
-        )) as any;
-        const rawUrl = githubResponse.data.download_url;
-        if (rawUrl) {
-          const fileResponse = await axios.get(rawUrl, {
-            responseType: "json",
-          });
-          setMapData(fileResponse.data);
-        }
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/maps/${id}/description`
+      );
+      const rawUrl = response.data.download_url;
+      if (rawUrl) {
+        const fileResponse = await axios.get(rawUrl, { responseType: "json" });
+        setMapData(fileResponse.data);
+      }
       } catch (error) {
-        console.error("Error fetching map data from GitHub:", error);
+      console.error("Error fetching map data:", error);
       } finally {
-        setLoading(false);
+      setLoading(false);
       }
     }
 
     async function fetchMapHtml() {
       try {
-        const githubResponse = (await octokit.request(
-          "GET /repos/{owner}/{repo}/contents/maps/{path}",
-          {
-            owner: "new-algeria",
-            repo: "geomatics",
-            path: `${id}/map.html`,
-          }
-        )) as any;
-        const rawUrl = githubResponse.data.download_url;
-        if (rawUrl) {
-          const fileResponse = await axios.get(rawUrl, {
-            responseType: "text",
-          });
-          const blob = new Blob([fileResponse.data], { type: "text/html" });
-          setMapHtmlUrl(URL.createObjectURL(blob));
-        }
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/maps/${id}/map`,
+          { responseType: "text" }
+        );
+        const blob = new Blob([response.data], { type: "text/html" });
+        setMapHtmlUrl(URL.createObjectURL(blob));
       } catch (error) {
         console.error("Error fetching map HTML:", error);
       }
     }
-    fetchMapDataFromGitHub();
+
+    fetchMapData();
     fetchMapHtml();
   }, [id]);
 

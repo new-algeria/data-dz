@@ -28,42 +28,32 @@ export function MapCard({ folderPath }: MapCardProps) {
   useEffect(() => {
     async function fetchJsonData() {
       try {
-        const response = (await octokit.request(
-          "GET /repos/{owner}/{repo}/contents/{path}",
-          {
-            owner: "new-algeria",
-            repo: "geomatics",
-            path: `${folderPath}/description.json`,
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28",
-            },
-          }
-        )) as any;
+        const mapId = folderPath.split("/").pop();
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/maps/${mapId}/description`
+        ) as any;
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
         console.log(response.data);
         const data = JSON.parse(atob(response.data.content));
         setJsonData(data);
       } catch (error) {
-        console.error("Error fetching JSON data:", error);
+      console.error("Error fetching JSON data:", error);
       }
     }
 
     async function fetchThumbnail() {
       try {
-        const response = (await octokit.request(
-          "GET /repos/{owner}/{repo}/contents/{path}",
-          {
-            owner: "new-algeria",
-            repo: "geomatics",
-            path: `${folderPath}/preview.png`,
-            headers: {
-              "X-GitHub-Api-Version": "2022-11-28",
-            },
-          }
-        )) as any;
-        const imageUrl = `data:image/png;base64,${response.data.content}`;
-        setThumbnail(imageUrl);
+      const mapId = folderPath.split("/").pop();
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/maps/${mapId}/preview`) as any;
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      const imageUrl = `data:image/png;base64,${response.data.content}`;
+      setThumbnail(imageUrl);
       } catch (error) {
-        console.error("Error fetching thumbnail:", error);
+      console.error("Error fetching thumbnail:", error);
       }
     }
 
