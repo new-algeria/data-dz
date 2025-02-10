@@ -26,8 +26,8 @@ export interface Dataset {
   path: string;
   description: LanguageTranslationText;
   descriptionREADME: string;
-  source: string;
-  sourceURL: string;
+  source?: Provider;
+  sourceURL?: string;
   updatedDate: string;
   keywords: LanguageTranslationArray;
   category: LanguageTranslationText;

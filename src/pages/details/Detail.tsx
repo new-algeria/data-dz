@@ -317,7 +317,7 @@ const Detail = () => {
                   ) : (
                     <span className="flex items-center">
                       <FontAwesomeIcon icon={faGlobe} className="mr-2" />
-                      {dataset.source}
+                      {dataset.source.name}
                     </span>
                   )}
                   {!weAreInDataPortal && (
@@ -406,7 +406,8 @@ const Detail = () => {
                   <div className="space-y-2">
                     {dataset.source && (
                       <p className="text-sm">
-                        <strong>{t("detail.source")} :</strong> {dataset.source}
+                        <strong>{t("detail.source")} :</strong>{" "}
+                        {dataset.source.name}
                       </p>
                     )}
                   </div>
