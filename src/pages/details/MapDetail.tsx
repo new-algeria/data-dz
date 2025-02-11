@@ -45,7 +45,7 @@ const MapDetail = () => {
       );
       console.log(response.data);
       if (response.data) {
-        setMapData(responsegit.data);
+        setMapData(response.data);
       }
       } catch (error) {
       console.error("Error fetching map data:", error);
