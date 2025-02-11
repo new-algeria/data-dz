@@ -36,39 +36,54 @@ const MapDetail = () => {
   const octokit = new Octokit({
     auth: import.meta.env.VITE_GITHUB_COLLABORATORS_TOKEN,
   });
-
   useEffect(() => {
+    const abortController = new AbortController();
     async function fetchMapData() {
       try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/maps/${id}/description`
-      );
-      console.log(response.data);
-      if (response.data) {
-        setMapData(response.data);
-      }
+        const response: any = await fetch(
+          `${import.meta.env.VITE_API_URL}/maps/${id}/description`,
+          { signal: abortController.signal }
+        );
+        if (!response.ok) {
+          throw new Error("Error fetching map data.");
+        }
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+          setMapData(data);
+        }
       } catch (error) {
-      console.error("Error fetching map data:", error);
+        if (error.name === 'AbortError') return;
+        console.error("Error fetching map data:", error);
       } finally {
-      setLoading(false);
+        setLoading(false);
       }
     }
 
     async function fetchMapHtml() {
       try {
-        const response = await axios.get(
+        const response: any = await fetch(
           `${import.meta.env.VITE_API_URL}/maps/${id}/map`,
-          { responseType: "text" }
+          { signal: abortController.signal }
         );
-        const blob = new Blob([response.data], { type: "text/html" });
+        if (!response.ok) {
+          throw new Error("Error fetching map HTML.");
+        }
+        const htmlString = await response.text();
+        const blob = new Blob([htmlString], { type: "text/html" });
         setMapHtmlUrl(URL.createObjectURL(blob));
       } catch (error) {
+        if (error.name === 'AbortError') return;
         console.error("Error fetching map HTML:", error);
       }
     }
 
     fetchMapData();
     fetchMapHtml();
+
+    return () => {
+      abortController.abort();
+    };
   }, [id]);
 
   if (!mapData) {
