@@ -43,10 +43,9 @@ const MapDetail = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/maps/${id}/description`
       );
-      const rawUrl = response.data.download_url;
-      if (rawUrl) {
-        const fileResponse = await axios.get(rawUrl, { responseType: "json" });
-        setMapData(fileResponse.data);
+      console.log(response.data);
+      if (response.data) {
+        setMapData(responsegit.data);
       }
       } catch (error) {
       console.error("Error fetching map data:", error);

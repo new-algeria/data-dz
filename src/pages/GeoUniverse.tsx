@@ -39,12 +39,12 @@ const GeoUniverse = () => {
     const fetchMaps = async () => {
       try {
         const response = await axios.get(
-          "https://api.github.com/repos/new-algeria/geomatics/contents/maps"
+          `${import.meta.env.VITE_API_URL}/maps/info`
         );
-        const maps = response.data;
+        const maps = response.data.maps;
         setMapCards(
           maps.map((map: any) => (
-            <MapCard key={map.path} folderPath={map.path} />
+            <MapCard key={map} folderPath={map} />
           ))
         );
       } catch (error) {

@@ -4,6 +4,7 @@ import { Provider } from "@/interface/DatasetInterface";
 import { GlareCard } from "@/components/ui/glare-card";
 import { useNavigate } from "react-router-dom";
 import { Octokit } from "@octokit/core"; // Ajout de l'importation d'Octokit
+import axios from "axios";
 
 interface MapCardProps {
   folderPath: string;
@@ -28,16 +29,10 @@ export function MapCard({ folderPath }: MapCardProps) {
   useEffect(() => {
     async function fetchJsonData() {
       try {
-        const mapId = folderPath.split("/").pop();
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/maps/${mapId}/description`
-        ) as any;
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`);
-        }
-        console.log(response.data);
-        const data = JSON.parse(atob(response.data.content));
-        setJsonData(data);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/maps/${folderPath}/description`
+      );
+      setJsonData(response.data);
       } catch (error) {
       console.error("Error fetching JSON data:", error);
       }
@@ -45,12 +40,17 @@ export function MapCard({ folderPath }: MapCardProps) {
 
     async function fetchThumbnail() {
       try {
-      const mapId = folderPath.split("/").pop();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/maps/${mapId}/preview`) as any;
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-      }
-      const imageUrl = `data:image/png;base64,${response.data.content}`;
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/maps/${folderPath}/preview`, 
+        { responseType: "arraybuffer" }
+      );
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+        (data, byte) => data + String.fromCharCode(byte),
+        ""
+        )
+      );
+      const imageUrl = `data:image/png;base64,${base64}`;
       setThumbnail(imageUrl);
       } catch (error) {
       console.error("Error fetching thumbnail:", error);
