@@ -167,7 +167,8 @@
     "title": "Cartography & Spatial Data",
     "subtitle": "Explore Algeria's map and access geospatial data.",
     "cta": "Explore the map",
-    "best_maps": "the best maps of Algeria"
+    "best_maps": "the best maps of Algeria",
+    "details": "Discover the magic of this map"
   },
   "geomatics": "Geomatics"
 }

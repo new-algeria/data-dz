@@ -18,6 +18,10 @@ import { useTranslation } from "react-i18next";
 import { CustomMetaTags } from "@/components/MetaTags";
 import axios from "axios";
 import { MapCard } from "@/components/geo/MapCard";
+import { ContainerScroll } from "@/components/ui/scroll-containre";
+import { MapData } from "./details/MapDetail";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 
 const technologies = [
   "REST API",
@@ -34,6 +38,12 @@ const GeoUniverse = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useTranslation();
   const [mapCards, setMapCards] = useState<JSX.Element[]>([]);
+  const [firstMapIframeUrl, setFirstMapIframeUrl] = useState<string | null>(
+    null
+  );
+  const [firstMapSlug, setFirstMapSlug] = useState<string | null>(null);
+  const [firstMapDescription, setFirstMapDescription] =
+    useState<MapData | null>(null);
 
   useEffect(() => {
     const fetchMaps = async () => {
@@ -42,13 +52,45 @@ const GeoUniverse = () => {
           `${import.meta.env.VITE_API_URL}/maps/info`
         );
         const maps = response.data.maps;
-        setMapCards(
-          maps.map((map: any) => (
-            <MapCard key={map} folderPath={map} />
-          ))
-        );
+        if (maps && maps.length > 0) {
+          const firstMap = maps[0];
+          setFirstMapSlug(firstMap);
+          await fetchFirstMapData(firstMap);
+          setMapCards(
+            maps.map((map: any) => <MapCard key={map} folderPath={map} />)
+          );
+        }
       } catch (error) {
         console.error("Error fetching maps:", error);
+      }
+    };
+
+    const fetchFirstMapData = async (firstMap: string) => {
+      try {
+        const htmlResponse = await fetch(
+          `${import.meta.env.VITE_API_URL}/maps/${firstMap}/map`
+        );
+        if (!htmlResponse.ok) {
+          throw new Error("Error fetching first map HTML.");
+        }
+        const htmlString = await htmlResponse.text();
+        const blob = new Blob([htmlString], { type: "text/html" });
+        setFirstMapIframeUrl(URL.createObjectURL(blob));
+      } catch (error) {
+        console.error("Error fetching first map HTML:", error);
+      }
+
+      try {
+        const descResponse = await fetch(
+          `${import.meta.env.VITE_API_URL}/maps/${firstMap}/description`
+        );
+        if (!descResponse.ok) {
+          throw new Error("Error fetching first map description.");
+        }
+        const descData = await descResponse.json();
+        setFirstMapDescription(descData);
+      } catch (error) {
+        console.error("Error fetching first map description:", error);
       }
     };
 
@@ -139,7 +181,48 @@ const GeoUniverse = () => {
             </motion.h1>
           </HeroHighlight>
 
-          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+          {/* Affichage de la première carte en grand avec iframe */}
+          {firstMapIframeUrl && (
+            <div className="flex flex-col overflow-hidden -mx-3">
+              <iframe
+                src={firstMapIframeUrl}
+                className="w-full h-[600px] rounded-lg shadow"
+                title="Première carte démo"
+              />
+              {/* Btn details */}
+              <div className="flex flex-col justify-center items-center mt-4">
+                <Button asChild className="shadow-lg">
+                  <Link to={`/map/${firstMapSlug}`}>
+                    {t("cartography.details")}
+                    <Unlock size={24} />
+                  </Link>
+                </Button>
+                {/* description */}
+                <div className="flex flex-col items-center gap-2 mt-4">
+                  <h3 className="text-white text-lg font-bold text-center">
+                    {firstMapDescription?.title}
+                  </h3>
+                  <p className="text-gray-300 text-sm text-center mt-2">
+                    {firstMapDescription?.description}
+                  </p>
+                  {/* author */}
+                  <div className="flex items-center gap-2 mt-4">
+                    <img
+                      src={firstMapDescription?.provider.pictureUrl}
+                      alt="author"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-white text-sm">
+                      {firstMapDescription?.provider.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Affichage des autres cartes */}
+          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mt-[200px]">
             {mapCards}
           </div>
         </div>
