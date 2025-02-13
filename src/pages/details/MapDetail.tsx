@@ -19,7 +19,7 @@ import axios from "axios"; // Ajout de l'importation d'axios
 import { Octokit } from "@octokit/core"; // Ajout de l'importation d'Octokit
 import { Spinner } from "flowbite-react";
 
-interface MapData {
+export interface MapData {
   title: string;
   description: string;
   data_source: string[];
@@ -53,7 +53,7 @@ const MapDetail = () => {
           setMapData(data);
         }
       } catch (error) {
-        if (error.name === 'AbortError') return;
+        if (error.name === "AbortError") return;
         console.error("Error fetching map data:", error);
       } finally {
         setLoading(false);
@@ -73,7 +73,7 @@ const MapDetail = () => {
         const blob = new Blob([htmlString], { type: "text/html" });
         setMapHtmlUrl(URL.createObjectURL(blob));
       } catch (error) {
-        if (error.name === 'AbortError') return;
+        if (error.name === "AbortError") return;
         console.error("Error fetching map HTML:", error);
       }
     }
@@ -128,7 +128,7 @@ const MapDetail = () => {
           </BoxReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow ">
               {loading ? (
                 <div className="flex justify-center items-center h-[600px]">
                   <Spinner
