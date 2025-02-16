@@ -96,8 +96,8 @@ export const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b">
       <div className="container mx-auto px-2 h-16 flex items-center justify-between">
-        <a href="/" className="text-2xl font-bold text-primary">
-          {weAreInDataPage ? (
+        {weAreInDataPage ? (
+          <a href="/" className="text-2xl font-bold text-primary">
             <img
               src={`${
                 import.meta.env.VITE_R2_BUCKET_URI
@@ -105,14 +105,17 @@ export const Navbar = () => {
               alt="Data DZ"
               className="h-24 md:h-28 -ml-3 md:-ml-0"
             />
-          ) : (
+          </a>
+        ) : (
+          <a href="/geo" className="text-2xl font-bold text-primary">
             <img
               src={`${import.meta.env.VITE_R2_BUCKET_URI}/logo/geo-dz-logo.png`}
               alt="API DZ"
               className="h-16 md:h-22 -ml-3 md:-ml-0"
             />
-          )}
-        </a>
+          </a>
+        )}
+
         <div className="flex items-center gap-4">
           {!weAreInDataPage && (
             <a

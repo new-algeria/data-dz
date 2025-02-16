@@ -17,7 +17,8 @@ import { BoxReveal } from "@/components/ui/BoxReveal";
 import { CustomMetaTags } from "@/components/MetaTags";
 import axios from "axios"; // Ajout de l'importation d'axios
 import { Octokit } from "@octokit/core"; // Ajout de l'importation d'Octokit
-import { Spinner } from "flowbite-react";
+import { grid } from "ldrs";
+grid.register();
 
 export interface MapData {
   title: string;
@@ -89,11 +90,7 @@ const MapDetail = () => {
   if (!mapData) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Spinner
-          aria-label={t("detail.loading")}
-          className="w-16 h-16"
-          color="success"
-        />
+        <l-grid size="120" speed="2" color="#0E9C6C"></l-grid>
       </div>
     );
   }
@@ -131,11 +128,7 @@ const MapDetail = () => {
             <main className="col-span-1 md:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow ">
               {loading ? (
                 <div className="flex justify-center items-center h-[600px]">
-                  <Spinner
-                    aria-label={t("detail.loading")}
-                    className="w-16 h-16"
-                    color="success"
-                  />
+                  <l-grid size="120" speed="2" color="#0E9C6C"></l-grid>
                 </div>
               ) : (
                 <iframe

@@ -22,6 +22,8 @@ import { ContainerScroll } from "@/components/ui/scroll-containre";
 import { MapData } from "./details/MapDetail";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
+import { grid } from "ldrs";
+grid.register();
 
 const technologies = [
   "REST API",
@@ -44,6 +46,7 @@ const GeoUniverse = () => {
   const [firstMapSlug, setFirstMapSlug] = useState<string | null>(null);
   const [firstMapDescription, setFirstMapDescription] =
     useState<MapData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMaps = async () => {
@@ -60,8 +63,10 @@ const GeoUniverse = () => {
             maps.map((map: any) => <MapCard key={map} folderPath={map} />)
           );
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching maps:", error);
+        setLoading(false);
       }
     };
 
@@ -180,6 +185,12 @@ const GeoUniverse = () => {
               </Highlight>
             </motion.h1>
           </HeroHighlight>
+
+          {loading && (
+            <div className="flex justify-center items-center h-[600px] -mt-[200px]">
+              <l-grid size="60" speed="1.5" color="white"></l-grid>
+            </div>
+          )}
 
           {/* Affichage de la première carte en grand avec iframe */}
           {firstMapIframeUrl && (

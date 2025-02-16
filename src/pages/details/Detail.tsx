@@ -24,7 +24,6 @@ import { DataSearch, SubmitDatasetBtn } from "@/components/dataset/DataSearch";
 import { ApiSearch } from "@/components/api/ApiSearch";
 import CustomMarkdown from "@/components/CustomMarkdown";
 
-import { Spinner } from "flowbite-react/components/Spinner";
 import { RainbowButton } from "@/components/ui/RgbBtn";
 import { BoxReveal } from "@/components/ui/BoxReveal";
 import { useTranslation } from "react-i18next";
@@ -36,6 +35,8 @@ import {
 } from "./DetailCharts";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
 import { CustomMetaTags } from "@/components/MetaTags";
+import { grid } from "ldrs";
+grid.register();
 
 enum DisplayFormat {
   MAP = "map",
@@ -222,11 +223,7 @@ const Detail = () => {
 
       {fetching && (
         <div className="flex justify-center items-center h-screen">
-          <Spinner
-            aria-label={t("detail.loading")}
-            className="w-16 h-16"
-            color="success"
-          />
+          <l-grid size="120" speed="2" color="#0E9C6C"></l-grid>
         </div>
       )}
       {!fetching && dataset && (
