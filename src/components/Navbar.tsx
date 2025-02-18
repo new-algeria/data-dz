@@ -58,9 +58,9 @@ export const Navbar = () => {
   }, [isDropdownOpen]);
 
   const navItems = [
-    { name: t("navbar.api"), url: "/api", icon: faCode },
+    { name: "API ⚡️", url: "/api", icon: faCode },
 
-    { name: t("navbar.data"), url: "/", icon: faBook },
+    { name: "Data 🗂️", url: "/", icon: faBook },
     { name: t("geomatics"), url: "/geo", icon: faGlobe },
 
     {

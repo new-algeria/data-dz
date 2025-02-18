@@ -18,6 +18,13 @@ import { CustomMetaTags } from "@/components/MetaTags";
 const DataUniverse = () => {
   return (
     <div className="min-h-screen  dark:bg-[#020817]">
+      <CustomMetaTags
+        title="Data-dz - Algeria's 1st Data Platform"
+        description="Algeria's largest data platform. Access and explore comprehensive datasets and powerful APIs about Algeria."
+        path=""
+        logo="data-dz-logo.png"
+      />
+
       <Navbar />
       <ScrollDownArrow color="primary" />
 
