@@ -1,4 +1,4 @@
-//import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 interface MetaTagsProps {
   title: string;
@@ -18,7 +18,7 @@ export const CustomMetaTags = ({
   const fullUrl = `${baseUrl}${path}`;
 
   return (
-    <head>
+    <Helmet>
       <link rel="icon" type="image/svg+xml" href="/data_dz_logo_icon.png" />
       <title>{title}</title>
       <meta name="description" content={description} />
@@ -33,6 +33,6 @@ export const CustomMetaTags = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={logoURL} />
-    </head>
+    </Helmet>
   );
 };
