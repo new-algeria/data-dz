@@ -19,11 +19,11 @@ export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
   }
 
   return (
-    <ul className="divide-y rounded-md border bg-white dark:bg-gray-900">
+    <ul className="divide-y rounded-xl border bg-white dark:bg-gray-900">
       {trierFichiers(fichiers).map((fichier) => (
-        <li key={fichier.cle_stockage} className="flex flex-wrap items-center gap-3 p-3">
+        <li key={fichier.cle_stockage} className="flex flex-wrap items-center gap-x-3 gap-y-2 p-3">
           <FileJson className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden />
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-[8rem]">
             <p className="font-medium truncate" dir="ltr">
               {nomAffiche(fichier)}
             </p>
@@ -38,7 +38,7 @@ export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
               {t("fiche.principal")}
             </Badge>
           )}
-          <Button asChild size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+          <Button asChild size="sm" className="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white">
             <a href={urlFichier(fichier.cle_stockage)} download target="_blank" rel="noopener noreferrer">
               <Download />
               {t("fiche.telecharger")}

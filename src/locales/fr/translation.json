@@ -1,9 +1,6 @@
 {
   "navbar": {
-    "catalogue": "Catalogue",
-    "contact": "Contact",
-    "rejoindre": "Rejoignez-nous",
-    "menu": "Menu"
+    "contribuer": "Contribuer"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -14,7 +11,8 @@
   "footer": {
     "projet": "Un projet open source porté par",
     "codeSource": "Code source",
-    "copyright": "New Algeria. Données sous la licence de leur source."
+    "copyright": "New Algeria. Données sous la licence de leur source.",
+    "contact": "Nous contacter"
   },
   "contact": {
     "sujet": "Contact - data-dz",
@@ -89,7 +87,13 @@
     "couverture": "Couverture",
     "voirSource": "Voir la page de la source",
     "globe": "Globe interactif",
-    "globeAide": "Faites glisser pour tourner le globe, utilisez les boutons pour zoomer. Cliquez sur un élément pour voir ses informations."
+    "globeAide": "Faites glisser pour tourner le globe, utilisez les boutons pour zoomer. Cliquez sur un élément pour voir ses informations.",
+    "filAriane": "Fil d'Ariane",
+    "catalogue": "Catalogue",
+    "sourceVerifiee": "Source vérifiée",
+    "parSource": "Publié par",
+    "miseAJour": "Mise à jour",
+    "ongletApercu": "Aperçu"
   },
   "attribution": {
     "titre": "Attribution",
@@ -98,5 +102,14 @@
     "osm": "Contient des données © contributeurs OpenStreetMap, sous licence ODbL : la citation est obligatoire en cas de réutilisation.",
     "pageSource": "Page de la donnée sur GeoAlgeria",
     "signaler": "Signaler une erreur dans ces données"
+  },
+  "licence": {
+    "commercialOui": "Usage commercial autorisé",
+    "commercialNon": "Usage commercial non autorisé",
+    "attributionOui": "Citer la source est obligatoire",
+    "attributionNon": "Citation de la source facultative",
+    "partageOui": "Partage à l'identique : les dérivés gardent la même licence",
+    "partageNon": "Les dérivés peuvent changer de licence",
+    "lire": "Lire le texte de la licence"
   }
 }

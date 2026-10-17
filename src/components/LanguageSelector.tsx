@@ -1,52 +1,53 @@
-import { Modal, ModalBody, ModalHeader } from "flowbite-react";
-import { useState } from "react";
+import { Check, Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Languages } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useLangue } from "@/hooks/use-langue";
 
-// Noms des langues écrits dans leur propre langue : ils ne se traduisent pas.
+// Noms et abréviations écrits dans leur propre langue : ils ne se traduisent pas.
 const langues = [
-  { code: "fr", nom: "Français" },
-  { code: "en", nom: "English" },
-  { code: "ar", nom: "العربية" },
+  { code: "fr", nom: "Français", court: "FR" },
+  { code: "en", nom: "English", court: "EN" },
+  { code: "ar", nom: "العربية", court: "ع" },
 ];
 
 export const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
   const langueCourante = useLangue();
-  const [ouvert, setOuvert] = useState(false);
+  const courante = langues.find((langue) => langue.code === langueCourante) ?? langues[0];
 
   return (
-    <>
-      <button
-        onClick={() => setOuvert(true)}
-        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-        aria-label={t("langue.choisir")}
-      >
-        <Languages className="h-5 w-5" />
-      </button>
-      <Modal show={ouvert} onClose={() => setOuvert(false)}>
-        <ModalHeader>{t("langue.choisir")}</ModalHeader>
-        <ModalBody>
-          {langues.map((langue) => (
-            <button
-              key={langue.code}
-              lang={langue.code}
-              onClick={() => {
-                i18n.changeLanguage(langue.code);
-                setOuvert(false);
-              }}
-              className={`w-full p-2 my-1 rounded ${
-                langueCourante === langue.code
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-white text-black dark:bg-gray-800 dark:text-white"
-              }`}
-            >
-              {langue.nom}
-            </button>
-          ))}
-        </ModalBody>
-      </Modal>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="gap-1.5 px-2.5" aria-label={t("langue.choisir")}>
+          <Languages className="h-4 w-4" />
+          <span className="text-xs font-semibold" lang={courante.code}>
+            {courante.court}
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]">
+        <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">{t("langue.choisir")}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {langues.map((langue) => (
+          <DropdownMenuItem
+            key={langue.code}
+            lang={langue.code}
+            onSelect={() => i18n.changeLanguage(langue.code)}
+            className="justify-between gap-4"
+          >
+            {langue.nom}
+            {langue.code === langueCourante && <Check className="h-4 w-4 text-emerald-600" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

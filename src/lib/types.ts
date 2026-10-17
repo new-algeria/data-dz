@@ -12,12 +12,16 @@ export interface Source {
   slug: string;
   nom: string;
   url: string | null;
+  verifiee?: boolean;
 }
 
 export interface Licence {
   code: string;
   nom: string;
   url: string | null;
+  usage_commercial?: boolean;
+  attribution_requise?: boolean;
+  partage_identique?: boolean;
 }
 
 export interface Colonne {
