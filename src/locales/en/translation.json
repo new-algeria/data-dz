@@ -87,7 +87,13 @@
     "couverture": "Coverage",
     "voirSource": "View the source page",
     "globe": "Interactive globe",
-    "globeAide": "Drag to rotate the globe, use the buttons to zoom. Click an item to see its details."
+    "globeAide": "Drag to rotate the globe, use the buttons to zoom. Click an item to see its details.",
+    "filAriane": "Breadcrumb",
+    "catalogue": "Catalogue",
+    "sourceVerifiee": "Verified source",
+    "parSource": "Published by",
+    "miseAJour": "Updated",
+    "ongletApercu": "Preview"
   },
   "attribution": {
     "titre": "Attribution",
@@ -96,5 +102,14 @@
     "osm": "Contains data © OpenStreetMap contributors, under the ODbL licence: attribution is required when reusing it.",
     "pageSource": "Dataset page on GeoAlgeria",
     "signaler": "Report an error in this data"
+  },
+  "licence": {
+    "commercialOui": "Commercial use allowed",
+    "commercialNon": "Commercial use not allowed",
+    "attributionOui": "Attribution to the source is required",
+    "attributionNon": "Attribution is optional",
+    "partageOui": "Share-alike: derivatives keep the same licence",
+    "partageNon": "Derivatives may use another licence",
+    "lire": "Read the licence text"
   }
 }
