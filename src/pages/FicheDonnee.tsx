@@ -22,8 +22,8 @@ import { formaterNombre, localeNombres, trierFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee } from "@/lib/types";
 
-// Leaflet n'est chargé que sur les fiches qui affichent une carte.
-const CarteGeoJSON = lazy(() => import("@/components/fiche/CarteGeoJSON"));
+// MapLibre n'est chargé que sur les fiches qui affichent un globe.
+const GlobeDonnees = lazy(() => import("@/components/fiche/GlobeDonnees"));
 
 const Section = ({ id, titre, children }: { id: string; titre: string; children: ReactNode }) => (
   <section aria-labelledby={id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-5 md:p-6">
@@ -97,9 +97,9 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
         <div className="lg:col-span-2 space-y-6 min-w-0">
           {geojsonPrincipal && (
-            <Section id="titre-carte" titre={t("fiche.carte")}>
+            <Section id="titre-carte" titre={t("fiche.globe")}>
               <Suspense fallback={<ChargementCarte />}>
-                <CarteGeoJSON fichier={geojsonPrincipal} />
+                <GlobeDonnees fichier={geojsonPrincipal} />
               </Suspense>
             </Section>
           )}
