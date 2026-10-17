@@ -72,7 +72,7 @@ export interface Donnee {
   url_source: string | null;
   mots_cles: string[] | null;
   infos_source: Record<string, unknown> | null;
-  categories: Pick<Categorie, "slug" | "nom"> | null;
+  categories: Pick<Categorie, "slug" | "nom" | "icone"> | null;
   sources: Source | null;
   licences: Licence | null;
   versions: Version | null;

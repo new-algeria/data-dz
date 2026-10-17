@@ -111,5 +111,16 @@
     "partageOui": "Share-alike: derivatives keep the same licence",
     "partageNon": "Derivatives may use another licence",
     "lire": "Read the licence text"
+  },
+  "types": {
+    "texte": "Text",
+    "entier": "Integer",
+    "decimal": "Decimal number",
+    "booleen": "True / false",
+    "date": "Date",
+    "liste": "List",
+    "objet": "Object",
+    "vide": "Empty",
+    "origine": "Original type: {{type}}"
   }
 }

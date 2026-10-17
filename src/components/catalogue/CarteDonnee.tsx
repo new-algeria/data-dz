@@ -2,19 +2,19 @@ import { Link } from "react-router-dom";
 import { Database, Scale, Building2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
-import type { ResumeDonnee, TexteMultilingue } from "@/lib/types";
+import type { Categorie, ResumeDonnee } from "@/lib/types";
 
 interface CarteDonneeProps {
   donnee: ResumeDonnee;
-  nomCategorie?: TexteMultilingue;
+  categorie?: Categorie;
 }
 
-export function CarteDonnee({ donnee, nomCategorie }: CarteDonneeProps) {
+export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const { t } = useTranslation();
   const langue = useLangue();
   const nbLignes = donnee.versions?.nb_lignes;
@@ -31,11 +31,7 @@ export function CarteDonnee({ donnee, nomCategorie }: CarteDonneeProps) {
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         />
         <CardHeader className="pb-3">
-          {nomCategorie && (
-            <Badge variant="secondary" className="w-fit mb-2">
-              {texteTraduit(nomCategorie, langue)}
-            </Badge>
-          )}
+          {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="mb-2" />}
           <CardTitle className="text-lg font-semibold leading-snug">
             {texteTraduit(donnee.titre, langue)}
           </CardTitle>

@@ -19,6 +19,7 @@ import { BlocAttribution } from "@/components/fiche/BlocAttribution";
 import { BlocLicence } from "@/components/fiche/BlocLicence";
 import { InfosSource } from "@/components/fiche/InfosSource";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
+import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { ChiffresCles } from "@/components/fiche/ChiffresCles";
 import { chargerFicheDonnee } from "@/lib/catalogue";
 import { texteTraduit } from "@/lib/traduction";
@@ -134,7 +135,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               className="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-sm"
             >
               <Tabs defaultValue="apercu">
-                <TabsList className="mb-4 h-auto w-full flex-wrap justify-start gap-1 bg-muted/70 p-1 sm:w-auto">
+                <TabsList className="mb-4 flex h-auto w-full max-w-full justify-start gap-1 overflow-x-auto bg-muted/70 p-1 sm:w-auto [&>*]:shrink-0">
                   <TabsTrigger value="apercu">{t("fiche.ongletApercu")}</TabsTrigger>
                   <TabsTrigger value="colonnes" className="gap-1.5">
                     {t("fiche.colonnes")}
@@ -184,7 +185,9 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
                   </Information>
                 )}
                 {donnee.categories && (
-                  <Information libelle={t("fiche.categorie")}>{texteTraduit(donnee.categories.nom, langue)}</Information>
+                  <Information libelle={t("fiche.categorie")}>
+                    <BadgeCategorie nom={donnee.categories.nom} icone={donnee.categories.icone} />
+                  </Information>
                 )}
                 {version && (
                   <Information libelle={t("fiche.version")}>
