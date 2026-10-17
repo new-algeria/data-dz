@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { BadgeCheck, ChevronRight, Download, ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { formaterTaille, urlFichier } from "@/lib/fichiers";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
@@ -45,8 +46,10 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="flex flex-wrap items-center gap-2">
-              {nomCategorie && (
-                <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">{nomCategorie}</span>
+              {donnee.categories && (
+                <Link to={`/?categorie=${donnee.categories.slug}`} className="transition-opacity hover:opacity-80">
+                  <BadgeCategorie nom={donnee.categories.nom} icone={donnee.categories.icone} taille="md" />
+                </Link>
               )}
               {donnee.sources?.verifiee && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-white/70 px-3 py-1 text-xs font-medium text-emerald-800 backdrop-blur dark:bg-white/5 dark:text-emerald-300">
