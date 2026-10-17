@@ -3,14 +3,12 @@ import { Database, FolderTree, Rows3 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { chargerStatistiques } from "@/lib/catalogue";
-import { formaterNombre } from "@/lib/fichiers";
-import { useLangue } from "@/hooks/use-langue";
 import { Skeleton } from "@/components/ui/skeleton";
+import { NombreAnime } from "@/components/accueil/NombreAnime";
 
 // Chiffres calculés à partir de la base : aucune valeur n'est écrite en dur.
 export const Statistiques = () => {
   const { t } = useTranslation();
-  const langue = useLangue();
   const { data: statistiques, isPending, isError } = useQuery({
     queryKey: ["statistiques"],
     queryFn: chargerStatistiques,
@@ -25,24 +23,25 @@ export const Statistiques = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto px-4">
+    <div className="grid grid-cols-3 gap-3 sm:gap-4">
       {tuiles.map((tuile, indice) => (
         <motion.div
           key={tuile.cle}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: indice * 0.1 }}
-          className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow text-center"
+          transition={{ delay: 0.5 + indice * 0.12, duration: 0.5, ease: "easeOut" }}
+          whileHover={{ y: -4 }}
+          className="rounded-2xl border border-white/60 dark:border-white/10 bg-white/60 dark:bg-white/5 backdrop-blur-md p-3 sm:p-4 shadow-sm"
         >
-          <tuile.icone className="w-8 h-8 mx-auto mb-2 text-primary dark:text-green-400" />
+          <tuile.icone className="w-5 h-5 mb-2 text-emerald-600 dark:text-emerald-400" aria-hidden />
           {isPending ? (
-            <Skeleton className="h-9 w-24 mx-auto mb-1" />
+            <Skeleton className="h-8 w-16 mb-1" />
           ) : (
-            <p className="text-3xl font-bold text-primary dark:text-green-400 mb-1">
-              {formaterNombre(tuile.valeur ?? 0, langue)}
+            <p className="text-2xl sm:text-3xl font-bold text-emerald-800 dark:text-emerald-300 mb-0.5">
+              <NombreAnime valeur={tuile.valeur ?? 0} />
             </p>
           )}
-          <p className="text-gray-600 dark:text-gray-400">{tuile.libelle}</p>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-tight">{tuile.libelle}</p>
         </motion.div>
       ))}
     </div>
