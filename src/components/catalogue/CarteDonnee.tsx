@@ -22,7 +22,7 @@ export function CarteDonnee({ donnee, nomCategorie }: CarteDonneeProps) {
 
   return (
     <Link to={`/donnees/${donnee.slug}`} className="block w-full h-full">
-      <Card className="relative group hover:shadow-lg transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full flex flex-col">
+      <Card className="relative group hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full flex flex-col">
         <BorderBeam
           size={300}
           duration={20}

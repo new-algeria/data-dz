@@ -25,7 +25,11 @@
     "titreSurligne": "au même endroit.",
     "sousTitre": "Parcourez, prévisualisez et téléchargez librement des jeux de données sur l'Algérie, avec leur source et leur licence.",
     "metaTitre": "data-dz - Données ouvertes sur l'Algérie",
-    "metaDescription": "Portail open source de données sur l'Algérie : catalogue, aperçu, cartes et téléchargements, avec source et licence."
+    "metaDescription": "Portail open source de données sur l'Algérie : catalogue, aperçu, cartes et téléchargements, avec source et licence.",
+    "badge": "Données ouvertes · Algérie",
+    "explorer": "Explorer le catalogue",
+    "contribuer": "Contribuer sur GitHub",
+    "globe": "Globe terrestre centré sur l'Algérie"
   },
   "statistiques": {
     "donnees": "Jeux de données",
@@ -69,7 +73,6 @@
     "aucunFichier": "Aucun fichier pour cette version.",
     "telecharger": "Télécharger",
     "principal": "Principal",
-    "carte": "Carte",
     "carteChargement": "Chargement de la carte…",
     "carteProgression": "{{charge}} sur {{total}}",
     "carteErreur": "Impossible d'afficher la carte. Vous pouvez toujours télécharger le fichier.",
@@ -84,7 +87,9 @@
     "lignes": "Lignes",
     "motsCles": "Mots-clés",
     "couverture": "Couverture",
-    "voirSource": "Voir la page de la source"
+    "voirSource": "Voir la page de la source",
+    "globe": "Globe interactif",
+    "globeAide": "Faites glisser pour tourner le globe, utilisez les boutons pour zoomer. Cliquez sur un élément pour voir ses informations."
   },
   "attribution": {
     "titre": "Attribution",

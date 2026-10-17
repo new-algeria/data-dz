@@ -31,6 +31,9 @@ export default {
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         aurora: "aurora 60s linear infinite",
+        flotter: "flotter 18s ease-in-out infinite",
+        "flotter-lent": "flotter 26s ease-in-out infinite reverse",
+        halo: "halo 6s ease-in-out infinite",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -117,6 +120,15 @@ export default {
         },
       },
       keyframes: {
+        flotter: {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "33%": { transform: "translate(6%, -8%) scale(1.08)" },
+          "66%": { transform: "translate(-5%, 6%) scale(0.95)" },
+        },
+        halo: {
+          "0%, 100%": { opacity: "0.55", transform: "scale(1)" },
+          "50%": { opacity: "0.85", transform: "scale(1.05)" },
+        },
         gradient: {
           to: {
             backgroundPosition: "var(--bg-size) 0",
