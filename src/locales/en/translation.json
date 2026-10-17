@@ -1,174 +1,97 @@
 {
   "navbar": {
-    "home": "Home",
-    "api": "API",
-    "getStarted": "Get Started",
+    "catalogue": "Catalogue",
     "contact": "Contact",
-    "data": "Data"
+    "rejoindre": "Join us",
+    "menu": "Menu"
+  },
+  "langue": {
+    "choisir": "Choose language"
+  },
+  "theme": {
+    "basculer": "Toggle theme"
   },
   "footer": {
-    "about": "About",
-    "aboutText": "Data DZ provides APIs and data about Algeria for developers and businesses.",
-    "quickLinks": "Quick Links",
-    "contact": "Contact",
-    "contactText": "Email: contact@data-dz.com",
-    "followUs": "Follow us on social media",
-    "allRightsReserved": "All rights reserved",
-    "product": "Projects",
-    "resources": "Resources",
-    "features": "Features",
-    "pricing": "Pricing",
-    "community": "Community",
-    "copyright": "All rights reserved."
-  },
-  "home": {
-    "hero": {
-      "title": "The first API platform for Algeria",
-      "subtitle": "And this is just the beginning.",
-      "getStarted": "Get Started"
-    },
-    "search": {
-      "title": "Hi👋, you're in the right place to find",
-      "highlight": "the best APIs of Algeria"
-    }
-  },
-  "statistics": {
-    "title": "Key Figures",
-    "activeUsers": "Active Users",
-    "datasets": "Datasets",
-    "organizations": "Organizations",
-    "downloads": "Downloads"
-  },
-  "supporters": {
-    "title": "They also need it..."
-  },
-  "hero": {
-    "title": "The largest database of Algeria",
-    "subtitle": "Access reliable and up-to-date data about Algeria through our simple and powerful API. We provide essential data for your applications and services.",
-    "searchPlaceholder": "Search data...",
-    "searchButton": "Search"
-  },
-  "api": {
-    "search": {
-      "title": "Search APIs",
-      "placeholder": "Search for an API...",
-      "propose": "Propose an API"
-    },
-    "card": {
-      "availability": "Availability",
-      "version": "Version",
-      "dataSize": "records"
-    },
-    "technologies": "Supported Technologies",
-    "connectivity": "Remote Connectivity",
-    "subtitle": "Time for Algeria to connect with the world, helping to build a better future.",
-    "universe": {
-      "title": "The first API platform for Algeria",
-      "subtitle": "And this is just the beginning.",
-      "get_started": "Get Started",
-      "hi": "Hi👋, you are in the right place to find",
-      "best_apis": "the best apis of Algeria",
-      "best_dataset": "the best datasets of Algeria.",
-      "propose_api": "Submit an API",
-      "supported_technologies": "Technologies available"
-    }
-  },
-  "common": {
-    "language": "en"
-  },
-  "dataset": {
-    "search": {
-      "title": "Search for datasets",
-      "proposeDataset": "Submit a dataset"
-    }
+    "projet": "An open source project by",
+    "codeSource": "Source code",
+    "copyright": "New Algeria. Data released under the licence of its source."
   },
   "contact": {
-    "subject": "Contact Request - API & Data-dz Platforms",
-    "body": "Hello,\n\nI am interested in learning more about the API & Data-dz Platforms.\n\nBest regards,"
+    "sujet": "Contact - data-dz",
+    "corps": "Hello,\n\n"
   },
-  "products": {
-    "pharmaciesOnDuty": "Pharmacies on Duty",
-    "wilayas": "Wilayas",
-    "postalCodes": "Postal Codes",
-    "communes": "Communes",
-    "hospitals": "Hospitals",
-    "universities": "Universities",
-    "restaurants": "Restaurants",
-    "banks": "Banks",
-    "administrations": "Administrations",
-    "transport": "Transport",
-    "weather": "Weather",
-    "enterprises": "Enterprises",
-    "markets": "Markets",
-    "sports": "Sports",
-    "culture": "Culture"
+  "accueil": {
+    "titre": "Open data about Algeria,",
+    "titreSurligne": "all in one place.",
+    "sousTitre": "Browse, preview and freely download datasets about Algeria, with their source and licence.",
+    "metaTitre": "data-dz - Open data about Algeria",
+    "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence."
   },
-  "currentLanguage": "en",
-  "results": "results",
-  "sortBy": "Sort by",
-  "relevance": "Relevance",
-  "date": "Date",
-  "popularity": "Popularity",
-  "showMore": "Show More",
-  "joinUs": {
-    "joinUs": "Join Us",
-    "modalHeader": "What would you like to do?",
-    "joinGithub": "Join Github Organization",
-    "emailPlaceholder": "you@example.com",
-    "join": "Join",
-    "writeUs": "Write Us!",
-    "writeToUs": "Write to Us",
-    "connectWithUs": "Connect with us",
-    "invitationSuccess": "Invitation sent successfully!",
-    "invitationFailure": "Failed to send invitation. Please try again later.",
-    "writeAlert": "Write to us!",
-    "emailSubject": "Contact Request - New Algeria",
-    "emailBody": "Hello,\n\nI am interested in learning more about the New Algeria Digital Platform.\n\nBest regards,",
-    "motivations": "Developers, Data Scientists, Teachers, Designers, and more are all welcome to join us.  Get involved in the community and help us to build the future of Algeria.",
-    "motivations2": "Find also partners and collaborators to work with.",
-    "invitationSent": "Check your mailbox, an email has been sent!"
+  "statistiques": {
+    "donnees": "Datasets",
+    "categories": "Categories covered",
+    "lignes": "Data rows"
   },
-  "70-sur-notre-api-pour-louverture": "-70% off our API for the opening!",
-  "detail": {
-    "noPreview": "No preview",
-    "noTable": "No table available",
-    "noCSV": "No CSV possible",
-    "geojsonComingSoon": "Coming soon",
-    "unsupportedFormat": "Unsupported format",
-    "table": "Table",
-    "json": "JSON",
-    "csv": "CSV",
-    "geojson": "GeoJSON",
-    "loading": "Loading...",
-    "back": "Back",
-    "viewAssociatedAPI": "View associated API",
-    "ready": "ready",
-    "records": "records",
-    "updatedOn": "Updated on",
-    "formats": "Formats",
-    "api": "API",
-    "dataExcerpt": "Data sample",
-    "documentation": "Documentation",
-    "apiReturn": "API Return",
-    "information": "Information",
-    "contactProvider": "Contact provider",
-    "website": "Website",
+  "catalogue": {
+    "titre": "Data catalogue",
+    "recherche": "Search (e.g. pharmacies, wilayas, schools…)",
+    "rechercheLabel": "Search the catalogue",
+    "categorie": "Category",
+    "toutesCategories": "All categories",
+    "resultats_zero": "No datasets",
+    "resultats_one": "{{count}} dataset",
+    "resultats_other": "{{count}} datasets",
+    "aucunResultat": "No dataset matches your search.",
+    "aucunResultatAide": "Try another keyword or remove the category filter.",
+    "reinitialiser": "Reset filters",
+    "erreur": "The catalogue cannot be loaded right now.",
+    "reessayer": "Try again",
+    "lignes_one": "{{nombre}} row",
+    "lignes_other": "{{nombre}} rows",
+    "licence": "Licence",
     "source": "Source",
-    "searchMore": "Search for more...",
-    "notFound": "doesn't exist for the moment... But if you have it : ",
-    "graphComingSoon": "👀 Graph section coming soon",
-    "graph": "Chart",
-    "map": "Map"
+    "afficherPlus": "Show more"
   },
-  "sabonner-sur": "Subscribe on",
-  "download": "Download",
-  "une-derniere-chance": "✨ One last chance ?",
-  "cartography": {
-    "title": "Cartography & Spatial Data",
-    "subtitle": "Explore Algeria's map and access geospatial data.",
-    "cta": "Explore the map",
-    "best_maps": "the best maps of Algeria",
-    "details": "Discover the magic of this map"
+  "fiche": {
+    "retour": "Back to catalogue",
+    "chargement": "Loading dataset…",
+    "introuvable": "This dataset does not exist or is not published yet.",
+    "erreur": "This dataset cannot be loaded right now.",
+    "readme": "Documentation",
+    "colonnes": "Columns",
+    "colonneNom": "Name",
+    "colonneType": "Type",
+    "colonneDescription": "Description",
+    "aucuneColonne": "No columns described for this version.",
+    "apercu": "Preview of the first rows",
+    "apercuVide": "No preview available.",
+    "fichiers": "Files",
+    "aucunFichier": "No file for this version.",
+    "telecharger": "Download",
+    "principal": "Main",
+    "carte": "Map",
+    "carteChargement": "Loading map…",
+    "carteProgression": "{{charge}} of {{total}}",
+    "carteErreur": "The map cannot be displayed. You can still download the file.",
+    "carteGrosFichier": "This file is {{taille}}: displaying it may be slow on some devices.",
+    "afficherCarte": "Show map",
+    "informations": "Information",
+    "categorie": "Category",
+    "source": "Source",
+    "licence": "Licence",
+    "version": "Version",
+    "publieLe": "Published on",
+    "lignes": "Rows",
+    "motsCles": "Keywords",
+    "couverture": "Coverage",
+    "voirSource": "View the source page"
   },
-  "geomatics": "Geomatics 🌍"
+  "attribution": {
+    "titre": "Attribution",
+    "geoalgeria": "Data: <lien>GeoAlgeria</lien> by Yasser's studio",
+    "licence": "Licence: {{licence}}",
+    "osm": "Contains data © OpenStreetMap contributors, under the ODbL licence: attribution is required when reusing it.",
+    "pageSource": "Dataset page on GeoAlgeria",
+    "signaler": "Report an error in this data"
+  }
 }

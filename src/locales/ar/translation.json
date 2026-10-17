@@ -1,174 +1,104 @@
 {
   "navbar": {
-    "home": "الرئيسية",
-    "api": "API",
-    "getStarted": "ابدأ الآن",
+    "catalogue": "الفهرس",
     "contact": "اتصل بنا",
-    "data": "Data"
+    "rejoindre": "انضم إلينا",
+    "menu": "القائمة"
+  },
+  "langue": {
+    "choisir": "اختر اللغة"
+  },
+  "theme": {
+    "basculer": "تغيير المظهر"
   },
   "footer": {
-    "about": "من نحن",
-    "aboutText": "توفر Data DZ واجهات برمجة التطبيقات والبيانات حول الجزائر للمطورين والشركات.",
-    "quickLinks": "روابط سريعة",
-    "contact": "اتصل بنا",
-    "contactText": "البريد الإلكتروني: contact@data-dz.com",
-    "followUs": "تابعنا على وسائل التواصل الاجتماعي",
-    "allRightsReserved": "جميع الحقوق محفوظة",
-    "community": "مجتمع",
-    "copyright": "جميع الحقوق محفوظة.",
-    "features": "سمات",
-    "pricing": "التسعير",
-    "product": "المشاريع",
-    "resources": "موارد"
-  },
-  "home": {
-    "hero": {
-      "title": "أول منصة واجهة برمجة تطبيقات للجزائر",
-      "subtitle": "وهذه مجرد البداية.",
-      "getStarted": "ابدأ الآن"
-    },
-    "search": {
-      "title": "مرحبا👋، أنت في المكان المناسب للعثور على",
-      "highlight": "أفضل واجهات برمجة التطبيقات في الجزائر"
-    }
-  },
-  "statistics": {
-    "title": "أرقامنا الرئيسية",
-    "activeUsers": "المستخدمون النشطون",
-    "datasets": "مجموعات البيانات",
-    "organizations": "المنظمات",
-    "downloads": "التحميلات"
-  },
-  "supporters": {
-    "title": "هم أيضا بحاجة إليها ..."
-  },
-  "hero": {
-    "title": "أكبر قاعدة بيانات في الجزائر",
-    "subtitle": "الوصول إلى بيانات موثوقة ومحدثة حول الجزائر من خلال واجهة برمجة التطبيقات البسيطة والقوية. نحن نوفر البيانات الأساسية لتطبيقاتك وخدماتك.",
-    "searchPlaceholder": "البحث عن البيانات...",
-    "searchButton": "بحث"
-  },
-  "api": {
-    "search": {
-      "title": "البحث عن واجهات برمجة التطبيقات",
-      "placeholder": "ابحث عن واجهة برمجة...",
-      "propose": "اقترح واجهة برمجة"
-    },
-    "card": {
-      "availability": "التوفر",
-      "version": "الإصدار",
-      "dataSize": "السجلات"
-    },
-    "technologies": "التقنيات المدعومة",
-    "connectivity": "الاتصال عن بعد",
-    "subtitle": "حان الوقت للجزائر للتواصل مع العالم، للمساعدة في بناء مستقبل أفضل.",
-    "universe": {
-      "title": "أول منصة API للجزائر",
-      "subtitle": "وهذه مجرد البداية.",
-      "get_started": "ابدأ",
-      "hi": "مرحبًا ، أنت في المكان المناسب للعثور عليه",
-      "best_apis": "أفضل أبيس الجزائر",
-      "best_dataset": "أفضل مجموعات البيانات من الجزائر.",
-      "propose_api": "إرسال واجهة برمجة التطبيقات",
-      "supported_technologies": "التقنيات المتاحة"
-    }
-  },
-  "dataset": {
-    "search": {
-      "title": "ابحث عن مجموعات البيانات",
-      "proposeDataset": "إرسال مجموعة بيانات"
-    }
+    "projet": "مشروع مفتوح المصدر من",
+    "codeSource": "الشيفرة المصدرية",
+    "copyright": "New Algeria. البيانات خاضعة لرخصة مصدرها."
   },
   "contact": {
-    "subject": "طلب الاتصال - API",
-    "body": "مرحبًا،\n\n\nأنا مهتم بمعرفة المزيد عن واجهة برمجة التطبيقات (API)."
+    "sujet": "اتصال - data-dz",
+    "corps": "مرحبا،\n\n"
   },
-  "products": {
-    "pharmaciesOnDuty": "الصيدليات المناوبة",
-    "wilayas": "ولايات",
-    "postalCodes": "الرموز البريدية",
-    "communes": "البلديات",
-    "hospitals": "المستشفيات",
-    "universities": "الجامعات",
-    "restaurants": "المطاعم",
-    "banks": "البنوك",
-    "administrations": "الإدارات",
-    "transport": "النقل",
-    "weather": "الطقس",
-    "enterprises": "الشركات",
-    "markets": "الأسواق",
-    "sports": "الرياضة",
-    "culture": "الثقافة"
+  "accueil": {
+    "titre": "البيانات المفتوحة حول الجزائر،",
+    "titreSurligne": "في مكان واحد.",
+    "sousTitre": "تصفّح مجموعات البيانات حول الجزائر واطّلع عليها وحمّلها بحرية، مع ذكر مصدرها ورخصتها.",
+    "metaTitre": "data-dz - البيانات المفتوحة حول الجزائر",
+    "metaDescription": "بوابة مفتوحة المصدر للبيانات حول الجزائر: فهرس، معاينة، خرائط وتحميلات، مع المصدر والرخصة."
   },
-  "currentLanguage": "ar",
-  "results": "نتائج",
-  "sortBy": "ترتيب حسب",
-  "relevance": "الأهمية",
-  "date": "التاريخ",
-  "popularity": "الشعبية",
-  "showMore": "عرض المزيد",
-  "joinUs": {
-    "joinUs": "انضم إلينا",
-    "modalHeader": "ماذا تريد أن تفعل؟",
-    "joinGithub": "انضم إلى منظمة Github",
-    "emailPlaceholder": "you@example.com",
-    "join": "انضم",
-    "writeUs": "اكتب لنا!",
-    "writeToUs": "اكتب لنا",
-    "connectWithUs": "تواصل معنا",
-    "invitationSuccess": "تم إرسال الدعوة بنجاح!",
-    "invitationFailure": "فشل في إرسال الدعوة. يرجى المحاولة مرة أخرى لاحقًا.",
-    "writeAlert": "اكتب لنا!",
-    "emailSubject": "طلب اتصال - الجزائر الجديدة",
-    "emailBody": "مرحباً،\n\nأنا مهتم بمعرفة المزيد عن منصة الجزائر الرقمية الجديدة.\n\nمع أطيب التحيات،",
-    "motivations": "يتم ترحيب المطورين وعلماء البيانات والمعلمين والمصممين والمزيد للانضمام إلينا.  \nالانخراط في المجتمع ومساعدتنا على بناء مستقبل الجزائر.",
-    "motivations2": "ابحث أيضًا عن شركاء ومتعاونين للعمل معهم.",
-    "invitationSent": "تحقق من صندوق البريد الخاص بك ، تم إرسال بريد إلكتروني!"
+  "statistiques": {
+    "donnees": "مجموعات البيانات",
+    "categories": "الفئات المغطاة",
+    "lignes": "أسطر البيانات"
   },
-  "70-sur-notre-api-pour-louverture": "-70 ٪ من API لدينا للافتتاح!",
-  "detail": {
-    "noPreview": "لا معاينة",
-    "noTable": "لا يوجد جدول متاح",
-    "noCSV": "لا يمكن تصدير CSV",
-    "geojsonComingSoon": "قريباً",
-    "unsupportedFormat": "تنسيق غير مدعوم",
-    "table": "جدول",
-    "json": "JSON",
-    "csv": "CSV",
-    "geojson": "GeoJSON",
-    "loading": "جار التحميل...",
-    "back": "رجوع",
-    "viewAssociatedAPI": "عرض واجهة برمجة التطبيقات المرتبطة",
-    "ready": "جاهز",
-    "records": "سجلات",
-    "updatedOn": "تم التحديث في",
-    "formats": "التنسيقات",
-    "api": "واجهة برمجة التطبيقات",
-    "dataExcerpt": "مقتطف من البيانات",
-    "documentation": "التوثيق",
-    "apiReturn": "عودة API",
-    "information": "معلومات",
-    "contactProvider": "اتصل بالمزود",
-    "website": "موقع الكتروني",
+  "catalogue": {
+    "titre": "فهرس البيانات",
+    "recherche": "ابحث (مثلا: صيدليات، ولايات، مدارس…)",
+    "rechercheLabel": "البحث في الفهرس",
+    "categorie": "الفئة",
+    "toutesCategories": "كل الفئات",
+    "resultats_zero": "لا توجد مجموعات بيانات",
+    "resultats_one": "مجموعة بيانات واحدة",
+    "resultats_two": "مجموعتا بيانات",
+    "resultats_few": "{{count}} مجموعات بيانات",
+    "resultats_many": "{{count}} مجموعة بيانات",
+    "resultats_other": "{{count}} مجموعة بيانات",
+    "aucunResultat": "لا توجد مجموعة بيانات تطابق بحثك.",
+    "aucunResultatAide": "جرّب كلمة أخرى أو أزل تصفية الفئة.",
+    "reinitialiser": "إعادة ضبط التصفية",
+    "erreur": "تعذّر تحميل الفهرس حاليا.",
+    "reessayer": "إعادة المحاولة",
+    "lignes_zero": "{{nombre}} سطر",
+    "lignes_one": "سطر واحد",
+    "lignes_two": "سطران",
+    "lignes_few": "{{nombre}} أسطر",
+    "lignes_many": "{{nombre}} سطرا",
+    "lignes_other": "{{nombre}} سطر",
+    "licence": "الرخصة",
     "source": "المصدر",
-    "searchMore": "ابحث عن المزيد...",
-    "notFound": "غير موجود في الوقت الحالي ... ولكن إذا كان لديك:",
-    "graphComingSoon": "👀 قسم الرسم البياني قريبًا",
-    "graph": "جدول",
-    "map": "رسم خريطة"
+    "afficherPlus": "عرض المزيد"
   },
-  "sabonner-sur": "اشترك في",
-  "common": {
-    "language": "ar"
+  "fiche": {
+    "retour": "العودة إلى الفهرس",
+    "chargement": "جارٍ تحميل البطاقة…",
+    "introuvable": "هذه البيانات غير موجودة أو لم تُنشر بعد.",
+    "erreur": "تعذّر تحميل هذه البطاقة حاليا.",
+    "readme": "التوثيق",
+    "colonnes": "الأعمدة",
+    "colonneNom": "الاسم",
+    "colonneType": "النوع",
+    "colonneDescription": "الوصف",
+    "aucuneColonne": "لا توجد أعمدة موصوفة لهذه النسخة.",
+    "apercu": "معاينة الأسطر الأولى",
+    "apercuVide": "لا توجد معاينة.",
+    "fichiers": "الملفات",
+    "aucunFichier": "لا يوجد ملف لهذه النسخة.",
+    "telecharger": "تحميل",
+    "principal": "رئيسي",
+    "carte": "الخريطة",
+    "carteChargement": "جارٍ تحميل الخريطة…",
+    "carteProgression": "{{charge}} من {{total}}",
+    "carteErreur": "تعذّر عرض الخريطة. يمكنك دائما تحميل الملف.",
+    "carteGrosFichier": "حجم هذا الملف {{taille}}: قد يكون عرضه بطيئا على بعض الأجهزة.",
+    "afficherCarte": "عرض الخريطة",
+    "informations": "معلومات",
+    "categorie": "الفئة",
+    "source": "المصدر",
+    "licence": "الرخصة",
+    "version": "النسخة",
+    "publieLe": "نُشرت في",
+    "lignes": "الأسطر",
+    "motsCles": "الكلمات المفتاحية",
+    "couverture": "التغطية",
+    "voirSource": "عرض صفحة المصدر"
   },
-  "une-derniere-chance": "✨ فرصة أخيرة؟",
-  "download": "تحميل",
-  "cartography": {
-    "title": "الخرائط والبيانات المكانية",
-    "subtitle": "استكشف خريطة الجزائر واحصل على البيانات الجيومكانية.",
-    "cta": "استكشاف الخريطة",
-    "best_maps": "أفضل خرائط الجزائر",
-    "details": "اكتشف سحر هذه الخريطة"
-  },
-  "geomatics": "الجيولوجية 🌍"
+  "attribution": {
+    "titre": "الإسناد",
+    "geoalgeria": "البيانات: <lien>GeoAlgeria</lien> من Yasser's studio",
+    "licence": "الرخصة: {{licence}}",
+    "osm": "تحتوي على بيانات © مساهمي OpenStreetMap، بموجب رخصة ODbL: ذكر المصدر إلزامي عند إعادة الاستخدام.",
+    "pageSource": "صفحة البيانات على GeoAlgeria",
+    "signaler": "الإبلاغ عن خطأ في هذه البيانات"
+  }
 }
