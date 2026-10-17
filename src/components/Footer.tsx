@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Mail } from "lucide-react";
 import { faGithub, faLinkedin, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -49,6 +50,14 @@ const Footer = () => {
           <FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
         </a>
       </div>
+
+      <a
+        href={`mailto:admin@newalgeria.org?subject=${encodeURIComponent(t("contact.sujet"))}&body=${encodeURIComponent(t("contact.corps"))}`}
+        className="inline-flex items-center gap-2 text-sm hover:text-foreground"
+      >
+        <Mail className="h-4 w-4" aria-hidden />
+        {t("footer.contact")}
+      </a>
 
       <hr className="w-1/4 border-primary/10 dark:border-primary-foreground/10" />
 

@@ -41,24 +41,38 @@ const styleGlobe: maplibregl.StyleSpecification = {
   ],
 };
 
+// Propriétés utilisées comme titre de la popup, par ordre de préférence.
+const CLES_TITRE = ["nom", "name", "name_fr", "nom_fr", "titre", "label"];
+
 /** Contenu de popup construit avec textContent : les propriétés viennent de la source et ne sont jamais interprétées. */
 function contenuPopup(proprietes: Record<string, unknown>): HTMLElement {
-  const tableau = document.createElement("table");
-  tableau.className = "text-xs";
+  const conteneur = document.createElement("div");
+  conteneur.className = "popup-donnee";
+
+  const cleTitre = CLES_TITRE.find((cle) => typeof proprietes[cle] === "string" && proprietes[cle]);
+  if (cleTitre) {
+    const titre = document.createElement("p");
+    titre.className = "popup-donnee__titre";
+    titre.textContent = String(proprietes[cleTitre]);
+    titre.dir = "auto";
+    conteneur.appendChild(titre);
+  }
+
+  const liste = document.createElement("dl");
+  liste.className = "popup-donnee__liste";
   Object.entries(proprietes)
-    .slice(0, 15)
+    .filter(([cle, valeur]) => cle !== cleTitre && valeur !== null && valeur !== "")
+    .slice(0, 20)
     .forEach(([cle, valeur]) => {
-      const ligne = tableau.insertRow();
-      const cellCle = ligne.insertCell();
-      cellCle.textContent = cle;
-      cellCle.style.fontWeight = "600";
-      cellCle.style.paddingInlineEnd = "8px";
-      cellCle.style.verticalAlign = "top";
-      const cellValeur = ligne.insertCell();
-      cellValeur.textContent = valeurEnTexte(valeur, 80);
-      cellValeur.dir = "auto";
+      const terme = document.createElement("dt");
+      terme.textContent = cle;
+      const definition = document.createElement("dd");
+      definition.textContent = valeurEnTexte(valeur, 120);
+      definition.dir = "auto";
+      liste.append(terme, definition);
     });
-  return tableau;
+  conteneur.appendChild(liste);
+  return conteneur;
 }
 
 const Globe = ({ donnees }: { donnees: GeoJsonObject }) => {
@@ -118,7 +132,11 @@ const Globe = ({ donnees }: { donnees: GeoJsonObject }) => {
       carte.on("click", calquesCliquables, (evenement) => {
         const entite = evenement.features?.[0] as MapGeoJSONFeature | undefined;
         if (!entite || Object.keys(entite.properties).length === 0) return;
-        new maplibregl.Popup({ maxWidth: "320px" })
+        // La popup ne doit jamais être plus large que le globe, sinon elle est coupée sur mobile.
+        new maplibregl.Popup({
+          maxWidth: `${Math.min(340, carte.getContainer().clientWidth - 32)}px`,
+          className: "popup-globe",
+        })
           .setLngLat(evenement.lngLat)
           .setDOMContent(contenuPopup(entite.properties))
           .addTo(carte);

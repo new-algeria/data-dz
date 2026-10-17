@@ -1,84 +1,64 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun, SlidersHorizontal } from "lucide-react";
-import { useTheme } from "@/hooks/use-theme";
-import { useState, useEffect } from "react";
-import { LanguageSelector } from "./LanguageSelector";
+import { Github, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import JoinUsBtn from "./JoinUsBtn";
-import LOGO_DATA_DZ from "@/assets/img/data_dz_logo.png";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/hooks/use-theme";
+import { cn } from "@/lib/utils";
+import { LanguageSelector } from "./LanguageSelector";
+import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
-  const [menuOuvert, setMenuOuvert] = useState(false);
+  const [defile, setDefile] = useState(false);
 
   useEffect(() => {
-    if (!menuOuvert) return;
-    const fermerMenu = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".dropdown-menu")) {
-        setMenuOuvert(false);
-      }
-    };
-    const fermerAuDefilement = () => setMenuOuvert(false);
-
-    document.addEventListener("click", fermerMenu);
-    window.addEventListener("scroll", fermerAuDefilement);
-    return () => {
-      document.removeEventListener("click", fermerMenu);
-      window.removeEventListener("scroll", fermerAuDefilement);
-    };
-  }, [menuOuvert]);
-
-  const boutonTheme = (
-    <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
-      {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-    </Button>
-  );
+    const surDefilement = () => setDefile(window.scrollY > 8);
+    surDefilement();
+    window.addEventListener("scroll", surDefilement, { passive: true });
+    return () => window.removeEventListener("scroll", surDefilement);
+  }, []);
 
   return (
-    <nav className="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-40 border-b">
-      <div className="container mx-auto px-2 h-16 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-primary">
-          <img src={LOGO_DATA_DZ} alt="data-dz" className="h-20 md:h-24" />
+    <header
+      className={cn(
+        "fixed top-0 z-40 w-full transition-all duration-300",
+        defile
+          ? "border-b border-gray-200/70 bg-white/80 shadow-sm backdrop-blur-lg dark:border-white/10 dark:bg-gray-950/80"
+          : "border-b border-transparent bg-white/40 backdrop-blur-sm dark:bg-gray-950/30"
+      )}
+    >
+      <nav className="container mx-auto flex h-16 items-center justify-between gap-3 px-4" aria-label="data-dz">
+        <Link to="/" className="group flex items-center gap-2.5" aria-label="data-dz">
+          <img
+            src={ICONE_DATA_DZ}
+            alt=""
+            className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[20deg]"
+          />
+          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white" dir="ltr">
+            data<span className="text-emerald-600 dark:text-emerald-400">-dz</span>
+          </span>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-gray-600 dark:text-gray-300 hover:text-primary">
-            {t("navbar.catalogue")}
-          </Link>
-          <a
-            href={`mailto:admin@newalgeria.org?subject=${encodeURIComponent(t("contact.sujet"))}&body=${encodeURIComponent(t("contact.corps"))}`}
-            className="hidden sm:inline text-gray-600 dark:text-gray-300 hover:text-primary"
+        <div className="flex items-center gap-1 sm:gap-2">
+          <LanguageSelector />
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
+          {/* Les invitations GitHub passeront plus tard par une fonction serveur : simple lien pour l'instant. */}
+          <Button
+            asChild
+            size="sm"
+            className="ms-1 gap-2 bg-gray-900 text-white hover:bg-emerald-700 dark:bg-white dark:text-gray-900 dark:hover:bg-emerald-300"
           >
-            {t("navbar.contact")}
-          </a>
-          <div className="relative md:hidden dropdown-menu">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t("navbar.menu")}
-              aria-expanded={menuOuvert}
-              onClick={() => setMenuOuvert(!menuOuvert)}
-            >
-              <SlidersHorizontal className="h-5 w-5" />
-            </Button>
-            {menuOuvert && (
-              <div className="absolute end-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50">
-                <div className="p-2 flex items-center gap-2">
-                  <LanguageSelector />
-                  {boutonTheme}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <LanguageSelector />
-            {boutonTheme}
-          </div>
-          <JoinUsBtn />
+            <a href="https://github.com/new-algeria" target="_blank" rel="noopener noreferrer" aria-label={t("navbar.contribuer")}>
+              <Github className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("navbar.contribuer")}</span>
+            </a>
+          </Button>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 };
