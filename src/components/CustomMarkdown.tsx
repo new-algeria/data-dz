@@ -1,17 +1,16 @@
 import React from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 
 interface CustomMarkdownProps {
   content: string;
 }
 
+// Le HTML brut n'est pas interprété : le README vient de sources externes.
 const CustomMarkdown: React.FC<CustomMarkdownProps> = ({ content }) => {
   return (
     <Markdown
       remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeRaw]}
       components={{
         a: ({ node, ...props }) => (
           <a {...props} target="_blank" rel="noopener noreferrer" />
@@ -63,7 +62,7 @@ const CustomMarkdown: React.FC<CustomMarkdownProps> = ({ content }) => {
         table: ({ node, ...props }) => (
           <table
             {...props}
-            className="table-auto w-full text-black dark:text-white"
+            className="table-auto w-full text-black dark:text-white block overflow-x-auto"
           />
         ),
         code: ({ node, ...props }) => (
