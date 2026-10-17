@@ -25,7 +25,11 @@
     "titreSurligne": "all in one place.",
     "sousTitre": "Browse, preview and freely download datasets about Algeria, with their source and licence.",
     "metaTitre": "data-dz - Open data about Algeria",
-    "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence."
+    "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence.",
+    "badge": "Open data · Algeria",
+    "explorer": "Explore the catalogue",
+    "contribuer": "Contribute on GitHub",
+    "globe": "Globe centred on Algeria"
   },
   "statistiques": {
     "donnees": "Datasets",
@@ -69,7 +73,6 @@
     "aucunFichier": "No file for this version.",
     "telecharger": "Download",
     "principal": "Main",
-    "carte": "Map",
     "carteChargement": "Loading map…",
     "carteProgression": "{{charge}} of {{total}}",
     "carteErreur": "The map cannot be displayed. You can still download the file.",
@@ -84,7 +87,9 @@
     "lignes": "Rows",
     "motsCles": "Keywords",
     "couverture": "Coverage",
-    "voirSource": "View the source page"
+    "voirSource": "View the source page",
+    "globe": "Interactive globe",
+    "globeAide": "Drag to rotate the globe, use the buttons to zoom. Click an item to see its details."
   },
   "attribution": {
     "titre": "Attribution",
