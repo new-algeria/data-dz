@@ -11,6 +11,7 @@ import { EtatErreur } from "@/components/EtatErreur";
 import { Statistiques } from "@/components/catalogue/Statistiques";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
+import { IconeCategorie } from "@/components/BadgeCategorie";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +25,6 @@ import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
-import type { TexteMultilingue } from "@/lib/types";
 
 const TOUTES_CATEGORIES = "toutes";
 const TAILLE_PAGE = 12;
@@ -68,11 +68,10 @@ const Catalogue = () => {
     placeholderData: keepPreviousData,
   });
 
-  const nomsCategories = useMemo(() => {
-    const noms = new Map<string, TexteMultilingue>();
-    requeteCategories.data?.forEach((cat) => noms.set(cat.slug, cat.nom));
-    return noms;
-  }, [requeteCategories.data]);
+  const categoriesParSlug = useMemo(
+    () => new Map((requeteCategories.data ?? []).map((cat) => [cat.slug, cat])),
+    [requeteCategories.data]
+  );
 
   const choisirCategorie = (valeur: string) => {
     setParametres(
@@ -208,10 +207,18 @@ const Catalogue = () => {
                 <SelectValue placeholder={t("catalogue.categorie")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={TOUTES_CATEGORIES}>{t("catalogue.toutesCategories")}</SelectItem>
+                <SelectItem value={TOUTES_CATEGORIES}>
+                  <span className="flex items-center gap-2">
+                    <IconeCategorie icone={null} />
+                    {t("catalogue.toutesCategories")}
+                  </span>
+                </SelectItem>
                 {requeteCategories.data?.map((cat) => (
                   <SelectItem key={cat.slug} value={cat.slug}>
-                    {texteTraduit(cat.nom, langue)}
+                    <span className="flex items-center gap-2">
+                      <IconeCategorie icone={cat.icone} />
+                      {texteTraduit(cat.nom, langue)}
+                    </span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -259,7 +266,7 @@ const Catalogue = () => {
                     >
                       <CarteDonnee
                         donnee={donnee}
-                        nomCategorie={donnee.categorie_slug ? nomsCategories.get(donnee.categorie_slug) : undefined}
+                        categorie={donnee.categorie_slug ? categoriesParSlug.get(donnee.categorie_slug) : undefined}
                       />
                     </motion.div>
                   ))}

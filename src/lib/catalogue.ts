@@ -76,7 +76,7 @@ export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
       `
       slug, titre, description, readme, categorie_slug, licence_code, licence_details,
       url_source, mots_cles, infos_source,
-      categories ( slug, nom ),
+      categories ( slug, nom, icone ),
       sources ( slug, nom, url, verifiee ),
       licences ( code, nom, url, usage_commercial, attribution_requise, partage_identique ),
       versions!datasets_version_courante_fk (

@@ -111,5 +111,16 @@
     "partageOui": "Partage à l'identique : les dérivés gardent la même licence",
     "partageNon": "Les dérivés peuvent changer de licence",
     "lire": "Lire le texte de la licence"
+  },
+  "types": {
+    "texte": "Texte",
+    "entier": "Nombre entier",
+    "decimal": "Nombre décimal",
+    "booleen": "Vrai / faux",
+    "date": "Date",
+    "liste": "Liste",
+    "objet": "Objet",
+    "vide": "Vide",
+    "origine": "Type d'origine : {{type}}"
   }
 }
