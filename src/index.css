@@ -104,7 +104,7 @@
     @apply end-1 top-1 h-7 w-7 rounded-full text-lg leading-none text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800;
   }
   .popup-donnee {
-    @apply max-h-64 overflow-y-auto p-4 pe-8 text-sm;
+    @apply max-h-48 overflow-y-auto p-4 pe-8 text-sm sm:max-h-64;
   }
   .popup-donnee__titre {
     @apply mb-2 border-b border-gray-200 pb-2 text-base font-semibold text-emerald-700 dark:border-gray-700 dark:text-emerald-400;

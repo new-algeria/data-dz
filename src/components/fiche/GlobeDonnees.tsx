@@ -132,7 +132,11 @@ const Globe = ({ donnees }: { donnees: GeoJsonObject }) => {
       carte.on("click", calquesCliquables, (evenement) => {
         const entite = evenement.features?.[0] as MapGeoJSONFeature | undefined;
         if (!entite || Object.keys(entite.properties).length === 0) return;
-        new maplibregl.Popup({ maxWidth: "min(340px, 85vw)", className: "popup-globe" })
+        // La popup ne doit jamais être plus large que le globe, sinon elle est coupée sur mobile.
+        new maplibregl.Popup({
+          maxWidth: `${Math.min(340, carte.getContainer().clientWidth - 32)}px`,
+          className: "popup-globe",
+        })
           .setLngLat(evenement.lngLat)
           .setDOMContent(contenuPopup(entite.properties))
           .addTo(carte);
