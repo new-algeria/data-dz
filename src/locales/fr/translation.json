@@ -1,174 +1,97 @@
 {
   "navbar": {
-    "home": "Accueil",
-    "api": "API",
-    "getStarted": "Commencer",
+    "catalogue": "Catalogue",
     "contact": "Contact",
-    "data": "Data"
+    "rejoindre": "Rejoignez-nous",
+    "menu": "Menu"
+  },
+  "langue": {
+    "choisir": "Choisir la langue"
+  },
+  "theme": {
+    "basculer": "Changer de thème"
   },
   "footer": {
-    "about": "À propos",
-    "aboutText": "Data DZ fournit des APIs et données sur l'Algérie pour les développeurs et entreprises.",
-    "quickLinks": "Liens rapides",
-    "contact": "Contact",
-    "contactText": "Email: contact@data-dz.com",
-    "followUs": "Suivez-nous sur les réseaux sociaux",
-    "allRightsReserved": "Tous droits réservés",
-    "community": "Communauté",
-    "copyright": "Tous droits réservés.",
-    "features": "Caractéristiques",
-    "pricing": "Prix",
-    "product": "Projets",
-    "resources": "Ressources"
-  },
-  "home": {
-    "hero": {
-      "title": "La première plateforme d'API pour l'Algérie",
-      "subtitle": "Et ce n'est que le début.",
-      "getStarted": "Commencer"
-    },
-    "search": {
-      "title": "Salut👋, vous êtes au bon endroit pour trouver",
-      "highlight": "les meilleures APIs d'Algérie"
-    }
-  },
-  "statistics": {
-    "title": "Nos chiffres clés",
-    "activeUsers": "Utilisateurs actifs",
-    "datasets": "Jeux de données",
-    "organizations": "Organisations",
-    "downloads": "Téléchargements"
-  },
-  "supporters": {
-    "title": "Ils en ont également besoin ..."
-  },
-  "hero": {
-    "title": "La plus grande base de données d'Algérie",
-    "subtitle": "Accédez à des données fiables et à jour sur l'Algérie via notre API simple et puissante. Nous fournissons des données essentielles pour vos applications et services.",
-    "searchPlaceholder": "Rechercher des données...",
-    "searchButton": "Rechercher"
-  },
-  "api": {
-    "search": {
-      "title": "Rechercher des APIs",
-      "placeholder": "Rechercher une API...",
-      "propose": "Proposer une API"
-    },
-    "card": {
-      "availability": "Disponibilité",
-      "version": "Version",
-      "dataSize": "enregistrements"
-    },
-    "technologies": "Technologies Supportées",
-    "connectivity": "Connectivité à distance",
-    "subtitle": "Il est temps pour l'Algérie de se connecter au monde, contribuant à construire un meilleur avenir.",
-    "universe": {
-      "title": "La 1ère plateforme API pour l'Algérie",
-      "subtitle": "Et ce n'est que le début.",
-      "get_started": "Commencer",
-      "hi": "Salut👋, tu es au bon endroit pour trouver",
-      "best_apis": "les meilleures API de l'Algérie",
-      "best_dataset": "les meilleurs datasets de l’Algérie.",
-      "propose_api": "Soumettre une API",
-      "supported_technologies": "Technologies disponibles"
-    }
-  },
-  "dataset": {
-    "search": {
-      "title": "Rechercher des données",
-      "proposeDataset": "Soumettre un dataset"
-    }
+    "projet": "Un projet open source porté par",
+    "codeSource": "Code source",
+    "copyright": "New Algeria. Données sous la licence de leur source."
   },
   "contact": {
-    "subject": "Demande de contact - API",
-    "body": "Bonjour,\n\n\nJe souhaite en savoir plus sur l'API"
+    "sujet": "Contact - data-dz",
+    "corps": "Bonjour,\n\n"
   },
-  "products": {
-    "pharmaciesOnDuty": "Pharmacies de Garde",
-    "wilayas": "Wilayas",
-    "postalCodes": "Codes Postaux",
-    "communes": "Communes",
-    "hospitals": "Hôpitaux",
-    "universities": "Universités",
-    "restaurants": "Restaurants",
-    "banks": "Banques",
-    "administrations": "Administrations",
-    "transport": "Transport",
-    "weather": "Météo",
-    "enterprises": "Entreprises",
-    "markets": "Marchés",
-    "sports": "Sports",
-    "culture": "Culture"
+  "accueil": {
+    "titre": "Les données ouvertes sur l'Algérie,",
+    "titreSurligne": "au même endroit.",
+    "sousTitre": "Parcourez, prévisualisez et téléchargez librement des jeux de données sur l'Algérie, avec leur source et leur licence.",
+    "metaTitre": "data-dz - Données ouvertes sur l'Algérie",
+    "metaDescription": "Portail open source de données sur l'Algérie : catalogue, aperçu, cartes et téléchargements, avec source et licence."
   },
-  "currentLanguage": "fr",
-  "results": "résultats",
-  "sortBy": "Trier par",
-  "relevance": "Pertinence",
-  "date": "Date",
-  "popularity": "Popularité",
-  "showMore": "Afficher plus",
-  "joinUs": {
-    "joinUs": "Rejoignez-nous",
-    "modalHeader": "Que souhaitez-vous faire ?",
-    "joinGithub": "Rejoindre l'organisation Github",
-    "emailPlaceholder": "vous@example.com",
-    "join": "Rejoindre",
-    "writeUs": "Écrivez-nous !",
-    "writeToUs": "Écrivez-nous",
-    "connectWithUs": "Connectez-vous avec nous",
-    "invitationSuccess": "Invitation envoyée avec succès !",
-    "invitationFailure": "Échec de l'envoi de l'invitation. Veuillez réessayer plus tard.",
-    "writeAlert": "Écrivez-nous !",
-    "emailSubject": "Demande de Contact - NewAlgeria",
-    "emailBody": "Bonjour,\n\nJe suis intéressé(e) par en savoir plus sur la Plateforme Numérique NewAlgeria.\n\nCordialement,",
-    "motivations": "Les développeurs, les data scientists, les enseignants, les concepteurs et bien plus encore sont tous invités à nous rejoindre.  \nImpliquez-vous dans la communauté et aidez-nous à construire l’avenir de l’Algérie.",
-    "motivations2": "Trouvez également des partenaires et des collaborateurs avec lesquels travailler.",
-    "invitationSent": "Vérifiez votre boîte aux lettres, un e-mail a été envoyé!"
+  "statistiques": {
+    "donnees": "Jeux de données",
+    "categories": "Catégories couvertes",
+    "lignes": "Lignes de données"
   },
-  "70-sur-notre-api-pour-louverture": "-70% sur notre API pour l'ouverture !",
-  "detail": {
-    "noPreview": "Aucun aperçu",
-    "noTable": "Aucun tableau disponible",
-    "noCSV": "Aucun CSV possible",
-    "geojsonComingSoon": "Bientôt disponible",
-    "unsupportedFormat": "Format non supporté",
-    "table": "Tableau",
-    "json": "JSON",
-    "csv": "CSV",
-    "geojson": "GeoJSON",
-    "loading": "Chargement...",
-    "back": "Retour",
-    "viewAssociatedAPI": "Voir l'API associée",
-    "ready": "prête!",
-    "records": "enregistrements",
-    "updatedOn": "Mis à jour le",
-    "formats": "Formats",
-    "api": "API",
-    "dataExcerpt": "Extrait des données",
-    "documentation": "Documentation",
-    "apiReturn": "Retour API",
-    "information": "Informations",
-    "contactProvider": "Contacter le fournisseur",
-    "website": "Site web",
+  "catalogue": {
+    "titre": "Catalogue des données",
+    "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
+    "rechercheLabel": "Rechercher dans le catalogue",
+    "categorie": "Catégorie",
+    "toutesCategories": "Toutes les catégories",
+    "resultats_zero": "Aucun jeu de données",
+    "resultats_one": "{{count}} jeu de données",
+    "resultats_other": "{{count}} jeux de données",
+    "aucunResultat": "Aucun jeu de données ne correspond à votre recherche.",
+    "aucunResultatAide": "Essayez un autre mot-clé ou retirez le filtre de catégorie.",
+    "reinitialiser": "Réinitialiser les filtres",
+    "erreur": "Impossible de charger le catalogue pour le moment.",
+    "reessayer": "Réessayer",
+    "lignes_one": "{{nombre}} ligne",
+    "lignes_other": "{{nombre}} lignes",
+    "licence": "Licence",
     "source": "Source",
-    "searchMore": "En rechercher d'autres...",
-    "notFound": "n'existe pas pour le moment ... mais si vous l'avez:",
-    "graphComingSoon": "👀 Section graphique à venir bientôt",
-    "graph": "Graphique",
-    "map": "Carte"
+    "afficherPlus": "Afficher plus"
   },
-  "sabonner-sur": "Abonner à",
-  "common": {
-    "language": "fr"
+  "fiche": {
+    "retour": "Retour au catalogue",
+    "chargement": "Chargement de la fiche…",
+    "introuvable": "Cette donnée n'existe pas ou n'est pas encore publiée.",
+    "erreur": "Impossible de charger cette fiche pour le moment.",
+    "readme": "Documentation",
+    "colonnes": "Colonnes",
+    "colonneNom": "Nom",
+    "colonneType": "Type",
+    "colonneDescription": "Description",
+    "aucuneColonne": "Aucune colonne décrite pour cette version.",
+    "apercu": "Aperçu des premières lignes",
+    "apercuVide": "Aucun aperçu disponible.",
+    "fichiers": "Fichiers",
+    "aucunFichier": "Aucun fichier pour cette version.",
+    "telecharger": "Télécharger",
+    "principal": "Principal",
+    "carte": "Carte",
+    "carteChargement": "Chargement de la carte…",
+    "carteProgression": "{{charge}} sur {{total}}",
+    "carteErreur": "Impossible d'afficher la carte. Vous pouvez toujours télécharger le fichier.",
+    "carteGrosFichier": "Ce fichier pèse {{taille}} : son affichage peut être lent sur certains appareils.",
+    "afficherCarte": "Afficher la carte",
+    "informations": "Informations",
+    "categorie": "Catégorie",
+    "source": "Source",
+    "licence": "Licence",
+    "version": "Version",
+    "publieLe": "Publiée le",
+    "lignes": "Lignes",
+    "motsCles": "Mots-clés",
+    "couverture": "Couverture",
+    "voirSource": "Voir la page de la source"
   },
-  "une-derniere-chance": "✨ Une dernière chance?",
-  "download": "Télécharger",
-  "cartography": {
-    "title": "Cartographie & Données Spatiales",
-    "subtitle": "Explorez la carte de l’Algérie et accédez aux données géospatiales.",
-    "cta": "Explorer la carte",
-    "best_maps": "les meilleures cartes de l'Algérie",
-    "details": "Découvrez la magie de cette carte"
-  },
-  "geomatics": "Géomatique 🌍"
+  "attribution": {
+    "titre": "Attribution",
+    "geoalgeria": "Données : <lien>GeoAlgeria</lien> par Yasser's studio",
+    "licence": "Licence : {{licence}}",
+    "osm": "Contient des données © contributeurs OpenStreetMap, sous licence ODbL : la citation est obligatoire en cas de réutilisation.",
+    "pageSource": "Page de la donnée sur GeoAlgeria",
+    "signaler": "Signaler une erreur dans ces données"
+  }
 }
