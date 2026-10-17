@@ -1,9 +1,6 @@
 {
   "navbar": {
-    "catalogue": "Catalogue",
-    "contact": "Contact",
-    "rejoindre": "Join us",
-    "menu": "Menu"
+    "contribuer": "Contribute"
   },
   "langue": {
     "choisir": "Choose language"
@@ -14,7 +11,8 @@
   "footer": {
     "projet": "An open source project by",
     "codeSource": "Source code",
-    "copyright": "New Algeria. Data released under the licence of its source."
+    "copyright": "New Algeria. Data released under the licence of its source.",
+    "contact": "Contact us"
   },
   "contact": {
     "sujet": "Contact - data-dz",

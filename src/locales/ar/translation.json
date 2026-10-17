@@ -1,9 +1,6 @@
 {
   "navbar": {
-    "catalogue": "الفهرس",
-    "contact": "اتصل بنا",
-    "rejoindre": "انضم إلينا",
-    "menu": "القائمة"
+    "contribuer": "ساهم"
   },
   "langue": {
     "choisir": "اختر اللغة"
@@ -14,7 +11,8 @@
   "footer": {
     "projet": "مشروع مفتوح المصدر من",
     "codeSource": "الشيفرة المصدرية",
-    "copyright": "New Algeria. البيانات خاضعة لرخصة مصدرها."
+    "copyright": "New Algeria. البيانات خاضعة لرخصة مصدرها.",
+    "contact": "اتصل بنا"
   },
   "contact": {
     "sujet": "اتصال - data-dz",
