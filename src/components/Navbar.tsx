@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 import { LanguageSelector } from "./LanguageSelector";
+import { MenuUtilisateur } from "./auth/MenuUtilisateur";
 import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
 
 export const Navbar = () => {
@@ -54,9 +55,12 @@ export const Navbar = () => {
           >
             <a href="https://github.com/new-algeria" target="_blank" rel="noopener noreferrer" aria-label={t("navbar.contribuer")}>
               <Github className="h-4 w-4" />
-              <span className="hidden sm:inline">{t("navbar.contribuer")}</span>
+              <span className="hidden md:inline">{t("navbar.contribuer")}</span>
             </a>
           </Button>
+          <div className="ms-1">
+            <MenuUtilisateur />
+          </div>
         </div>
       </nav>
     </header>
