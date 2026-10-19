@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
+import { FournisseurAuth } from "./contexte/FournisseurAuth";
 import "./index.css";
 import "./i18n.ts";
 
@@ -21,9 +22,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Analytics />
     <QueryClientProvider client={clientRequetes}>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
+      <FournisseurAuth>
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
+      </FournisseurAuth>
     </QueryClientProvider>
   </React.StrictMode>
 );
