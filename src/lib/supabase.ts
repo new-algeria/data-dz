@@ -14,8 +14,25 @@ if (!urlSupabase || !clePublishable) {
 
 export const supabase = createClient(urlSupabase || "https://configuration-manquante.invalid", clePublishable || "absente", {
   auth: {
-    // Pas encore d'authentification sur le site : inutile de garder une session.
-    persistSession: false,
-    autoRefreshToken: false,
+    // Flux PKCE : les liens des emails et de Google reviennent avec un `?code=` échangé contre une session
+    // au chargement de la page (detectSessionInUrl). Le lien doit être ouvert dans le même navigateur.
+    flowType: "pkce",
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
   },
 });
+
+// L'événement PASSWORD_RECOVERY peut être émis avant l'affichage de React : on l'écoute dès maintenant.
+let recuperationMotDePasse = false;
+supabase.auth.onAuthStateChange((evenement) => {
+  if (evenement === "PASSWORD_RECOVERY") recuperationMotDePasse = true;
+  if (evenement === "SIGNED_OUT") recuperationMotDePasse = false;
+});
+
+/** Vrai si la session courante vient d'un lien « mot de passe oublié ». */
+export const estEnRecuperationMotDePasse = () => recuperationMotDePasse;
+
+export const terminerRecuperationMotDePasse = () => {
+  recuperationMotDePasse = false;
+};
