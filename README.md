@@ -31,12 +31,13 @@ avec aperçu, globe interactif et téléchargement direct, toujours accompagnés
 
 ## Ce que fait le site
 
-Le site est **en lecture seule** : il affiche ce qui est publié dans la base, sans compte ni formulaire.
+Le catalogue est **en lecture seule** : il affiche ce qui est publié dans la base. Les visiteurs peuvent aussi créer un compte pour avoir un profil public.
 
 | Page | Contenu |
 |---|---|
 | **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie. Les filtres sont gardés dans l'URL (`/?q=pharmacies&categorie=sante`) pour pouvoir partager un lien. |
 | **Fiche d'une donnée** (`/donnees/:slug`) | Bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
+| **Comptes** (`/connexion`, `/inscription`, `/profil`, `/membres/:pseudo`) | Inscription par email, connexion par mot de passe, lien magique ou Google, mot de passe oublié, profil modifiable (pseudo, bio, site web, photo) et page publique de chaque membre. Détails dans [`CLAUDE.md`](./CLAUDE.md#authentification). |
 | **Ancienne URL** (`/dataset/:slug`) | Redirige vers `/donnees/:slug`. |
 
 Le site est disponible en **français, anglais et arabe** (l'arabe s'affiche de droite à gauche), en **mode clair et sombre**, et respecte le réglage « réduire les animations » du système.
@@ -148,7 +149,7 @@ Le site lit sept tables Supabase. Le détail des colonnes est dans [`CLAUDE.md`]
 | `versions` | Versions d'une donnée : nombre de lignes, colonnes, aperçu des premières lignes |
 | `fichiers` | Fichiers d'une version sur R2 : format, taille, fichier principal |
 | `categories`, `sources`, `licences` | Référentiels (noms traduits, source vérifiée, droits accordés par la licence) |
-| `profils` | Comptes (pas encore utilisés par le site) |
+| `profils` | Profil public de chaque compte (pseudo, nom, avatar, bio, site web, rôle) |
 
 Toutes les requêtes sont regroupées dans [`src/lib/catalogue.ts`](./src/lib/catalogue.ts). Un titre ou une description peut manquer dans une langue : le site affiche alors la langue courante, puis le français, puis l'anglais.
 
@@ -196,7 +197,7 @@ Une erreur dans une donnée GeoAlgeria (adresse, coordonnées…) se signale à 
 
 - [x] **1. Catalogue en lecture** : liste, recherche plein texte, filtre par catégorie
 - [x] **2. Fiche détail** : README, colonnes, aperçu, globe GeoJSON, téléchargements, licence, attribution
-- [ ] **3. Comptes** : connexion par email et Google (`supabase.auth`), page profil modifiable (table `profils`)
+- [x] **3. Comptes** : inscription et connexion par email, lien magique et Google (à activer dans Supabase), profil modifiable, avatar, page publique
 - [ ] **4. Espace modération** pour les rôles `moderateur` et `admin` : voir les brouillons, publier, archiver
 - [ ] **5. Communauté** : propositions de données, votes, commentaires, favoris
 - [ ] **6. Pack de téléchargement** : zip de tous les fichiers + `datapackage.json`
