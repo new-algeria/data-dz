@@ -87,7 +87,7 @@ npm install
 npm run dev
 ```
 
-Le site s'ouvre sur **http://localhost:8080**. Il lit directement la base de production, en lecture seule.
+Le site s'ouvre sur **http://localhost:5173**. Il lit directement la base de production, en lecture seule.
 
 ### Variables d'environnement
 
