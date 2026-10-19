@@ -14,6 +14,8 @@ const NouveauMotDePasse = lazy(() => import("./pages/auth/NouveauMotDePasse"));
 const RetourAuth = lazy(() => import("./pages/auth/RetourAuth"));
 const Profil = lazy(() => import("./pages/Profil"));
 const PageMembre = lazy(() => import("./pages/PageMembre"));
+const Confidentialite = lazy(() => import("./pages/legal/Confidentialite"));
+const Conditions = lazy(() => import("./pages/legal/Conditions"));
 
 // Les anciens liens /dataset/:slug pointent désormais vers /donnees/:slug.
 const RedirectionAncienneFiche = () => {
@@ -51,6 +53,9 @@ function App() {
             }
           />
           <Route path="/membres/:pseudo" element={<PageMembre />} />
+
+          <Route path="/confidentialite" element={<Confidentialite />} />
+          <Route path="/conditions" element={<Conditions />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
