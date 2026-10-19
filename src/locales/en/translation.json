@@ -241,5 +241,123 @@
     "imageTropLourde": "Image too large: 2 MB max.",
     "reseau": "Cannot reach the server. Check your Internet connection.",
     "inconnue": "An unexpected error occurred. Please try again."
+  },
+  "legal": {
+    "miseAJour": "Last updated: {{date}}",
+    "enBref": "In short:",
+    "sommaire": "On this page",
+    "question": "A question about this page? Write to us.",
+    "lienConfidentialite": "Privacy",
+    "lienConditions": "Terms of use",
+    "acceptation": "By creating an account, you accept our <conditions>terms of use</conditions> and our <confidentialite>privacy policy</confidentialite>.",
+    "confidentialite": {
+      "titre": "Privacy policy",
+      "metaDescription": "What data data-dz collects, why, who can access it and how to exercise your rights.",
+      "resume": "no data is required to browse or download datasets. If you create an account, we keep the minimum needed to sign you in and show your profile. No advertising, no data selling.",
+      "sections": [
+        {
+          "id": "responsable",
+          "titre": "Who is responsible?",
+          "texte": "The data-dz website is run by the **New Algeria** project ([newalgeria.org](https://newalgeria.org)).\n\nFor any question about your data: [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
+        },
+        {
+          "id": "donnees",
+          "titre": "What data do we collect?",
+          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profil)."
+        },
+        {
+          "id": "pourquoi",
+          "titre": "Why?",
+          "texte": "Only to let you sign in (including sending you confirmation and password reset emails) and to show your public profile.\n\n**No advertising, no data selling, no profiling.**"
+        },
+        {
+          "id": "public",
+          "titre": "What is public",
+          "texte": "On your public page (`/membres/your-username`), anyone can see your username, display name, bio, website, avatar, sign-up date and, where applicable, your moderator or administrator role.\n\n**Your email address is never shown.**"
+        },
+        {
+          "id": "prestataires",
+          "titre": "Hosting and service providers",
+          "texte": "The website relies on these services:\n\n- **Supabase**: accounts and database;\n- **Cloudflare**: storage and delivery of data files;\n- **Vercel**: website hosting and anonymous visit statistics (Vercel Analytics, without cookies);\n- **OpenStreetMap**: base map of the globes shown on dataset pages;\n- **Google**: only if you choose “Continue with Google”.\n\nAs with any website, these services receive technical information (IP address, browser type) needed to display pages and serve files. Some of them may process it outside the European Union."
+        },
+        {
+          "id": "cookies",
+          "titre": "Cookies and local storage",
+          "texte": "**No advertising or tracking cookies.**\n\nThe website only keeps in your browser (local storage) what it needs to work: your sign-in session and the language you chose."
+        },
+        {
+          "id": "conservation",
+          "titre": "How long?",
+          "texte": "Your account data is kept as long as your account exists. When you ask for its deletion, we delete your account, your profile and your avatar."
+        },
+        {
+          "id": "droits",
+          "titre": "Your rights",
+          "texte": "Under the GDPR, you can at any time:\n\n- **access** your data;\n- **correct** it, directly from [My profile](/profil);\n- ask for the **deletion** of your account and data, simply by writing to [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nWe reply within one month at most. If you believe your rights are not respected, you can contact the French data protection authority, the [CNIL](https://www.cnil.fr)."
+        }
+      ]
+    },
+    "conditions": {
+      "titre": "Terms of use",
+      "metaDescription": "The rules for using data-dz: free access to data, licences, accounts, published content and limits of liability.",
+      "resume": "the data is free to access, the service is free and provided without warranty, each dataset keeps its source's licence, and everyone is responsible for what they publish.",
+      "sections": [
+        {
+          "id": "service",
+          "titre": "The service",
+          "texte": "data-dz is a **free and open source** portal of data about Algeria, run **on a volunteer basis** by the [New Algeria](https://newalgeria.org) project.\n\nThe service may change, be modified or be interrupted at any time."
+        },
+        {
+          "id": "acces",
+          "titre": "Access",
+          "texte": "Browsing and downloading data is **free and requires no account**.\n\nAn account lets you personalise your profile and, later, contribute."
+        },
+        {
+          "id": "compte",
+          "titre": "Your account",
+          "texte": "You are responsible for your account and the information in your profile. Keep your password to yourself.\n\n- one account per person;\n- no impersonation."
+        },
+        {
+          "id": "contenu",
+          "titre": "What you publish",
+          "texte": "Today your profile, later your contributions: you guarantee that you have the right to publish this content.\n\nNot allowed: illegal, hateful, defamatory, misleading or advertising content, other people's personal data, and malicious links.\n\nThe team may moderate or remove content, and suspend an account in case of abuse."
+        },
+        {
+          "id": "licences",
+          "titre": "Data and code licences",
+          "texte": "Each dataset remains subject to **its source's licence**, shown on its page. Respect it when you reuse the data.\n\n- **GeoAlgeria** data (Yasser's studio) must be credited.\n- Data from **OpenStreetMap** is under the [ODbL](https://opendatacommons.org/licenses/odbl/) licence: credit “© OpenStreetMap contributors” and share derived databases under the same terms.\n\nThe website's code is under the **MIT** licence: [github.com/new-algeria/data-dz](https://github.com/new-algeria/data-dz)."
+        },
+        {
+          "id": "garantie",
+          "titre": "No warranty",
+          "texte": "The data is provided **“as is”**, with no guarantee of accuracy, completeness or freshness.\n\nFor any important use (financial, legal, medical, administrative), check with the official source."
+        },
+        {
+          "id": "responsabilite",
+          "titre": "Liability",
+          "texte": "New Algeria cannot be held responsible for decisions made based on the data, nor for any unavailability of the service."
+        },
+        {
+          "id": "usage",
+          "titre": "Reasonable use",
+          "texte": "No deliberate overloading of the website or files (for example mass automated downloads), and no attempt to bypass security."
+        },
+        {
+          "id": "signaler",
+          "titre": "Report a problem",
+          "texte": "An error in the data, abusive content or just a question: write to [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nFor GeoAlgeria data, you can also use the “Report an error” link on the dataset page."
+        },
+        {
+          "id": "modifications",
+          "titre": "Changes",
+          "texte": "These terms may change. The update date shown at the top of the page is authoritative."
+        },
+        {
+          "id": "droit",
+          "titre": "Governing law",
+          "texte": "These terms are governed by French law."
+        }
+      ]
+    }
   }
 }
