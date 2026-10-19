@@ -9,6 +9,7 @@ import { CadreAuth } from "@/components/auth/CadreAuth";
 import { ChampMotDePasse } from "@/components/auth/ChampMotDePasse";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { BoutonGoogle } from "@/components/auth/BoutonGoogle";
+import { AccordConditions } from "@/components/legal/AccordConditions";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useSuite } from "@/hooks/use-suite";
 import { inscrire, LONGUEUR_MIN_MOT_DE_PASSE, renvoyerConfirmation } from "@/lib/auth";
@@ -174,6 +175,7 @@ const Inscription = () => {
             {envoi && <Loader2 className="h-4 w-4 animate-spin" />}
             {t("auth.creerCompte")}
           </Button>
+          <AccordConditions />
         </form>
       </div>
     </CadreAuth>
