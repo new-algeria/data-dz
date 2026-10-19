@@ -9,6 +9,7 @@ import { CadreAuth } from "@/components/auth/CadreAuth";
 import { ChampMotDePasse } from "@/components/auth/ChampMotDePasse";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { BoutonGoogle } from "@/components/auth/BoutonGoogle";
+import { AccordConditions } from "@/components/legal/AccordConditions";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useSuite } from "@/hooks/use-suite";
 import { connecterParMotDePasse, envoyerLienMagique, renvoyerConfirmation } from "@/lib/auth";
@@ -140,6 +141,7 @@ const Connexion = () => {
           {envoi === "lien" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
           {t("auth.recevoirLien")}
         </Button>
+        <AccordConditions />
       </div>
     </CadreAuth>
   );
