@@ -16,6 +16,7 @@ import { useLangue } from "@/hooks/use-langue";
 import { chargerMembre, FORMAT_SITE_WEB, type Profil } from "@/lib/profils";
 import { localeNombres } from "@/lib/fichiers";
 import { cn } from "@/lib/utils";
+import { routes } from "@/lib/routes";
 
 const BadgeRole = ({ role }: { role: Profil["role"] }) => {
   const { t } = useTranslation();
@@ -47,7 +48,7 @@ const FicheMembre = ({ membre }: { membre: Profil }) => {
 
   return (
     <>
-      <CustomMetaTags title={`${nom} (@${membre.pseudo}) - data-dz`} description={membre.bio || t("membre.description", { nom })} path={`/membres/${membre.pseudo}`} />
+      <CustomMetaTags title={`${nom} (@${membre.pseudo}) - data-dz`} description={membre.bio || t("membre.description", { nom })} path={routes.membre(membre.pseudo)} />
       <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50 via-white to-gray-50 pt-16 dark:from-[#03140f] dark:via-gray-900 dark:to-gray-900">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute -top-24 end-[-6rem] h-80 w-80 rounded-full bg-emerald-300/30 blur-3xl animate-flotter dark:bg-emerald-600/15" />
@@ -72,7 +73,7 @@ const FicheMembre = ({ membre }: { membre: Profil }) => {
           </div>
           {utilisateur?.id === membre.id && (
             <Button asChild variant="outline" size="sm" className="gap-2 bg-white/70 dark:bg-white/5">
-              <Link to="/profil">
+              <Link to={routes.profil}>
                 <UserRoundPen className="h-4 w-4" />
                 {t("membre.modifier")}
               </Link>

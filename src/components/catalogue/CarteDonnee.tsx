@@ -8,6 +8,7 @@ import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import type { Categorie, ResumeDonnee } from "@/lib/types";
+import { routes } from "@/lib/routes";
 
 interface CarteDonneeProps {
   donnee: ResumeDonnee;
@@ -21,7 +22,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const description = texteTraduit(donnee.description, langue);
 
   return (
-    <Link to={`/donnees/${donnee.slug}`} className="block w-full h-full">
+    <Link to={routes.donnee(donnee.slug)} className="block w-full h-full">
       <Card className="relative group hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full flex flex-col">
         <BorderBeam
           size={300}

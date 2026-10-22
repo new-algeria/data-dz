@@ -8,6 +8,7 @@ import { formaterTaille, urlFichier } from "@/lib/fichiers";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee, Fichier } from "@/lib/types";
+import { catalogueParCategorie, routes } from "@/lib/routes";
 
 interface EnTeteFicheProps {
   donnee: Donnee;
@@ -30,13 +31,13 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
 
       <div className="relative container mx-auto px-4 pb-10 pt-6 md:pb-14">
         <nav aria-label={t("fiche.filAriane")} className="mb-5 flex items-center gap-1.5 text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-foreground">
+          <Link to={routes.catalogue} className="hover:text-foreground">
             {t("fiche.catalogue")}
           </Link>
           {donnee.categories && nomCategorie && (
             <>
               <ChevronRight className="h-3.5 w-3.5 rtl:rotate-180" aria-hidden />
-              <Link to={`/?categorie=${donnee.categories.slug}`} className="hover:text-foreground">
+              <Link to={catalogueParCategorie(donnee.categories.slug)} className="hover:text-foreground">
                 {nomCategorie}
               </Link>
             </>
@@ -47,7 +48,7 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="flex flex-wrap items-center gap-2">
               {donnee.categories && (
-                <Link to={`/?categorie=${donnee.categories.slug}`} className="transition-opacity hover:opacity-80">
+                <Link to={catalogueParCategorie(donnee.categories.slug)} className="transition-opacity hover:opacity-80">
                   <BadgeCategorie nom={donnee.categories.nom} icone={donnee.categories.icone} taille="md" />
                 </Link>
               )}

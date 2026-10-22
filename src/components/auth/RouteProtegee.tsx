@@ -3,8 +3,9 @@ import { Navigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexte/ContexteAuth";
+import { avecSuite, routes } from "@/lib/routes";
 
-/** Réservé aux membres connectés : sinon redirige vers /connexion en mémorisant la page demandée. */
+/** Réservé aux membres connectés : sinon redirige vers /login en mémorisant la page demandée. */
 export const RouteProtegee = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
   const { session, chargement } = useAuth();
@@ -21,7 +22,7 @@ export const RouteProtegee = ({ children }: { children: ReactNode }) => {
 
   if (!session) {
     const suite = `${emplacement.pathname}${emplacement.search}`;
-    return <Navigate to={`/connexion?suite=${encodeURIComponent(suite)}`} replace />;
+    return <Navigate to={avecSuite(routes.connexion, suite)} replace />;
   }
 
   return <>{children}</>;

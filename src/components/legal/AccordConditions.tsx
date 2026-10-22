@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
+import { routes } from "@/lib/routes";
 
 const classeLien = "font-medium text-emerald-700 underline underline-offset-2 hover:no-underline dark:text-emerald-400";
 
@@ -9,8 +10,8 @@ export const AccordConditions = () => (
     <Trans
       i18nKey="legal.acceptation"
       components={{
-        conditions: <Link to="/conditions" className={classeLien} />,
-        confidentialite: <Link to="/confidentialite" className={classeLien} />,
+        conditions: <Link to={routes.conditions} className={classeLien} />,
+        confidentialite: <Link to={routes.confidentialite} className={classeLien} />,
       }}
     />
   </p>

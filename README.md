@@ -31,14 +31,17 @@ avec aperçu, globe interactif et téléchargement direct, toujours accompagnés
 
 ## Ce que fait le site
 
-Le catalogue est **en lecture seule** : il affiche ce qui est publié dans la base. Les visiteurs peuvent aussi créer un compte pour avoir un profil public.
+Le catalogue affiche ce qui est publié dans la base. Les visiteurs peuvent créer un compte pour avoir un profil public et **proposer des données**, relues par les modérateurs avant leur mise en ligne. Toutes les URL sont en anglais (liste complète dans [`CLAUDE.md`](./CLAUDE.md#routes-url-en-anglais)).
 
 | Page | Contenu |
 |---|---|
-| **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie. Les filtres sont gardés dans l'URL (`/?q=pharmacies&categorie=sante`) pour pouvoir partager un lien. |
-| **Fiche d'une donnée** (`/donnees/:slug`) | Bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
-| **Comptes** (`/connexion`, `/inscription`, `/profil`, `/membres/:pseudo`) | Inscription par email, connexion par mot de passe, lien magique ou Google, mot de passe oublié, profil modifiable (pseudo, bio, site web, photo) et page publique de chaque membre. Détails dans [`CLAUDE.md`](./CLAUDE.md#authentification). |
-| **Ancienne URL** (`/dataset/:slug`) | Redirige vers `/donnees/:slug`. |
+| **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie. Les filtres sont gardés dans l'URL (`/?q=pharmacies&category=sante`) pour pouvoir partager un lien. |
+| **Fiche d'une donnée** (`/datasets/:slug`) | Bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
+| **Comptes** (`/login`, `/signup`, `/profile`, `/members/:username`) | Inscription par email, connexion par mot de passe, lien magique ou Google, mot de passe oublié, profil modifiable (pseudo, bio, site web, photo) et page publique de chaque membre. Détails dans [`CLAUDE.md`](./CLAUDE.md#authentification). |
+| **Propositions** (`/submit`, `/my-submissions`) | Proposer une nouvelle donnée ou la mise à jour d'une donnée existante (titre, description, catégorie, licence, source, mots-clés, wilayas, période, fichiers jusqu'à 50 Mo), puis suivre son statut, répondre aux demandes de modification, renvoyer ou retirer. |
+| **Modération** (`/moderation`, réservé aux rôles `moderateur` et `admin`) | File des propositions par statut, revue avec aperçu des fichiers et historique, décision (accepter, demander des modifications, refuser, commenter), changement de statut des datasets (publié, brouillon, archivé). |
+| **Pages légales** (`/privacy`, `/terms`) | Politique de confidentialité et conditions d'utilisation. |
+| **Anciennes URL françaises** (`/donnees/:slug`, `/profil`, `/connexion`…) | Redirigent vers les nouvelles URL anglaises. |
 
 Le site est disponible en **français, anglais et arabe** (l'arabe s'affiche de droite à gauche), en **mode clair et sombre**, et respecte le réglage « réduire les animations » du système.
 
@@ -198,8 +201,8 @@ Une erreur dans une donnée GeoAlgeria (adresse, coordonnées…) se signale à 
 - [x] **1. Catalogue en lecture** : liste, recherche plein texte, filtre par catégorie
 - [x] **2. Fiche détail** : README, colonnes, aperçu, globe GeoJSON, téléchargements, licence, attribution
 - [x] **3. Comptes** : inscription et connexion par email, lien magique et Google (à activer dans Supabase), profil modifiable, avatar, page publique
-- [ ] **4. Espace modération** pour les rôles `moderateur` et `admin` : voir les brouillons, publier, archiver
-- [ ] **5. Communauté** : propositions de données, votes, commentaires, favoris
+- [x] **4. Propositions et espace modération** pour les rôles `moderateur` et `admin` : file des propositions, revue, publier / dépublier / archiver un dataset
+- [ ] **5. Communauté** : notifications dans le site, votes, commentaires, favoris (les tables existent déjà dans la base)
 - [ ] **6. Pack de téléchargement** : zip de tous les fichiers + `datapackage.json`
 
 ### À décider

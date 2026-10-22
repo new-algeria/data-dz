@@ -34,6 +34,7 @@ import {
   type Profil as ProfilMembre,
 } from "@/lib/profils";
 import { cn } from "@/lib/utils";
+import { routes } from "@/lib/routes";
 
 const erreurParEtatPseudo: Record<Exclude<EtatPseudo, "valide">, string> = {
   format: "erreurs.pseudoInvalide",
@@ -329,7 +330,7 @@ const Profil = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
-      <CustomMetaTags title={`${t("profil.titre")} - data-dz`} description={t("profil.titre")} path="/profil" />
+      <CustomMetaTags title={`${t("profil.titre")} - data-dz`} description={t("profil.titre")} path={routes.profil} />
       <Navbar />
       <main className="container mx-auto max-w-3xl flex-1 px-4 pb-16 pt-24">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -339,7 +340,7 @@ const Profil = () => {
           </div>
           {profil && (
             <Button asChild variant="outline" size="sm" className="gap-2">
-              <Link to={`/membres/${profil.pseudo}`}>
+              <Link to={routes.membre(profil.pseudo)}>
                 <ExternalLink className="h-4 w-4" />
                 {t("auth.maPagePublique")}
               </Link>
@@ -365,7 +366,7 @@ const Profil = () => {
                 </dd>
               </dl>
               <Button asChild variant="outline" className="mt-4 gap-2">
-                <Link to="/nouveau-mot-de-passe">
+                <Link to={routes.nouveauMotDePasse}>
                   <KeyRound className="h-4 w-4" />
                   {t("profil.changerMotDePasse")}
                 </Link>
