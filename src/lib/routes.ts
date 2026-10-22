@@ -20,6 +20,7 @@ export const routes = {
   moderation: "/moderation",
   moderationProposition: (id: string) => `/moderation/submissions/${id}`,
   moderationDatasets: "/moderation/datasets",
+  favoris: "/favorites",
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

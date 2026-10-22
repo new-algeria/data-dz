@@ -48,8 +48,18 @@ export interface Version {
   fichiers: Fichier[] | null;
 }
 
+/** Compteurs de la communauté, tenus à jour par les triggers de la base. */
+export interface CompteursDonnee {
+  id: string;
+  score: number;
+  nb_votes_pour: number;
+  nb_votes_contre: number;
+  nb_favoris: number;
+  nb_commentaires: number;
+}
+
 /** Ligne du catalogue (page d'accueil). */
-export interface ResumeDonnee {
+export interface ResumeDonnee extends CompteursDonnee {
   slug: string;
   titre: TexteMultilingue;
   description: TexteMultilingue | null;
@@ -58,10 +68,11 @@ export interface ResumeDonnee {
   mots_cles: string[] | null;
   sources: Source | null;
   versions: Pick<Version, "numero" | "nb_lignes" | "publie_le"> | null;
+  mis_a_jour_le: string;
 }
 
 /** Fiche complète d'une donnée. */
-export interface Donnee {
+export interface Donnee extends CompteursDonnee {
   slug: string;
   titre: TexteMultilingue;
   description: TexteMultilingue | null;

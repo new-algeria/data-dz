@@ -35,9 +35,11 @@ Le catalogue affiche ce qui est publié dans la base. Les visiteurs peuvent cré
 
 | Page | Contenu |
 |---|---|
-| **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie. Les filtres sont gardés dans l'URL (`/?q=pharmacies&category=sante`) pour pouvoir partager un lien. |
-| **Fiche d'une donnée** (`/datasets/:slug`) | Bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
+| **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie, tri (les plus appréciés, récemment mis à jour, A → Z), votes et favoris sur chaque carte. Les filtres et le tri sont gardés dans l'URL (`/?q=pharmacies&category=sante&sort=recent`) pour pouvoir partager un lien. |
+| **Fiche d'une donnée** (`/datasets/:slug`) | Votes 👍 / 👎, favori ⭐, commentaires avec réponses, bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
 | **Comptes** (`/login`, `/signup`, `/profile`, `/members/:username`) | Inscription par email, connexion par mot de passe, lien magique ou Google, mot de passe oublié, profil modifiable (pseudo, bio, site web, photo) et page publique de chaque membre. Détails dans [`CLAUDE.md`](./CLAUDE.md#authentification). |
+| **Favoris** (`/favorites`) | Les données suivies par le membre ; il est notifié de leurs nouvelles versions. |
+| **Notifications** (cloche de l'en-tête) | Réponses aux commentaires, décisions sur ses propositions, publication, nouvelles versions des données suivies, nouvelles propositions (modérateurs). |
 | **Propositions** (`/submit`, `/my-submissions`) | Proposer une nouvelle donnée ou la mise à jour d'une donnée existante (titre, description, catégorie, licence, source, mots-clés, wilayas, période, fichiers jusqu'à 50 Mo), puis suivre son statut, répondre aux demandes de modification, renvoyer ou retirer. |
 | **Modération** (`/moderation`, réservé aux rôles `moderateur` et `admin`) | File des propositions par statut, revue avec aperçu des fichiers et historique, décision (accepter, demander des modifications, refuser, commenter), changement de statut des datasets (publié, brouillon, archivé). |
 | **Pages légales** (`/privacy`, `/terms`) | Politique de confidentialité et conditions d'utilisation. |
@@ -202,7 +204,7 @@ Une erreur dans une donnée GeoAlgeria (adresse, coordonnées…) se signale à 
 - [x] **2. Fiche détail** : README, colonnes, aperçu, globe GeoJSON, téléchargements, licence, attribution
 - [x] **3. Comptes** : inscription et connexion par email, lien magique et Google (à activer dans Supabase), profil modifiable, avatar, page publique
 - [x] **4. Propositions et espace modération** pour les rôles `moderateur` et `admin` : file des propositions, revue, publier / dépublier / archiver un dataset
-- [ ] **5. Communauté** : notifications dans le site, votes, commentaires, favoris (les tables existent déjà dans la base)
+- [x] **5. Communauté** : votes, tri du catalogue, favoris, commentaires, notifications
 - [ ] **6. Pack de téléchargement** : zip de tous les fichiers + `datapackage.json`
 
 ### À décider

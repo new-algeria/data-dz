@@ -1,6 +1,14 @@
 import { supabase } from "./supabase";
 import type { Categorie, Donnee, ResumeDonnee } from "./types";
 
+/** Colonnes communes aux cartes du catalogue et à la page des favoris. */
+export const COLONNES_RESUME = `
+  id, slug, titre, description, categorie_slug, licence_code, mots_cles, mis_a_jour_le,
+  score, nb_votes_pour, nb_votes_contre, nb_favoris, nb_commentaires,
+  sources ( slug, nom, url ),
+  versions!datasets_version_courante_fk ( numero, nb_lignes, publie_le )
+`;
+
 export interface FiltresCatalogue {
   terme: string;
   categorie: string | null;
@@ -16,13 +24,7 @@ export interface StatistiquesCatalogue {
 export async function chargerCatalogue({ terme, categorie }: FiltresCatalogue): Promise<ResumeDonnee[]> {
   let requete = supabase
     .from("datasets")
-    .select(
-      `
-      slug, titre, description, categorie_slug, licence_code, mots_cles,
-      sources ( slug, nom, url ),
-      versions!datasets_version_courante_fk ( numero, nb_lignes, publie_le )
-    `
-    )
+    .select(COLONNES_RESUME)
     .eq("statut", "publie");
 
   const termeNettoye = terme.trim();
@@ -74,8 +76,9 @@ export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
     .from("datasets")
     .select(
       `
-      slug, titre, description, readme, categorie_slug, licence_code, licence_details,
+      id, slug, titre, description, readme, categorie_slug, licence_code, licence_details,
       url_source, mots_cles, infos_source,
+      score, nb_votes_pour, nb_votes_contre, nb_favoris, nb_commentaires,
       categories ( slug, nom, icone ),
       sources ( slug, nom, url, verifiee ),
       licences ( code, nom, url, usage_commercial, attribution_requise, partage_identique ),

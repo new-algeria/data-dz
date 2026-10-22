@@ -56,7 +56,13 @@
     "lignes_other": "{{nombre}} lignes",
     "licence": "Licence",
     "source": "Source",
-    "afficherPlus": "Afficher plus"
+    "afficherPlus": "Afficher plus",
+    "tri": {
+      "libelle": "Trier",
+      "top": "Les plus appréciés",
+      "recent": "Récemment mis à jour",
+      "name": "A → Z"
+    }
   },
   "fiche": {
     "retour": "Retour au catalogue",
@@ -267,7 +273,9 @@
     "dejaTraitee": "Cette proposition a déjà été traitée. Rechargez la page.",
     "reserveModerateurs": "Action réservée aux modérateurs.",
     "actionPlusPossible": "Cette action n'est plus possible pour cette proposition. Rechargez la page.",
-    "introuvable": "Élément introuvable : il a peut-être été supprimé."
+    "introuvable": "Élément introuvable : il a peut-être été supprimé.",
+    "tropDeCommentaires": "Vous avez publié beaucoup de commentaires en peu de temps (10 en 10 minutes maximum). Patientez quelques minutes avant de réessayer.",
+    "reponseImpossible": "On ne peut répondre qu'à un commentaire principal de cette donnée."
   },
   "legal": {
     "miseAJour": "Dernière mise à jour : {{date}}",
@@ -597,6 +605,84 @@
       "statutChange": "« {{titre}} » est maintenant : {{statut}}.",
       "compteur_one": "{{count}} jeu de données affiché sur {{total}}",
       "compteur_other": "{{count}} jeux de données affichés sur {{total}}"
+    }
+  },
+  "communaute": {
+    "votes": "Votes",
+    "score": "Score",
+    "voterPour": "Utile (voter pour)",
+    "voterContre": "Pas utile (voter contre)",
+    "retirerVote": "Retirer mon vote",
+    "connexionPourVoter": "Connectez-vous pour voter",
+    "erreurVote": "Votre vote n'a pas pu être enregistré.",
+    "suivre": "Suivre",
+    "suivie": "Suivie",
+    "nePlusSuivre": "Ne plus suivre",
+    "connexionPourSuivre": "Connectez-vous pour suivre cette donnée",
+    "nbFavoris_one": "{{nombre}} personne la suit",
+    "nbFavoris_other": "{{nombre}} personnes la suivent",
+    "favoriAjoute": "Ajoutée à vos favoris : vous serez notifié des nouvelles versions.",
+    "favoriRetire": "Retirée de vos favoris.",
+    "erreurFavori": "Vos favoris n'ont pas pu être mis à jour.",
+    "nbCommentaires_one": "{{nombre}} commentaire",
+    "nbCommentaires_other": "{{nombre}} commentaires"
+  },
+  "favoris": {
+    "titre": "Mes favoris",
+    "sousTitre": "Les données que vous suivez.",
+    "aideNotifications": "Vous recevez une notification à chaque nouvelle version d'une donnée suivie.",
+    "vide": "Vous ne suivez encore aucune donnée.",
+    "videTexte": "Cliquez sur l'étoile d'une donnée du catalogue pour la retrouver ici et être prévenu de ses mises à jour.",
+    "explorer": "Explorer le catalogue",
+    "compteur_one": "{{count}} donnée suivie",
+    "compteur_other": "{{count}} données suivies"
+  },
+  "commentaires": {
+    "titre": "Commentaires",
+    "ecrire": "Partagez une remarque, une question, un usage de cette donnée…",
+    "publier": "Publier",
+    "annuler": "Annuler",
+    "enregistrer": "Enregistrer",
+    "modifierLibelle": "Modifier votre commentaire",
+    "repondre": "Répondre",
+    "repondreA": "Répondre à {{nom}}…",
+    "modifier": "Modifier",
+    "supprimer": "Supprimer",
+    "masquer": "Masquer",
+    "reafficher": "Réafficher",
+    "masque": "Masqué",
+    "masqueAuteur": "Ce commentaire a été masqué par la modération : seuls vous et les modérateurs le voyez.",
+    "modifie": "modifié",
+    "supprime": "Commentaire supprimé",
+    "membreSupprime": "Compte supprimé",
+    "par": "Commentaire de {{nom}}",
+    "aucun": "Aucun commentaire pour l'instant. Lancez la discussion !",
+    "seConnecter": "Connectez-vous",
+    "pourParticiper": "pour commenter ou répondre.",
+    "supprimerTitre": "Supprimer ce commentaire ?",
+    "supprimerTexte": "Son contenu sera effacé définitivement. S'il a des réponses, elles resteront visibles sous la mention « Commentaire supprimé ».",
+    "origineMasquee": "Commentaire masqué par la modération"
+  },
+  "notifications": {
+    "titre": "Notifications",
+    "libelleNonLues_one": "Notifications : {{count}} non lue",
+    "libelleNonLues_other": "Notifications : {{count}} non lues",
+    "toutLu": "Tout marquer comme lu",
+    "chargement": "Chargement…",
+    "aucune": "Aucune notification pour l'instant.",
+    "nonLue": "Non lue",
+    "types": {
+      "nouvelle_soumission": "Nouvelle proposition à relire : « {{titre}} »",
+      "revue": {
+        "commentaire": "Un modérateur a commenté votre proposition « {{titre}} »",
+        "modifications_demandees": "Modifications demandées sur votre proposition « {{titre}} »",
+        "acceptee": "Votre proposition « {{titre}} » est acceptée",
+        "refusee": "Votre proposition « {{titre}} » n'a pas été retenue"
+      },
+      "publiee": "Votre proposition « {{titre}} » est en ligne. Merci !",
+      "reponse": "Nouvelle réponse à votre commentaire sur « {{titre}} »",
+      "nouvelle_version": "Nouvelle version {{version}} de « {{titre}} »",
+      "autre": "Nouvelle notification"
     }
   }
 }

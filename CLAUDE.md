@@ -59,11 +59,12 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 
 | Route | Page | Accès |
 |---|---|---|
-| `/` (ancre `#catalog`, filtres `?q=` et `?category=`) | Accueil et catalogue | public |
-| `/datasets/:slug` | Fiche d'une donnée | public |
+| `/` (ancre `#catalog`, filtres `?q=`, `?category=`, tri `?sort=top\|recent\|name`) | Accueil et catalogue | public |
+| `/datasets/:slug` (ancres `#comments`, `#comment-<id>`) | Fiche d'une donnée, votes, favori, commentaires | public |
 | `/members/:username` | Page publique d'un membre | public |
 | `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/auth/callback` | Authentification (voir ci-dessous) | public |
 | `/profile` | Mon profil | connecté |
+| `/favorites` | Mes favoris (données suivies) | connecté |
 | `/submit` | Proposer une donnée | connecté |
 | `/my-submissions`, `/my-submissions/:id` | Mes propositions, détail | connecté |
 | `/moderation` (`?status=`) | File des propositions | modérateur / admin |
@@ -116,6 +117,17 @@ Migrations `20261019000005_communaute.sql` et `20261022000006_liens_anglais.sql`
 - **Clés React Query** : `["mes-soumissions", uid]`, `["soumission", id]`, `["nb-soumissions-en-cours", uid]`, `["est-moderateur", uid]`, et tout ce qui commence par `["moderation", …]` (file, comptes, en attente, datasets) : invalider `["moderation"]` après une action.
 - Les liens des notifications créées par la base suivent les routes anglaises (`/datasets/…`, `/my-submissions/…`, `/moderation/submissions/…`).
 
+## Votes, favoris, commentaires, notifications
+Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notifications.ts`, `src/hooks/use-communaute.ts`, `src/components/communaute/`. Les compteurs de `datasets` (`score`, `nb_votes_pour`, `nb_votes_contre`, `nb_favoris`, `nb_commentaires`) sont recalculés par des triggers : le site ne les écrit jamais.
+
+- **Votes** (`BoutonsVote`, cartes et fiche) : un clic vote, un second clic sur le même bouton retire le vote, l'autre bouton le change. Mise à jour optimiste du cache (catalogue, fiche, favoris) puis retour arrière et message en cas d'erreur. Pas d'upsert PostgREST : la base n'accorde `update` que sur `valeur`, alors que l'upsert réécrit aussi `dataset_id`. On fait donc insert / update / delete (`enregistrerVote()`). Visiteur : redirection vers `/login?next=…`.
+- **Tri** : fait dans le navigateur (le catalogue est chargé en entier). `top` = score puis nombre total de votes, `recent` = `mis_a_jour_le`, `name` = titre dans la langue affichée.
+- **Favoris** (`BoutonFavori`, page `/favorites`) : insert / delete sur `favoris` ; les membres qui suivent une donnée sont notifiés de ses nouvelles versions par la base.
+- **Commentaires** (`SectionCommentaires`, section `#comments` de la fiche, ancre `#comment-<id>` sur chacun) : un niveau de réponses ; un commentaire supprimé (`supprime`, contenu vidé par la base) n'apparaît que s'il a des réponses (« Commentaire supprimé ») ; un commentaire masqué n'est visible que des modérateurs et de son auteur ; modérateurs : `rpc("masquer_commentaire", { commentaire_id, masquer })`. Anti-spam de la base : 10 commentaires en 10 minutes (`erreurs.tropDeCommentaires`).
+- **Notifications** (`ClocheNotifications` dans l'en-tête) : 20 dernières et nombre de non lues, rafraîchies à l'ouverture et toutes les 60 secondes ; clic → marquée lue puis ouverture de `lien` (chemins internes seulement) ; « Tout marquer comme lu ». Types : `nouvelle_soumission`, `revue`, `publiee`, `reponse`, `nouvelle_version`.
+- **Clés React Query** : `["mes-votes", uid]`, `["mes-favoris", uid]`, `["favoris", uid]`, `["commentaires", datasetId]`, `["notifications", uid]`.
+- **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
+
 ## Conventions
 - Noms de variables, fonctions et composants métier en **français** (`listeDonnees`, `chargerCatalogue`, `FicheDonnee`). Les noms imposés par les bibliothèques restent en anglais.
 - Tous les textes visibles passent par i18next (`fr`, `en`, `ar`), jamais en dur.
@@ -127,4 +139,5 @@ Migrations `20261019000005_communaute.sql` et `20261022000006_liens_anglais.sql`
 2. Fiche détail (README, colonnes, aperçu, carte GeoJSON, téléchargements, attribution).
 3. Authentification email + Google, page profil.
 4. Propositions de données et espace modération (file, revue, statut des datasets).
-5. Plus tard : notifications dans le site, votes, commentaires, favoris (tables déjà prêtes), pack de téléchargement (zip + datapackage.json).
+5. Communauté : votes, tri, favoris, commentaires, notifications.
+6. Plus tard : pack de téléchargement (zip + datapackage.json).

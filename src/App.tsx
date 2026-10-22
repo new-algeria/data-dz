@@ -1,6 +1,8 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useParams, type Params } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { Toaster } from "sonner";
+import { useTranslation } from "react-i18next";
 import ScrollToTop from "./components/ScrollToTop";
 import { RouteProtegee } from "./components/auth/RouteProtegee";
 import { RouteModerateur } from "./components/moderation/RouteModerateur";
@@ -24,6 +26,7 @@ const MaProposition = lazy(() => import("./pages/propositions/MaProposition"));
 const FileModeration = lazy(() => import("./pages/moderation/FileModeration"));
 const RevueProposition = lazy(() => import("./pages/moderation/RevueProposition"));
 const ModerationDatasets = lazy(() => import("./pages/moderation/ModerationDatasets"));
+const Favoris = lazy(() => import("./pages/communaute/Favoris"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -53,9 +56,11 @@ const moderateur = (page: ReactNode) => (
 );
 
 function App() {
+  const { i18n } = useTranslation();
   return (
     <Router>
       <ScrollToTop />
+      <Toaster position="bottom-center" richColors closeButton dir={i18n.dir()} />
       <Suspense fallback={<ChargementPage />}>
         <Routes>
           <Route path={routes.accueil} element={<Catalogue />} />
@@ -72,6 +77,8 @@ function App() {
           <Route path={routes.proposer} element={protegee(<Proposer />)} />
           <Route path={routes.mesPropositions} element={protegee(<MesPropositions />)} />
           <Route path="/my-submissions/:id" element={protegee(<MaProposition />)} />
+
+          <Route path={routes.favoris} element={protegee(<Favoris />)} />
 
           <Route path={routes.moderation} element={moderateur(<FileModeration />)} />
           <Route path="/moderation/submissions/:id" element={moderateur(<RevueProposition />)} />
