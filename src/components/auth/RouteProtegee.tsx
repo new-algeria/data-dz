@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { avecSuite, routes } from "@/lib/routes";
 
-/** Réservé aux membres connectés : sinon redirige vers /connexion en mémorisant la page demandée. */
+/** Réservé aux membres connectés : sinon redirige vers /login en mémorisant la page demandée. */
 export const RouteProtegee = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
   const { session, chargement } = useAuth();
