@@ -56,7 +56,13 @@
     "lignes_other": "{{nombre}} rows",
     "licence": "Licence",
     "source": "Source",
-    "afficherPlus": "Show more"
+    "afficherPlus": "Show more",
+    "tri": {
+      "libelle": "Sort",
+      "top": "Most appreciated",
+      "recent": "Recently updated",
+      "name": "A → Z"
+    }
   },
   "fiche": {
     "retour": "Back to catalogue",
@@ -267,7 +273,9 @@
     "dejaTraitee": "This submission has already been reviewed. Reload the page.",
     "reserveModerateurs": "This action is restricted to moderators.",
     "actionPlusPossible": "This action is no longer possible for this submission. Reload the page.",
-    "introuvable": "Item not found: it may have been deleted."
+    "introuvable": "Item not found: it may have been deleted.",
+    "tropDeCommentaires": "You have posted many comments in a short time (at most 10 in 10 minutes). Wait a few minutes before trying again.",
+    "reponseImpossible": "You can only reply to a top-level comment on this dataset."
   },
   "legal": {
     "miseAJour": "Last updated: {{date}}",
@@ -597,6 +605,84 @@
       "statutChange": "“{{titre}}” is now: {{statut}}.",
       "compteur_one": "{{count}} dataset shown out of {{total}}",
       "compteur_other": "{{count}} datasets shown out of {{total}}"
+    }
+  },
+  "communaute": {
+    "votes": "Votes",
+    "score": "Score",
+    "voterPour": "Useful (upvote)",
+    "voterContre": "Not useful (downvote)",
+    "retirerVote": "Remove my vote",
+    "connexionPourVoter": "Log in to vote",
+    "erreurVote": "Your vote could not be saved.",
+    "suivre": "Follow",
+    "suivie": "Following",
+    "nePlusSuivre": "Unfollow",
+    "connexionPourSuivre": "Log in to follow this dataset",
+    "nbFavoris_one": "{{nombre}} person follows it",
+    "nbFavoris_other": "{{nombre}} people follow it",
+    "favoriAjoute": "Added to your favourites: you will be notified of new versions.",
+    "favoriRetire": "Removed from your favourites.",
+    "erreurFavori": "Your favourites could not be updated.",
+    "nbCommentaires_one": "{{nombre}} comment",
+    "nbCommentaires_other": "{{nombre}} comments"
+  },
+  "favoris": {
+    "titre": "My favourites",
+    "sousTitre": "The datasets you follow.",
+    "aideNotifications": "You get a notification for every new version of a dataset you follow.",
+    "vide": "You are not following any dataset yet.",
+    "videTexte": "Click the star on a dataset in the catalogue to find it here and be told about its updates.",
+    "explorer": "Explore the catalogue",
+    "compteur_one": "{{count}} dataset followed",
+    "compteur_other": "{{count}} datasets followed"
+  },
+  "commentaires": {
+    "titre": "Comments",
+    "ecrire": "Share a remark, a question, a use of this dataset…",
+    "publier": "Post",
+    "annuler": "Cancel",
+    "enregistrer": "Save",
+    "modifierLibelle": "Edit your comment",
+    "repondre": "Reply",
+    "repondreA": "Reply to {{nom}}…",
+    "modifier": "Edit",
+    "supprimer": "Delete",
+    "masquer": "Hide",
+    "reafficher": "Show again",
+    "masque": "Hidden",
+    "masqueAuteur": "This comment was hidden by moderation: only you and the moderators can see it.",
+    "modifie": "edited",
+    "supprime": "Comment deleted",
+    "membreSupprime": "Deleted account",
+    "par": "Comment by {{nom}}",
+    "aucun": "No comments yet. Start the discussion!",
+    "seConnecter": "Log in",
+    "pourParticiper": "to comment or reply.",
+    "supprimerTitre": "Delete this comment?",
+    "supprimerTexte": "Its content will be permanently erased. If it has replies, they will remain visible under “Comment deleted”.",
+    "origineMasquee": "Comment hidden by moderation"
+  },
+  "notifications": {
+    "titre": "Notifications",
+    "libelleNonLues_one": "Notifications: {{count}} unread",
+    "libelleNonLues_other": "Notifications: {{count}} unread",
+    "toutLu": "Mark all as read",
+    "chargement": "Loading…",
+    "aucune": "No notifications yet.",
+    "nonLue": "Unread",
+    "types": {
+      "nouvelle_soumission": "New submission to review: “{{titre}}”",
+      "revue": {
+        "commentaire": "A moderator commented on your submission “{{titre}}”",
+        "modifications_demandees": "Changes requested on your submission “{{titre}}”",
+        "acceptee": "Your submission “{{titre}}” has been accepted",
+        "refusee": "Your submission “{{titre}}” was not accepted"
+      },
+      "publiee": "Your submission “{{titre}}” is online. Thank you!",
+      "reponse": "New reply to your comment on “{{titre}}”",
+      "nouvelle_version": "New version {{version}} of “{{titre}}”",
+      "autre": "New notification"
     }
   }
 }

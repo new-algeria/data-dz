@@ -67,7 +67,13 @@
     "lignes_other": "{{nombre}} سطر",
     "licence": "الرخصة",
     "source": "المصدر",
-    "afficherPlus": "عرض المزيد"
+    "afficherPlus": "عرض المزيد",
+    "tri": {
+      "libelle": "ترتيب",
+      "top": "الأكثر تقديرا",
+      "recent": "المحدثة مؤخرا",
+      "name": "أبجديا"
+    }
   },
   "fiche": {
     "retour": "العودة إلى الفهرس",
@@ -278,7 +284,9 @@
     "dejaTraitee": "تمت معالجة هذا الاقتراح بالفعل. أعد تحميل الصفحة.",
     "reserveModerateurs": "هذا الإجراء مخصص للمشرفين.",
     "actionPlusPossible": "لم يعد هذا الإجراء ممكنا لهذا الاقتراح. أعد تحميل الصفحة.",
-    "introuvable": "العنصر غير موجود: ربما تم حذفه."
+    "introuvable": "العنصر غير موجود: ربما تم حذفه.",
+    "tropDeCommentaires": "نشرت تعليقات كثيرة في وقت قصير (10 كحد أقصى في 10 دقائق). انتظر بضع دقائق قبل المحاولة من جديد.",
+    "reponseImpossible": "لا يمكن الرد إلا على تعليق رئيسي في هذه البيانات."
   },
   "legal": {
     "miseAJour": "آخر تحديث: {{date}}",
@@ -628,6 +636,100 @@
       "compteur_few": "{{count}} مجموعات بيانات معروضة من أصل {{total}}",
       "compteur_many": "{{count}} مجموعة بيانات معروضة من أصل {{total}}",
       "compteur_other": "{{count}} مجموعة بيانات معروضة من أصل {{total}}"
+    }
+  },
+  "communaute": {
+    "votes": "الأصوات",
+    "score": "النتيجة",
+    "voterPour": "مفيدة (تصويت إيجابي)",
+    "voterContre": "غير مفيدة (تصويت سلبي)",
+    "retirerVote": "سحب تصويتي",
+    "connexionPourVoter": "سجّل الدخول للتصويت",
+    "erreurVote": "تعذر حفظ تصويتك.",
+    "suivre": "متابعة",
+    "suivie": "متابَعة",
+    "nePlusSuivre": "إلغاء المتابعة",
+    "connexionPourSuivre": "سجّل الدخول لمتابعة هذه البيانات",
+    "nbFavoris_zero": "لا أحد يتابعها",
+    "nbFavoris_one": "شخص واحد يتابعها",
+    "nbFavoris_two": "شخصان يتابعانها",
+    "nbFavoris_few": "{{nombre}} أشخاص يتابعونها",
+    "nbFavoris_many": "{{nombre}} شخصا يتابعونها",
+    "nbFavoris_other": "{{nombre}} شخص يتابعونها",
+    "favoriAjoute": "أضيفت إلى مفضلتك: ستصلك إشعارات بالإصدارات الجديدة.",
+    "favoriRetire": "أزيلت من مفضلتك.",
+    "erreurFavori": "تعذر تحديث مفضلتك.",
+    "nbCommentaires_zero": "لا تعليقات",
+    "nbCommentaires_one": "تعليق واحد",
+    "nbCommentaires_two": "تعليقان",
+    "nbCommentaires_few": "{{nombre}} تعليقات",
+    "nbCommentaires_many": "{{nombre}} تعليقا",
+    "nbCommentaires_other": "{{nombre}} تعليق"
+  },
+  "favoris": {
+    "titre": "مفضلتي",
+    "sousTitre": "البيانات التي تتابعها.",
+    "aideNotifications": "يصلك إشعار مع كل إصدار جديد لبيانات تتابعها.",
+    "vide": "لا تتابع أي بيانات بعد.",
+    "videTexte": "انقر على نجمة أي بيانات في الفهرس لتجدها هنا ويصلك إشعار بتحديثاتها.",
+    "explorer": "استكشف الفهرس",
+    "compteur_zero": "لا توجد بيانات متابَعة",
+    "compteur_one": "مجموعة بيانات واحدة متابَعة",
+    "compteur_two": "مجموعتا بيانات متابَعتان",
+    "compteur_few": "{{count}} مجموعات بيانات متابَعة",
+    "compteur_many": "{{count}} مجموعة بيانات متابَعة",
+    "compteur_other": "{{count}} مجموعة بيانات متابَعة"
+  },
+  "commentaires": {
+    "titre": "التعليقات",
+    "ecrire": "شارك ملاحظة أو سؤالا أو استخداما لهذه البيانات…",
+    "publier": "نشر",
+    "annuler": "إلغاء",
+    "enregistrer": "حفظ",
+    "modifierLibelle": "تعديل تعليقك",
+    "repondre": "رد",
+    "repondreA": "الرد على {{nom}}…",
+    "modifier": "تعديل",
+    "supprimer": "حذف",
+    "masquer": "إخفاء",
+    "reafficher": "إعادة الإظهار",
+    "masque": "مخفي",
+    "masqueAuteur": "أخفى المشرفون هذا التعليق: لا يراه إلا أنت والمشرفون.",
+    "modifie": "معدّل",
+    "supprime": "تعليق محذوف",
+    "membreSupprime": "حساب محذوف",
+    "par": "تعليق من {{nom}}",
+    "aucun": "لا توجد تعليقات حتى الآن. ابدأ النقاش!",
+    "seConnecter": "سجّل الدخول",
+    "pourParticiper": "للتعليق أو الرد.",
+    "supprimerTitre": "حذف هذا التعليق؟",
+    "supprimerTexte": "سيُمحى محتواه نهائيا. إذا كانت له ردود، فستبقى ظاهرة تحت عبارة «تعليق محذوف».",
+    "origineMasquee": "تعليق أخفاه المشرفون"
+  },
+  "notifications": {
+    "titre": "الإشعارات",
+    "libelleNonLues_zero": "الإشعارات: لا توجد إشعارات غير مقروءة",
+    "libelleNonLues_one": "الإشعارات: إشعار واحد غير مقروء",
+    "libelleNonLues_two": "الإشعارات: إشعاران غير مقروءين",
+    "libelleNonLues_few": "الإشعارات: {{count}} إشعارات غير مقروءة",
+    "libelleNonLues_many": "الإشعارات: {{count}} إشعارا غير مقروء",
+    "libelleNonLues_other": "الإشعارات: {{count}} إشعار غير مقروء",
+    "toutLu": "تعليم الكل كمقروء",
+    "chargement": "جار التحميل…",
+    "aucune": "لا توجد إشعارات حتى الآن.",
+    "nonLue": "غير مقروء",
+    "types": {
+      "nouvelle_soumission": "اقتراح جديد للمراجعة: «{{titre}}»",
+      "revue": {
+        "commentaire": "علّق أحد المشرفين على اقتراحك «{{titre}}»",
+        "modifications_demandees": "طُلبت تعديلات على اقتراحك «{{titre}}»",
+        "acceptee": "تم قبول اقتراحك «{{titre}}»",
+        "refusee": "لم يتم قبول اقتراحك «{{titre}}»"
+      },
+      "publiee": "اقتراحك «{{titre}}» منشور الآن. شكرا!",
+      "reponse": "رد جديد على تعليقك في «{{titre}}»",
+      "nouvelle_version": "إصدار جديد {{version}} من «{{titre}}»",
+      "autre": "إشعار جديد"
     }
   }
 }
