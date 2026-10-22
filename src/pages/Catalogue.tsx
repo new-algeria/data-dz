@@ -35,7 +35,8 @@ const Catalogue = () => {
   const [parametres, setParametres] = useSearchParams();
 
   // Recherche et catégorie sont gardées dans l'URL pour pouvoir partager un lien filtré.
-  const categorie = parametres.get("categorie");
+  // « category » ; l'ancien paramètre « categorie » reste lu pour les liens déjà partagés.
+  const categorie = parametres.get("category") ?? parametres.get("categorie");
   const [saisie, setSaisie] = useState(parametres.get("q") ?? "");
   const terme = useValeurDifferee(saisie.trim());
   const [nbVisibles, setNbVisibles] = useState(TAILLE_PAGE);
@@ -77,8 +78,9 @@ const Catalogue = () => {
     setParametres(
       (precedents) => {
         const suivants = new URLSearchParams(precedents);
-        if (valeur === TOUTES_CATEGORIES) suivants.delete("categorie");
-        else suivants.set("categorie", valeur);
+        suivants.delete("categorie");
+        if (valeur === TOUTES_CATEGORIES) suivants.delete("category");
+        else suivants.set("category", valeur);
         return suivants;
       },
       { replace: true }
@@ -150,7 +152,7 @@ const Catalogue = () => {
               className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start"
             >
               <Button asChild size="lg" className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group">
-                <a href="#catalogue">
+                <a href="#catalog">
                   {t("accueil.explorer")}
                   <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
                 </a>
@@ -178,7 +180,7 @@ const Catalogue = () => {
         </div>
       </section>
 
-      <section id="catalogue" className="scroll-mt-16 py-14 px-4 bg-accent dark:bg-inherit flex-1">
+      <section id="catalog" className="scroll-mt-16 py-14 px-4 bg-accent dark:bg-inherit flex-1">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 16 }}

@@ -9,10 +9,11 @@ import { MessageAuth } from "@/components/auth/MessageAuth";
 import { lireErreurUrl, suiteSure } from "@/lib/auth";
 import { cleErreur } from "@/lib/erreurs";
 import { estEnRecuperationMotDePasse, supabase } from "@/lib/supabase";
+import { ANCIEN_PARAMETRE_SUITE, PARAMETRE_SUITE, routes } from "@/lib/routes";
 
 /**
  * Page de retour des liens email (confirmation, lien magique) et de Google.
- * Finalise la session puis renvoie vers la page d'origine (?suite=).
+ * Finalise la session puis renvoie vers la page d'origine (?next=).
  */
 const RetourAuth = () => {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ const RetourAuth = () => {
 
     const finaliser = async () => {
       const parametres = new URLSearchParams(window.location.search);
-      const suite = suiteSure(parametres.get("suite"));
+      const suite = suiteSure(parametres.get(PARAMETRE_SUITE) ?? parametres.get(ANCIEN_PARAMETRE_SUITE));
 
       const erreurUrl = lireErreurUrl();
       if (erreurUrl) return setErreur(erreurUrl);
@@ -38,14 +39,14 @@ const RetourAuth = () => {
       if (tokenHash && type) {
         const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
         if (error) return setErreur(cleErreur(error));
-        return naviguer(type === "recovery" ? "/nouveau-mot-de-passe" : suite, { replace: true });
+        return naviguer(type === "recovery" ? routes.nouveauMotDePasse : suite, { replace: true });
       }
 
       // Flux PKCE : supabase-js a déjà échangé le ?code= à l'initialisation ; on attend son résultat.
       const { error } = await supabase.auth.initialize();
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        return naviguer(estEnRecuperationMotDePasse() ? "/nouveau-mot-de-passe" : suite, { replace: true });
+        return naviguer(estEnRecuperationMotDePasse() ? routes.nouveauMotDePasse : suite, { replace: true });
       }
       setErreur(error ? cleErreur(error) : "erreurs.lienExpire");
     };
@@ -68,7 +69,7 @@ const RetourAuth = () => {
       <div className="space-y-4">
         <MessageAuth type="erreur">{t(erreur)}</MessageAuth>
         <Button asChild className="w-full bg-emerald-700 text-white hover:bg-emerald-800">
-          <Link to="/connexion">{t("auth.retourConnexion")}</Link>
+          <Link to={routes.connexion}>{t("auth.retourConnexion")}</Link>
         </Button>
       </div>
     </CadreAuth>

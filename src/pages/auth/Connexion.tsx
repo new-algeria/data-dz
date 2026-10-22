@@ -14,6 +14,7 @@ import { useAuth } from "@/contexte/ContexteAuth";
 import { useSuite } from "@/hooks/use-suite";
 import { connecterParMotDePasse, envoyerLienMagique, renvoyerConfirmation } from "@/lib/auth";
 import { cleErreur } from "@/lib/erreurs";
+import { avecSuite, routes } from "@/lib/routes";
 
 type Envoi = "motDePasse" | "lien" | "confirmation" | null;
 
@@ -70,7 +71,7 @@ const Connexion = () => {
       pied={
         <>
           {t("auth.pasDeCompte")}{" "}
-          <Link to={`/inscription?suite=${encodeURIComponent(suite)}`} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
+          <Link to={avecSuite(routes.inscription, suite)} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
             {t("auth.creerCompte")}
           </Link>
         </>
@@ -119,7 +120,7 @@ const Connexion = () => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="mot-de-passe">{t("auth.motDePasse")}</Label>
-              <Link to="/mot-de-passe-oublie" className="text-xs font-medium text-emerald-700 hover:underline dark:text-emerald-400">
+              <Link to={routes.motDePasseOublie} className="text-xs font-medium text-emerald-700 hover:underline dark:text-emerald-400">
                 {t("auth.motDePasseOublieLien")}
               </Link>
             </div>

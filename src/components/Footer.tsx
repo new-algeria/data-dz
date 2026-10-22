@@ -3,6 +3,7 @@ import { Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { faGithub, faLinkedin, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { routes } from "@/lib/routes";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -61,11 +62,11 @@ const Footer = () => {
       </a>
 
       <nav aria-label={t("legal.lienConditions")} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
-        <Link to="/confidentialite" className="hover:text-foreground hover:underline">
+        <Link to={routes.confidentialite} className="hover:text-foreground hover:underline">
           {t("legal.lienConfidentialite")}
         </Link>
         <span aria-hidden>·</span>
-        <Link to="/conditions" className="hover:text-foreground hover:underline">
+        <Link to={routes.conditions} className="hover:text-foreground hover:underline">
           {t("legal.lienConditions")}
         </Link>
       </nav>
