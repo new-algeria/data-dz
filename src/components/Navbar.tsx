@@ -10,6 +10,7 @@ import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { LanguageSelector } from "./LanguageSelector";
 import { MenuUtilisateur } from "./auth/MenuUtilisateur";
+import { ClocheNotifications } from "./communaute/ClocheNotifications";
 import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
 
 /** Lien « Modération » avec le nombre de propositions en attente (modérateurs et admins seulement). */
@@ -80,6 +81,7 @@ export const Navbar = () => {
               <LienModeration />
             </>
           )}
+          {session && <ClocheNotifications />}
           <LanguageSelector />
           <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
