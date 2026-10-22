@@ -21,6 +21,7 @@ import { InfosSource } from "@/components/fiche/InfosSource";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { ChiffresCles } from "@/components/fiche/ChiffresCles";
+import { SectionCommentaires } from "@/components/communaute/SectionCommentaires";
 import { chargerFicheDonnee } from "@/lib/catalogue";
 import { texteTraduit } from "@/lib/traduction";
 import { localeNombres, trierFichiers } from "@/lib/fichiers";
@@ -162,6 +163,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
                 )}
               </Tabs>
             </motion.section>
+
+            <SectionCommentaires datasetId={donnee.id} slug={donnee.slug} />
           </div>
 
           <aside className="space-y-6 min-w-0">

@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, UserRound, UserRoundPen } from "lucide-react";
+import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -83,6 +83,12 @@ export const MenuUtilisateur = () => {
             </Link>
           </DropdownMenuItem>
         )}
+        <DropdownMenuItem asChild>
+          <Link to={routes.favoris} className="cursor-pointer gap-2">
+            <Star className="h-4 w-4" />
+            {t("favoris.titre")}
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to={routes.proposer} className="cursor-pointer gap-2">
