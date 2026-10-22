@@ -42,6 +42,7 @@ Le catalogue affiche ce qui est publié dans la base. Les visiteurs peuvent cré
 | **Notifications** (cloche de l'en-tête) | Réponses aux commentaires, décisions sur ses propositions, publication, nouvelles versions des données suivies, nouvelles propositions (modérateurs). |
 | **Propositions** (`/submit`, `/my-submissions`) | Proposer une nouvelle donnée ou la mise à jour d'une donnée existante (titre, description, catégorie, licence, source, mots-clés, wilayas, période, fichiers jusqu'à 50 Mo), puis suivre son statut, répondre aux demandes de modification, renvoyer ou retirer. |
 | **Modération** (`/moderation`, réservé aux rôles `moderateur` et `admin`) | File des propositions par statut, revue avec aperçu des fichiers et historique, décision (accepter, demander des modifications, refuser, commenter), changement de statut des datasets (publié, brouillon, archivé). |
+| **Gestion des membres** (`/admin/users`, réservé aux administrateurs) | Liste des comptes, recherche, filtre par rôle et changement de rôle (membre, contributeur, modérateur) ; le rôle d'un administrateur n'est pas modifiable depuis le site. |
 | **Pages légales** (`/privacy`, `/terms`) | Politique de confidentialité et conditions d'utilisation. |
 | **Anciennes URL françaises** (`/donnees/:slug`, `/profil`, `/connexion`…) | Redirigent vers les nouvelles URL anglaises. |
 
