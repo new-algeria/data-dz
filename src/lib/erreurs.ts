@@ -51,6 +51,8 @@ const parMessageRpc: [RegExp, string][] = [
   [/propre proposition/i, "propreProposition"],
   [/réservé aux modérateurs/i, "reserveModerateurs"],
   [/peut être renvoyée|peut être retirée/i, "actionPlusPossible"],
+  [/trop de commentaires/i, "tropDeCommentaires"],
+  [/répondre qu'à un commentaire principal|même donnée que le commentaire/i, "reponseImpossible"],
   [/introuvable/i, "introuvable"],
 ];
 
