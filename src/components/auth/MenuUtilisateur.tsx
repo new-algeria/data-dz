@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen } from "lucide-react";
+import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen, UsersRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,6 +107,14 @@ export const MenuUtilisateur = () => {
             <Link to={routes.moderation} className="cursor-pointer gap-2">
               <ShieldCheck className="h-4 w-4" />
               {t("navbar.moderation")}
+            </Link>
+          </DropdownMenuItem>
+        )}
+        {profil?.role === "admin" && (
+          <DropdownMenuItem asChild>
+            <Link to={routes.adminMembres} className="cursor-pointer gap-2">
+              <UsersRound className="h-4 w-4" />
+              {t("admin.titre")}
             </Link>
           </DropdownMenuItem>
         )}
