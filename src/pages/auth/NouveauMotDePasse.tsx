@@ -12,6 +12,7 @@ import { useAuth } from "@/contexte/ContexteAuth";
 import { changerMotDePasse, lireErreurUrl, LONGUEUR_MIN_MOT_DE_PASSE } from "@/lib/auth";
 import { cleErreur } from "@/lib/erreurs";
 import { supabase } from "@/lib/supabase";
+import { routes } from "@/lib/routes";
 
 /**
  * Arrivée depuis le lien « mot de passe oublié » : supabase-js échange le ?code= au chargement et émet
@@ -53,7 +54,7 @@ const NouveauMotDePasse = () => {
         if (error) setErreurLien(cleErreur(error));
       }
       // Retire ?code= / ?token_hash= de la barre d'adresse.
-      if (window.location.search || window.location.hash) naviguer("/nouveau-mot-de-passe", { replace: true });
+      if (window.location.search || window.location.hash) naviguer(routes.nouveauMotDePasse, { replace: true });
       setVerification(false);
     };
     verifierLien();
@@ -69,7 +70,7 @@ const NouveauMotDePasse = () => {
       await changerMotDePasse(motDePasse);
       terminerRecuperation();
       setTermine(true);
-      setTimeout(() => naviguer("/profil", { replace: true }), 1500);
+      setTimeout(() => naviguer(routes.profil, { replace: true }), 1500);
     } catch (e) {
       setErreur(cleErreur(e));
     } finally {
@@ -94,7 +95,7 @@ const NouveauMotDePasse = () => {
         <div className="space-y-4">
           <MessageAuth type="erreur">{t(erreurLien ?? "erreurs.lienExpire")}</MessageAuth>
           <Button asChild className="w-full bg-emerald-700 text-white hover:bg-emerald-800">
-            <Link to="/mot-de-passe-oublie">{t("auth.redemanderLien")}</Link>
+            <Link to={routes.motDePasseOublie}>{t("auth.redemanderLien")}</Link>
           </Button>
         </div>
       </CadreAuth>

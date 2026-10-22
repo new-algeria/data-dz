@@ -15,6 +15,7 @@ import { useSuite } from "@/hooks/use-suite";
 import { inscrire, LONGUEUR_MIN_MOT_DE_PASSE, renvoyerConfirmation } from "@/lib/auth";
 import { cleErreur } from "@/lib/erreurs";
 import { cn } from "@/lib/utils";
+import { avecSuite, routes } from "@/lib/routes";
 
 const Critere = ({ valide, children }: { valide: boolean; children: string }) => (
   <li className={cn("flex items-center gap-1.5", valide ? "text-emerald-700 dark:text-emerald-400" : "text-muted-foreground")}>
@@ -27,7 +28,7 @@ const Inscription = () => {
   const { t } = useTranslation();
   const { session, chargement } = useAuth();
   // Après confirmation de l'email, un nouveau membre arrive sur son profil pour le personnaliser.
-  const suite = useSuite("/profil");
+  const suite = useSuite(routes.profil);
   const naviguer = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -89,7 +90,7 @@ const Inscription = () => {
             {t("auth.renvoyerConfirmation")}
           </Button>
           <Button asChild variant="ghost" className="w-full">
-            <Link to={`/connexion?suite=${encodeURIComponent(suite)}`}>{t("auth.allerConnexion")}</Link>
+            <Link to={avecSuite(routes.connexion, suite)}>{t("auth.allerConnexion")}</Link>
           </Button>
         </div>
       </CadreAuth>
@@ -103,7 +104,7 @@ const Inscription = () => {
       pied={
         <>
           {t("auth.dejaInscrit")}{" "}
-          <Link to={`/connexion?suite=${encodeURIComponent(suite)}`} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
+          <Link to={avecSuite(routes.connexion, suite)} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
             {t("auth.seConnecter")}
           </Link>
         </>
@@ -114,7 +115,7 @@ const Inscription = () => {
           <MessageAuth type="erreur">
             {t(erreur)}
             {erreur === "erreurs.compteExistant" && (
-              <Link to={`/connexion?suite=${encodeURIComponent(suite)}`} className="ms-1 font-semibold underline">
+              <Link to={avecSuite(routes.connexion, suite)} className="ms-1 font-semibold underline">
                 {t("auth.seConnecter")}
               </Link>
             )}

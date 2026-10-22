@@ -1,6 +1,10 @@
 {
   "navbar": {
-    "contribuer": "Contribuer"
+    "contribuer": "Contribuer",
+    "proposer": "Proposer une donnée",
+    "moderation": "Modération",
+    "moderationEnAttente_one": "Modération : {{count}} proposition en attente",
+    "moderationEnAttente_other": "Modération : {{count}} propositions en attente"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -240,7 +244,30 @@
     "formatImage": "Format non accepté : PNG, JPEG, WebP ou GIF uniquement.",
     "imageTropLourde": "Image trop lourde : 2 Mo maximum.",
     "reseau": "Connexion au serveur impossible. Vérifiez votre connexion Internet.",
-    "inconnue": "Une erreur inattendue est survenue. Réessayez."
+    "inconnue": "Une erreur inattendue est survenue. Réessayez.",
+    "titreRequis": "Indiquez au moins un titre en français.",
+    "titreTropLong": "Un titre ne doit pas dépasser 200 caractères.",
+    "sourceUrlInvalide": "L'adresse de la source doit commencer par http:// ou https://.",
+    "sourceNomTropLong": "Le nom de la source ne doit pas dépasser 200 caractères.",
+    "periodeInvalide": "La fin de la période doit être après son début.",
+    "messageTropLong": "Le message aux modérateurs ne doit pas dépasser 2 000 caractères.",
+    "commentaireObligatoire": "Un commentaire est obligatoire pour refuser ou demander des modifications.",
+    "commentaireTropLong": "Le commentaire ne doit pas dépasser 2 000 caractères.",
+    "decisionRequise": "Choisissez une décision.",
+    "doublon": "Cet élément existe déjà.",
+    "fichierExiste": "Un fichier porte déjà ce nom dans la proposition.",
+    "fichierTropLourd": "Fichier trop lourd : 50 Mo maximum.",
+    "fichierVide": "Ce fichier est vide.",
+    "fichiersARetirer": "Retirez d'abord les fichiers signalés en rouge.",
+    "formatFichier": "Format non accepté : CSV, JSON, GeoJSON, XLSX, XML, ZIP ou PDF uniquement.",
+    "limitePropositions": "Vous avez déjà {{max}} propositions en cours, c'est le maximum. Attendez qu'une soit traitée ou retirez-en une.",
+    "nonAutorise": "Cette action n'est pas (ou plus) autorisée pour votre compte.",
+    "propreProposition": "Un modérateur ne peut pas décider de sa propre proposition : un autre modérateur doit s'en charger.",
+    "valeurInvalide": "Une des valeurs saisies n'est pas acceptée. Vérifiez le formulaire.",
+    "dejaTraitee": "Cette proposition a déjà été traitée. Rechargez la page.",
+    "reserveModerateurs": "Action réservée aux modérateurs.",
+    "actionPlusPossible": "Cette action n'est plus possible pour cette proposition. Rechargez la page.",
+    "introuvable": "Élément introuvable : il a peut-être été supprimé."
   },
   "legal": {
     "miseAJour": "Dernière mise à jour : {{date}}",
@@ -256,27 +283,27 @@
       "resume": "aucune donnée n'est demandée pour consulter ou télécharger les données. Si vous créez un compte, nous gardons le minimum pour vous connecter et afficher votre profil. Pas de publicité, pas de revente.",
       "sections": [
         {
-          "id": "responsable",
+          "id": "controller",
           "titre": "Qui est responsable ?",
           "texte": "Le site data-dz est porté par le projet **New Algeria** ([newalgeria.org](https://newalgeria.org)).\n\nPour toute question sur vos données : [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
         },
         {
-          "id": "donnees",
+          "id": "data",
           "titre": "Quelles données collectons-nous ?",
-          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profil)."
+          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profile)."
         },
         {
-          "id": "pourquoi",
+          "id": "purpose",
           "titre": "Pourquoi ?",
           "texte": "Uniquement pour vous permettre de vous connecter (y compris pour vous envoyer les emails de confirmation et de réinitialisation du mot de passe) et pour afficher votre profil public.\n\n**Pas de publicité, pas de revente de données, pas de profilage.**"
         },
         {
           "id": "public",
           "titre": "Ce qui est public",
-          "texte": "Sur votre page publique (`/membres/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription et, le cas échéant, votre rôle de modérateur ou d'administrateur.\n\n**Votre adresse email n'est jamais affichée.**"
+          "texte": "Sur votre page publique (`/members/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription et, le cas échéant, votre rôle de modérateur ou d'administrateur.\n\n**Votre adresse email n'est jamais affichée.**"
         },
         {
-          "id": "prestataires",
+          "id": "providers",
           "titre": "Hébergement et prestataires",
           "texte": "Le site s'appuie sur ces services :\n\n- **Supabase** : comptes et base de données ;\n- **Cloudflare** : stockage et diffusion des fichiers de données ;\n- **Vercel** : hébergement du site et statistiques de visite anonymes (Vercel Analytics, sans cookie) ;\n- **OpenStreetMap** : fond de carte des globes affichés sur les fiches de données ;\n- **Google** : uniquement si vous choisissez « Continuer avec Google ».\n\nComme pour tout site web, ces services reçoivent des informations techniques (adresse IP, type de navigateur) nécessaires pour afficher les pages et servir les fichiers. Certains peuvent les traiter en dehors de l'Union européenne."
         },
@@ -286,14 +313,14 @@
           "texte": "**Pas de cookies publicitaires ni de suivi.**\n\nLe site garde seulement dans votre navigateur (stockage local) ce qui est nécessaire à son fonctionnement : votre session de connexion et la langue que vous avez choisie."
         },
         {
-          "id": "conservation",
+          "id": "retention",
           "titre": "Combien de temps ?",
           "texte": "Vos données de compte sont conservées tant que votre compte existe. Quand vous demandez sa suppression, nous supprimons votre compte, votre profil et votre avatar."
         },
         {
-          "id": "droits",
+          "id": "rights",
           "titre": "Vos droits",
-          "texte": "Conformément au RGPD, vous pouvez à tout moment :\n\n- **accéder** à vos données ;\n- les **corriger**, directement depuis [Mon profil](/profil) ;\n- demander la **suppression** de votre compte et de vos données, sur simple demande à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nNous répondons dans un délai d'un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez vous adresser à la [CNIL](https://www.cnil.fr)."
+          "texte": "Conformément au RGPD, vous pouvez à tout moment :\n\n- **accéder** à vos données ;\n- les **corriger**, directement depuis [Mon profil](/profile) ;\n- demander la **suppression** de votre compte et de vos données, sur simple demande à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nNous répondons dans un délai d'un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez vous adresser à la [CNIL](https://www.cnil.fr)."
         }
       ]
     },
@@ -308,56 +335,268 @@
           "texte": "data-dz est un portail **gratuit et open source** de données sur l'Algérie, porté **bénévolement** par le projet [New Algeria](https://newalgeria.org).\n\nLe service peut évoluer, être modifié ou interrompu à tout moment."
         },
         {
-          "id": "acces",
+          "id": "access",
           "titre": "Accès",
           "texte": "La consultation et le téléchargement des données sont **libres et sans compte**.\n\nLe compte sert à personnaliser votre profil et, plus tard, à contribuer."
         },
         {
-          "id": "compte",
+          "id": "account",
           "titre": "Votre compte",
           "texte": "Vous êtes responsable de votre compte et des informations de votre profil. Gardez votre mot de passe pour vous.\n\n- un seul compte par personne ;\n- pas d'usurpation d'identité."
         },
         {
-          "id": "contenu",
+          "id": "content",
           "titre": "Ce que vous publiez",
           "texte": "Aujourd'hui votre profil, plus tard vos contributions : vous garantissez avoir le droit de publier ce contenu.\n\nSont interdits : les contenus illicites, haineux, diffamatoires, trompeurs ou publicitaires, les données personnelles d'autres personnes et les liens malveillants.\n\nL'équipe peut modérer ou supprimer un contenu, et suspendre un compte en cas d'abus."
         },
         {
-          "id": "licences",
+          "id": "licenses",
           "titre": "Licences des données et du code",
           "texte": "Chaque jeu de données reste soumis à **la licence de sa source**, indiquée sur sa fiche. Respectez-la quand vous réutilisez les données.\n\n- Les données **GeoAlgeria** (Yasser's studio) doivent être citées.\n- Les données issues d'**OpenStreetMap** sont sous licence [ODbL](https://opendatacommons.org/licenses/odbl/) : citez « © contributeurs OpenStreetMap » et partagez vos bases dérivées dans les mêmes conditions.\n\nLe code du site est sous licence **MIT** : [github.com/new-algeria/data-dz](https://github.com/new-algeria/data-dz)."
         },
         {
-          "id": "garantie",
+          "id": "warranty",
           "titre": "Pas de garantie",
           "texte": "Les données sont fournies **« en l'état »**, sans garantie d'exactitude, d'exhaustivité ni de mise à jour.\n\nPour tout usage important (financier, juridique, médical, administratif), vérifiez auprès de la source officielle."
         },
         {
-          "id": "responsabilite",
+          "id": "liability",
           "titre": "Responsabilité",
           "texte": "New Algeria ne peut être tenu responsable des décisions prises à partir des données, ni d'une indisponibilité du service."
         },
         {
-          "id": "usage",
+          "id": "fair-use",
           "titre": "Usage raisonnable",
           "texte": "Pas de surcharge volontaire du site ou des fichiers (par exemple des téléchargements automatisés en masse), et pas de tentative de contourner la sécurité."
         },
         {
-          "id": "signaler",
+          "id": "report",
           "titre": "Signaler un problème",
           "texte": "Erreur dans une donnée, contenu abusif ou simple question : écrivez à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nPour les données GeoAlgeria, vous pouvez aussi utiliser le lien « Signaler une erreur » de la fiche."
         },
         {
-          "id": "modifications",
+          "id": "changes",
           "titre": "Modifications",
           "texte": "Ces conditions peuvent évoluer. La date de mise à jour indiquée en haut de la page fait foi."
         },
         {
-          "id": "droit",
+          "id": "governing-law",
           "titre": "Droit applicable",
           "texte": "Ces conditions sont soumises au droit français."
         }
       ]
+    }
+  },
+  "propositions": {
+    "titrePage": "Proposer une donnée",
+    "sousTitre": "Partagez un jeu de données sur l'Algérie ou proposez la mise à jour d'une donnée existante. Les modérateurs relisent chaque proposition avant sa mise en ligne.",
+    "mesTitre": "Mes propositions",
+    "mesSousTitre": "Suivez l'avancement de vos propositions et répondez aux demandes des modérateurs.",
+    "choix": {
+      "nouvelle_donnee": {
+        "titre": "Nouvelle donnée",
+        "texte": "Un jeu de données qui n'est pas encore dans le catalogue."
+      },
+      "mise_a_jour": {
+        "titre": "Mise à jour d'une donnée",
+        "texte": "Corriger ou compléter une donnée déjà publiée : nouvelle version, description, licence…"
+      }
+    },
+    "types": {
+      "nouvelle_donnee": "Nouvelle donnée",
+      "mise_a_jour": "Mise à jour"
+    },
+    "rechercheDonnee": "Rechercher une donnée du catalogue…",
+    "aucuneDonnee": "Aucune donnée ne correspond à cette recherche.",
+    "donneeSynchronisee": "synchronisée automatiquement depuis GeoAlgeria",
+    "signalerGeoalgeria": "Signaler une erreur à GeoAlgeria",
+    "choisir": "Choisir",
+    "retourChoix": "Retour",
+    "changer": "Changer",
+    "limite": "Vous avez {{nombre}} propositions en cours sur {{max}} autorisées. Attendez qu'une soit traitée, ou retirez-en une, avant d'en envoyer une nouvelle.",
+    "envoiEnCours": "Envoi de la proposition…",
+    "envoiFichier": "Envoi de {{nom}}…",
+    "envoyer": "Envoyer la proposition",
+    "succes": "Merci, votre proposition a bien été envoyée !",
+    "succesTexte": "Un modérateur va la relire. Vous pouvez suivre son avancement, et la modifier tant qu'elle n'est pas traitée, dans « Mes propositions ».",
+    "fichiersEchec_one": "{{count}} fichier n'a pas pu être envoyé. Vous pouvez l'ajouter depuis la page de la proposition :",
+    "fichiersEchec_other": "{{count}} fichiers n'ont pas pu être envoyés. Vous pouvez les ajouter depuis la page de la proposition :",
+    "voirProposition": "Voir ma proposition",
+    "aucuneProposition": "Vous n'avez encore rien proposé.",
+    "aucunePropositionTexte": "Un jeu de données utile sur l'Algérie ? Proposez-le : les modérateurs le relisent avant sa mise en ligne.",
+    "compteurEnCours": "{{nombre}} / {{max}} propositions en cours",
+    "envoyeeLe": "Envoyée le {{date}}",
+    "nbFichiers_one": "{{count}} fichier",
+    "nbFichiers_other": "{{count}} fichiers",
+    "enAttenteMiseEnLigne": "En attente de mise en ligne",
+    "introuvableTitre": "Proposition introuvable",
+    "introuvableTexte": "Cette proposition n'existe pas, ou vous n'avez pas le droit de la consulter.",
+    "statuts": {
+      "en_attente": "En attente",
+      "modifications_demandees": "Modifications demandées",
+      "acceptee": "Acceptée",
+      "refusee": "Refusée",
+      "retiree": "Retirée",
+      "publiee": "Publiée"
+    },
+    "explications": {
+      "en_attente": "Un modérateur va relire votre proposition. Vous pouvez encore la modifier ou la retirer.",
+      "modifications_demandees": "Les modérateurs demandent des modifications : lisez leur commentaire dans l'historique, modifiez la proposition puis renvoyez-la.",
+      "acceptee": "Votre proposition est acceptée. Elle sera mise en ligne dans le catalogue lors de la prochaine publication par l'équipe.",
+      "refusee": "Votre proposition n'a pas été retenue. Le commentaire du modérateur, dans l'historique, explique pourquoi.",
+      "retiree": "Vous avez retiré cette proposition.",
+      "publiee": "La donnée est en ligne dans le catalogue. Merci pour votre contribution !"
+    },
+    "decisions": {
+      "commentaire": "Commentaire",
+      "modifications_demandees": "Modifications demandées",
+      "acceptee": "Acceptée",
+      "refusee": "Refusée"
+    },
+    "sections": {
+      "description": "Description",
+      "classement": "Classement",
+      "source": "Source"
+    },
+    "champs": {
+      "titreFr": "Titre (français)",
+      "titreEn": "Titre (anglais)",
+      "titreAr": "Titre (arabe)",
+      "descriptionFr": "Description (français)",
+      "descriptionEn": "Description (anglais)",
+      "descriptionAr": "Description (arabe)",
+      "facultatif": "facultatif",
+      "traductions": "Ajouter les traductions anglaise et arabe",
+      "categorie": "Catégorie",
+      "aucuneCategorie": "Aucune catégorie",
+      "licence": "Licence",
+      "licenceAide": "La licence sous laquelle la source diffuse ces données.",
+      "licenceInconnue": "Je ne sais pas",
+      "motsCles": "Mots-clés",
+      "motsClesAide": "Appuyez sur Entrée ou séparez-les par des virgules (20 maximum).",
+      "motsClesExemple": "ex. santé, pharmacies",
+      "retirerMotCle": "Retirer le mot-clé {{mot}}",
+      "wilayas": "Wilayas concernées",
+      "toutesWilayas": "Toute l'Algérie",
+      "wilayasChoisies_one": "{{count}} wilaya choisie",
+      "wilayasChoisies_other": "{{count}} wilayas choisies",
+      "rechercherWilaya": "Rechercher une wilaya…",
+      "aucuneWilaya": "Aucune wilaya trouvée.",
+      "retirerWilaya": "Retirer la wilaya {{code}}",
+      "periodeDebut": "Début de la période couverte",
+      "periodeFin": "Fin de la période couverte",
+      "sourceNom": "Nom de la source",
+      "sourceAide": "Organisme ou site d'où viennent les données.",
+      "sourceUrl": "Adresse de la source",
+      "message": "Message aux modérateurs",
+      "messageAide": "Contexte, méthode de collecte, limites connues… Visible seulement par vous et les modérateurs.",
+      "fichiers": "Fichiers",
+      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP ou PDF, 50 Mo maximum par fichier.",
+      "deposer": "Glissez vos fichiers ici ou cliquez pour les choisir",
+      "retirerFichier": "Retirer {{nom}}"
+    },
+    "detail": {
+      "titre": "Proposition",
+      "type": "Type",
+      "periode": "Période couverte",
+      "contenu": "Contenu de la proposition",
+      "historique": "Historique des revues",
+      "aucuneRevue": "Aucune revue pour l'instant.",
+      "aucunFichier": "Aucun fichier joint.",
+      "modifier": "Modifier",
+      "enregistrer": "Enregistrer les modifications",
+      "annuler": "Annuler",
+      "enregistre": "Modifications enregistrées.",
+      "renvoyer": "Renvoyer aux modérateurs",
+      "renvoyee": "Proposition renvoyée : elle repasse en attente de relecture.",
+      "retirer": "Retirer la proposition",
+      "retiree": "Proposition retirée.",
+      "retirerTitre": "Retirer cette proposition ?",
+      "retirerTexte": "Elle ne sera plus relue par les modérateurs. Cette action est définitive.",
+      "aideModification": "Vous pouvez modifier la proposition et ses fichiers tant qu'elle n'est pas traitée.",
+      "aideRenvoi": "Faites les modifications demandées (contenu ou fichiers), puis renvoyez la proposition aux modérateurs.",
+      "voirDonneePubliee": "Voir la donnée publiée",
+      "telecharger": "Télécharger {{nom}}",
+      "supprimerFichier": "Supprimer {{nom}}",
+      "supprimerFichierTitre": "Supprimer ce fichier ?",
+      "supprimerFichierTexte": "Le fichier {{nom}} sera définitivement supprimé de la proposition.",
+      "supprimer": "Supprimer",
+      "fichiersAjoutes": "Fichiers ajoutés.",
+      "fichierSupprime": "Fichier supprimé."
+    }
+  },
+  "moderation": {
+    "titre": "Modération",
+    "sousTitre": "Relisez les propositions de la communauté et décidez de leur suite.",
+    "verification": "Vérification de vos droits…",
+    "accesReserveTitre": "Accès réservé",
+    "accesReserveTexte": "Cet espace est réservé aux modérateurs et aux administrateurs de data-dz.",
+    "filtrerStatut": "Filtrer par statut",
+    "fileVide": "Aucune proposition avec ce statut.",
+    "aideAcceptees": "Les propositions acceptées attendent leur mise en ligne par le script d'administration. Elles passeront ensuite en « Publiée ».",
+    "revue": {
+      "auteur": "Proposée par",
+      "decider": "Décision",
+      "decision": "Votre décision",
+      "decisions": {
+        "acceptee": {
+          "titre": "Accepter",
+          "texte": "La donnée sera mise en ligne par le script d'administration."
+        },
+        "modifications_demandees": {
+          "titre": "Demander des modifications",
+          "texte": "L'auteur corrige puis renvoie. Commentaire obligatoire."
+        },
+        "refusee": {
+          "titre": "Refuser",
+          "texte": "La proposition est close. Commentaire obligatoire."
+        },
+        "commentaire": {
+          "titre": "Commenter seulement",
+          "texte": "Ajoute un commentaire sans changer le statut."
+        }
+      },
+      "commentaire": "Commentaire pour l'auteur",
+      "commentaireAide": "Visible par l'auteur dans l'historique. Obligatoire pour refuser ou demander des modifications.",
+      "valider": "Enregistrer la décision",
+      "decisionEnregistree": "Décision enregistrée. Nouveau statut : {{statut}}.",
+      "dejaTraitee": "Cette proposition est déjà traitée : plus aucune décision n'est possible.",
+      "aideAcceptee": "Le script d'administration la publiera dans le catalogue ; elle passera alors en « Publiée ».",
+      "apercu": "Aperçu",
+      "apercuChargement": "Chargement de l'aperçu…",
+      "apercuErreur": "Impossible d'afficher l'aperçu de ce fichier (contenu illisible ou lien expiré). Téléchargez-le pour l'ouvrir.",
+      "apercuVide": "Le fichier ne contient aucune ligne.",
+      "apercuTronque": "Seules les {{nombre}} premières lignes sont affichées.",
+      "apercuComplet_one": "{{count}} ligne : fichier complet.",
+      "apercuComplet_other": "{{count}} lignes : fichier complet.",
+      "apercuTropLourd": "Trop lourd pour l'aperçu : téléchargez-le.",
+      "nomOriginal": "Nom d'origine : {{nom}}",
+      "ouvrir": "Ouvrir {{nom}}"
+    },
+    "datasets": {
+      "lien": "Jeux de données",
+      "titre": "Jeux de données du catalogue",
+      "sousTitre": "Tous les jeux de données, brouillons et archives compris. Changez leur statut pour les publier ou les retirer du catalogue.",
+      "rechercher": "Rechercher par titre ou identifiant…",
+      "tousStatuts": "Tous les statuts",
+      "statuts": {
+        "publie": "Publié",
+        "brouillon": "Brouillon",
+        "en_revue": "En revue",
+        "archive": "Archivé"
+      },
+      "colonnes": {
+        "donnee": "Donnée",
+        "source": "Source",
+        "lignes": "Lignes",
+        "miseAJour": "Mise à jour",
+        "statut": "Statut"
+      },
+      "aucun": "Aucun jeu de données ne correspond.",
+      "changerStatut": "Changer le statut de {{titre}}",
+      "statutChange": "« {{titre}} » est maintenant : {{statut}}.",
+      "compteur_one": "{{count}} jeu de données affiché sur {{total}}",
+      "compteur_other": "{{count}} jeux de données affichés sur {{total}}"
     }
   }
 }

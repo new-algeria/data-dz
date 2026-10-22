@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, UserRound, UserRoundPen } from "lucide-react";
+import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, UserRound, UserRoundPen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,22 +13,25 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { useAuth } from "@/contexte/ContexteAuth";
+import { useEstModerateur } from "@/hooks/use-moderateur";
 import { deconnecter } from "@/lib/auth";
+import { avecSuite, routes } from "@/lib/routes";
 
 /** Bouton « Se connecter », ou menu du membre connecté (avatar, profil, page publique, déconnexion). */
 export const MenuUtilisateur = () => {
   const { t } = useTranslation();
   const { session, profil, chargement } = useAuth();
+  const { data: moderateur } = useEstModerateur();
   const emplacement = useLocation();
   const naviguer = useNavigate();
 
   if (chargement) return <Skeleton className="h-9 w-9 rounded-full" />;
 
   if (!session) {
-    const suite = encodeURIComponent(`${emplacement.pathname}${emplacement.search}`);
+    const suite = `${emplacement.pathname}${emplacement.search}`;
     return (
       <Button asChild size="sm" variant="outline" className="gap-2 bg-white/70 dark:bg-white/5">
-        <Link to={`/connexion?suite=${suite}`} aria-label={t("auth.seConnecter")}>
+        <Link to={avecSuite(routes.connexion, suite)} aria-label={t("auth.seConnecter")}>
           <LogIn className="h-4 w-4" />
           <span className="hidden sm:inline">{t("auth.seConnecter")}</span>
         </Link>
@@ -67,16 +70,37 @@ export const MenuUtilisateur = () => {
           </>
         )}
         <DropdownMenuItem asChild>
-          <Link to="/profil" className="cursor-pointer gap-2">
+          <Link to={routes.profil} className="cursor-pointer gap-2">
             <UserRoundPen className="h-4 w-4" />
             {t("auth.monProfil")}
           </Link>
         </DropdownMenuItem>
         {profil && (
           <DropdownMenuItem asChild>
-            <Link to={`/membres/${profil.pseudo}`} className="cursor-pointer gap-2">
+            <Link to={routes.membre(profil.pseudo)} className="cursor-pointer gap-2">
               <UserRound className="h-4 w-4" />
               {t("auth.maPagePublique")}
+            </Link>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to={routes.proposer} className="cursor-pointer gap-2">
+            <FilePlus2 className="h-4 w-4" />
+            {t("navbar.proposer")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to={routes.mesPropositions} className="cursor-pointer gap-2">
+            <Inbox className="h-4 w-4" />
+            {t("propositions.mesTitre")}
+          </Link>
+        </DropdownMenuItem>
+        {moderateur && (
+          <DropdownMenuItem asChild>
+            <Link to={routes.moderation} className="cursor-pointer gap-2">
+              <ShieldCheck className="h-4 w-4" />
+              {t("navbar.moderation")}
             </Link>
           </DropdownMenuItem>
         )}
