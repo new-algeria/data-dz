@@ -1,13 +1,14 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ChevronRight, Database, FileStack, Inbox } from "lucide-react";
+import { ChevronRight, Database, FileStack, Inbox, UsersRound } from "lucide-react";
 import { MiseEnPage } from "@/components/MiseEnPage";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { EtatErreur } from "@/components/EtatErreur";
 import { BadgeStatut } from "@/components/propositions/BadgeStatut";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
 import { cleErreur } from "@/lib/erreurs";
 import { localeNombres } from "@/lib/fichiers";
@@ -21,6 +22,7 @@ const estStatut = (valeur: string | null): valeur is StatutSoumission => STATUTS
 const FileModeration = () => {
   const { t } = useTranslation();
   const langue = useLangue();
+  const { profil } = useAuth();
   const [parametres, setParametres] = useSearchParams();
   const brut = parametres.get("status");
   const statut: StatutSoumission = estStatut(brut) ? brut : "en_attente";
@@ -39,12 +41,22 @@ const FileModeration = () => {
       chemin={routes.moderation}
       largeur="large"
       actions={
-        <Button asChild variant="outline" className="gap-2">
-          <Link to={routes.moderationDatasets}>
-            <Database className="h-4 w-4" />
-            {t("moderation.datasets.lien")}
-          </Link>
-        </Button>
+        <>
+          <Button asChild variant="outline" className="gap-2">
+            <Link to={routes.moderationDatasets}>
+              <Database className="h-4 w-4" />
+              {t("moderation.datasets.lien")}
+            </Link>
+          </Button>
+          {profil?.role === "admin" && (
+            <Button asChild variant="outline" className="gap-2">
+              <Link to={routes.adminMembres}>
+                <UsersRound className="h-4 w-4" />
+                {t("admin.titre")}
+              </Link>
+            </Button>
+          )}
+        </>
       }
     >
       <div role="tablist" aria-label={t("moderation.filtrerStatut")} className="mb-5 flex gap-2 overflow-x-auto pb-1">

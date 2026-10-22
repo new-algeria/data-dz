@@ -53,6 +53,9 @@ const parMessageRpc: [RegExp, string][] = [
   [/peut être renvoyée|peut être retirée/i, "actionPlusPossible"],
   [/trop de commentaires/i, "tropDeCommentaires"],
   [/répondre qu'à un commentaire principal|même donnée que le commentaire/i, "reponseImpossible"],
+  [/réservé aux administrateurs/i, "reserveAdmins"],
+  [/rôle d'un administrateur/i, "roleAdminProtege"],
+  [/rôle admin ne peut pas être donné/i, "roleAdminInterdit"],
   [/introuvable/i, "introuvable"],
 ];
 
