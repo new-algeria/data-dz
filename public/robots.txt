@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /profile
+Disallow: /submit
+Disallow: /my-submissions
+Disallow: /moderation
+Disallow: /auth/
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+
+Sitemap: https://www.data-dz.com/sitemap.xml

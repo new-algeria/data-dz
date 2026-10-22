@@ -256,27 +256,27 @@
       "resume": "aucune donnée n'est demandée pour consulter ou télécharger les données. Si vous créez un compte, nous gardons le minimum pour vous connecter et afficher votre profil. Pas de publicité, pas de revente.",
       "sections": [
         {
-          "id": "responsable",
+          "id": "controller",
           "titre": "Qui est responsable ?",
           "texte": "Le site data-dz est porté par le projet **New Algeria** ([newalgeria.org](https://newalgeria.org)).\n\nPour toute question sur vos données : [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
         },
         {
-          "id": "donnees",
+          "id": "data",
           "titre": "Quelles données collectons-nous ?",
-          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profil)."
+          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profile)."
         },
         {
-          "id": "pourquoi",
+          "id": "purpose",
           "titre": "Pourquoi ?",
           "texte": "Uniquement pour vous permettre de vous connecter (y compris pour vous envoyer les emails de confirmation et de réinitialisation du mot de passe) et pour afficher votre profil public.\n\n**Pas de publicité, pas de revente de données, pas de profilage.**"
         },
         {
           "id": "public",
           "titre": "Ce qui est public",
-          "texte": "Sur votre page publique (`/membres/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription et, le cas échéant, votre rôle de modérateur ou d'administrateur.\n\n**Votre adresse email n'est jamais affichée.**"
+          "texte": "Sur votre page publique (`/members/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription et, le cas échéant, votre rôle de modérateur ou d'administrateur.\n\n**Votre adresse email n'est jamais affichée.**"
         },
         {
-          "id": "prestataires",
+          "id": "providers",
           "titre": "Hébergement et prestataires",
           "texte": "Le site s'appuie sur ces services :\n\n- **Supabase** : comptes et base de données ;\n- **Cloudflare** : stockage et diffusion des fichiers de données ;\n- **Vercel** : hébergement du site et statistiques de visite anonymes (Vercel Analytics, sans cookie) ;\n- **OpenStreetMap** : fond de carte des globes affichés sur les fiches de données ;\n- **Google** : uniquement si vous choisissez « Continuer avec Google ».\n\nComme pour tout site web, ces services reçoivent des informations techniques (adresse IP, type de navigateur) nécessaires pour afficher les pages et servir les fichiers. Certains peuvent les traiter en dehors de l'Union européenne."
         },
@@ -286,14 +286,14 @@
           "texte": "**Pas de cookies publicitaires ni de suivi.**\n\nLe site garde seulement dans votre navigateur (stockage local) ce qui est nécessaire à son fonctionnement : votre session de connexion et la langue que vous avez choisie."
         },
         {
-          "id": "conservation",
+          "id": "retention",
           "titre": "Combien de temps ?",
           "texte": "Vos données de compte sont conservées tant que votre compte existe. Quand vous demandez sa suppression, nous supprimons votre compte, votre profil et votre avatar."
         },
         {
-          "id": "droits",
+          "id": "rights",
           "titre": "Vos droits",
-          "texte": "Conformément au RGPD, vous pouvez à tout moment :\n\n- **accéder** à vos données ;\n- les **corriger**, directement depuis [Mon profil](/profil) ;\n- demander la **suppression** de votre compte et de vos données, sur simple demande à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nNous répondons dans un délai d'un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez vous adresser à la [CNIL](https://www.cnil.fr)."
+          "texte": "Conformément au RGPD, vous pouvez à tout moment :\n\n- **accéder** à vos données ;\n- les **corriger**, directement depuis [Mon profil](/profile) ;\n- demander la **suppression** de votre compte et de vos données, sur simple demande à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nNous répondons dans un délai d'un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez vous adresser à la [CNIL](https://www.cnil.fr)."
         }
       ]
     },
@@ -308,52 +308,52 @@
           "texte": "data-dz est un portail **gratuit et open source** de données sur l'Algérie, porté **bénévolement** par le projet [New Algeria](https://newalgeria.org).\n\nLe service peut évoluer, être modifié ou interrompu à tout moment."
         },
         {
-          "id": "acces",
+          "id": "access",
           "titre": "Accès",
           "texte": "La consultation et le téléchargement des données sont **libres et sans compte**.\n\nLe compte sert à personnaliser votre profil et, plus tard, à contribuer."
         },
         {
-          "id": "compte",
+          "id": "account",
           "titre": "Votre compte",
           "texte": "Vous êtes responsable de votre compte et des informations de votre profil. Gardez votre mot de passe pour vous.\n\n- un seul compte par personne ;\n- pas d'usurpation d'identité."
         },
         {
-          "id": "contenu",
+          "id": "content",
           "titre": "Ce que vous publiez",
           "texte": "Aujourd'hui votre profil, plus tard vos contributions : vous garantissez avoir le droit de publier ce contenu.\n\nSont interdits : les contenus illicites, haineux, diffamatoires, trompeurs ou publicitaires, les données personnelles d'autres personnes et les liens malveillants.\n\nL'équipe peut modérer ou supprimer un contenu, et suspendre un compte en cas d'abus."
         },
         {
-          "id": "licences",
+          "id": "licenses",
           "titre": "Licences des données et du code",
           "texte": "Chaque jeu de données reste soumis à **la licence de sa source**, indiquée sur sa fiche. Respectez-la quand vous réutilisez les données.\n\n- Les données **GeoAlgeria** (Yasser's studio) doivent être citées.\n- Les données issues d'**OpenStreetMap** sont sous licence [ODbL](https://opendatacommons.org/licenses/odbl/) : citez « © contributeurs OpenStreetMap » et partagez vos bases dérivées dans les mêmes conditions.\n\nLe code du site est sous licence **MIT** : [github.com/new-algeria/data-dz](https://github.com/new-algeria/data-dz)."
         },
         {
-          "id": "garantie",
+          "id": "warranty",
           "titre": "Pas de garantie",
           "texte": "Les données sont fournies **« en l'état »**, sans garantie d'exactitude, d'exhaustivité ni de mise à jour.\n\nPour tout usage important (financier, juridique, médical, administratif), vérifiez auprès de la source officielle."
         },
         {
-          "id": "responsabilite",
+          "id": "liability",
           "titre": "Responsabilité",
           "texte": "New Algeria ne peut être tenu responsable des décisions prises à partir des données, ni d'une indisponibilité du service."
         },
         {
-          "id": "usage",
+          "id": "fair-use",
           "titre": "Usage raisonnable",
           "texte": "Pas de surcharge volontaire du site ou des fichiers (par exemple des téléchargements automatisés en masse), et pas de tentative de contourner la sécurité."
         },
         {
-          "id": "signaler",
+          "id": "report",
           "titre": "Signaler un problème",
           "texte": "Erreur dans une donnée, contenu abusif ou simple question : écrivez à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nPour les données GeoAlgeria, vous pouvez aussi utiliser le lien « Signaler une erreur » de la fiche."
         },
         {
-          "id": "modifications",
+          "id": "changes",
           "titre": "Modifications",
           "texte": "Ces conditions peuvent évoluer. La date de mise à jour indiquée en haut de la page fait foi."
         },
         {
-          "id": "droit",
+          "id": "governing-law",
           "titre": "Droit applicable",
           "texte": "Ces conditions sont soumises au droit français."
         }

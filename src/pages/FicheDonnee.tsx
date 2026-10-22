@@ -26,6 +26,7 @@ import { texteTraduit } from "@/lib/traduction";
 import { localeNombres, trierFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee } from "@/lib/types";
+import { routes } from "@/lib/routes";
 
 // MapLibre n'est chargé que sur les fiches qui affichent un globe.
 const GlobeDonnees = lazy(() => import("@/components/fiche/GlobeDonnees"));
@@ -94,7 +95,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
   return (
     <>
-      <CustomMetaTags title={`${titre} - data-dz`} description={description || titre} path={`/donnees/${donnee.slug}`} />
+      <CustomMetaTags title={`${titre} - data-dz`} description={description || titre} path={routes.donnee(donnee.slug)} />
 
       <EnTeteFiche donnee={donnee} fichierPrincipal={fichierPrincipal} />
 

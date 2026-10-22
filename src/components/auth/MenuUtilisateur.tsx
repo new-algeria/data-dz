@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { deconnecter } from "@/lib/auth";
+import { avecSuite, routes } from "@/lib/routes";
 
 /** Bouton « Se connecter », ou menu du membre connecté (avatar, profil, page publique, déconnexion). */
 export const MenuUtilisateur = () => {
@@ -25,10 +26,10 @@ export const MenuUtilisateur = () => {
   if (chargement) return <Skeleton className="h-9 w-9 rounded-full" />;
 
   if (!session) {
-    const suite = encodeURIComponent(`${emplacement.pathname}${emplacement.search}`);
+    const suite = `${emplacement.pathname}${emplacement.search}`;
     return (
       <Button asChild size="sm" variant="outline" className="gap-2 bg-white/70 dark:bg-white/5">
-        <Link to={`/connexion?suite=${suite}`} aria-label={t("auth.seConnecter")}>
+        <Link to={avecSuite(routes.connexion, suite)} aria-label={t("auth.seConnecter")}>
           <LogIn className="h-4 w-4" />
           <span className="hidden sm:inline">{t("auth.seConnecter")}</span>
         </Link>
@@ -67,14 +68,14 @@ export const MenuUtilisateur = () => {
           </>
         )}
         <DropdownMenuItem asChild>
-          <Link to="/profil" className="cursor-pointer gap-2">
+          <Link to={routes.profil} className="cursor-pointer gap-2">
             <UserRoundPen className="h-4 w-4" />
             {t("auth.monProfil")}
           </Link>
         </DropdownMenuItem>
         {profil && (
           <DropdownMenuItem asChild>
-            <Link to={`/membres/${profil.pseudo}`} className="cursor-pointer gap-2">
+            <Link to={routes.membre(profil.pseudo)} className="cursor-pointer gap-2">
               <UserRound className="h-4 w-4" />
               {t("auth.maPagePublique")}
             </Link>

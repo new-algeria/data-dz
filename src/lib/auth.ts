@@ -1,8 +1,21 @@
 import { supabase } from "./supabase";
 import { cleErreur } from "./erreurs";
+import { PARAMETRE_SUITE, routes } from "./routes";
 
-// Pages d'authentification vers lesquelles il est inutile de revenir après connexion.
-const PAGES_AUTH = ["/connexion", "/inscription", "/mot-de-passe-oublie", "/nouveau-mot-de-passe", "/auth/retour"];
+// Pages d'authentification vers lesquelles il est inutile de revenir après connexion
+// (avec leurs anciennes URL françaises, encore présentes dans des liens déjà envoyés).
+const PAGES_AUTH = [
+  routes.connexion,
+  routes.inscription,
+  routes.motDePasseOublie,
+  routes.nouveauMotDePasse,
+  routes.retourAuth,
+  "/connexion",
+  "/inscription",
+  "/mot-de-passe-oublie",
+  "/nouveau-mot-de-passe",
+  "/auth/retour",
+];
 
 /**
  * Chemin interne sûr pour rediriger après connexion : refuse les URL externes (`//site`, `https://…`)
@@ -18,7 +31,7 @@ export function suiteSure(valeur: string | null | undefined, defaut = "/"): stri
 
 /** URL de retour après un lien email ou Google : fonctionne en local, sur les aperçus Vercel et en production. */
 export function urlRetour(suite: string): string {
-  return `${window.location.origin}/auth/retour?suite=${encodeURIComponent(suiteSure(suite))}`;
+  return `${window.location.origin}${routes.retourAuth}?${PARAMETRE_SUITE}=${encodeURIComponent(suiteSure(suite))}`;
 }
 
 export async function inscrire(email: string, motDePasse: string, suite: string) {
@@ -77,7 +90,7 @@ export async function chargerFournisseursActifs(): Promise<Record<string, boolea
 
 export async function envoyerLienReinitialisation(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/nouveau-mot-de-passe`,
+    redirectTo: `${window.location.origin}${routes.nouveauMotDePasse}`,
   });
   if (error) throw error;
 }

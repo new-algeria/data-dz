@@ -15,6 +15,7 @@ export const CustomMetaTags = ({ title, description, path = "" }: MetaTagsProps)
   return (
     <Helmet>
       <title>{title}</title>
+      <link rel="canonical" href={urlComplete} />
       <meta name="description" content={description} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />

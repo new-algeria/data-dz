@@ -9,6 +9,7 @@ import { CadreAuth } from "@/components/auth/CadreAuth";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { envoyerLienReinitialisation } from "@/lib/auth";
 import { cleErreur } from "@/lib/erreurs";
+import { routes } from "@/lib/routes";
 
 const MotDePasseOublie = () => {
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const MotDePasseOublie = () => {
       titre={t("auth.oubliTitre")}
       sousTitre={t("auth.oubliSousTitre")}
       pied={
-        <Link to="/connexion" className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
+        <Link to={routes.connexion} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
           {t("auth.retourConnexion")}
         </Link>
       }
