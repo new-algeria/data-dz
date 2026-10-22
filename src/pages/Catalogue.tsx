@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowDown, Github, Search, SearchX } from "lucide-react";
+import { ArrowDown, ArrowDownWideNarrow, Github, Search, SearchX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
+import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
@@ -37,6 +38,8 @@ const Catalogue = () => {
   // Recherche et catégorie sont gardées dans l'URL pour pouvoir partager un lien filtré.
   // « category » ; l'ancien paramètre « categorie » reste lu pour les liens déjà partagés.
   const categorie = parametres.get("category") ?? parametres.get("categorie");
+  const triDemande = parametres.get("sort");
+  const tri: Tri = estTri(triDemande) ? triDemande : TRI_PAR_DEFAUT;
   const [saisie, setSaisie] = useState(parametres.get("q") ?? "");
   const terme = useValeurDifferee(saisie.trim());
   const [nbVisibles, setNbVisibles] = useState(TAILLE_PAGE);
@@ -87,12 +90,29 @@ const Catalogue = () => {
     );
   };
 
-  const reinitialiser = () => {
-    setSaisie("");
-    setParametres({}, { replace: true });
+  const choisirTri = (valeur: string) => {
+    setParametres(
+      (precedents) => {
+        const suivants = new URLSearchParams(precedents);
+        if (valeur === TRI_PAR_DEFAUT) suivants.delete("sort");
+        else suivants.set("sort", valeur);
+        return suivants;
+      },
+      { replace: true }
+    );
   };
 
-  const listeDonnees = requeteCatalogue.data ?? [];
+  const reinitialiser = () => {
+    setSaisie("");
+    // On garde le tri choisi : seuls la recherche et la catégorie sont effacées.
+    setParametres(tri === TRI_PAR_DEFAUT ? {} : { sort: tri }, { replace: true });
+  };
+
+  // Tri dans le navigateur : le catalogue est chargé en entier, et l'ordre alphabétique suit la langue affichée.
+  const listeDonnees = useMemo(
+    () => trierDonnees(requeteCatalogue.data ?? [], tri, langue),
+    [requeteCatalogue.data, tri, langue]
+  );
   const filtresActifs = Boolean(terme || categorie);
 
   return (
@@ -221,6 +241,21 @@ const Catalogue = () => {
                       <IconeCategorie icone={cat.icone} />
                       {texteTraduit(cat.nom, langue)}
                     </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={tri} onValueChange={choisirTri}>
+              <SelectTrigger className="md:w-60 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
+                <span className="flex items-center gap-2">
+                  <ArrowDownWideNarrow className="h-4 w-4 text-muted-foreground" aria-hidden />
+                  <SelectValue />
+                </span>
+              </SelectTrigger>
+              <SelectContent>
+                {TRIS.map((valeur) => (
+                  <SelectItem key={valeur} value={valeur}>
+                    {t(`catalogue.tri.${valeur}`)}
                   </SelectItem>
                 ))}
               </SelectContent>

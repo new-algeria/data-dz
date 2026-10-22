@@ -3,6 +3,7 @@ Allow: /
 Disallow: /profile
 Disallow: /submit
 Disallow: /my-submissions
+Disallow: /favorites
 Disallow: /moderation
 Disallow: /auth/
 Disallow: /login

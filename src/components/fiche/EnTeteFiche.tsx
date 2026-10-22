@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, ChevronRight, Download, ExternalLink } from "lucide-react";
+import { BadgeCheck, ChevronRight, Download, ExternalLink, MessageSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
-import { formaterTaille, urlFichier } from "@/lib/fichiers";
+import { BoutonsVote } from "@/components/communaute/BoutonsVote";
+import { BoutonFavori } from "@/components/communaute/BoutonFavori";
+import { formaterNombre, formaterTaille, urlFichier } from "@/lib/fichiers";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee, Fichier } from "@/lib/types";
@@ -79,6 +81,17 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
                 ))}
               </ul>
             )}
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              <BoutonsVote donnee={donnee} taille="grande" />
+              <BoutonFavori donnee={donnee} taille="grande" />
+              <a
+                href="#comments"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white/80 px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground dark:border-white/10 dark:bg-white/5"
+              >
+                <MessageSquare className="h-4 w-4" aria-hidden />
+                {t("communaute.nbCommentaires", { count: donnee.nb_commentaires, nombre: formaterNombre(donnee.nb_commentaires, langue) })}
+              </a>
+            </div>
           </motion.div>
 
           <motion.div
