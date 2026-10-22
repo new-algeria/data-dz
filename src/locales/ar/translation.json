@@ -1,6 +1,14 @@
 {
   "navbar": {
-    "contribuer": "ساهم"
+    "contribuer": "ساهم",
+    "proposer": "اقتراح بيانات",
+    "moderation": "الإشراف",
+    "moderationEnAttente_zero": "الإشراف: لا توجد اقتراحات قيد الانتظار",
+    "moderationEnAttente_one": "الإشراف: اقتراح واحد قيد الانتظار",
+    "moderationEnAttente_two": "الإشراف: اقتراحان قيد الانتظار",
+    "moderationEnAttente_few": "الإشراف: {{count}} اقتراحات قيد الانتظار",
+    "moderationEnAttente_many": "الإشراف: {{count}} اقتراحا قيد الانتظار",
+    "moderationEnAttente_other": "الإشراف: {{count}} اقتراح قيد الانتظار"
   },
   "langue": {
     "choisir": "اختر اللغة"
@@ -247,7 +255,30 @@
     "formatImage": "صيغة غير مقبولة: PNG أو JPEG أو WebP أو GIF فقط.",
     "imageTropLourde": "الصورة كبيرة جدا: 2 م.ب كحد أقصى.",
     "reseau": "تعذّر الاتصال بالخادم. تحقق من اتصالك بالإنترنت.",
-    "inconnue": "حدث خطأ غير متوقع. أعد المحاولة."
+    "inconnue": "حدث خطأ غير متوقع. أعد المحاولة.",
+    "titreRequis": "أدخل عنوانا بالفرنسية على الأقل.",
+    "titreTropLong": "يجب ألا يتجاوز العنوان 200 حرف.",
+    "sourceUrlInvalide": "يجب أن يبدأ عنوان المصدر بـ http:// أو https://.",
+    "sourceNomTropLong": "يجب ألا يتجاوز اسم المصدر 200 حرف.",
+    "periodeInvalide": "يجب أن تكون نهاية الفترة بعد بدايتها.",
+    "messageTropLong": "يجب ألا تتجاوز الرسالة إلى المشرفين 2000 حرف.",
+    "commentaireObligatoire": "التعليق إلزامي للرفض أو لطلب تعديلات.",
+    "commentaireTropLong": "يجب ألا يتجاوز التعليق 2000 حرف.",
+    "decisionRequise": "اختر قرارا.",
+    "doublon": "هذا العنصر موجود بالفعل.",
+    "fichierExiste": "يوجد ملف بهذا الاسم في الاقتراح بالفعل.",
+    "fichierTropLourd": "الملف كبير جدا: 50 ميغابايت كحد أقصى.",
+    "fichierVide": "هذا الملف فارغ.",
+    "fichiersARetirer": "أزل أولا الملفات المشار إليها باللون الأحمر.",
+    "formatFichier": "صيغة غير مقبولة: CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF فقط.",
+    "limitePropositions": "لديك بالفعل {{max}} اقتراحات قيد المعالجة، وهو الحد الأقصى. انتظر معالجة أحدها أو اسحب واحدا.",
+    "nonAutorise": "هذا الإجراء غير مسموح (أو لم يعد مسموحا) لحسابك.",
+    "propreProposition": "لا يمكن للمشرف أن يقرر بشأن اقتراحه الخاص: يجب أن يتولاه مشرف آخر.",
+    "valeurInvalide": "إحدى القيم المدخلة غير مقبولة. تحقق من الاستمارة.",
+    "dejaTraitee": "تمت معالجة هذا الاقتراح بالفعل. أعد تحميل الصفحة.",
+    "reserveModerateurs": "هذا الإجراء مخصص للمشرفين.",
+    "actionPlusPossible": "لم يعد هذا الإجراء ممكنا لهذا الاقتراح. أعد تحميل الصفحة.",
+    "introuvable": "العنصر غير موجود: ربما تم حذفه."
   },
   "legal": {
     "miseAJour": "آخر تحديث: {{date}}",
@@ -365,6 +396,238 @@
           "texte": "تخضع هذه الشروط للقانون الفرنسي."
         }
       ]
+    }
+  },
+  "propositions": {
+    "titrePage": "اقتراح بيانات",
+    "sousTitre": "شارك مجموعة بيانات عن الجزائر أو اقترح تحديث بيانات موجودة. يراجع المشرفون كل اقتراح قبل نشره.",
+    "mesTitre": "اقتراحاتي",
+    "mesSousTitre": "تابع تقدم اقتراحاتك وأجب على طلبات المشرفين.",
+    "choix": {
+      "nouvelle_donnee": {
+        "titre": "بيانات جديدة",
+        "texte": "مجموعة بيانات غير موجودة بعد في الفهرس."
+      },
+      "mise_a_jour": {
+        "titre": "تحديث بيانات",
+        "texte": "تصحيح أو إكمال بيانات منشورة: إصدار جديد، وصف، ترخيص…"
+      }
+    },
+    "types": {
+      "nouvelle_donnee": "بيانات جديدة",
+      "mise_a_jour": "تحديث"
+    },
+    "rechercheDonnee": "ابحث في الفهرس…",
+    "aucuneDonnee": "لا توجد بيانات تطابق هذا البحث.",
+    "donneeSynchronisee": "تتم مزامنتها تلقائيا من GeoAlgeria",
+    "signalerGeoalgeria": "الإبلاغ عن خطأ إلى GeoAlgeria",
+    "choisir": "اختيار",
+    "retourChoix": "رجوع",
+    "changer": "تغيير",
+    "limite": "لديك {{nombre}} اقتراحات قيد المعالجة من أصل {{max}} مسموح بها. انتظر معالجة أحدها، أو اسحب واحدا، قبل إرسال اقتراح جديد.",
+    "envoiEnCours": "جار إرسال الاقتراح…",
+    "envoiFichier": "جار رفع {{nom}}…",
+    "envoyer": "إرسال الاقتراح",
+    "succes": "شكرا، تم إرسال اقتراحك بنجاح!",
+    "succesTexte": "سيراجعه أحد المشرفين. يمكنك متابعة تقدمه، وتعديله ما لم تتم معالجته، في «اقتراحاتي».",
+    "fichiersEchec_zero": "تعذر رفع بعض الملفات. يمكنك إضافتها من صفحة الاقتراح:",
+    "fichiersEchec_one": "تعذر رفع ملف واحد. يمكنك إضافته من صفحة الاقتراح:",
+    "fichiersEchec_two": "تعذر رفع ملفين. يمكنك إضافتهما من صفحة الاقتراح:",
+    "fichiersEchec_few": "تعذر رفع {{count}} ملفات. يمكنك إضافتها من صفحة الاقتراح:",
+    "fichiersEchec_many": "تعذر رفع {{count}} ملفا. يمكنك إضافتها من صفحة الاقتراح:",
+    "fichiersEchec_other": "تعذر رفع {{count}} ملف. يمكنك إضافتها من صفحة الاقتراح:",
+    "voirProposition": "عرض اقتراحي",
+    "aucuneProposition": "لم تقترح أي شيء بعد.",
+    "aucunePropositionTexte": "هل تعرف مجموعة بيانات مفيدة عن الجزائر؟ اقترحها: يراجعها المشرفون قبل نشرها.",
+    "compteurEnCours": "{{nombre}} / {{max}} اقتراحات قيد المعالجة",
+    "envoyeeLe": "أرسل في {{date}}",
+    "nbFichiers_zero": "لا توجد ملفات",
+    "nbFichiers_one": "ملف واحد",
+    "nbFichiers_two": "ملفان",
+    "nbFichiers_few": "{{count}} ملفات",
+    "nbFichiers_many": "{{count}} ملفا",
+    "nbFichiers_other": "{{count}} ملف",
+    "enAttenteMiseEnLigne": "في انتظار النشر",
+    "introuvableTitre": "الاقتراح غير موجود",
+    "introuvableTexte": "هذا الاقتراح غير موجود، أو لا يحق لك الاطلاع عليه.",
+    "statuts": {
+      "en_attente": "قيد الانتظار",
+      "modifications_demandees": "تعديلات مطلوبة",
+      "acceptee": "مقبول",
+      "refusee": "مرفوض",
+      "retiree": "مسحوب",
+      "publiee": "منشور"
+    },
+    "explications": {
+      "en_attente": "سيراجع أحد المشرفين اقتراحك. لا يزال بإمكانك تعديله أو سحبه.",
+      "modifications_demandees": "يطلب المشرفون تعديلات: اقرأ تعليقهم في السجل، عدّل الاقتراح ثم أعد إرساله.",
+      "acceptee": "تم قبول اقتراحك. ستتم إضافته إلى الفهرس في عملية النشر القادمة للفريق.",
+      "refusee": "لم يتم قبول اقتراحك. يوضح تعليق المشرف في السجل السبب.",
+      "retiree": "لقد سحبت هذا الاقتراح.",
+      "publiee": "البيانات متاحة الآن في الفهرس. شكرا على مساهمتك!"
+    },
+    "decisions": {
+      "commentaire": "تعليق",
+      "modifications_demandees": "تعديلات مطلوبة",
+      "acceptee": "مقبول",
+      "refusee": "مرفوض"
+    },
+    "sections": {
+      "description": "الوصف",
+      "classement": "التصنيف",
+      "source": "المصدر"
+    },
+    "champs": {
+      "titreFr": "العنوان (بالفرنسية)",
+      "titreEn": "العنوان (بالإنجليزية)",
+      "titreAr": "العنوان (بالعربية)",
+      "descriptionFr": "الوصف (بالفرنسية)",
+      "descriptionEn": "الوصف (بالإنجليزية)",
+      "descriptionAr": "الوصف (بالعربية)",
+      "facultatif": "اختياري",
+      "traductions": "إضافة الترجمتين الإنجليزية والعربية",
+      "categorie": "الفئة",
+      "aucuneCategorie": "بدون فئة",
+      "licence": "الترخيص",
+      "licenceAide": "الترخيص الذي ينشر المصدر هذه البيانات بموجبه.",
+      "licenceInconnue": "لا أعرف",
+      "motsCles": "الكلمات المفتاحية",
+      "motsClesAide": "اضغط Enter أو افصل بينها بفواصل (20 كحد أقصى).",
+      "motsClesExemple": "مثال: صحة، صيدليات",
+      "retirerMotCle": "إزالة الكلمة المفتاحية {{mot}}",
+      "wilayas": "الولايات المعنية",
+      "toutesWilayas": "كل الجزائر",
+      "wilayasChoisies_zero": "لم يتم اختيار أي ولاية",
+      "wilayasChoisies_one": "ولاية واحدة مختارة",
+      "wilayasChoisies_two": "ولايتان مختارتان",
+      "wilayasChoisies_few": "{{count}} ولايات مختارة",
+      "wilayasChoisies_many": "{{count}} ولاية مختارة",
+      "wilayasChoisies_other": "{{count}} ولاية مختارة",
+      "rechercherWilaya": "ابحث عن ولاية…",
+      "aucuneWilaya": "لم يتم العثور على أي ولاية.",
+      "retirerWilaya": "إزالة الولاية {{code}}",
+      "periodeDebut": "بداية الفترة المشمولة",
+      "periodeFin": "نهاية الفترة المشمولة",
+      "sourceNom": "اسم المصدر",
+      "sourceAide": "الهيئة أو الموقع الذي تأتي منه البيانات.",
+      "sourceUrl": "عنوان المصدر",
+      "message": "رسالة إلى المشرفين",
+      "messageAide": "السياق، طريقة الجمع، الحدود المعروفة… لا يراها إلا أنت والمشرفون.",
+      "fichiers": "الملفات",
+      "fichiersAide": "CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF، بحد أقصى 50 ميغابايت لكل ملف.",
+      "deposer": "اسحب ملفاتك إلى هنا أو انقر لاختيارها",
+      "retirerFichier": "إزالة {{nom}}"
+    },
+    "detail": {
+      "titre": "اقتراح",
+      "type": "النوع",
+      "periode": "الفترة المشمولة",
+      "contenu": "محتوى الاقتراح",
+      "historique": "سجل المراجعات",
+      "aucuneRevue": "لا توجد مراجعة حتى الآن.",
+      "aucunFichier": "لا يوجد ملف مرفق.",
+      "modifier": "تعديل",
+      "enregistrer": "حفظ التعديلات",
+      "annuler": "إلغاء",
+      "enregistre": "تم حفظ التعديلات.",
+      "renvoyer": "إعادة الإرسال إلى المشرفين",
+      "renvoyee": "أعيد إرسال الاقتراح: إنه في انتظار المراجعة من جديد.",
+      "retirer": "سحب الاقتراح",
+      "retiree": "تم سحب الاقتراح.",
+      "retirerTitre": "سحب هذا الاقتراح؟",
+      "retirerTexte": "لن يراجعه المشرفون بعد الآن. لا يمكن التراجع عن هذا الإجراء.",
+      "aideModification": "يمكنك تعديل الاقتراح وملفاته ما لم تتم معالجته.",
+      "aideRenvoi": "أجر التعديلات المطلوبة (المحتوى أو الملفات)، ثم أعد إرسال الاقتراح إلى المشرفين.",
+      "voirDonneePubliee": "عرض البيانات المنشورة",
+      "telecharger": "تنزيل {{nom}}",
+      "supprimerFichier": "حذف {{nom}}",
+      "supprimerFichierTitre": "حذف هذا الملف؟",
+      "supprimerFichierTexte": "سيتم حذف الملف {{nom}} نهائيا من الاقتراح.",
+      "supprimer": "حذف",
+      "fichiersAjoutes": "تمت إضافة الملفات.",
+      "fichierSupprime": "تم حذف الملف."
+    }
+  },
+  "moderation": {
+    "titre": "الإشراف",
+    "sousTitre": "راجع اقتراحات المجتمع وقرر ما يتبع.",
+    "verification": "جار التحقق من صلاحياتك…",
+    "accesReserveTitre": "دخول مقيد",
+    "accesReserveTexte": "هذا الفضاء مخصص لمشرفي ومديري data-dz.",
+    "filtrerStatut": "التصفية حسب الحالة",
+    "fileVide": "لا يوجد اقتراح بهذه الحالة.",
+    "aideAcceptees": "الاقتراحات المقبولة في انتظار نشرها بواسطة سكريبت الإدارة، ثم تنتقل إلى «منشور».",
+    "revue": {
+      "auteur": "اقترحه",
+      "decider": "القرار",
+      "decision": "قرارك",
+      "decisions": {
+        "acceptee": {
+          "titre": "قبول",
+          "texte": "سيتم نشر البيانات بواسطة سكريبت الإدارة."
+        },
+        "modifications_demandees": {
+          "titre": "طلب تعديلات",
+          "texte": "يصحح صاحب الاقتراح ثم يعيد الإرسال. التعليق إلزامي."
+        },
+        "refusee": {
+          "titre": "رفض",
+          "texte": "يغلق الاقتراح. التعليق إلزامي."
+        },
+        "commentaire": {
+          "titre": "تعليق فقط",
+          "texte": "يضيف تعليقا دون تغيير الحالة."
+        }
+      },
+      "commentaire": "تعليق لصاحب الاقتراح",
+      "commentaireAide": "يراه صاحب الاقتراح في السجل. إلزامي للرفض أو لطلب تعديلات.",
+      "valider": "حفظ القرار",
+      "decisionEnregistree": "تم حفظ القرار. الحالة الجديدة: {{statut}}.",
+      "dejaTraitee": "تمت معالجة هذا الاقتراح بالفعل: لم يعد أي قرار ممكنا.",
+      "aideAcceptee": "سينشره سكريبت الإدارة في الفهرس، ثم ينتقل إلى «منشور».",
+      "apercu": "معاينة",
+      "apercuChargement": "جار تحميل المعاينة…",
+      "apercuErreur": "تعذر عرض معاينة هذا الملف (محتوى غير مقروء أو رابط منتهي الصلاحية). نزّله لفتحه.",
+      "apercuVide": "لا يحتوي الملف على أي سطر.",
+      "apercuTronque": "تُعرض أول {{nombre}} سطرا فقط.",
+      "apercuComplet_zero": "لا توجد أسطر.",
+      "apercuComplet_one": "سطر واحد: الملف كامل.",
+      "apercuComplet_two": "سطران: الملف كامل.",
+      "apercuComplet_few": "{{count}} أسطر: الملف كامل.",
+      "apercuComplet_many": "{{count}} سطرا: الملف كامل.",
+      "apercuComplet_other": "{{count}} سطر: الملف كامل.",
+      "apercuTropLourd": "كبير جدا للمعاينة: نزّله.",
+      "nomOriginal": "الاسم الأصلي: {{nom}}",
+      "ouvrir": "فتح {{nom}}"
+    },
+    "datasets": {
+      "lien": "مجموعات البيانات",
+      "titre": "مجموعات بيانات الفهرس",
+      "sousTitre": "كل مجموعات البيانات، بما فيها المسودات والمؤرشفة. غيّر حالتها لنشرها أو سحبها من الفهرس.",
+      "rechercher": "ابحث بالعنوان أو المعرّف…",
+      "tousStatuts": "كل الحالات",
+      "statuts": {
+        "publie": "منشور",
+        "brouillon": "مسودة",
+        "en_revue": "قيد المراجعة",
+        "archive": "مؤرشف"
+      },
+      "colonnes": {
+        "donnee": "البيانات",
+        "source": "المصدر",
+        "lignes": "الأسطر",
+        "miseAJour": "آخر تحديث",
+        "statut": "الحالة"
+      },
+      "aucun": "لا توجد مجموعة بيانات مطابقة.",
+      "changerStatut": "تغيير حالة {{titre}}",
+      "statutChange": "«{{titre}}» الآن: {{statut}}.",
+      "compteur_zero": "لا توجد مجموعات بيانات معروضة من أصل {{total}}",
+      "compteur_one": "مجموعة بيانات واحدة معروضة من أصل {{total}}",
+      "compteur_two": "مجموعتا بيانات معروضتان من أصل {{total}}",
+      "compteur_few": "{{count}} مجموعات بيانات معروضة من أصل {{total}}",
+      "compteur_many": "{{count}} مجموعة بيانات معروضة من أصل {{total}}",
+      "compteur_other": "{{count}} مجموعة بيانات معروضة من أصل {{total}}"
     }
   }
 }

@@ -1,6 +1,10 @@
 {
   "navbar": {
-    "contribuer": "Contribute"
+    "contribuer": "Contribute",
+    "proposer": "Submit a dataset",
+    "moderation": "Moderation",
+    "moderationEnAttente_one": "Moderation: {{count}} pending submission",
+    "moderationEnAttente_other": "Moderation: {{count}} pending submissions"
   },
   "langue": {
     "choisir": "Choose language"
@@ -240,7 +244,30 @@
     "formatImage": "Format not accepted: PNG, JPEG, WebP or GIF only.",
     "imageTropLourde": "Image too large: 2 MB max.",
     "reseau": "Cannot reach the server. Check your Internet connection.",
-    "inconnue": "An unexpected error occurred. Please try again."
+    "inconnue": "An unexpected error occurred. Please try again.",
+    "titreRequis": "Enter at least a French title.",
+    "titreTropLong": "A title must not exceed 200 characters.",
+    "sourceUrlInvalide": "The source address must start with http:// or https://.",
+    "sourceNomTropLong": "The source name must not exceed 200 characters.",
+    "periodeInvalide": "The end of the period must come after its start.",
+    "messageTropLong": "The message to moderators must not exceed 2,000 characters.",
+    "commentaireObligatoire": "A comment is required to reject or request changes.",
+    "commentaireTropLong": "The comment must not exceed 2,000 characters.",
+    "decisionRequise": "Choose a decision.",
+    "doublon": "This item already exists.",
+    "fichierExiste": "A file with this name is already in the submission.",
+    "fichierTropLourd": "File too large: 50 MB maximum.",
+    "fichierVide": "This file is empty.",
+    "fichiersARetirer": "First remove the files flagged in red.",
+    "formatFichier": "Format not accepted: CSV, JSON, GeoJSON, XLSX, XML, ZIP or PDF only.",
+    "limitePropositions": "You already have {{max}} submissions in progress, which is the maximum. Wait for one to be reviewed or withdraw one.",
+    "nonAutorise": "This action is not (or no longer) allowed for your account.",
+    "propreProposition": "A moderator cannot decide on their own submission: another moderator must handle it.",
+    "valeurInvalide": "One of the values entered is not accepted. Check the form.",
+    "dejaTraitee": "This submission has already been reviewed. Reload the page.",
+    "reserveModerateurs": "This action is restricted to moderators.",
+    "actionPlusPossible": "This action is no longer possible for this submission. Reload the page.",
+    "introuvable": "Item not found: it may have been deleted."
   },
   "legal": {
     "miseAJour": "Last updated: {{date}}",
@@ -358,6 +385,218 @@
           "texte": "These terms are governed by French law."
         }
       ]
+    }
+  },
+  "propositions": {
+    "titrePage": "Submit a dataset",
+    "sousTitre": "Share a dataset about Algeria or suggest an update to an existing one. Moderators review every submission before it goes online.",
+    "mesTitre": "My submissions",
+    "mesSousTitre": "Follow the progress of your submissions and respond to moderators' requests.",
+    "choix": {
+      "nouvelle_donnee": {
+        "titre": "New dataset",
+        "texte": "A dataset that is not in the catalogue yet."
+      },
+      "mise_a_jour": {
+        "titre": "Update a dataset",
+        "texte": "Fix or complete a published dataset: new version, description, licence…"
+      }
+    },
+    "types": {
+      "nouvelle_donnee": "New dataset",
+      "mise_a_jour": "Update"
+    },
+    "rechercheDonnee": "Search the catalogue…",
+    "aucuneDonnee": "No dataset matches this search.",
+    "donneeSynchronisee": "automatically synchronised from GeoAlgeria",
+    "signalerGeoalgeria": "Report an error to GeoAlgeria",
+    "choisir": "Choose",
+    "retourChoix": "Back",
+    "changer": "Change",
+    "limite": "You have {{nombre}} submissions in progress out of {{max}} allowed. Wait for one to be reviewed, or withdraw one, before sending a new one.",
+    "envoiEnCours": "Sending the submission…",
+    "envoiFichier": "Uploading {{nom}}…",
+    "envoyer": "Send the submission",
+    "succes": "Thank you, your submission has been sent!",
+    "succesTexte": "A moderator will review it. You can follow its progress, and edit it until it is reviewed, in “My submissions”.",
+    "fichiersEchec_one": "{{count}} file could not be uploaded. You can add it from the submission page:",
+    "fichiersEchec_other": "{{count}} files could not be uploaded. You can add them from the submission page:",
+    "voirProposition": "View my submission",
+    "aucuneProposition": "You haven't submitted anything yet.",
+    "aucunePropositionTexte": "Know a useful dataset about Algeria? Submit it: moderators review it before it goes online.",
+    "compteurEnCours": "{{nombre}} / {{max}} submissions in progress",
+    "envoyeeLe": "Sent on {{date}}",
+    "nbFichiers_one": "{{count}} file",
+    "nbFichiers_other": "{{count}} files",
+    "enAttenteMiseEnLigne": "Waiting to go online",
+    "introuvableTitre": "Submission not found",
+    "introuvableTexte": "This submission does not exist, or you are not allowed to view it.",
+    "statuts": {
+      "en_attente": "Pending",
+      "modifications_demandees": "Changes requested",
+      "acceptee": "Accepted",
+      "refusee": "Rejected",
+      "retiree": "Withdrawn",
+      "publiee": "Published"
+    },
+    "explications": {
+      "en_attente": "A moderator will review your submission. You can still edit or withdraw it.",
+      "modifications_demandees": "Moderators are asking for changes: read their comment in the history, edit the submission, then send it again.",
+      "acceptee": "Your submission has been accepted. It will be added to the catalogue at the team's next publication.",
+      "refusee": "Your submission was not accepted. The moderator's comment in the history explains why.",
+      "retiree": "You withdrew this submission.",
+      "publiee": "The dataset is online in the catalogue. Thank you for your contribution!"
+    },
+    "decisions": {
+      "commentaire": "Comment",
+      "modifications_demandees": "Changes requested",
+      "acceptee": "Accepted",
+      "refusee": "Rejected"
+    },
+    "sections": {
+      "description": "Description",
+      "classement": "Classification",
+      "source": "Source"
+    },
+    "champs": {
+      "titreFr": "Title (French)",
+      "titreEn": "Title (English)",
+      "titreAr": "Title (Arabic)",
+      "descriptionFr": "Description (French)",
+      "descriptionEn": "Description (English)",
+      "descriptionAr": "Description (Arabic)",
+      "facultatif": "optional",
+      "traductions": "Add English and Arabic translations",
+      "categorie": "Category",
+      "aucuneCategorie": "No category",
+      "licence": "Licence",
+      "licenceAide": "The licence under which the source publishes this data.",
+      "licenceInconnue": "I don't know",
+      "motsCles": "Keywords",
+      "motsClesAide": "Press Enter or separate them with commas (20 maximum).",
+      "motsClesExemple": "e.g. health, pharmacies",
+      "retirerMotCle": "Remove keyword {{mot}}",
+      "wilayas": "Wilayas covered",
+      "toutesWilayas": "All of Algeria",
+      "wilayasChoisies_one": "{{count}} wilaya selected",
+      "wilayasChoisies_other": "{{count}} wilayas selected",
+      "rechercherWilaya": "Search for a wilaya…",
+      "aucuneWilaya": "No wilaya found.",
+      "retirerWilaya": "Remove wilaya {{code}}",
+      "periodeDebut": "Start of the period covered",
+      "periodeFin": "End of the period covered",
+      "sourceNom": "Source name",
+      "sourceAide": "Organisation or website the data comes from.",
+      "sourceUrl": "Source address",
+      "message": "Message to moderators",
+      "messageAide": "Context, collection method, known limitations… Only visible to you and the moderators.",
+      "fichiers": "Files",
+      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP or PDF, 50 MB maximum per file.",
+      "deposer": "Drop your files here or click to choose them",
+      "retirerFichier": "Remove {{nom}}"
+    },
+    "detail": {
+      "titre": "Submission",
+      "type": "Type",
+      "periode": "Period covered",
+      "contenu": "Submission content",
+      "historique": "Review history",
+      "aucuneRevue": "No review yet.",
+      "aucunFichier": "No file attached.",
+      "modifier": "Edit",
+      "enregistrer": "Save changes",
+      "annuler": "Cancel",
+      "enregistre": "Changes saved.",
+      "renvoyer": "Send back to moderators",
+      "renvoyee": "Submission sent back: it is waiting for review again.",
+      "retirer": "Withdraw the submission",
+      "retiree": "Submission withdrawn.",
+      "retirerTitre": "Withdraw this submission?",
+      "retirerTexte": "Moderators will no longer review it. This cannot be undone.",
+      "aideModification": "You can edit the submission and its files until it is reviewed.",
+      "aideRenvoi": "Make the requested changes (content or files), then send the submission back to the moderators.",
+      "voirDonneePubliee": "View the published dataset",
+      "telecharger": "Download {{nom}}",
+      "supprimerFichier": "Delete {{nom}}",
+      "supprimerFichierTitre": "Delete this file?",
+      "supprimerFichierTexte": "The file {{nom}} will be permanently removed from the submission.",
+      "supprimer": "Delete",
+      "fichiersAjoutes": "Files added.",
+      "fichierSupprime": "File deleted."
+    }
+  },
+  "moderation": {
+    "titre": "Moderation",
+    "sousTitre": "Review community submissions and decide what happens next.",
+    "verification": "Checking your permissions…",
+    "accesReserveTitre": "Restricted access",
+    "accesReserveTexte": "This area is reserved for data-dz moderators and administrators.",
+    "filtrerStatut": "Filter by status",
+    "fileVide": "No submission with this status.",
+    "aideAcceptees": "Accepted submissions are waiting to be published by the administration script. They will then move to “Published”.",
+    "revue": {
+      "auteur": "Submitted by",
+      "decider": "Decision",
+      "decision": "Your decision",
+      "decisions": {
+        "acceptee": {
+          "titre": "Accept",
+          "texte": "The dataset will be published by the administration script."
+        },
+        "modifications_demandees": {
+          "titre": "Request changes",
+          "texte": "The author fixes it and sends it back. Comment required."
+        },
+        "refusee": {
+          "titre": "Reject",
+          "texte": "The submission is closed. Comment required."
+        },
+        "commentaire": {
+          "titre": "Comment only",
+          "texte": "Adds a comment without changing the status."
+        }
+      },
+      "commentaire": "Comment for the author",
+      "commentaireAide": "Visible to the author in the history. Required to reject or request changes.",
+      "valider": "Save the decision",
+      "decisionEnregistree": "Decision saved. New status: {{statut}}.",
+      "dejaTraitee": "This submission has already been reviewed: no further decision is possible.",
+      "aideAcceptee": "The administration script will publish it in the catalogue; it will then move to “Published”.",
+      "apercu": "Preview",
+      "apercuChargement": "Loading preview…",
+      "apercuErreur": "Unable to preview this file (unreadable content or expired link). Download it to open it.",
+      "apercuVide": "The file contains no rows.",
+      "apercuTronque": "Only the first {{nombre}} rows are shown.",
+      "apercuComplet_one": "{{count}} row: complete file.",
+      "apercuComplet_other": "{{count}} rows: complete file.",
+      "apercuTropLourd": "Too large to preview: download it.",
+      "nomOriginal": "Original name: {{nom}}",
+      "ouvrir": "Open {{nom}}"
+    },
+    "datasets": {
+      "lien": "Datasets",
+      "titre": "Catalogue datasets",
+      "sousTitre": "All datasets, including drafts and archives. Change their status to publish them or remove them from the catalogue.",
+      "rechercher": "Search by title or identifier…",
+      "tousStatuts": "All statuses",
+      "statuts": {
+        "publie": "Published",
+        "brouillon": "Draft",
+        "en_revue": "In review",
+        "archive": "Archived"
+      },
+      "colonnes": {
+        "donnee": "Dataset",
+        "source": "Source",
+        "lignes": "Rows",
+        "miseAJour": "Updated",
+        "statut": "Status"
+      },
+      "aucun": "No dataset matches.",
+      "changerStatut": "Change the status of {{titre}}",
+      "statutChange": "“{{titre}}” is now: {{statut}}.",
+      "compteur_one": "{{count}} dataset shown out of {{total}}",
+      "compteur_other": "{{count}} datasets shown out of {{total}}"
     }
   }
 }
