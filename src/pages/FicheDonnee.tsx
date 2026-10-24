@@ -87,7 +87,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const version = donnee.versions;
   const fichiers = trierFichiers(version?.fichiers ?? []);
   const fichierPrincipal = fichiers.find((fichier) => fichier.principal) ?? fichiers[0];
-  const geojsonPrincipal = fichierPrincipal?.format === "geojson" ? fichierPrincipal : undefined;
+  // Tous les fichiers spatiaux : la carte propose de choisir lequel afficher, ou de les superposer.
+  const fichiersGeojson = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
   const colonnes = Array.isArray(version?.colonnes) ? version.colonnes : [];
   const formatDate = (style: "medium" | "long") =>
     version?.publie_le
@@ -117,10 +118,10 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6 min-w-0">
-            {geojsonPrincipal && (
+            {fichiersGeojson.length > 0 && (
               <Section id="titre-carte" titre={t("fiche.globe")} icone={Globe2}>
                 <Suspense fallback={<ChargementCarte />}>
-                  <GlobeDonnees fichier={geojsonPrincipal} />
+                  <GlobeDonnees fichiers={fichiersGeojson} />
                 </Suspense>
               </Section>
             )}
