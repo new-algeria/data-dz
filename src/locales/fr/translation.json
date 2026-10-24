@@ -275,7 +275,10 @@
     "actionPlusPossible": "Cette action n'est plus possible pour cette proposition. Rechargez la page.",
     "introuvable": "Élément introuvable : il a peut-être été supprimé.",
     "tropDeCommentaires": "Vous avez publié beaucoup de commentaires en peu de temps (10 en 10 minutes maximum). Patientez quelques minutes avant de réessayer.",
-    "reponseImpossible": "On ne peut répondre qu'à un commentaire principal de cette donnée."
+    "reponseImpossible": "On ne peut répondre qu'à un commentaire principal de cette donnée.",
+    "reserveAdmins": "Action réservée aux administrateurs.",
+    "roleAdminProtege": "Le rôle d'un administrateur ne peut pas être changé depuis le site.",
+    "roleAdminInterdit": "Le rôle administrateur ne peut pas être donné depuis le site."
   },
   "legal": {
     "miseAJour": "Dernière mise à jour : {{date}}",
@@ -684,5 +687,45 @@
       "nouvelle_version": "Nouvelle version {{version}} de « {{titre}} »",
       "autre": "Nouvelle notification"
     }
+  },
+  "admin": {
+    "titre": "Gestion des membres",
+    "sousTitre": "Tous les comptes de data-dz et leur rôle.",
+    "accesReserve": "Cet espace est réservé aux administrateurs de data-dz.",
+    "aide": "Vous pouvez donner les rôles membre, contributeur ou modérateur. Le rôle d'un administrateur ne se change pas ici, et le rôle administrateur ne se donne pas depuis le site.",
+    "rechercher": "Rechercher par pseudo ou nom…",
+    "filtrerRole": "Filtrer par rôle",
+    "tousRoles": "Tous les rôles",
+    "roles": {
+      "membre": "Membre",
+      "contributeur": "Contributeur",
+      "moderateur": "Modérateur",
+      "admin": "Administrateur"
+    },
+    "descriptions": {
+      "membre": "Peut voter, commenter, suivre des données et en proposer.",
+      "contributeur": "Comme un membre ; ce rôle est aussi donné automatiquement quand une de ses propositions est publiée.",
+      "moderateur": "Peut relire et décider des propositions, masquer des commentaires et changer le statut des jeux de données.",
+      "admin": "Tous les droits."
+    },
+    "colonnes": {
+      "membre": "Membre",
+      "reputation": "Réputation",
+      "inscription": "Inscription",
+      "role": "Rôle"
+    },
+    "aucun": "Aucun membre ne correspond.",
+    "adminProtege": "Le rôle d'un administrateur ne peut pas être changé depuis le site",
+    "changerRole": "Changer le rôle de {{nom}}",
+    "confirmerTitre": "Changer le rôle ?",
+    "confirmerTexte": "{{nom}} passera de « {{ancien}} » à « {{nouveau}} ».",
+    "confirmer": "Changer le rôle",
+    "roleChange": "{{nom}} est maintenant : {{role}}.",
+    "erreurRole": "Le rôle n'a pas pu être changé.",
+    "compteur_one": "{{nombre}} membre",
+    "compteur_other": "{{nombre}} membres",
+    "page": "Page {{page}} / {{total}}",
+    "precedente": "Page précédente",
+    "suivante": "Page suivante"
   }
 }

@@ -275,7 +275,10 @@
     "actionPlusPossible": "This action is no longer possible for this submission. Reload the page.",
     "introuvable": "Item not found: it may have been deleted.",
     "tropDeCommentaires": "You have posted many comments in a short time (at most 10 in 10 minutes). Wait a few minutes before trying again.",
-    "reponseImpossible": "You can only reply to a top-level comment on this dataset."
+    "reponseImpossible": "You can only reply to a top-level comment on this dataset.",
+    "reserveAdmins": "This action is restricted to administrators.",
+    "roleAdminProtege": "An administrator's role cannot be changed from the site.",
+    "roleAdminInterdit": "The administrator role cannot be given from the site."
   },
   "legal": {
     "miseAJour": "Last updated: {{date}}",
@@ -684,5 +687,45 @@
       "nouvelle_version": "New version {{version}} of “{{titre}}”",
       "autre": "New notification"
     }
+  },
+  "admin": {
+    "titre": "Member management",
+    "sousTitre": "All data-dz accounts and their role.",
+    "accesReserve": "This area is reserved for data-dz administrators.",
+    "aide": "You can give the member, contributor or moderator roles. An administrator's role cannot be changed here, and the administrator role cannot be given from the site.",
+    "rechercher": "Search by username or name…",
+    "filtrerRole": "Filter by role",
+    "tousRoles": "All roles",
+    "roles": {
+      "membre": "Member",
+      "contributeur": "Contributor",
+      "moderateur": "Moderator",
+      "admin": "Administrator"
+    },
+    "descriptions": {
+      "membre": "Can vote, comment, follow datasets and submit new ones.",
+      "contributeur": "Same as a member; this role is also given automatically when one of their submissions is published.",
+      "moderateur": "Can review and decide on submissions, hide comments and change the status of datasets.",
+      "admin": "All permissions."
+    },
+    "colonnes": {
+      "membre": "Member",
+      "reputation": "Reputation",
+      "inscription": "Joined",
+      "role": "Role"
+    },
+    "aucun": "No member matches.",
+    "adminProtege": "An administrator's role cannot be changed from the site",
+    "changerRole": "Change the role of {{nom}}",
+    "confirmerTitre": "Change the role?",
+    "confirmerTexte": "{{nom}} will go from “{{ancien}}” to “{{nouveau}}”.",
+    "confirmer": "Change the role",
+    "roleChange": "{{nom}} is now: {{role}}.",
+    "erreurRole": "The role could not be changed.",
+    "compteur_one": "{{nombre}} member",
+    "compteur_other": "{{nombre}} members",
+    "page": "Page {{page}} / {{total}}",
+    "precedente": "Previous page",
+    "suivante": "Next page"
   }
 }
