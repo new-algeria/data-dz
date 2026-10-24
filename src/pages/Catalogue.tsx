@@ -12,6 +12,7 @@ import { Statistiques } from "@/components/catalogue/Statistiques";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
 import { IconeCategorie } from "@/components/BadgeCategorie";
+import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -138,10 +139,7 @@ const Catalogue = () => {
               transition={{ duration: 0.4 }}
               className="inline-flex items-center gap-2 rounded-full border border-emerald-600/20 bg-white/70 dark:bg-white/5 backdrop-blur px-3 py-1 text-sm font-medium text-emerald-800 dark:text-emerald-300"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
-              </span>
+              <DrapeauAlgerie className="h-5 w-[1.875rem]" titre={t("drapeau")} />
               {t("accueil.badge")}
             </motion.span>
 
