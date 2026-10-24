@@ -115,7 +115,11 @@
     "sourceVerifiee": "Verified source",
     "parSource": "Published by",
     "miseAJour": "Updated",
-    "ongletApercu": "Preview"
+    "ongletApercu": "Preview",
+    "carteChoix": "File shown on the map",
+    "toutSuperposer": "Overlay all ({{count}} files)",
+    "legende": "Map legend",
+    "telechargerFormat": "Download {{nom}} as {{format}}"
   },
   "attribution": {
     "titre": "Attribution",
