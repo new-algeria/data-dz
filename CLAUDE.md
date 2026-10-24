@@ -136,6 +136,12 @@ Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateu
 - `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle, confirmation avant chaque changement. `RouteAdmin` s'appuie sur `profil.role` (simple confort d'affichage).
 - Clé React Query : `["admin", "membres", …]`.
 
+## Interface
+- **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
+- **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes). Rien n'est écrit en dur.
+- **Thème** : mémorisé dans `localStorage` (`theme`), sinon réglage du système.
+- **Couleurs** : les couleurs shadcn (`popover`, `card`, `muted`, `accent`, `destructive`, `input`, `ring`) sont déclarées dans `tailwind.config.ts` à partir des variables CSS de `src/index.css` (clair et sombre). Ne jamais coder une couleur en dur à leur place : menus et listes déroulantes deviendraient transparents ou illisibles en mode sombre.
+
 ## Conventions
 - Noms de variables, fonctions et composants métier en **français** (`listeDonnees`, `chargerCatalogue`, `FicheDonnee`). Les noms imposés par les bibliothèques restent en anglais.
 - Tous les textes visibles passent par i18next (`fr`, `en`, `ar`), jamais en dur.
