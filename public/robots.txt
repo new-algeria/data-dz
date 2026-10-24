@@ -5,6 +5,7 @@ Disallow: /submit
 Disallow: /my-submissions
 Disallow: /favorites
 Disallow: /moderation
+Disallow: /admin
 Disallow: /auth/
 Disallow: /login
 Disallow: /signup

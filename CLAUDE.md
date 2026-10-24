@@ -70,6 +70,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/moderation` (`?status=`) | File des propositions | modérateur / admin |
 | `/moderation/submissions/:id` | Revue d'une proposition | modérateur / admin |
 | `/moderation/datasets` | Statut des datasets (publié / brouillon / archivé) | modérateur / admin |
+| `/admin/users` | Gestion des membres et de leurs rôles | admin |
 | `/privacy`, `/terms` | Pages légales | public |
 
 - **Anciennes URL françaises** (`/donnees/:slug`, `/dataset/:slug`, `/membres/:pseudo`, `/profil`, `/connexion`, `/inscription`, `/mot-de-passe-oublie`, `/nouveau-mot-de-passe`, `/auth/retour`, `/confidentialite`, `/conditions`) : redirection vers la nouvelle URL en gardant `?…` et `#…` (indispensable pour les liens d'email déjà envoyés).
@@ -127,6 +128,13 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Notifications** (`ClocheNotifications` dans l'en-tête) : 20 dernières et nombre de non lues, rafraîchies à l'ouverture et toutes les 60 secondes ; clic → marquée lue puis ouverture de `lien` (chemins internes seulement) ; « Tout marquer comme lu ». Types : `nouvelle_soumission`, `revue`, `publiee`, `reponse`, `nouvelle_version`.
 - **Clés React Query** : `["mes-votes", uid]`, `["mes-favoris", uid]`, `["favoris", uid]`, `["commentaires", datasetId]`, `["notifications", uid]`.
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
+
+## Gestion des membres (admin)
+Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateur_id, nouveau_role)` (security definer). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
+
+- La colonne `profils.role` n'est jamais écrite directement : seule `rpc("changer_role")` la change, et la base vérifie tout (réservé à `est_admin()`, rôle d'un admin non modifiable, rôle `admin` jamais donné depuis le site). Nommer ou retirer un administrateur reste manuel (SQL Editor).
+- `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle, confirmation avant chaque changement. `RouteAdmin` s'appuie sur `profil.role` (simple confort d'affichage).
+- Clé React Query : `["admin", "membres", …]`.
 
 ## Conventions
 - Noms de variables, fonctions et composants métier en **français** (`listeDonnees`, `chargerCatalogue`, `FicheDonnee`). Les noms imposés par les bibliothèques restent en anglais.

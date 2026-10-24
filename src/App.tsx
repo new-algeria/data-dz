@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import ScrollToTop from "./components/ScrollToTop";
 import { RouteProtegee } from "./components/auth/RouteProtegee";
 import { RouteModerateur } from "./components/moderation/RouteModerateur";
+import { RouteAdmin } from "./components/admin/RouteAdmin";
 import { routes } from "./lib/routes";
 import Catalogue from "./pages/Catalogue";
 import FicheDonnee from "./pages/FicheDonnee";
@@ -27,6 +28,7 @@ const FileModeration = lazy(() => import("./pages/moderation/FileModeration"));
 const RevueProposition = lazy(() => import("./pages/moderation/RevueProposition"));
 const ModerationDatasets = lazy(() => import("./pages/moderation/ModerationDatasets"));
 const Favoris = lazy(() => import("./pages/communaute/Favoris"));
+const GestionMembres = lazy(() => import("./pages/admin/GestionMembres"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -83,6 +85,17 @@ function App() {
           <Route path={routes.moderation} element={moderateur(<FileModeration />)} />
           <Route path="/moderation/submissions/:id" element={moderateur(<RevueProposition />)} />
           <Route path={routes.moderationDatasets} element={moderateur(<ModerationDatasets />)} />
+
+          <Route
+            path={routes.adminMembres}
+            element={
+              <RouteProtegee>
+                <RouteAdmin>
+                  <GestionMembres />
+                </RouteAdmin>
+              </RouteProtegee>
+            }
+          />
 
           <Route path={routes.confidentialite} element={<Confidentialite />} />
           <Route path={routes.conditions} element={<Conditions />} />

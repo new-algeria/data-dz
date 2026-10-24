@@ -286,7 +286,10 @@
     "actionPlusPossible": "لم يعد هذا الإجراء ممكنا لهذا الاقتراح. أعد تحميل الصفحة.",
     "introuvable": "العنصر غير موجود: ربما تم حذفه.",
     "tropDeCommentaires": "نشرت تعليقات كثيرة في وقت قصير (10 كحد أقصى في 10 دقائق). انتظر بضع دقائق قبل المحاولة من جديد.",
-    "reponseImpossible": "لا يمكن الرد إلا على تعليق رئيسي في هذه البيانات."
+    "reponseImpossible": "لا يمكن الرد إلا على تعليق رئيسي في هذه البيانات.",
+    "reserveAdmins": "هذا الإجراء مخصص للمديرين.",
+    "roleAdminProtege": "لا يمكن تغيير دور مدير من الموقع.",
+    "roleAdminInterdit": "لا يمكن منح دور المدير من الموقع."
   },
   "legal": {
     "miseAJour": "آخر تحديث: {{date}}",
@@ -731,5 +734,49 @@
       "nouvelle_version": "إصدار جديد {{version}} من «{{titre}}»",
       "autre": "إشعار جديد"
     }
+  },
+  "admin": {
+    "titre": "إدارة الأعضاء",
+    "sousTitre": "كل حسابات data-dz وأدوارها.",
+    "accesReserve": "هذا الفضاء مخصص لمديري data-dz.",
+    "aide": "يمكنك منح أدوار عضو أو مساهم أو مشرف. لا يمكن تغيير دور مدير من هنا، ولا يُمنح دور المدير من الموقع.",
+    "rechercher": "ابحث باسم المستخدم أو الاسم…",
+    "filtrerRole": "التصفية حسب الدور",
+    "tousRoles": "كل الأدوار",
+    "roles": {
+      "membre": "عضو",
+      "contributeur": "مساهم",
+      "moderateur": "مشرف",
+      "admin": "مدير"
+    },
+    "descriptions": {
+      "membre": "يمكنه التصويت والتعليق ومتابعة البيانات واقتراحها.",
+      "contributeur": "مثل العضو؛ ويُمنح هذا الدور تلقائيا أيضا عند نشر أحد اقتراحاته.",
+      "moderateur": "يمكنه مراجعة الاقتراحات والبت فيها وإخفاء التعليقات وتغيير حالة مجموعات البيانات.",
+      "admin": "كل الصلاحيات."
+    },
+    "colonnes": {
+      "membre": "العضو",
+      "reputation": "السمعة",
+      "inscription": "التسجيل",
+      "role": "الدور"
+    },
+    "aucun": "لا يوجد عضو مطابق.",
+    "adminProtege": "لا يمكن تغيير دور مدير من الموقع",
+    "changerRole": "تغيير دور {{nom}}",
+    "confirmerTitre": "تغيير الدور؟",
+    "confirmerTexte": "سينتقل {{nom}} من «{{ancien}}» إلى «{{nouveau}}».",
+    "confirmer": "تغيير الدور",
+    "roleChange": "{{nom}} الآن: {{role}}.",
+    "erreurRole": "تعذر تغيير الدور.",
+    "compteur_zero": "لا يوجد أعضاء",
+    "compteur_one": "عضو واحد",
+    "compteur_two": "عضوان",
+    "compteur_few": "{{nombre}} أعضاء",
+    "compteur_many": "{{nombre}} عضوا",
+    "compteur_other": "{{nombre}} عضو",
+    "page": "الصفحة {{page}} / {{total}}",
+    "precedente": "الصفحة السابقة",
+    "suivante": "الصفحة التالية"
   }
 }
