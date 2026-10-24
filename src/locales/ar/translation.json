@@ -497,7 +497,8 @@
       "commentaire": "تعليق",
       "modifications_demandees": "تعديلات مطلوبة",
       "acceptee": "مقبول",
-      "refusee": "مرفوض"
+      "refusee": "مرفوض",
+      "modification": "أكملها فريق الإشراف"
     },
     "sections": {
       "description": "الوصف",
@@ -625,7 +626,23 @@
       "apercuComplet_other": "{{count}} سطر: الملف كامل.",
       "apercuTropLourd": "كبير جدا للمعاينة: نزّله.",
       "nomOriginal": "الاسم الأصلي: {{nom}}",
-      "ouvrir": "فتح {{nom}}"
+      "ouvrir": "فتح {{nom}}",
+      "modifier": "إكمال أو تصحيح",
+      "aideModification": "أنت تعدّل اقتراح عضو: يُسجَّل كل حفظ في السجل ويتم إشعار صاحب الاقتراح.",
+      "noteModification": "ملاحظة لصاحب الاقتراح",
+      "aucuneModification": "لم يتم تعديل أي حقل.",
+      "modificationEnregistree": "تم حفظ التعديلات وإشعار صاحب الاقتراح.",
+      "journalChamps": "الحقول المعدّلة: {{champs}}",
+      "journalAjout": "الملفات المضافة: {{noms}}",
+      "journalSuppression": "الملف المحذوف: {{noms}}",
+      "gererFichiers": "إضافة ملفات أو حذفها",
+      "retourApercu": "العودة إلى معاينة الملفات",
+      "aCompleter_zero": "لا توجد حقول فارغة.",
+      "aCompleter_one": "حقل اختياري واحد فارغ: يمكنك إكماله.",
+      "aCompleter_two": "حقلان اختياريان فارغان: يمكنك إكمالهما.",
+      "aCompleter_few": "{{count}} حقول اختيارية فارغة: يمكنك إكمالها.",
+      "aCompleter_many": "{{count}} حقلا اختياريا فارغا: يمكنك إكمالها.",
+      "aCompleter_other": "{{count}} حقل اختياري فارغ: يمكنك إكمالها."
     },
     "datasets": {
       "lien": "مجموعات البيانات",
@@ -743,7 +760,8 @@
         "commentaire": "علّق أحد المشرفين على اقتراحك «{{titre}}»",
         "modifications_demandees": "طُلبت تعديلات على اقتراحك «{{titre}}»",
         "acceptee": "تم قبول اقتراحك «{{titre}}»",
-        "refusee": "لم يتم قبول اقتراحك «{{titre}}»"
+        "refusee": "لم يتم قبول اقتراحك «{{titre}}»",
+        "modification": "أكمل فريق الإشراف اقتراحك «{{titre}}»"
       },
       "publiee": "اقتراحك «{{titre}}» منشور الآن. شكرا!",
       "reponse": "رد جديد على تعليقك في «{{titre}}»",

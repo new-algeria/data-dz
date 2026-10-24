@@ -478,7 +478,8 @@
       "commentaire": "Commentaire",
       "modifications_demandees": "Modifications demandées",
       "acceptee": "Acceptée",
-      "refusee": "Refusée"
+      "refusee": "Refusée",
+      "modification": "Complétée par la modération"
     },
     "sections": {
       "description": "Description",
@@ -598,7 +599,19 @@
       "apercuComplet_other": "{{count}} lignes : fichier complet.",
       "apercuTropLourd": "Trop lourd pour l'aperçu : téléchargez-le.",
       "nomOriginal": "Nom d'origine : {{nom}}",
-      "ouvrir": "Ouvrir {{nom}}"
+      "ouvrir": "Ouvrir {{nom}}",
+      "modifier": "Compléter ou corriger",
+      "aideModification": "Vous modifiez la proposition d'un membre : chaque enregistrement est noté dans l'historique et l'auteur est prévenu.",
+      "noteModification": "Note pour l'auteur",
+      "aucuneModification": "Aucun champ n'a été modifié.",
+      "modificationEnregistree": "Modifications enregistrées. L'auteur a été prévenu.",
+      "journalChamps": "Champs modifiés : {{champs}}",
+      "journalAjout": "Fichiers ajoutés : {{noms}}",
+      "journalSuppression": "Fichier supprimé : {{noms}}",
+      "gererFichiers": "Ajouter ou supprimer des fichiers",
+      "retourApercu": "Revenir à l'aperçu des fichiers",
+      "aCompleter_one": "{{count}} champ facultatif est vide : vous pouvez le compléter.",
+      "aCompleter_other": "{{count}} champs facultatifs sont vides : vous pouvez les compléter."
     },
     "datasets": {
       "lien": "Jeux de données",
@@ -696,7 +709,8 @@
         "commentaire": "Un modérateur a commenté votre proposition « {{titre}} »",
         "modifications_demandees": "Modifications demandées sur votre proposition « {{titre}} »",
         "acceptee": "Votre proposition « {{titre}} » est acceptée",
-        "refusee": "Votre proposition « {{titre}} » n'a pas été retenue"
+        "refusee": "Votre proposition « {{titre}} » n'a pas été retenue",
+        "modification": "L'équipe de modération a complété votre proposition « {{titre}} »"
       },
       "publiee": "Votre proposition « {{titre}} » est en ligne. Merci !",
       "reponse": "Nouvelle réponse à votre commentaire sur « {{titre}} »",

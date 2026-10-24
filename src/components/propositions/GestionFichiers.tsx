@@ -15,7 +15,7 @@ import {
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { LigneFichier } from "./LigneFichier";
 import { ZoneDepot } from "./ZoneDepot";
-import { cleErreurFichier } from "@/lib/erreurs";
+import { cleErreur, cleErreurFichier } from "@/lib/erreurs";
 import {
   envoyerFichierSoumission,
   MESSAGE_PROBLEME_FICHIER,
@@ -27,15 +27,18 @@ import {
 } from "@/lib/soumissions";
 
 interface GestionFichiersProps {
-  idUtilisateur: string;
+  /** Auteur de la proposition : les fichiers sont rangés dans son dossier, même ajoutés par un modérateur. */
+  idAuteur: string;
   soumissionId: string;
   fichiers: FichierSoumission[];
   modifiable: boolean;
   surChangement: () => void;
+  /** Côté modération : trace chaque ajout ou suppression dans l'historique de la proposition. */
+  journaliser?: (action: "ajout" | "suppression", noms: string[]) => Promise<void>;
 }
 
 /** Fichiers d'une proposition existante : téléchargement, ajout et suppression tant qu'elle est modifiable. */
-export const GestionFichiers = ({ idUtilisateur, soumissionId, fichiers, modifiable, surChangement }: GestionFichiersProps) => {
+export const GestionFichiers = ({ idAuteur, soumissionId, fichiers, modifiable, surChangement, journaliser }: GestionFichiersProps) => {
   const { t } = useTranslation();
   const [envoiEnCours, setEnvoiEnCours] = useState<string | null>(null);
   const [aSupprimer, setASupprimer] = useState<FichierSoumission | null>(null);
@@ -45,6 +48,7 @@ export const GestionFichiers = ({ idUtilisateur, soumissionId, fichiers, modifia
     setMessage(null);
     const noms = fichiers.map((fichier) => nomStocke(fichier.chemin_stockage));
     const erreurs: string[] = [];
+    const ajoutes: string[] = [];
     for (const fichier of nouveaux) {
       const probleme = verifierFichier(fichier);
       if (probleme) {
@@ -53,13 +57,21 @@ export const GestionFichiers = ({ idUtilisateur, soumissionId, fichiers, modifia
       }
       setEnvoiEnCours(fichier.name);
       try {
-        const envoye = await envoyerFichierSoumission(idUtilisateur, soumissionId, fichier, noms);
+        const envoye = await envoyerFichierSoumission(idAuteur, soumissionId, fichier, noms);
         noms.push(nomStocke(envoye.chemin_stockage));
+        ajoutes.push(nomStocke(envoye.chemin_stockage));
       } catch (e) {
         erreurs.push(`${fichier.name} : ${t(cleErreurFichier(e))}`);
       }
     }
     setEnvoiEnCours(null);
+    if (journaliser && ajoutes.length > 0) {
+      try {
+        await journaliser("ajout", ajoutes);
+      } catch (e) {
+        erreurs.push(t(cleErreur(e)));
+      }
+    }
     surChangement();
     setMessage(erreurs.length ? { type: "erreur", texte: erreurs.join("\n") } : { type: "succes", texte: t("propositions.detail.fichiersAjoutes") });
   };
@@ -69,13 +81,20 @@ export const GestionFichiers = ({ idUtilisateur, soumissionId, fichiers, modifia
     setMessage(null);
     try {
       await supprimerFichierSoumission(aSupprimer);
-      setMessage({ type: "succes", texte: t("propositions.detail.fichierSupprime") });
-      surChangement();
     } catch (e) {
       setMessage({ type: "erreur", texte: t(cleErreurFichier(e)) });
-    } finally {
       setASupprimer(null);
+      return;
     }
+    let message: { type: "erreur" | "succes"; texte: string } = { type: "succes", texte: t("propositions.detail.fichierSupprime") };
+    try {
+      await journaliser?.("suppression", [nomStocke(aSupprimer.chemin_stockage)]);
+    } catch (e) {
+      message = { type: "erreur", texte: t(cleErreur(e)) };
+    }
+    setMessage(message);
+    setASupprimer(null);
+    surChangement();
   };
 
   const telecharger = async (fichier: FichierSoumission) => {

@@ -1,4 +1,4 @@
-import { CheckCircle2, MessageSquare, PencilLine, XCircle, type LucideIcon } from "lucide-react";
+import { CheckCircle2, FilePenLine, MessageSquare, PencilLine, XCircle, type LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AvatarMembre } from "@/components/AvatarMembre";
@@ -13,6 +13,7 @@ const icones: Record<DecisionRevue, { icone: LucideIcon; couleur: string }> = {
   modifications_demandees: { icone: PencilLine, couleur: "text-amber-600 dark:text-amber-400" },
   acceptee: { icone: CheckCircle2, couleur: "text-emerald-600 dark:text-emerald-400" },
   refusee: { icone: XCircle, couleur: "text-red-600 dark:text-red-400" },
+  modification: { icone: FilePenLine, couleur: "text-violet-600 dark:text-violet-400" },
 };
 
 export const HistoriqueRevues = ({ revues }: { revues: Revue[] }) => {
@@ -25,7 +26,7 @@ export const HistoriqueRevues = ({ revues }: { revues: Revue[] }) => {
   return (
     <ol className="space-y-4">
       {revues.map((revue) => {
-        const { icone: Icone, couleur } = icones[revue.decision];
+        const { icone: Icone, couleur } = icones[revue.decision] ?? icones.commentaire;
         return (
           <li key={revue.id} className="flex gap-3">
             <span className={cn("mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-white/10", couleur)}>

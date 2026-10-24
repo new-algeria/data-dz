@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import { AlertCircle, CheckCircle2, MailCheck } from "lucide-react";
+import { AlertCircle, CheckCircle2, Info, MailCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MessageAuthProps {
-  type: "erreur" | "succes" | "email";
+  type: "erreur" | "succes" | "email" | "info";
   children: ReactNode;
 }
 
@@ -11,9 +11,10 @@ const styles = {
   erreur: "border-red-200 bg-red-50 text-red-800 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200",
   succes: "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200",
   email: "border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-100",
+  info: "border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-100",
 };
 
-const icones = { erreur: AlertCircle, succes: CheckCircle2, email: MailCheck };
+const icones = { erreur: AlertCircle, succes: CheckCircle2, email: MailCheck, info: Info };
 
 export const MessageAuth = ({ type, children }: MessageAuthProps) => {
   const Icone = icones[type];

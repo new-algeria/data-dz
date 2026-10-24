@@ -2,14 +2,15 @@ import { useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, CheckCircle2, Loader2, MessageSquare, PencilLine, Rocket, XCircle, type LucideIcon } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ClipboardList, FolderCog, Loader2, MessageSquare, PencilLine, Rocket, XCircle, type LucideIcon } from "lucide-react";
 import { MiseEnPage, Carte } from "@/components/MiseEnPage";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { EtatErreur } from "@/components/EtatErreur";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { FichiersRevue } from "@/components/moderation/FichiersRevue";
 import { BadgeStatut } from "@/components/propositions/BadgeStatut";
-import { DetailsProposition } from "@/components/propositions/DetailsProposition";
+import { ContenuProposition } from "@/components/propositions/ContenuProposition";
+import { GestionFichiers } from "@/components/propositions/GestionFichiers";
 import { HistoriqueRevues } from "@/components/propositions/HistoriqueRevues";
 import { PropositionIntrouvable } from "@/components/propositions/PropositionIntrouvable";
 import { Button } from "@/components/ui/button";
@@ -19,12 +20,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
 import { cleErreur } from "@/lib/erreurs";
+import { champsVides, valeursDepuisSoumission } from "@/lib/formulaire-soumission";
 import { localeNombres } from "@/lib/fichiers";
 import { routes } from "@/lib/routes";
 import {
   chargerSoumission,
   deciderSoumission,
   estModifiable,
+  noterModification,
   type DecisionRevue,
   type Soumission,
   type StatutSoumission,
@@ -147,6 +150,7 @@ const RevueProposition = () => {
   const { utilisateur, profil } = useAuth();
   const clientRequetes = useQueryClient();
   const [confirmation, setConfirmation] = useState<string | null>(null);
+  const [gestionFichiers, setGestionFichiers] = useState(false);
   const requete = useQuery({ queryKey: ["soumission", id], queryFn: () => chargerSoumission(id) });
 
   const apresDecision = async (statut: StatutSoumission) => {
@@ -154,6 +158,12 @@ const RevueProposition = () => {
     clientRequetes.invalidateQueries({ queryKey: ["mes-soumissions"] });
     await requete.refetch();
     setConfirmation(t("moderation.revue.decisionEnregistree", { statut: t(`propositions.statuts.${statut}`) }));
+  };
+
+  const apresModification = async () => {
+    clientRequetes.invalidateQueries({ queryKey: ["moderation"] });
+    clientRequetes.invalidateQueries({ queryKey: ["mes-soumissions"] });
+    await requete.refetch();
   };
 
   const retour = (
@@ -188,6 +198,11 @@ const RevueProposition = () => {
   // Un modérateur ne valide pas sa propre proposition (un admin le peut) : la base le refuse aussi.
   const estSaPropreProposition = soumission.soumis_par === utilisateur?.id && profil?.role !== "admin";
   const formatDate = new Intl.DateTimeFormat(localeNombres(langue), { dateStyle: "long", timeStyle: "short" });
+  // L'équipe complète les propositions des autres ; la sienne se modifie depuis « Mes propositions ».
+  const peutModifier = estModifiable(soumission.statut) && soumission.soumis_par !== utilisateur?.id;
+  const aCompleter = peutModifier ? champsVides(valeursDepuisSoumission(soumission)) : [];
+  const journaliserFichiers = (action: "ajout" | "suppression", noms: string[]) =>
+    noterModification(soumission.id, t(action === "ajout" ? "moderation.revue.journalAjout" : "moderation.revue.journalSuppression", { noms: noms.join(", ") }));
 
   return (
     <MiseEnPage
@@ -215,12 +230,47 @@ const RevueProposition = () => {
             </Button>
           )}
 
+          {aCompleter.length > 0 && (
+            <div className="flex items-start gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-500/10 dark:text-amber-100">
+              <ClipboardList className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
+              <div className="min-w-0">
+                <p className="font-semibold">{t("moderation.revue.aCompleter", { count: aCompleter.length })}</p>
+                <ul className="mt-2 flex flex-wrap gap-1.5">
+                  {aCompleter.map((champ) => (
+                    <li key={champ} className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium dark:bg-amber-500/20">
+                      {t(`propositions.champs.${champ}`)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
           <Carte titre={t("propositions.detail.contenu")}>
-            <DetailsProposition soumission={soumission} />
+            <ContenuProposition soumission={soumission} modifiable={peutModifier} surEnregistrement={apresModification} moderation />
           </Carte>
 
           <Carte titre={t("propositions.champs.fichiers")}>
-            <FichiersRevue fichiers={soumission.fichiers} />
+            <div className="space-y-4">
+              {gestionFichiers && peutModifier ? (
+                <GestionFichiers
+                  idAuteur={soumission.soumis_par}
+                  soumissionId={soumission.id}
+                  fichiers={soumission.fichiers}
+                  modifiable
+                  surChangement={() => void apresModification()}
+                  journaliser={journaliserFichiers}
+                />
+              ) : (
+                <FichiersRevue fichiers={soumission.fichiers} />
+              )}
+              {peutModifier && (
+                <Button type="button" variant="outline" className="gap-2" onClick={() => setGestionFichiers((actif) => !actif)}>
+                  <FolderCog className="h-4 w-4" />
+                  {t(gestionFichiers ? "moderation.revue.retourApercu" : "moderation.revue.gererFichiers")}
+                </Button>
+              )}
+            </div>
           </Carte>
         </div>
 
