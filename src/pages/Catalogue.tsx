@@ -28,6 +28,7 @@ import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
+import { useAuth } from "@/contexte/ContexteAuth";
 
 const TOUTES_CATEGORIES = "toutes";
 const TAILLE_PAGE = 12;
@@ -35,6 +36,7 @@ const TAILLE_PAGE = 12;
 const Catalogue = () => {
   const { t } = useTranslation();
   const langue = useLangue();
+  const { session } = useAuth();
   const [parametres, setParametres] = useSearchParams();
 
   // Recherche et catégorie sont gardées dans l'URL pour pouvoir partager un lien filtré.
@@ -116,6 +118,12 @@ const Catalogue = () => {
     [requeteCatalogue.data, tri, langue]
   );
   const filtresActifs = Boolean(terme || categorie);
+  const citations = [
+    t("accueil.citations.etudiants"),
+    t("accueil.citations.professeurs"),
+    t("accueil.citations.ingenieurs"),
+    t("accueil.citations.citoyens"),
+  ];
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-[#020817]">
@@ -167,6 +175,25 @@ const Catalogue = () => {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-6"
+            >
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t("accueil.citationsTitre")}</p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {citations.map((citation) => (
+                  <blockquote
+                    key={citation}
+                    className="rounded-xl border border-white/70 bg-white/75 px-3 py-2 text-sm text-gray-700 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-gray-300"
+                  >
+                    “{citation}”
+                  </blockquote>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
               className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start"
             >
@@ -176,12 +203,19 @@ const Catalogue = () => {
                   <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-white/70 dark:bg-white/5 backdrop-blur">
-                <Link to={routes.proposer}>
-                  <FilePlus2 />
-                  {t("accueil.proposer")}
-                </Link>
-              </Button>
+              {session ? (
+                <Button asChild size="lg" variant="outline" className="bg-white/70 dark:bg-white/5 backdrop-blur">
+                  <Link to={routes.proposer}>
+                    <FilePlus2 />
+                    {t("accueil.proposer")}
+                  </Link>
+                </Button>
+              ) : (
+                <div className="max-w-md rounded-xl border border-emerald-700/20 bg-white/70 px-4 py-3 text-start backdrop-blur dark:border-emerald-500/20 dark:bg-white/5">
+                  <p className="font-semibold text-gray-900 dark:text-gray-100">{t("accueil.inviteTitre")}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">{t("accueil.inviteTexte")}</p>
+                </div>
+              )}
             </motion.div>
 
             <div className="mt-10 max-w-xl mx-auto lg:mx-0">

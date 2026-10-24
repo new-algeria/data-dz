@@ -1,6 +1,9 @@
 {
   "navbar": {
     "proposer": "Submit a dataset",
+    "decouvrir": "Explore first",
+    "decouvrirTitre": "Start with what helps you",
+    "decouvrirTexte": "You do not need to publish anything to benefit from data-dz: explore, understand, and reuse data first.",
     "moderation": "Moderation",
     "moderationEnAttente_one": "Moderation: {{count}} pending submission",
     "moderationEnAttente_other": "Moderation: {{count}} pending submissions",
@@ -42,7 +45,16 @@
     "badge": "Open data · Algeria",
     "explorer": "Explore the catalogue",
     "globe": "Globe centred on Algeria",
-    "proposer": "Submit a dataset"
+    "proposer": "Submit a dataset",
+    "citationsTitre": "Whether you are…",
+    "citations": {
+      "etudiants": "Students: find reliable data for your projects and dissertations.",
+      "professeurs": "Professors: ground your classes in concrete local data.",
+      "ingenieurs": "Engineers: turn these datasets into useful solutions.",
+      "citoyens": "Citizens: better understand your territory through data."
+    },
+    "inviteTitre": "No technical background needed to start.",
+    "inviteTexte": "The first goal is to help you discover and reuse data, then contribute later if you want."
   },
   "statistiques": {
     "donnees": "Datasets",

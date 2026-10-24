@@ -1,6 +1,9 @@
 {
   "navbar": {
     "proposer": "Proposer une donnée",
+    "decouvrir": "Je découvre d'abord",
+    "decouvrirTitre": "Commencez par ce qui vous aide",
+    "decouvrirTexte": "Vous n'avez rien à publier pour profiter de data-dz : explorez, comprenez et utilisez les données.",
     "moderation": "Modération",
     "moderationEnAttente_one": "Modération : {{count}} proposition en attente",
     "moderationEnAttente_other": "Modération : {{count}} propositions en attente",
@@ -42,7 +45,16 @@
     "badge": "Données ouvertes · Algérie",
     "explorer": "Explorer le catalogue",
     "globe": "Globe terrestre centré sur l'Algérie",
-    "proposer": "Proposer une donnée"
+    "proposer": "Proposer une donnée",
+    "citationsTitre": "Que vous soyez…",
+    "citations": {
+      "etudiants": "Étudiants : trouvez des données fiables pour vos projets et mémoires.",
+      "professeurs": "Professeurs : appuyez vos cours sur des données locales concrètes.",
+      "ingenieurs": "Ingénieurs : transformez ces jeux de données en solutions utiles.",
+      "citoyens": "Citoyens : comprenez mieux votre territoire grâce aux données."
+    },
+    "inviteTitre": "Pas besoin d'être technique pour commencer.",
+    "inviteTexte": "Le but est d'abord de vous aider à découvrir et réutiliser les données, puis contribuer si vous le souhaitez."
   },
   "statistiques": {
     "donnees": "Jeux de données",

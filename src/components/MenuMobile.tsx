@@ -114,12 +114,22 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
               </div>
             )
           )}
-          <Button asChild className="mt-3 w-full gap-2 bg-emerald-700 text-white hover:bg-emerald-800">
-            <Link to={routes.proposer}>
-              <FilePlus2 className="h-4 w-4" />
-              {t("navbar.proposer")}
-            </Link>
-          </Button>
+          {session ? (
+            <Button asChild className="mt-3 w-full gap-2 bg-emerald-700 text-white hover:bg-emerald-800">
+              <Link to={routes.proposer}>
+                <FilePlus2 className="h-4 w-4" />
+                {t("navbar.proposer")}
+              </Link>
+            </Button>
+          ) : (
+            <div className="mt-3 rounded-xl border border-emerald-700/20 bg-emerald-50/60 p-3 dark:border-emerald-500/20 dark:bg-emerald-900/10">
+              <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">{t("navbar.decouvrirTitre")}</p>
+              <p className="mt-1 text-xs text-emerald-800 dark:text-emerald-300">{t("navbar.decouvrirTexte")}</p>
+              <Button asChild variant="outline" className="mt-3 w-full">
+                <Link to={routes.catalogue}>{t("navbar.decouvrir")}</Link>
+              </Button>
+            </div>
+          )}
         </div>
 
         <nav className="flex-1 px-2 pb-4" aria-label={t("navbar.menu")}>

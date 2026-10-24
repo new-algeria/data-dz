@@ -73,12 +73,18 @@ export const Navbar = () => {
         {/* Grands écrans : tout est visible. Petits écrans : cloche + menu hamburger (le reste est dans le menu). */}
         <div className="flex items-center gap-1 lg:gap-2">
           <div className="hidden items-center gap-1 md:flex lg:gap-2">
-            <Button asChild size="sm" className="gap-2 bg-emerald-700 text-white shadow-sm hover:bg-emerald-800">
-              <Link to={routes.proposer}>
-                <Plus className="h-4 w-4" />
-                {t("navbar.proposer")}
-              </Link>
-            </Button>
+            {session ? (
+              <Button asChild size="sm" className="gap-2 bg-emerald-700 text-white shadow-sm hover:bg-emerald-800">
+                <Link to={routes.proposer}>
+                  <Plus className="h-4 w-4" />
+                  {t("navbar.proposer")}
+                </Link>
+              </Button>
+            ) : (
+              <Button asChild size="sm" variant="outline" className="text-xs lg:text-sm">
+                <Link to={routes.catalogue}>{t("navbar.decouvrir")}</Link>
+              </Button>
+            )}
             {session && <LienModeration />}
           </div>
           {session && <ClocheNotifications />}
