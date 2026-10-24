@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowDownWideNarrow, Github, Search, SearchX } from "lucide-react";
+import { ArrowDown, ArrowDownWideNarrow, FilePlus2, Search, SearchX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
+import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
@@ -178,10 +179,10 @@ const Catalogue = () => {
                 </a>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-white/70 dark:bg-white/5 backdrop-blur">
-                <a href="https://github.com/new-algeria/data-dz" target="_blank" rel="noopener noreferrer">
-                  <Github />
-                  {t("accueil.contribuer")}
-                </a>
+                <Link to={routes.proposer}>
+                  <FilePlus2 />
+                  {t("accueil.proposer")}
+                </Link>
               </Button>
             </motion.div>
 
@@ -247,10 +248,11 @@ const Catalogue = () => {
             </Select>
             <Select value={tri} onValueChange={choisirTri}>
               <SelectTrigger className="md:w-60 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
-                <span className="flex items-center gap-2">
-                  <ArrowDownWideNarrow className="h-4 w-4 text-muted-foreground" aria-hidden />
+                {/* div et non span : le déclencheur force ses span directs sur une seule ligne (line-clamp). */}
+                <div className="flex min-w-0 items-center gap-2">
+                  <ArrowDownWideNarrow className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
                   <SelectValue />
-                </span>
+                </div>
               </SelectTrigger>
               <SelectContent>
                 {TRIS.map((valeur) => (
