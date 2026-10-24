@@ -33,6 +33,37 @@
   <meta name="twitter:image" content="https://www.data-dz.com/og-image.png" />
 
   <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!--
+    Évite le « flash » au premier affichage : thème et langue sont appliqués avant le chargement de React,
+    avec les mêmes règles que src/hooks/use-theme.tsx et i18next (?lng=, choix mémorisé, langue de l'appareil, sinon fr).
+  -->
+  <style>html.dark { background-color: #020817; color-scheme: dark; }</style>
+  <script>
+    (function () {
+      var racine = document.documentElement;
+      var lire = function (cle) { try { return localStorage.getItem(cle); } catch (e) { return null; } };
+      var theme = lire("theme");
+      if (theme !== "light" && theme !== "dark") {
+        theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      if (theme === "dark") racine.classList.add("dark");
+
+      var langues = ["fr", "en", "ar"];
+      var candidats = [];
+      try { candidats.push(new URLSearchParams(location.search).get("lng")); } catch (e) {}
+      candidats.push(lire("i18nextLng"));
+      candidats = candidats.concat(navigator.languages || [navigator.language]);
+      for (var i = 0; i < candidats.length; i++) {
+        var code = (candidats[i] || "").slice(0, 2).toLowerCase();
+        if (langues.indexOf(code) !== -1) {
+          racine.lang = code;
+          racine.dir = code === "ar" ? "rtl" : "ltr";
+          return;
+        }
+      }
+    })();
+  </script>
 </head>
 
 <body>
