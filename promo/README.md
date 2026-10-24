@@ -5,7 +5,8 @@ Vidéos de motion design en arabe pour présenter data-dz sur les réseaux socia
 | Fichier | Format | Durée | Usage |
 |---|---|---|---|
 | `data-dz-promo-ar-vertical.mp4` | 1080 × 1920 (9:16) | 29 s | TikTok, Instagram Reels, YouTube Shorts, stories |
-| `data-dz-promo-ar-horizontal.mp4` | 1920 × 1080 (16:9) | 42 s | YouTube, LinkedIn, Facebook, présentations |
+| `data-dz-promo-ar-horizontal.mp4` | 1920 × 1080 (16:9), thème sombre | 42 s | YouTube, LinkedIn, Facebook, présentations |
+| `data-dz-promo-ar-horizontal-clair.mp4` | 1920 × 1080 (16:9), thème clair | 42 s | Même contenu, pour les fonds clairs (LinkedIn, présentations, écrans en journée) |
 
 ## Contenu
 
@@ -18,6 +19,6 @@ Vidéos de motion design en arabe pour présenter data-dz sur les réseaux socia
 - Carte : contours Natural Earth (domaine public, paquet `world-atlas` déjà utilisé par le globe du site).
 - Polices : Cairo et Tajawal (SIL Open Font License).
 - Icônes : Lucide (licence ISC), les mêmes que sur le site.
-- Musique : composition originale générée par synthèse, sans échantillon externe ni droits à payer.
+- Musique : compositions originales générées par synthèse, sans échantillon externe ni droits à payer. La verticale a une couleur orientale (mode Hijaz). Les deux horizontales sont en style **chaâbi algérois** : cadence andalouse, mandole en trémolo, banjo, piano, derbouka, tar et claps.
 
 Ces fichiers ne font pas partie du site : ils sont exclus des déploiements Vercel (`.vercelignore`).
