@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { faGithub, faLinkedin, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { routes } from "@/lib/routes";
+import { DrapeauAlgerie } from "./DrapeauAlgerie";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -11,8 +12,9 @@ const Footer = () => {
 
   return (
     <footer className="mt-auto w-full pb-16 pt-10 text-gray-500 flex flex-col items-center text-center gap-6 bg-accent/90 dark:bg-black/25">
-      <p>
-        {t("footer.projet")}{" "}
+      <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <DrapeauAlgerie className="h-5 w-[1.875rem]" titre={t("drapeau")} />
+        {t("footer.projet")}
         <a
           href="https://newalgeria.org"
           target="_blank"
