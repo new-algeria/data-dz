@@ -37,8 +37,28 @@ export default {
       },
       colors: {
         border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // Couleurs des composants shadcn (menus, listes déroulantes, cartes) : sans elles,
+        // bg-popover et bg-card ne produisaient aucune classe et les menus étaient transparents.
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
         primary: {
           DEFAULT: "#0D573EFF",
           foreground: "#ffffff",
@@ -47,9 +67,10 @@ export default {
           DEFAULT: "#10b981",
           foreground: "#ffffff",
         },
+        // Variables CSS (clair et sombre) : un gris clair codé en dur donnait des survols blancs en mode sombre.
         accent: {
-          DEFAULT: "#f3f4f6",
-          foreground: "#0D573EFF",
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground))",
         },
         "color-1": "hsl(var(--color-1))",
         "color-2": "hsl(var(--color-2))",
