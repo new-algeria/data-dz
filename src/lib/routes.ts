@@ -22,6 +22,7 @@ export const routes = {
   moderationDatasets: "/moderation/datasets",
   favoris: "/favorites",
   adminMembres: "/admin/users",
+  adminDonnees: "/admin/datasets",
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

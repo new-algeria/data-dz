@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen, UsersRound } from "lucide-react";
+import { Database, FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen, UsersRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,12 +111,20 @@ export const MenuUtilisateur = () => {
           </DropdownMenuItem>
         )}
         {profil?.role === "admin" && (
-          <DropdownMenuItem asChild>
-            <Link to={routes.adminMembres} className="cursor-pointer gap-2">
-              <UsersRound className="h-4 w-4" />
-              {t("admin.titre")}
-            </Link>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem asChild>
+              <Link to={routes.adminMembres} className="cursor-pointer gap-2">
+                <UsersRound className="h-4 w-4" />
+                {t("admin.titre")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to={routes.adminDonnees} className="cursor-pointer gap-2">
+                <Database className="h-4 w-4" />
+                {t("adminDonnees.titre")}
+              </Link>
+            </DropdownMenuItem>
+          </>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={quitter} className="cursor-pointer gap-2 text-red-600 focus:text-red-600 dark:text-red-400">

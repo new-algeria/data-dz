@@ -167,9 +167,14 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
                 </Lien>
               )}
               {profil?.role === "admin" && (
-                <Lien vers={routes.adminMembres} icone={UsersRound}>
-                  {t("admin.titre")}
-                </Lien>
+                <>
+                  <Lien vers={routes.adminMembres} icone={UsersRound}>
+                    {t("admin.titre")}
+                  </Lien>
+                  <Lien vers={routes.adminDonnees} icone={Database}>
+                    {t("adminDonnees.titre")}
+                  </Lien>
+                </>
               )}
             </>
           )}

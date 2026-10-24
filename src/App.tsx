@@ -29,6 +29,7 @@ const RevueProposition = lazy(() => import("./pages/moderation/RevueProposition"
 const ModerationDatasets = lazy(() => import("./pages/moderation/ModerationDatasets"));
 const Favoris = lazy(() => import("./pages/communaute/Favoris"));
 const GestionMembres = lazy(() => import("./pages/admin/GestionMembres"));
+const GestionDonnees = lazy(() => import("./pages/admin/GestionDonnees"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -92,6 +93,16 @@ function App() {
               <RouteProtegee>
                 <RouteAdmin>
                   <GestionMembres />
+                </RouteAdmin>
+              </RouteProtegee>
+            }
+          />
+          <Route
+            path={routes.adminDonnees}
+            element={
+              <RouteProtegee>
+                <RouteAdmin>
+                  <GestionDonnees />
                 </RouteAdmin>
               </RouteProtegee>
             }
