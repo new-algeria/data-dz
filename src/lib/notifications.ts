@@ -68,7 +68,7 @@ export function texteNotification(n: Notification, langue: string): { cle: strin
     case "nouvelle_soumission":
       return { cle: "notifications.types.nouvelle_soumission", valeurs: { titre } };
     case "revue": {
-      const decision = ["commentaire", "modifications_demandees", "acceptee", "refusee"].includes(n.donnees.decision ?? "")
+      const decision = ["commentaire", "modifications_demandees", "acceptee", "refusee", "modification"].includes(n.donnees.decision ?? "")
         ? n.donnees.decision
         : "commentaire";
       return { cle: `notifications.types.revue.${decision}`, valeurs: { titre } };

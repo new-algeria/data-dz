@@ -478,7 +478,8 @@
       "commentaire": "Comment",
       "modifications_demandees": "Changes requested",
       "acceptee": "Accepted",
-      "refusee": "Rejected"
+      "refusee": "Rejected",
+      "modification": "Completed by moderation"
     },
     "sections": {
       "description": "Description",
@@ -598,7 +599,19 @@
       "apercuComplet_other": "{{count}} rows: complete file.",
       "apercuTropLourd": "Too large to preview: download it.",
       "nomOriginal": "Original name: {{nom}}",
-      "ouvrir": "Open {{nom}}"
+      "ouvrir": "Open {{nom}}",
+      "modifier": "Complete or correct",
+      "aideModification": "You are editing a member's submission: each save is recorded in the history and the author is notified.",
+      "noteModification": "Note for the author",
+      "aucuneModification": "No field was changed.",
+      "modificationEnregistree": "Changes saved. The author has been notified.",
+      "journalChamps": "Fields changed: {{champs}}",
+      "journalAjout": "Files added: {{noms}}",
+      "journalSuppression": "File deleted: {{noms}}",
+      "gererFichiers": "Add or delete files",
+      "retourApercu": "Back to the file preview",
+      "aCompleter_one": "{{count}} optional field is empty: you can complete it.",
+      "aCompleter_other": "{{count}} optional fields are empty: you can complete them."
     },
     "datasets": {
       "lien": "Datasets",
@@ -696,7 +709,8 @@
         "commentaire": "A moderator commented on your submission “{{titre}}”",
         "modifications_demandees": "Changes requested on your submission “{{titre}}”",
         "acceptee": "Your submission “{{titre}}” has been accepted",
-        "refusee": "Your submission “{{titre}}” was not accepted"
+        "refusee": "Your submission “{{titre}}” was not accepted",
+        "modification": "The moderation team completed your submission “{{titre}}”"
       },
       "publiee": "Your submission “{{titre}}” is online. Thank you!",
       "reponse": "New reply to your comment on “{{titre}}”",

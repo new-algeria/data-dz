@@ -6,7 +6,8 @@ import type { TexteMultilingue } from "./types";
 
 export type TypeSoumission = "nouvelle_donnee" | "mise_a_jour";
 export type StatutSoumission = "en_attente" | "modifications_demandees" | "acceptee" | "refusee" | "retiree" | "publiee";
-export type DecisionRevue = "commentaire" | "modifications_demandees" | "acceptee" | "refusee";
+/** « modification » : contenu ou fichiers complétés par un modérateur (le statut ne change pas). */
+export type DecisionRevue = "commentaire" | "modifications_demandees" | "acceptee" | "refusee" | "modification";
 
 export const STATUTS_SOUMISSION: StatutSoumission[] = ["en_attente", "modifications_demandees", "acceptee", "refusee", "retiree", "publiee"];
 /** Tant qu'une proposition est dans un de ces statuts, son auteur peut la modifier ou la retirer. */
@@ -244,17 +245,18 @@ function nomDisponible(nom: string, existants: string[]): string {
 
 /**
  * Envoie un fichier dans le bucket puis enregistre la ligne soumission_fichiers.
+ * `idAuteur` est toujours l'auteur de la proposition, même quand un modérateur ajoute le fichier.
  * Si l'enregistrement échoue, le fichier envoyé est supprimé pour ne rien laisser d'orphelin.
  */
 export async function envoyerFichierSoumission(
-  idUtilisateur: string,
+  idAuteur: string,
   soumissionId: string,
   fichier: File,
   nomsExistants: string[]
 ): Promise<FichierSoumission> {
   const contentType = TYPES_FICHIER[extensionFichier(fichier.name)];
   const nom = nomDisponible(nettoyerNomFichier(fichier.name), nomsExistants);
-  const chemin = `${idUtilisateur}/${soumissionId}/${nom}`;
+  const chemin = `${idAuteur}/${soumissionId}/${nom}`;
 
   // Contenu brut et non File : avec un File, supabase-js envoie un formulaire multipart et ignore contentType,
   // alors que le bucket n'accepte que certains types (un .geojson serait vu comme application/octet-stream).
@@ -312,6 +314,12 @@ export async function deciderSoumission(id: string, decision: DecisionRevue, com
   });
   if (error) throw error;
   return data as StatutSoumission;
+}
+
+/** Trace dans l'historique une modification faite par un modérateur (l'auteur est notifié par la base). */
+export async function noterModification(id: string, details: string): Promise<void> {
+  const { error } = await supabase.rpc("noter_modification", { soumission_id: id, details: details.trim().slice(0, 2000) });
+  if (error) throw error;
 }
 
 /**

@@ -115,3 +115,37 @@ export function validerValeurs(v: ValeursFormulaire): string | null {
   if (v.message.trim().length > LONGUEUR_MAX_MESSAGE) return "erreurs.messageTropLong";
   return null;
 }
+
+type ChampFormulaire = keyof ValeursFormulaire;
+
+const valeurNormalisee = (v: ValeursFormulaire, champ: ChampFormulaire) => {
+  const valeur = v[champ];
+  if (champ === "sourceUrl") return normaliserSiteWeb(v.sourceUrl) ?? "";
+  return typeof valeur === "string" ? valeur.trim() : JSON.stringify(valeur);
+};
+
+/** Champs (clés `propositions.champs.*`) qui diffèrent entre deux saisies, espaces ignorés. */
+export const champsModifies = (avant: ValeursFormulaire, apres: ValeursFormulaire): ChampFormulaire[] =>
+  (Object.keys(avant) as ChampFormulaire[]).filter((champ) => valeurNormalisee(avant, champ) !== valeurNormalisee(apres, champ));
+
+/** Champs facultatifs que l'auteur a laissés vides : la modération peut les compléter. */
+export const CHAMPS_A_COMPLETER: ChampFormulaire[] = [
+  "titreEn",
+  "titreAr",
+  "descriptionFr",
+  "descriptionEn",
+  "descriptionAr",
+  "categorie",
+  "licence",
+  "sourceNom",
+  "sourceUrl",
+  "motsCles",
+  "periodeDebut",
+  "periodeFin",
+];
+
+export const champsVides = (v: ValeursFormulaire): ChampFormulaire[] =>
+  CHAMPS_A_COMPLETER.filter((champ) => {
+    const valeur = v[champ];
+    return typeof valeur === "string" ? !valeur.trim() : valeur.length === 0;
+  });
