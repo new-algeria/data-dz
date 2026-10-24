@@ -136,6 +136,10 @@ Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateu
 - `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle, confirmation avant chaque changement. `RouteAdmin` s'appuie sur `profil.role` (simple confort d'affichage).
 - Clé React Query : `["admin", "membres", …]`.
 
+## Fiche d'une donnée : fichiers et carte
+- **Fichiers** (`ListeFichiers`) : un même fichier publié en plusieurs formats (même nom, ex. `5g-mobilis.geojson` et `5g-mobilis.json`) forme une seule ligne avec un bouton de téléchargement par format (`grouperFichiers()` dans `src/lib/fichiers.ts`).
+- **Carte** (`GlobeDonnees`) : affiche tous les fichiers GeoJSON de la version. S'il y en a plusieurs, un menu permet de choisir le fichier affiché (le principal par défaut) ou de **tout superposer** (6 fichiers maximum, une couleur et une légende par fichier). Les fichiers déjà téléchargés restent en mémoire pendant la visite ; au-delà de 10 Mo, l'affichage attend un clic.
+
 ## Interface
 - **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
 - **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes). Rien n'est écrit en dur.
