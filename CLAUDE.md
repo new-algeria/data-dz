@@ -11,22 +11,26 @@ Variables d'environnement : voir `.env.example` (copier en `.env.local`).
 ## Architecture
 ```
 Navigateur (data-dz, site statique React)
-  ├── Supabase (Postgres + Auth + API REST)     → catalogue, comptes, profils
-  └── Cloudflare R2 (https://files.data-dz.com) → fichiers bruts, lecture publique
+  ├── API data-dz (https://api.data-dz.com, dépôt data-dz-api) → catalogue, fiches, statistiques,
+  │      téléchargements et conversions, gestion des données (admin)
+  ├── Supabase (Auth + API REST)                 → comptes, profils, votes, favoris, commentaires,
+  │                                                 propositions, modération (RLS)
+  └── R2 public (https://files.data-dz.com/web-assets/) → illustrations uniquement
 ```
-- Pas de backend maison. api-dz-backend et RapidAPI sont abandonnés.
-- R2 range les fichiers par format : `json/<nom>.json`, `geojson/<nom>.geojson`, `meta/…`, `licences/<paquet>.txt`. URL d'un fichier = `${VITE_URL_FICHIERS}/${cle_stockage}`.
-- Les données GeoAlgeria sont synchronisées chaque semaine par un script externe qui remplit R2 et Supabase. Le site ne fait que lire.
+- **Catalogue et fichiers passent par l'API** (`src/lib/api.ts`, `appelerApi()`, `VITE_URL_API`) : le site ne lit plus les tables du catalogue ni R2 en direct. La clé de stockage R2 n'est jamais exposée ; chaque `Fichier` porte `url` (lecture : carte, aperçu) et `url_telechargement` (`/v1/datasets/<slug>/download?format=&file=`, redirection vers un lien signé de 10 min).
+- Le cache CDN de l'API dure 15 s pour le catalogue et les fiches : après un vote, la mise à jour optimiste du cache React Query reste la référence.
+- R2 range les fichiers synchronisés par format (`json/<nom>.json`, `geojson/<nom>.geojson`) et ceux envoyés par l'API dans `datasets/<slug>/<horodatage>/`. Les conversions sont dans `exports/`. Seul `web-assets/` reste public.
+- Les données GeoAlgeria sont synchronisées chaque semaine par un script externe qui passe par l'API (`/v1/admin/*` avec `CLE_SYNCHRO`, voir le README de data-dz-api).
 - Hébergement : Vercel (équipe new-algeria, projet data-dz). Seule la branche `main` part en production.
 
-## Tables Supabase (lecture seule pour le site)
+## Tables Supabase (lues par l'API pour le catalogue, par le site pour la communauté)
 | Table | Contenu |
 |---|---|
 | `profils` | 1 ligne par compte (`id` = `auth.users.id`) : `pseudo`, `nom_affiche`, `avatar_url`, `bio`, `site_web`, `role` (`membre`, `contributeur`, `moderateur`, `admin`), `reputation` |
 | `categories` | `slug`, `nom` (jsonb `{fr,en,ar}`), `icone`, `ordre` |
 | `licences` | `code` (ex. `ODbL-1.0`), `nom`, `url`, `usage_commercial`, `attribution_requise`, `partage_identique` |
 | `sources` | `slug`, `nom`, `url`, `type`, `verifiee` |
-| `datasets` | `slug`, `titre` et `description` (jsonb `{fr,en,ar}`, pas toujours complets), `readme` (Markdown), `categorie_slug`, `source_id`, `licence_code`, `licence_details`, `url_source`, `mots_cles[]`, `wilayas[]`, `statut` (`publie`…), `version_courante_id`, `infos_source` (jsonb), `recherche` (tsvector) |
+| `datasets` | `slug`, `titre` et `description` (jsonb `{fr,en,ar}`, pas toujours complets), `readme` (Markdown), `categorie_slug`, `source_id`, `licence_code`, `licence_details`, `url_source`, `mots_cles[]`, `wilayas[]`, `statut` (`publie`…), `version_courante_id`, `infos_source` (jsonb), `illustration_url`, `recherche` (tsvector) |
 | `versions` | `dataset_id`, `numero`, `notes`, `nb_lignes`, `colonnes` (jsonb `[{nom, type}]`), `apercu` (jsonb, 3 lignes), `publie_le` |
 | `fichiers` | `version_id`, `format` (`json`, `geojson`, `csv`…), `cle_stockage`, `nom`, `principal`, `taille_octets` |
 
@@ -71,6 +75,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/moderation/submissions/:id` | Revue d'une proposition | modérateur / admin |
 | `/moderation/datasets` | Statut des datasets (publié / brouillon / archivé) | modérateur / admin |
 | `/admin/users` | Gestion des membres et de leurs rôles | admin |
+| `/admin/datasets` | Gestion des données (créer, modifier, masquer, supprimer, illustration, fichiers) | admin |
 | `/privacy`, `/terms` | Pages légales | public |
 
 - **Anciennes URL françaises** (`/donnees/:slug`, `/dataset/:slug`, `/membres/:pseudo`, `/profil`, `/connexion`, `/inscription`, `/mot-de-passe-oublie`, `/nouveau-mot-de-passe`, `/auth/retour`, `/confidentialite`, `/conditions`) : redirection vers la nouvelle URL en gardant `?…` et `#…` (indispensable pour les liens d'email déjà envoyés).
@@ -143,7 +148,18 @@ Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateu
 - `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle, confirmation avant chaque changement. `RouteAdmin` s'appuie sur `profil.role` (simple confort d'affichage).
 - Clé React Query : `["admin", "membres", …]`.
 
+## Gestion des données (admin)
+Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/components/admin/DialogueDonnee.tsx`. Tout passe par l'API (`/v1/admin`, session Supabase jointe) : le site n'écrit jamais dans `datasets` directement.
+
+- `/admin/datasets` : recherche, filtre par statut, création, modification, masquer / publier (`statut` `archive` ⇄ `publie`), suppression définitive (confirmation en tapant le slug ; l'API répond 409 si la base refuse, il faut alors archiver).
+- **Dialogue** : titre et description en fr / en / ar (titre fr obligatoire), slug tiré du titre (non modifiable ensuite), catégorie, source, licence, page de la source, mots-clés, statut. **Illustration** recadrée en 1200 × 720 et convertie en WebP dans le navigateur (`preparerIllustration()`), envoyée à l'API (2 Mo maximum). **Fichiers** (JSON, GeoJSON, CSV, 100 Mo) : URL d'envoi signée puis `PUT` direct vers R2, puis l'API publie la version (lignes, colonnes et aperçu calculés).
+- Donnée synchronisée (`sources.type = 'synchronisee'`) : avertissement, ses métadonnées seront réécrites par la synchro ; statut et illustration sont conservés.
+- Migration `20261025000009_illustrations.sql` : colonne `datasets.illustration_url` (écrite par l'API uniquement).
+- Clés React Query : `["admin", "donnees", …]` ; après une action, invalider aussi `catalogue`, `fiche`, `statistiques`, `moderation`.
+
 ## Fiche d'une donnée : fichiers et carte
+- **Télécharger** (`DialogueTelechargement`, bouton principal de l'en-tête) : choix du fichier (s'il y en a plusieurs) et du format CSV / Excel / JSON / GeoJSON (`donnee.ressources`, fournies par l'API). Le lien est d'abord vérifié (`fetch` avec `redirect: "manual"`) : une conversion impossible (422 : pas de tableau, pas de coordonnées) s'affiche dans le dialogue au lieu d'un JSON brut.
+- **Bouton API** (`BoutonApi`, violet, sous le téléchargement) : affiche `https://api.data-dz.com/v1/datasets/<slug>` et le copie au clic.
 - **Fichiers** (`ListeFichiers`) : un même fichier publié en plusieurs formats (même nom, ex. `5g-mobilis.geojson` et `5g-mobilis.json`) forme une seule ligne avec un bouton de téléchargement par format (`grouperFichiers()` dans `src/lib/fichiers.ts`).
 - **Carte** (`GlobeDonnees`) : affiche tous les fichiers GeoJSON de la version. S'il y en a plusieurs, un menu permet de choisir le fichier affiché (le principal par défaut) ou de **tout superposer** (6 fichiers maximum, une couleur et une légende par fichier). Les fichiers déjà téléchargés restent en mémoire pendant la visite ; au-delà de 10 Mo, l'affichage attend un clic.
 
@@ -152,6 +168,7 @@ Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateu
 - **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes). Rien n'est écrit en dur.
 - **Thème** : mémorisé dans `localStorage` (`theme`), sinon réglage du système.
 - **Premier affichage** : un petit script dans `index.html` applique le thème (classe `dark`) et la langue (`lang`, `dir`) avant le chargement de React, avec les mêmes règles que `use-theme.tsx` et i18next (`?lng=`, choix mémorisé `i18nextLng`, langue de l'appareil, sinon `fr`) : pas de « flash ». Toute évolution de ces règles doit être faite aux deux endroits.
+- **Illustrations** (`src/lib/illustrations.ts`, `urlIllustration(donnee, taille)`) : `illustration_url` choisie par un admin, sinon l'image du pack en WebP sur R2 dans `web-assets/webp/` (`<nom>.webp` 1200 × 720 pour le fond de l'en-tête de fiche, `<nom>-600.webp` pour le coin haut de `CarteDonnee`), sinon la carte de l'Algérie. Très atténuée et fondue par un masque en dégradé (sens inversé en arabe). Image absente : masquée sans casser la mise en page.
 - **Drapeau** : `DrapeauAlgerie` (SVG aux proportions officielles, jamais l'emoji 🇩🇿 qui s'affiche « DZ » sous Windows), dans le badge du hero et le pied de page.
 - **Couleurs** : les couleurs shadcn (`popover`, `card`, `muted`, `accent`, `destructive`, `input`, `ring`) sont déclarées dans `tailwind.config.ts` à partir des variables CSS de `src/index.css` (clair et sombre). Ne jamais coder une couleur en dur à leur place : menus et listes déroulantes deviendraient transparents ou illisibles en mode sombre.
 
