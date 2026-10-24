@@ -758,5 +758,111 @@
     "precedente": "Previous page",
     "suivante": "Next page"
   },
-  "drapeau": "Flag of Algeria"
+  "drapeau": "Flag of Algeria",
+  "telechargement": {
+    "titre": "Download the data",
+    "description": "Pick a format: the data-dz API converts the file, then the download starts.",
+    "fichier": "File",
+    "format": "Format",
+    "original": "Original format",
+    "bouton": "Download as {{format}}",
+    "preparation": "Preparing the file…",
+    "indisponible": "This format isn't available for this file (not a table, or no coordinates). Pick another one.",
+    "erreur": "The download failed. Please try again in a moment.",
+    "formats": {
+      "csv": {
+        "nom": "CSV",
+        "aide": "Spreadsheets, data analysis"
+      },
+      "xlsx": {
+        "nom": "Excel (XLSX)",
+        "aide": "Workbook with licence and source"
+      },
+      "json": {
+        "nom": "JSON",
+        "aide": "Developers, apps"
+      },
+      "geojson": {
+        "nom": "GeoJSON",
+        "aide": "Maps, QGIS, GIS"
+      }
+    }
+  },
+  "api": {
+    "copier": "Copy the API URL",
+    "copiee": "API URL copied",
+    "copieImpossible": "Couldn't copy: select the URL manually."
+  },
+  "adminDonnees": {
+    "titre": "Dataset management",
+    "sousTitre": "Create, edit, hide or delete catalogue datasets.",
+    "rechercher": "Search datasets…",
+    "filtrerStatut": "Filter by status",
+    "tousStatuts": "All statuses",
+    "statuts": {
+      "publie": "Published",
+      "brouillon": "Draft",
+      "archive": "Archived",
+      "en_revue": "In review"
+    },
+    "nouvelle": "New dataset",
+    "modifier": "Edit “{{titre}}”",
+    "aideCreation": "New datasets are drafts by default: publish once their files are ready.",
+    "aideModification": "Changes show up on the site in under a minute.",
+    "avertissementSynchro": "Synced dataset: its metadata and files will be overwritten by the next sync. Status and illustration are kept.",
+    "illustration": "Illustration",
+    "illustrationParDefaut": "Default image",
+    "choisirImage": "Choose an image",
+    "imageParDefaut": "Default image",
+    "aideIllustration": "Cropped to 1200 × 720 and converted to WebP before upload. Shown faded in the background of the page and card.",
+    "erreurImage": "Couldn't read this image.",
+    "champs": {
+      "titre": "Title",
+      "description": "Description",
+      "slug": "Identifier (URL)",
+      "statut": "Status",
+      "categorie": "Category",
+      "source": "Source",
+      "licence": "Licence",
+      "licenceDetails": "Licence details",
+      "urlSource": "Source page",
+      "motsCles": "Keywords",
+      "numero": "Version number",
+      "notes": "Release notes"
+    },
+    "aideSlug": "Lowercase letters, digits and dashes. Can't be changed later.",
+    "aideMotsCles": "comma-separated",
+    "aucune": "None",
+    "fichiers": "Files",
+    "nouvelleVersion": "New file version",
+    "aideFichiers": "JSON, GeoJSON or CSV, up to 100 MB each. The star marks the main file (rows, columns and preview).",
+    "ajouterFichiers": "Add files",
+    "retirerFichier": "Remove this file",
+    "fichiersRefuses": "Some files were skipped (unsupported format or over 100 MB).",
+    "titreObligatoire": "The French title is required.",
+    "slugInvalide": "Invalid identifier: lowercase letters, digits and dashes only.",
+    "etapes": {
+      "enregistrement": "Saving…",
+      "illustration": "Uploading the illustration…",
+      "fichiers": "Uploading files ({{envoyes}}/{{total}})…"
+    },
+    "annuler": "Cancel",
+    "creer": "Create dataset",
+    "enregistrer": "Save",
+    "enregistree": "Dataset “{{slug}}” saved.",
+    "erreur": "The operation failed.",
+    "majLe": "Updated {{date}}",
+    "voir": "View page",
+    "editer": "Edit",
+    "masquer": "Hide (archive)",
+    "publier": "Publish",
+    "masquee": "“{{titre}}” is hidden from the catalogue.",
+    "publiee": "“{{titre}}” is published.",
+    "supprimer": "Delete",
+    "supprimee": "“{{titre}}” was deleted.",
+    "confirmerTitre": "Delete permanently?",
+    "confirmerTexte": "“{{titre}}”, its versions and files will be deleted. To take it off the site without losing it, hide it instead.",
+    "confirmerSaisie": "Type “{{slug}}” to confirm",
+    "supprimerDefinitivement": "Delete permanently"
+  }
 }

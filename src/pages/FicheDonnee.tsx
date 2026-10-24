@@ -86,7 +86,6 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const description = texteTraduit(donnee.description, langue);
   const version = donnee.versions;
   const fichiers = trierFichiers(version?.fichiers ?? []);
-  const fichierPrincipal = fichiers.find((fichier) => fichier.principal) ?? fichiers[0];
   // Tous les fichiers spatiaux : la carte propose de choisir lequel afficher, ou de les superposer.
   const fichiersGeojson = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
   const colonnes = Array.isArray(version?.colonnes) ? version.colonnes : [];
@@ -99,7 +98,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
     <>
       <CustomMetaTags title={`${titre} - data-dz`} description={description || titre} path={routes.donnee(donnee.slug)} />
 
-      <EnTeteFiche donnee={donnee} fichierPrincipal={fichierPrincipal} />
+      <EnTeteFiche donnee={donnee} />
 
       <div className="container mx-auto px-4 pb-12">
         <div className="-mt-6 relative">

@@ -758,5 +758,111 @@
     "precedente": "Page précédente",
     "suivante": "Page suivante"
   },
-  "drapeau": "Drapeau de l'Algérie"
+  "drapeau": "Drapeau de l'Algérie",
+  "telechargement": {
+    "titre": "Télécharger les données",
+    "description": "Choisissez le format : la conversion est faite par l'API data-dz, puis le téléchargement démarre.",
+    "fichier": "Fichier",
+    "format": "Format",
+    "original": "Format d'origine",
+    "bouton": "Télécharger en {{format}}",
+    "preparation": "Préparation du fichier…",
+    "indisponible": "Ce format n'est pas disponible pour ce fichier (pas de tableau ou pas de coordonnées). Choisissez-en un autre.",
+    "erreur": "Le téléchargement a échoué. Réessayez dans un instant.",
+    "formats": {
+      "csv": {
+        "nom": "CSV",
+        "aide": "Tableur, analyse de données"
+      },
+      "xlsx": {
+        "nom": "Excel (XLSX)",
+        "aide": "Classeur avec la licence et la source"
+      },
+      "json": {
+        "nom": "JSON",
+        "aide": "Développeurs, applications"
+      },
+      "geojson": {
+        "nom": "GeoJSON",
+        "aide": "Cartes, QGIS, SIG"
+      }
+    }
+  },
+  "api": {
+    "copier": "Copier l'URL de l'API",
+    "copiee": "URL de l'API copiée",
+    "copieImpossible": "Copie impossible : sélectionnez l'URL à la main."
+  },
+  "adminDonnees": {
+    "titre": "Gestion des données",
+    "sousTitre": "Créez, modifiez, masquez ou supprimez les données du catalogue.",
+    "rechercher": "Rechercher une donnée…",
+    "filtrerStatut": "Filtrer par statut",
+    "tousStatuts": "Tous les statuts",
+    "statuts": {
+      "publie": "Publiée",
+      "brouillon": "Brouillon",
+      "archive": "Archivée",
+      "en_revue": "En revue"
+    },
+    "nouvelle": "Nouvelle donnée",
+    "modifier": "Modifier « {{titre}} »",
+    "aideCreation": "La donnée est créée en brouillon par défaut : publiez-la quand ses fichiers sont prêts.",
+    "aideModification": "Les changements sont visibles sur le site en moins d'une minute.",
+    "avertissementSynchro": "Donnée synchronisée : ses métadonnées et ses fichiers seront réécrits à la prochaine synchronisation. Le statut et l'illustration sont conservés.",
+    "illustration": "Illustration",
+    "illustrationParDefaut": "Image par défaut",
+    "choisirImage": "Choisir une image",
+    "imageParDefaut": "Image par défaut",
+    "aideIllustration": "Recadrée en 1200 × 720 et convertie en WebP avant l'envoi. Affichée en fond, atténuée, sur la fiche et la carte.",
+    "erreurImage": "Impossible de lire cette image.",
+    "champs": {
+      "titre": "Titre",
+      "description": "Description",
+      "slug": "Identifiant (URL)",
+      "statut": "Statut",
+      "categorie": "Catégorie",
+      "source": "Source",
+      "licence": "Licence",
+      "licenceDetails": "Précisions sur la licence",
+      "urlSource": "Page de la source",
+      "motsCles": "Mots-clés",
+      "numero": "Numéro de version",
+      "notes": "Notes de version"
+    },
+    "aideSlug": "Minuscules, chiffres et tirets. Ne pourra plus changer.",
+    "aideMotsCles": "séparés par des virgules",
+    "aucune": "Aucune",
+    "fichiers": "Fichiers",
+    "nouvelleVersion": "Nouvelle version des fichiers",
+    "aideFichiers": "JSON, GeoJSON ou CSV, 100 Mo maximum chacun. L'étoile désigne le fichier principal (lignes, colonnes et aperçu).",
+    "ajouterFichiers": "Ajouter des fichiers",
+    "retirerFichier": "Retirer ce fichier",
+    "fichiersRefuses": "Certains fichiers ont été ignorés (format non pris en charge ou plus de 100 Mo).",
+    "titreObligatoire": "Le titre en français est obligatoire.",
+    "slugInvalide": "Identifiant invalide : minuscules, chiffres et tirets uniquement.",
+    "etapes": {
+      "enregistrement": "Enregistrement…",
+      "illustration": "Envoi de l'illustration…",
+      "fichiers": "Envoi des fichiers ({{envoyes}}/{{total}})…"
+    },
+    "annuler": "Annuler",
+    "creer": "Créer la donnée",
+    "enregistrer": "Enregistrer",
+    "enregistree": "Donnée « {{slug}} » enregistrée.",
+    "erreur": "L'opération a échoué.",
+    "majLe": "Mise à jour le {{date}}",
+    "voir": "Voir la fiche",
+    "editer": "Modifier",
+    "masquer": "Masquer (archiver)",
+    "publier": "Publier",
+    "masquee": "« {{titre}} » est masquée du catalogue.",
+    "publiee": "« {{titre}} » est publiée.",
+    "supprimer": "Supprimer",
+    "supprimee": "« {{titre}} » a été supprimée.",
+    "confirmerTitre": "Supprimer définitivement ?",
+    "confirmerTexte": "« {{titre}} », ses versions et ses fichiers seront supprimés. Pour la retirer du site sans la perdre, masquez-la plutôt.",
+    "confirmerSaisie": "Tapez « {{slug}} » pour confirmer",
+    "supprimerDefinitivement": "Supprimer définitivement"
+  }
 }

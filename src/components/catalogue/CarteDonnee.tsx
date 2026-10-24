@@ -6,6 +6,7 @@ import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { BoutonsVote } from "@/components/communaute/BoutonsVote";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
+import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
@@ -26,13 +27,23 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   return (
     // Le lien du titre couvre toute la carte (after:inset-0) ; les boutons de vote et de favori passent au-dessus.
     <div className="relative h-full w-full">
-      <Card className="relative group focus-within:ring-2 focus-within:ring-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full flex flex-col">
+      {/* isolate : l'illustration (-z-10) passe au-dessus du fond de la carte mais sous son contenu. */}
+      <Card className="relative isolate group focus-within:ring-2 focus-within:ring-emerald-500 hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden bg-white dark:bg-gray-800 h-full flex flex-col">
         <BorderBeam
           size={300}
           duration={20}
           colorFrom="#1a365d"
           colorTo="#10b981"
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        />
+        <img
+          src={urlIllustration(donnee, "petite")}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+          className="pointer-events-none absolute -top-2 end-0 -z-10 h-32 w-52 object-cover opacity-25 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_25%,transparent_70%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_25%,transparent_70%)] group-hover:opacity-40 dark:opacity-[.15] dark:brightness-75 dark:group-hover:opacity-25"
         />
         <CardHeader className="pb-3">
           {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="mb-2" />}

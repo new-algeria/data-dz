@@ -1,7 +1,10 @@
-import { supabase } from "./supabase";
-import type { Categorie, Donnee, ResumeDonnee } from "./types";
+import { appelerApi, ErreurApi, urlTelechargement } from "./api";
+import type { Categorie, Donnee, Fichier, Ressource, ResumeDonnee, Source, Version } from "./types";
 
-/** Colonnes communes aux cartes du catalogue et à la page des favoris. */
+/**
+ * Colonnes Supabase d'une carte du catalogue. Le catalogue public passe par l'API ; cette liste ne sert
+ * plus qu'aux requêtes propres à un membre (favoris), qui restent sur Supabase avec sa session.
+ */
 export const COLONNES_RESUME = `
   id, slug, titre, description, categorie_slug, licence_code, mots_cles, mis_a_jour_le,
   score, nb_votes_pour, nb_votes_contre, nb_favoris, nb_commentaires,
@@ -21,80 +24,86 @@ export interface StatistiquesCatalogue {
   nbMembres: number;
 }
 
-/** Données publiées du catalogue, filtrées par recherche plein texte et catégorie. */
+// ---------------------------------------------------------------- Réponses de l'API
+
+type ResumeApi = Omit<ResumeDonnee, "sources" | "versions"> & {
+  source: Source | null;
+  version: ResumeDonnee["versions"];
+};
+
+type FicheApi = Omit<Donnee, "sources" | "versions" | "categories" | "licences"> & {
+  source: Source | null;
+  categorie: Donnee["categories"];
+  licence: Donnee["licences"];
+  version: Omit<Version, "fichiers"> | null;
+};
+
+interface PageApi<T> {
+  data: T[];
+  pagination: { page: number; pages: number; total: number };
+}
+
+const versResume = ({ source, version, ...reste }: ResumeApi): ResumeDonnee => ({ ...reste, sources: source, versions: version });
+
+/** Fichiers à plat (un par format d'origine), comme la base les décrit. */
+function fichiersDe(slug: string, ressources: Ressource[]): Fichier[] {
+  return ressources.flatMap((ressource) =>
+    ressource.fichiers.map((fichier) => ({
+      id: `${ressource.nom}.${fichier.format}`,
+      nom: ressource.nom,
+      format: fichier.format,
+      principal: ressource.principal,
+      taille_octets: fichier.taille_octets,
+      url: fichier.url,
+      url_telechargement: urlTelechargement(slug, ressource.nom, fichier.format),
+    }))
+  );
+}
+
+// ---------------------------------------------------------------- Lectures
+
+/** Données publiées du catalogue, filtrées par recherche plein texte et catégorie (toutes les pages). */
 export async function chargerCatalogue({ terme, categorie }: FiltresCatalogue): Promise<ResumeDonnee[]> {
-  let requete = supabase
-    .from("datasets")
-    .select(COLONNES_RESUME)
-    .eq("statut", "publie");
-
-  const termeNettoye = terme.trim();
-  if (termeNettoye) {
-    requete = requete.textSearch("recherche", termeNettoye, { config: "simple", type: "websearch" });
+  const donnees: ResumeDonnee[] = [];
+  for (let page = 1; ; page++) {
+    const params = new URLSearchParams({ limit: "100", page: String(page) });
+    const termeNettoye = terme.trim();
+    if (termeNettoye) params.set("q", termeNettoye);
+    if (categorie) params.set("category", categorie);
+    const reponse = await appelerApi<PageApi<ResumeApi>>(`/v1/datasets?${params}`);
+    donnees.push(...reponse.data.map(versResume));
+    if (page >= reponse.pagination.pages) return donnees;
   }
-  if (categorie) {
-    requete = requete.eq("categorie_slug", categorie);
-  }
-
-  const { data, error } = await requete.order("titre->>fr");
-  if (error) throw error;
-  return (data ?? []) as unknown as ResumeDonnee[];
 }
 
 export async function chargerCategories(): Promise<Categorie[]> {
-  const { data, error } = await supabase
-    .from("categories")
-    .select("slug, nom, icone, ordre")
-    .order("ordre");
-  if (error) throw error;
-  return (data ?? []) as Categorie[];
+  return (await appelerApi<{ data: Categorie[] }>("/v1/categories")).data;
 }
 
 /** Chiffres réels : données publiées, catégories couvertes, total de lignes et nombre de membres inscrits. */
 export async function chargerStatistiques(): Promise<StatistiquesCatalogue> {
-  const [{ data, error }, membres] = await Promise.all([
-    supabase.from("datasets").select("categorie_slug, versions!datasets_version_courante_fk ( nb_lignes )").eq("statut", "publie"),
-    // Un profil par compte : on ne lit que le total (aucune ligne n'est téléchargée).
-    supabase.from("profils").select("id", { count: "exact", head: true }),
-  ]);
-  if (error) throw error;
-  if (membres.error) throw membres.error;
-
-  const lignes = (data ?? []) as unknown as {
-    categorie_slug: string | null;
-    versions: { nb_lignes: number | null } | null;
-  }[];
-  const categoriesCouvertes = new Set(lignes.map((ligne) => ligne.categorie_slug).filter(Boolean));
-
+  const stats = await appelerApi<{ nb_donnees: number; nb_categories: number; total_lignes: number; nb_membres: number }>("/v1/stats");
   return {
-    nbDonnees: lignes.length,
-    nbCategories: categoriesCouvertes.size,
-    totalLignes: lignes.reduce((total, ligne) => total + (ligne.versions?.nb_lignes ?? 0), 0),
-    nbMembres: membres.count ?? 0,
+    nbDonnees: stats.nb_donnees,
+    nbCategories: stats.nb_categories,
+    totalLignes: stats.total_lignes,
+    nbMembres: stats.nb_membres,
   };
 }
 
 /** Fiche complète d'une donnée publiée, ou `null` si elle n'existe pas (ou n'est pas visible). */
 export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
-  const { data, error } = await supabase
-    .from("datasets")
-    .select(
-      `
-      id, slug, titre, description, readme, categorie_slug, licence_code, licence_details,
-      url_source, mots_cles, infos_source,
-      score, nb_votes_pour, nb_votes_contre, nb_favoris, nb_commentaires,
-      categories ( slug, nom, icone ),
-      sources ( slug, nom, url, verifiee ),
-      licences ( code, nom, url, usage_commercial, attribution_requise, partage_identique ),
-      versions!datasets_version_courante_fk (
-        numero, notes, nb_lignes, colonnes, apercu, publie_le,
-        fichiers ( nom, format, cle_stockage, principal, taille_octets )
-      )
-    `
-    )
-    .eq("statut", "publie")
-    .eq("slug", slug)
-    .maybeSingle();
-  if (error) throw error;
-  return data as unknown as Donnee | null;
+  try {
+    const { source, categorie, licence, version, ...reste } = await appelerApi<FicheApi>(`/v1/datasets/${encodeURIComponent(slug)}`);
+    return {
+      ...reste,
+      sources: source,
+      categories: categorie,
+      licences: licence,
+      versions: version ? { ...version, fichiers: fichiersDe(slug, reste.ressources) } : null,
+    };
+  } catch (erreur) {
+    if (erreur instanceof ErreurApi && (erreur.statut === 404 || erreur.statut === 400)) return null;
+    throw erreur;
+  }
 }

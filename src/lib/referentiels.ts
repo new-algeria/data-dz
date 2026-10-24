@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { urlFichier } from "./fichiers";
+import { appelerApi } from "./api";
 import type { TexteMultilingue } from "./types";
 
 export interface LicenceResume {
@@ -59,9 +59,8 @@ function extraireWilayas(contenu: unknown): Wilaya[] {
 
 export async function chargerWilayas(): Promise<Wilaya[]> {
   try {
-    const reponse = await fetch(urlFichier("json/wilayas.json"));
-    if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
-    const wilayas = extraireWilayas(await reponse.json());
+    const reponse = await appelerApi<{ data: unknown[] }>("/v1/datasets/divisions-administratives/data?file=wilayas&limit=100");
+    const wilayas = extraireWilayas(reponse.data);
     if (wilayas.length >= 48) return wilayas;
     throw new Error("liste de wilayas incomplète");
   } catch (erreur) {

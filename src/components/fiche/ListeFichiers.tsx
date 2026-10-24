@@ -2,7 +2,7 @@ import { Download, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formaterTaille, grouperFichiers, urlFichier } from "@/lib/fichiers";
+import { formaterTaille, grouperFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import { cn } from "@/lib/utils";
 import type { Fichier } from "@/lib/types";
@@ -36,7 +36,7 @@ export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
           <div className={cn("grid gap-2", groupe.fichiers.length > 1 ? "grid-cols-2 sm:flex sm:flex-wrap" : "sm:flex")}>
             {groupe.fichiers.map((fichier, indice) => (
               <Button
-                key={fichier.cle_stockage}
+                key={fichier.id}
                 asChild
                 size="sm"
                 variant={indice === 0 ? "default" : "outline"}
@@ -48,7 +48,7 @@ export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
                 )}
               >
                 <a
-                  href={urlFichier(fichier.cle_stockage)}
+                  href={fichier.url_telechargement}
                   download
                   target="_blank"
                   rel="noopener noreferrer"

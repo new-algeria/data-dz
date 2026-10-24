@@ -1,12 +1,5 @@
 import type { Fichier } from "./types";
 
-const urlFichiers = (import.meta.env.VITE_URL_FICHIERS ?? "https://files.data-dz.com").replace(/\/+$/, "");
-
-/** URL publique d'un fichier stocké sur R2 (lecture directe sur files.data-dz.com). */
-export function urlFichier(cleStockage: string): string {
-  return `${urlFichiers}/${cleStockage.replace(/^\/+/, "")}`;
-}
-
 /** Locale utilisée pour les nombres (chiffres latins, y compris en arabe). */
 export function localeNombres(langue: string): string {
   if (langue === "ar") return "ar-DZ-u-nu-latn";
@@ -41,13 +34,13 @@ export function formaterTaille(octets: number | null | undefined, langue: string
 export function trierFichiers(fichiers: Fichier[]): Fichier[] {
   return [...fichiers].sort((a, b) => {
     if (a.principal !== b.principal) return a.principal ? -1 : 1;
-    return (a.nom ?? a.cle_stockage).localeCompare(b.nom ?? b.cle_stockage);
+    return (a.nom ?? a.id).localeCompare(b.nom ?? b.id);
   });
 }
 
-/** Nom affiché d'un fichier : son nom en base, sinon le dernier segment de sa clé de stockage. */
+/** Nom affiché d'un fichier : son nom en base, sinon son identifiant (`<nom>.<format>`). */
 export function nomFichier(fichier: Fichier): string {
-  return fichier.nom ?? fichier.cle_stockage.split("/").pop() ?? fichier.cle_stockage;
+  return fichier.nom ?? fichier.id;
 }
 
 /** Même nom sans extension de format : « 5g-mobilis.geojson » et « 5g-mobilis.json » donnent « 5g-mobilis ». */

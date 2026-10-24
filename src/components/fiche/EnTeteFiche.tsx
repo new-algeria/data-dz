@@ -1,23 +1,21 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, ChevronRight, Download, ExternalLink, MessageSquare } from "lucide-react";
+import { BadgeCheck, ChevronRight, ExternalLink, MessageSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BoutonsVote } from "@/components/communaute/BoutonsVote";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
-import { formaterNombre, formaterTaille, urlFichier } from "@/lib/fichiers";
+import { formaterNombre } from "@/lib/fichiers";
+import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
-import type { Donnee, Fichier } from "@/lib/types";
+import type { Donnee } from "@/lib/types";
 import { catalogueParCategorie, routes } from "@/lib/routes";
+import { BoutonApi } from "./BoutonApi";
+import { DialogueTelechargement } from "./DialogueTelechargement";
 
-interface EnTeteFicheProps {
-  donnee: Donnee;
-  fichierPrincipal: Fichier | undefined;
-}
-
-export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
+export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const titre = texteTraduit(donnee.titre, langue);
@@ -27,6 +25,14 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
   return (
     <section className="relative overflow-hidden border-b border-emerald-900/5 bg-gradient-to-b from-emerald-50 via-white to-gray-50 pt-16 dark:border-white/5 dark:from-[#03140f] dark:via-gray-900 dark:to-gray-900">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
+        {/* Illustration en fond, côté fin de ligne, fondue vers le texte par un dégradé (inversé en arabe). */}
+        <img
+          src={urlIllustration(donnee)}
+          alt=""
+          decoding="async"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+          className="absolute inset-y-0 end-0 h-full w-full object-cover opacity-15 saturate-[.85] [mask-image:linear-gradient(to_left,black_20%,transparent_85%)] rtl:[mask-image:linear-gradient(to_right,black_20%,transparent_85%)] dark:opacity-[.12] dark:brightness-75 md:w-3/4 lg:w-[60%]"
+        />
         <div className="absolute -top-24 end-[-6rem] h-80 w-80 rounded-full bg-emerald-300/30 blur-3xl animate-flotter dark:bg-emerald-600/15" />
         <div className="absolute bottom-[-6rem] start-[-4rem] h-64 w-64 rounded-full bg-teal-200/40 blur-3xl animate-flotter-lent dark:bg-teal-500/10" />
       </div>
@@ -98,29 +104,10 @@ export const EnTeteFiche = ({ donnee, fichierPrincipal }: EnTeteFicheProps) => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex flex-col gap-2 sm:flex-row lg:flex-col"
+            className="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:flex-col"
           >
-            {fichierPrincipal && (
-              <Button
-                asChild
-                size="lg"
-                className="h-auto justify-start gap-3 bg-emerald-700 py-3 text-white shadow-lg shadow-emerald-700/25 hover:bg-emerald-800"
-              >
-                <a href={urlFichier(fichierPrincipal.cle_stockage)} download target="_blank" rel="noopener noreferrer">
-                  <Download className="h-5 w-5" />
-                  <span className="flex flex-col items-start leading-tight">
-                    <span className="font-semibold">
-                      {t("fiche.telecharger")} {fichierPrincipal.format.toUpperCase()}
-                    </span>
-                    {fichierPrincipal.taille_octets !== null && (
-                      <span className="text-xs font-normal opacity-80">
-                        {formaterTaille(fichierPrincipal.taille_octets, langue)}
-                      </span>
-                    )}
-                  </span>
-                </a>
-              </Button>
-            )}
+            {donnee.ressources.length > 0 && <DialogueTelechargement ressources={donnee.ressources} />}
+            <BoutonApi slug={donnee.slug} />
             {donnee.url_source && (
               <Button asChild size="lg" variant="outline" className="bg-white/70 backdrop-blur dark:bg-white/5">
                 <a href={donnee.url_source} target="_blank" rel="noopener noreferrer">

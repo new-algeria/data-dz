@@ -30,12 +30,28 @@ export interface Colonne {
   description?: string;
 }
 
+/** Fichier d'une version. Les URL passent par l'API : la clé de stockage R2 n'est jamais exposée. */
 export interface Fichier {
+  /** Identifiant stable dans la fiche : `<nom>.<format>`. */
+  id: string;
   nom: string | null;
   format: string;
-  cle_stockage: string;
   principal: boolean;
   taille_octets: number | null;
+  /** Lecture dans le navigateur (carte, aperçu). */
+  url: string;
+  /** Téléchargement (fichier joint). */
+  url_telechargement: string;
+}
+
+export type FormatTelechargement = "csv" | "xlsx" | "json" | "geojson";
+
+/** Un fichier de la donnée et tous les formats dans lesquels l'API peut le livrer. */
+export interface Ressource {
+  nom: string;
+  principal: boolean;
+  fichiers: { format: string; taille_octets: number | null; url: string }[];
+  telechargements: { format: FormatTelechargement; natif: boolean; url: string }[];
 }
 
 export interface Version {
@@ -69,6 +85,8 @@ export interface ResumeDonnee extends CompteursDonnee {
   sources: Source | null;
   versions: Pick<Version, "numero" | "nb_lignes" | "publie_le"> | null;
   mis_a_jour_le: string;
+  /** Illustration choisie par un administrateur (sinon image par défaut du slug). */
+  illustration_url?: string | null;
 }
 
 /** Fiche complète d'une donnée. */
@@ -87,4 +105,7 @@ export interface Donnee extends CompteursDonnee {
   sources: Source | null;
   licences: Licence | null;
   versions: Version | null;
+  illustration_url?: string | null;
+  /** Fichiers regroupés par nom, avec leurs formats de téléchargement (API). */
+  ressources: Ressource[];
 }

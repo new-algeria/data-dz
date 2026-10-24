@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress";
 import { EtatErreur } from "@/components/EtatErreur";
 import { useChargementJSON } from "@/hooks/use-chargement-fichier";
-import { formaterTaille, nomSansFormat, urlFichier } from "@/lib/fichiers";
+import { formaterTaille, nomSansFormat } from "@/lib/fichiers";
 import { calculerEmprise, type Emprise } from "@/lib/emprise";
 import { useLangue } from "@/hooks/use-langue";
 import { valeurEnTexte } from "@/lib/valeurs";
@@ -244,21 +244,21 @@ const TOUT = "tout";
 export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
   const { t } = useTranslation();
   const langue = useLangue();
-  const parDefaut = (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.cle_stockage ?? "";
+  const parDefaut = (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.id ?? "";
   const [choix, setChoix] = useState(parDefaut);
   const [autorises, setAutorises] = useState<string[]>([]);
 
-  const selection = choix === TOUT ? fichiers : fichiers.filter((fichier) => fichier.cle_stockage === choix);
+  const selection = choix === TOUT ? fichiers : fichiers.filter((fichier) => fichier.id === choix);
   const tailleSelection = selection.reduce((somme, fichier) => somme + (fichier.taille_octets ?? 0), 0);
   const demande = tailleSelection <= SEUIL_GROS_FICHIER || autorises.includes(choix);
-  const sources = useMemo(() => selection.map((fichier) => ({ url: urlFichier(fichier.cle_stockage), taille: fichier.taille_octets })), [choix, fichiers]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sources = useMemo(() => selection.map((fichier) => ({ url: fichier.url, taille: fichier.taille_octets })), [choix, fichiers]); // eslint-disable-line react-hooks/exhaustive-deps
   const chargement = useChargementJSON<GeoJsonObject>(sources, demande);
 
   const couches = useMemo<Couche[]>(
     () =>
       chargement.statut === "termine" && chargement.donnees
         ? chargement.donnees.map((donnees, indice) => ({
-            id: selection[indice].cle_stockage,
+            id: selection[indice].id,
             nom: nomSansFormat(selection[indice]),
             couleur: choix === TOUT ? COULEURS[fichiers.indexOf(selection[indice]) % COULEURS.length] : VERT,
             donnees,
@@ -277,7 +277,7 @@ export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
         <SelectContent>
           {fichiers.length <= MAX_SUPERPOSES && <SelectItem value={TOUT}>{t("fiche.toutSuperposer", { count: fichiers.length })}</SelectItem>}
           {fichiers.map((fichier) => (
-            <SelectItem key={fichier.cle_stockage} value={fichier.cle_stockage}>
+            <SelectItem key={fichier.id} value={fichier.id}>
               <span dir="ltr">{nomSansFormat(fichier)}</span>
               {fichier.taille_octets !== null && <span className="ms-2 text-xs text-muted-foreground">{formaterTaille(fichier.taille_octets, langue)}</span>}
             </SelectItem>
