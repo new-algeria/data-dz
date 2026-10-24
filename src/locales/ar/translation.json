@@ -126,7 +126,11 @@
     "sourceVerifiee": "مصدر موثّق",
     "parSource": "نشرها",
     "miseAJour": "آخر تحديث",
-    "ongletApercu": "معاينة"
+    "ongletApercu": "معاينة",
+    "carteChoix": "الملف المعروض على الخريطة",
+    "toutSuperposer": "عرض الكل معا ({{count}})",
+    "legende": "مفتاح الخريطة",
+    "telechargerFormat": "تنزيل {{nom}} بصيغة {{format}}"
   },
   "attribution": {
     "titre": "الإسناد",
