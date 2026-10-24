@@ -10,13 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLangue } from "@/hooks/use-langue";
-
-// Noms et abréviations écrits dans leur propre langue : ils ne se traduisent pas.
-const langues = [
-  { code: "fr", nom: "Français", court: "FR" },
-  { code: "en", nom: "English", court: "EN" },
-  { code: "ar", nom: "العربية", court: "ع" },
-];
+import { LANGUES as langues } from "@/lib/langues";
 
 export const LanguageSelector = () => {
   const { t, i18n } = useTranslation();

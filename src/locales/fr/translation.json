@@ -1,16 +1,27 @@
 {
   "navbar": {
-    "contribuer": "Contribuer",
     "proposer": "Proposer une donnée",
     "moderation": "Modération",
     "moderationEnAttente_one": "Modération : {{count}} proposition en attente",
-    "moderationEnAttente_other": "Modération : {{count}} propositions en attente"
+    "moderationEnAttente_other": "Modération : {{count}} propositions en attente",
+    "ouvrirMenu": "Ouvrir le menu",
+    "fermerMenu": "Fermer le menu",
+    "menu": "Menu",
+    "menuDescription": "Navigation, compte, langue et thème",
+    "inscription": "S'inscrire",
+    "explorer": "Explorer",
+    "catalogue": "Catalogue des données",
+    "monEspace": "Mon espace",
+    "administration": "Administration",
+    "preferences": "Préférences"
   },
   "langue": {
     "choisir": "Choisir la langue"
   },
   "theme": {
-    "basculer": "Changer de thème"
+    "basculer": "Changer de thème",
+    "passerClair": "Passer en mode clair",
+    "passerSombre": "Passer en mode sombre"
   },
   "footer": {
     "projet": "Un projet open source porté par",
@@ -30,13 +41,14 @@
     "metaDescription": "Portail open source de données sur l'Algérie : catalogue, aperçu, cartes et téléchargements, avec source et licence.",
     "badge": "Données ouvertes · Algérie",
     "explorer": "Explorer le catalogue",
-    "contribuer": "Contribuer sur GitHub",
-    "globe": "Globe terrestre centré sur l'Algérie"
+    "globe": "Globe terrestre centré sur l'Algérie",
+    "proposer": "Proposer une donnée"
   },
   "statistiques": {
     "donnees": "Jeux de données",
     "categories": "Catégories couvertes",
-    "lignes": "Lignes de données"
+    "lignes": "Lignes de données",
+    "membres": "Membres inscrits"
   },
   "catalogue": {
     "titre": "Catalogue des données",
