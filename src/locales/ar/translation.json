@@ -1,6 +1,5 @@
 {
   "navbar": {
-    "contribuer": "ساهم",
     "proposer": "اقتراح بيانات",
     "moderation": "الإشراف",
     "moderationEnAttente_zero": "الإشراف: لا توجد اقتراحات قيد الانتظار",
@@ -8,13 +7,25 @@
     "moderationEnAttente_two": "الإشراف: اقتراحان قيد الانتظار",
     "moderationEnAttente_few": "الإشراف: {{count}} اقتراحات قيد الانتظار",
     "moderationEnAttente_many": "الإشراف: {{count}} اقتراحا قيد الانتظار",
-    "moderationEnAttente_other": "الإشراف: {{count}} اقتراح قيد الانتظار"
+    "moderationEnAttente_other": "الإشراف: {{count}} اقتراح قيد الانتظار",
+    "ouvrirMenu": "فتح القائمة",
+    "fermerMenu": "إغلاق القائمة",
+    "menu": "القائمة",
+    "menuDescription": "التنقل والحساب واللغة والمظهر",
+    "inscription": "إنشاء حساب",
+    "explorer": "استكشاف",
+    "catalogue": "فهرس البيانات",
+    "monEspace": "فضائي",
+    "administration": "الإدارة",
+    "preferences": "التفضيلات"
   },
   "langue": {
     "choisir": "اختر اللغة"
   },
   "theme": {
-    "basculer": "تغيير المظهر"
+    "basculer": "تغيير المظهر",
+    "passerClair": "التبديل إلى الوضع الفاتح",
+    "passerSombre": "التبديل إلى الوضع الداكن"
   },
   "footer": {
     "projet": "مشروع مفتوح المصدر من",
@@ -34,13 +45,14 @@
     "metaDescription": "بوابة مفتوحة المصدر للبيانات حول الجزائر: فهرس، معاينة، خرائط وتحميلات، مع المصدر والرخصة.",
     "badge": "بيانات مفتوحة · الجزائر",
     "explorer": "استكشف الفهرس",
-    "contribuer": "ساهم على GitHub",
-    "globe": "كرة أرضية متمركزة على الجزائر"
+    "globe": "كرة أرضية متمركزة على الجزائر",
+    "proposer": "اقتراح بيانات"
   },
   "statistiques": {
     "donnees": "مجموعات البيانات",
     "categories": "الفئات المغطاة",
-    "lignes": "أسطر البيانات"
+    "lignes": "أسطر البيانات",
+    "membres": "الأعضاء المسجلون"
   },
   "catalogue": {
     "titre": "فهرس البيانات",

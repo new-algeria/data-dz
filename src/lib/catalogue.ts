@@ -18,6 +18,7 @@ export interface StatistiquesCatalogue {
   nbDonnees: number;
   nbCategories: number;
   totalLignes: number;
+  nbMembres: number;
 }
 
 /** Données publiées du catalogue, filtrées par recherche plein texte et catégorie. */
@@ -49,13 +50,15 @@ export async function chargerCategories(): Promise<Categorie[]> {
   return (data ?? []) as Categorie[];
 }
 
-/** Chiffres réels du catalogue : nombre de données publiées, de catégories couvertes et total de lignes. */
+/** Chiffres réels : données publiées, catégories couvertes, total de lignes et nombre de membres inscrits. */
 export async function chargerStatistiques(): Promise<StatistiquesCatalogue> {
-  const { data, error } = await supabase
-    .from("datasets")
-    .select("categorie_slug, versions!datasets_version_courante_fk ( nb_lignes )")
-    .eq("statut", "publie");
+  const [{ data, error }, membres] = await Promise.all([
+    supabase.from("datasets").select("categorie_slug, versions!datasets_version_courante_fk ( nb_lignes )").eq("statut", "publie"),
+    // Un profil par compte : on ne lit que le total (aucune ligne n'est téléchargée).
+    supabase.from("profils").select("id", { count: "exact", head: true }),
+  ]);
   if (error) throw error;
+  if (membres.error) throw membres.error;
 
   const lignes = (data ?? []) as unknown as {
     categorie_slug: string | null;
@@ -67,6 +70,7 @@ export async function chargerStatistiques(): Promise<StatistiquesCatalogue> {
     nbDonnees: lignes.length,
     nbCategories: categoriesCouvertes.size,
     totalLignes: lignes.reduce((total, ligne) => total + (ligne.versions?.nb_lignes ?? 0), 0),
+    nbMembres: membres.count ?? 0,
   };
 }
 

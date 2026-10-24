@@ -1,16 +1,27 @@
 {
   "navbar": {
-    "contribuer": "Contribute",
     "proposer": "Submit a dataset",
     "moderation": "Moderation",
     "moderationEnAttente_one": "Moderation: {{count}} pending submission",
-    "moderationEnAttente_other": "Moderation: {{count}} pending submissions"
+    "moderationEnAttente_other": "Moderation: {{count}} pending submissions",
+    "ouvrirMenu": "Open the menu",
+    "fermerMenu": "Close the menu",
+    "menu": "Menu",
+    "menuDescription": "Navigation, account, language and theme",
+    "inscription": "Sign up",
+    "explorer": "Explore",
+    "catalogue": "Data catalogue",
+    "monEspace": "My space",
+    "administration": "Administration",
+    "preferences": "Preferences"
   },
   "langue": {
     "choisir": "Choose language"
   },
   "theme": {
-    "basculer": "Toggle theme"
+    "basculer": "Toggle theme",
+    "passerClair": "Switch to light mode",
+    "passerSombre": "Switch to dark mode"
   },
   "footer": {
     "projet": "An open source project by",
@@ -30,13 +41,14 @@
     "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence.",
     "badge": "Open data · Algeria",
     "explorer": "Explore the catalogue",
-    "contribuer": "Contribute on GitHub",
-    "globe": "Globe centred on Algeria"
+    "globe": "Globe centred on Algeria",
+    "proposer": "Submit a dataset"
   },
   "statistiques": {
     "donnees": "Datasets",
     "categories": "Categories covered",
-    "lignes": "Data rows"
+    "lignes": "Data rows",
+    "membres": "Registered members"
   },
   "catalogue": {
     "titre": "Data catalogue",
