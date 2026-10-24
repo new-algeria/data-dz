@@ -739,5 +739,6 @@
     "page": "Page {{page}} / {{total}}",
     "precedente": "Previous page",
     "suivante": "Next page"
-  }
+  },
+  "drapeau": "Flag of Algeria"
 }
