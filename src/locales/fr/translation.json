@@ -115,7 +115,11 @@
     "sourceVerifiee": "Source vérifiée",
     "parSource": "Publié par",
     "miseAJour": "Mise à jour",
-    "ongletApercu": "Aperçu"
+    "ongletApercu": "Aperçu",
+    "carteChoix": "Fichier affiché sur la carte",
+    "toutSuperposer": "Tout superposer ({{count}} fichiers)",
+    "legende": "Légende de la carte",
+    "telechargerFormat": "Télécharger {{nom}} au format {{format}}"
   },
   "attribution": {
     "titre": "Attribution",

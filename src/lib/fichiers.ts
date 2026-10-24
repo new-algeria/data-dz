@@ -44,3 +44,44 @@ export function trierFichiers(fichiers: Fichier[]): Fichier[] {
     return (a.nom ?? a.cle_stockage).localeCompare(b.nom ?? b.cle_stockage);
   });
 }
+
+/** Nom affiché d'un fichier : son nom en base, sinon le dernier segment de sa clé de stockage. */
+export function nomFichier(fichier: Fichier): string {
+  return fichier.nom ?? fichier.cle_stockage.split("/").pop() ?? fichier.cle_stockage;
+}
+
+/** Même nom sans extension de format : « 5g-mobilis.geojson » et « 5g-mobilis.json » donnent « 5g-mobilis ». */
+export function nomSansFormat(fichier: Fichier): string {
+  return nomFichier(fichier).replace(/\.(geojson|json|csv|tsv|xlsx|xls|xml|zip|pdf|parquet)$/i, "");
+}
+
+// Ordre des formats dans un groupe : le spatial d'abord, puis les formats tabulaires.
+const ORDRE_FORMATS = ["geojson", "json", "csv", "xlsx", "xml", "parquet", "zip", "pdf"];
+const rangFormat = (format: string) => {
+  const rang = ORDRE_FORMATS.indexOf(format.toLowerCase());
+  return rang === -1 ? ORDRE_FORMATS.length : rang;
+};
+
+/** Un même fichier publié en plusieurs formats (même nom). */
+export interface GroupeFichiers {
+  cle: string;
+  nom: string;
+  principal: boolean;
+  fichiers: Fichier[];
+}
+
+/** Regroupe les formats d'un même fichier ; groupe principal en premier, puis ordre alphabétique. */
+export function grouperFichiers(fichiers: Fichier[]): GroupeFichiers[] {
+  const groupes = new Map<string, GroupeFichiers>();
+  for (const fichier of fichiers) {
+    const nom = nomSansFormat(fichier);
+    const cle = nom.toLowerCase();
+    const groupe = groupes.get(cle) ?? { cle, nom, principal: false, fichiers: [] };
+    groupe.fichiers.push(fichier);
+    groupe.principal ||= fichier.principal;
+    groupes.set(cle, groupe);
+  }
+  return [...groupes.values()]
+    .map((groupe) => ({ ...groupe, fichiers: [...groupe.fichiers].sort((a, b) => rangFormat(a.format) - rangFormat(b.format)) }))
+    .sort((a, b) => (a.principal !== b.principal ? (a.principal ? -1 : 1) : a.nom.localeCompare(b.nom, undefined, { numeric: true })));
+}
