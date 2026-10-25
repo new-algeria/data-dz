@@ -3,7 +3,7 @@
 Portail open source de données sur l'Algérie, porté par New Algeria (newalgeria.org).
 Ce dépôt est **public** : aucun secret ne doit jamais y être commité.
 
-Commandes : `npm install`, `npm run dev`, `npm run build`, `npm run lint`.
+Commandes : `npm install`, `npm run dev`, `npm run build`, `npm run lint`, `npm test`.
 Variables d'environnement : voir `.env.example` (copier en `.env.local`).
 
 # Référence du projet
@@ -162,7 +162,20 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 - **Télécharger** (`DialogueTelechargement`, bouton principal de l'en-tête) : choix du fichier (s'il y en a plusieurs) et du format CSV / Excel / JSON / GeoJSON (`donnee.ressources`, fournies par l'API). Le lien est d'abord vérifié (`fetch` avec `redirect: "manual"`) : une conversion impossible (422 : pas de tableau, pas de coordonnées) s'affiche dans le dialogue au lieu d'un JSON brut.
 - **Bouton API** (`BoutonApi`, violet, sous le téléchargement) : affiche `https://api.data-dz.com/v1/datasets/<slug>` et le copie au clic.
 - **Fichiers** (`ListeFichiers`) : un même fichier publié en plusieurs formats (même nom, ex. `5g-mobilis.geojson` et `5g-mobilis.json`) forme une seule ligne avec un bouton de téléchargement par format (`grouperFichiers()` dans `src/lib/fichiers.ts`).
-- **Carte** (`GlobeDonnees`) : affiche tous les fichiers GeoJSON de la version. S'il y en a plusieurs, un menu permet de choisir le fichier affiché (le principal par défaut) ou de **tout superposer** (6 fichiers maximum, une couleur et une légende par fichier). Les fichiers déjà téléchargés restent en mémoire pendant la visite ; au-delà de 10 Mo, l'affichage attend un clic.
+- **Carte** (`GlobeDonnees`) : affiche tous les fichiers GeoJSON de la version. S'il y en a plusieurs, un menu permet de choisir le fichier affiché (le principal par défaut) ou de **tout superposer** (6 fichiers maximum, une couleur et une légende par fichier). Les fichiers déjà téléchargés restent en mémoire pendant la visite ; au-delà de 10 Mo, l'affichage attend un clic. Cadrage initial sur l'Algérie, molette activée seulement après un clic (désactivée quand la souris sort), points regroupés au-delà de 2 000, popup limitée aux 3 premiers champs texte lisibles (`champsLisibles()` dans `src/lib/carte.ts`, jamais d'identifiant technique). Elle n'a plus sa propre section que si tous les GeoJSON dépassent 5 Mo (sinon elle est dans le visuel).
+- **Couverture** (`InfosSource`) : seules les clés connues de `infos_source` sont affichées (`CLES_AFFICHEES` dans `src/lib/couverture.ts`), avec un libellé traduit (`fiche.couvertureCles.*`) ; les autres (`bbox`…) sont masquées.
+- **Bouton Télécharger** : le sous-titre liste les formats réellement proposés par l'API (`telechargements` des ressources), pas une liste fixe.
+
+## Visuel automatique (fiche et catalogue)
+Chaque fiche commence, juste sous l'en-tête, par un visuel détecté à partir de ses fichiers, sans rien en base. Code : `src/lib/detecterVisuel.ts` (fonctions pures, testées dans `detecterVisuel.test.ts`), `src/hooks/use-visuel.ts`, `src/components/fiche/visuel/` (`VisuelDonnee`, `CarteDepuisLignes`, `GraphiqueVisuel`), `src/lib/cacheVisuel.ts`, `src/lib/miniature.ts`, `src/components/catalogue/MiniVisuel.tsx`.
+
+- **Fichiers** : GeoJSON principal (sinon le premier) pour la carte, JSON principal (sinon le plus léger) pour le graphique ; jamais plus de 5 Mo (`TAILLE_MAX_VISUEL`).
+- **Priorité** : 1. GeoJSON, ou JSON avec `lat`/`latitude` + `lon`/`lng`/`longitude` → carte à points ; code de wilaya (`code_wilaya`, `wilaya_code`…) + colonne numérique → carte des wilayas colorée (contours `wilaya-boundaries` du jeu `divisions-administratives`, noms de `chargerWilayas()`, sélecteurs d'année et de mesure). 2. Sinon colonne de temps (`annee`, `year`, `date`, `mois`…) + nombre → courbe ; catégorie + nombre sans temps → barres (top 15). 3. Sinon rien (aucun cadre). Carte et graphique possibles : carte par défaut et sélecteur « Carte | Graphique ».
+- **Courbe** : format long (catégories ≤ 50 valeurs, 69 pour les wilayas, + `valeur`) → sélecteur de série, la première par ordre alphabétique par défaut ; format large → une série par colonne numérique, 3 cochées. Colonne `type` contenant « projection » → partie projetée en pointillés et légende « Projection ». Unité : colonne `unite`, sinon déduite du nom (`nb_jours` → « jours »). Titre automatique « Série, début-fin ». Export PNG (`telechargerGraphiquePng()`, styles recopiés car les couleurs sont des variables CSS).
+- Jamais tracés : identifiants, codes, latitude, longitude (`MOTIF_EXCLU`).
+- **Affichage** : hauteur fixe (`HAUTEUR_VISUEL` : 260 px, 380 px à partir de `md`) avec squelette, mention « Source : … », carte en projection plane (le bouton globe reste), axes inversés en arabe. MapLibre et Recharts sont chargés à la demande (`lazy`).
+- **Cache** : la détection est gardée en mémoire et dans `localStorage` (`data-dz:visuels:v1`, clé = slug + fichiers retenus et leur taille). À la visite suivante, une carte issue d'un GeoJSON s'affiche sans retélécharger le JSON.
+- **Catalogue** : coin haut de `CarteDonnee` = sparkline (graphique) ou nuage de points (carte), sinon l'illustration. Calcul seulement quand la carte devient visible (`IntersectionObserver`), résultat mis en cache (clé `miniature|slug|version|mis_a_jour_le`).
 
 ## Interface
 - **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
@@ -179,8 +192,8 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 - **Drapeau** : `DrapeauAlgerie` (SVG aux proportions officielles, jamais l'emoji 🇩🇿 qui s'affiche « DZ » sous Windows), dans le badge du hero et le pied de page.
 - **Couleurs** : les couleurs shadcn (`popover`, `card`, `muted`, `accent`, `destructive`, `input`, `ring`) sont déclarées dans `tailwind.config.ts` à partir des variables CSS de `src/index.css` (clair et sombre). Ne jamais coder une couleur en dur à leur place : menus et listes déroulantes deviendraient transparents ou illisibles en mode sombre.
 
-## Tests (à mettre en place)
-Le site n'a encore **aucun test automatisé** (seule l'API en a, avec Vitest). À prévoir, par ordre de priorité :
+## Tests
+Vitest est installé (`npm test`) ; premiers tests : `src/lib/detecterVisuel.test.ts` (détection du visuel sur des échantillons aux formats FMI, Banque mondiale, canicules, FMI large, pharmacies) et `src/lib/carte.test.ts`. À compléter, par ordre de priorité :
 1. **Tests unitaires** (Vitest) des fonctions pures de `src/lib/` : `trierDonnees`, `grouperFichiers`, `suiteSure`, `cleErreur`, `texteTraduit`, `urlIllustration`, routes.
 2. **Tests de composants** (Testing Library) : catalogue (recherche, filtres, tri), fiche, dialogue de téléchargement, formulaires d'authentification et de proposition.
 3. **Tests de bout en bout** (Playwright) sur les parcours clés, en fr / en / ar et sur mobile : accueil → fiche → téléchargement, connexion, proposition, modération, `/admin/datasets`. Ils auraient détecté la colonne `illustration_url` absente en production.
