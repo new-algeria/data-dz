@@ -42,12 +42,11 @@
     "badge": "Open data · Algeria",
     "explorer": "Explore the catalogue",
     "globe": "Globe centred on Algeria",
-    "proposer": "Submit a dataset",
     "titreFin": "to explore.",
     "explorerNombre_one": "Explore the dataset",
     "explorerNombre_other": "Explore the {{count}} datasets",
     "recherche": {
-      "placeholder": "Search for a pharmacy, a school, a station, a wilaya…",
+      "placeholder": "Pharmacies, trains…",
       "bouton": "Search",
       "exemples": "Examples:",
       "exemple": {

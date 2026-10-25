@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowDownWideNarrow, Compass, FilePlus2, Search, SearchX } from "lucide-react";
+import { ArrowDown, ArrowDownWideNarrow, Compass, Search, SearchX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import { chargerCatalogue, chargerCategories, chargerStatistiques } from "@/lib/catalogue";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
-import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
@@ -142,7 +141,7 @@ const Catalogue = () => {
         </div>
 
         {/* Écrans peu hauts (portables) : espacements et titre resserrés pour que tout tienne sans défiler. */}
-        <div className="relative container mx-auto flex-1 px-4 py-8 md:py-10 grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-8 lg:gap-6 items-center [@media(max-height:820px)]:py-5">
+        <div className="relative container mx-auto flex-1 px-4 py-8 md:py-10 grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-8 lg:gap-6 items-center [@media(max-height:820px)]:py-5">
           <div className="text-center lg:text-start">
             <motion.span
               initial={{ opacity: 0, y: -10 }}
@@ -197,12 +196,6 @@ const Catalogue = () => {
                   {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
                   <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
                 </a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="bg-white/70 dark:bg-white/5 backdrop-blur">
-                <Link to={routes.proposer}>
-                  <FilePlus2 />
-                  {t("accueil.proposer")}
-                </Link>
               </Button>
             </motion.div>
 
