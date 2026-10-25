@@ -154,7 +154,8 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 - `/admin/datasets` : recherche, filtre par statut, création, modification, masquer / publier (`statut` `archive` ⇄ `publie`), suppression définitive (confirmation en tapant le slug ; l'API répond 409 si la base refuse, il faut alors archiver).
 - **Dialogue** : titre et description en fr / en / ar (titre fr obligatoire), slug tiré du titre (non modifiable ensuite), catégorie, source, licence, page de la source, mots-clés, statut. **Illustration** recadrée en 1200 × 720 et convertie en WebP dans le navigateur (`preparerIllustration()`), envoyée à l'API (2 Mo maximum). **Fichiers** (JSON, GeoJSON, CSV, 100 Mo) : URL d'envoi signée puis `PUT` direct vers R2, puis l'API publie la version (lignes, colonnes et aperçu calculés).
 - Donnée synchronisée (`sources.type = 'synchronisee'`) : avertissement, ses métadonnées seront réécrites par la synchro ; statut et illustration sont conservés.
-- Migration `20261025000009_illustrations.sql` : colonne `datasets.illustration_url` (écrite par l'API uniquement).
+- Migration `20261025000009_illustrations.sql` : colonne `datasets.illustration_url` (écrite par l'API uniquement). Tant qu'elle n'est pas appliquée, l'API lit le catalogue et l'admin sans illustration, et l'envoi d'une illustration répond 503 `schema_outdated`.
+- **Migrations** : elles sont appliquées à la main dans le SQL Editor de Supabase. Toute nouvelle migration doit être appliquée en production **avant** de déployer le code qui s'en sert (sinon : erreur 42703 « colonne inconnue », vue côté navigateur comme un 502 de l'API).
 - Clés React Query : `["admin", "donnees", …]` ; après une action, invalider aussi `catalogue`, `fiche`, `statistiques`, `moderation`.
 
 ## Fiche d'une donnée : fichiers et carte
@@ -165,12 +166,23 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 
 ## Interface
 - **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
-- **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes). Rien n'est écrit en dur.
+- **Hero de l'accueil** : toujours la hauteur de l'écran (`min-h-[100svh]`), le catalogue n'apparaît qu'au défilement ; sur les écrans peu hauts (`max-height: 820px`), titre et espacements se resserrent pour que tout tienne. Colonne gauche : badge, titre, recherche (`RechercheHero` : remplit la recherche du catalogue puis y fait défiler ; exemples traduits choisis parce qu'ils renvoient des résultats dans les trois langues), boutons, chiffres ; à droite le globe, jamais plus haut que l'écran.
+- **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes), sur une ligne de 4 tuiles (2 × 2 sur mobile). Rien n'est écrit en dur.
+- **Filtres du catalogue sur mobile** : recherche sur toute la largeur, catégorie et tri côte à côte en dessous.
+- **Plugin Flowbite** : il impose bordure, fond et marges à tous les `input` ; un champ au style propre a besoin des modificateurs `!` (voir `RechercheHero`).
 - **Thème** : mémorisé dans `localStorage` (`theme`), sinon réglage du système.
 - **Premier affichage** : un petit script dans `index.html` applique le thème (classe `dark`) et la langue (`lang`, `dir`) avant le chargement de React, avec les mêmes règles que `use-theme.tsx` et i18next (`?lng=`, choix mémorisé `i18nextLng`, langue de l'appareil, sinon `fr`) : pas de « flash ». Toute évolution de ces règles doit être faite aux deux endroits.
-- **Illustrations** (`src/lib/illustrations.ts`, `urlIllustration(donnee, taille)`) : `illustration_url` choisie par un admin, sinon l'image du pack en WebP sur R2 dans `web-assets/webp/` (`<nom>.webp` 1200 × 720 pour le fond de l'en-tête de fiche, `<nom>-600.webp` pour le coin haut de `CarteDonnee`), sinon la carte de l'Algérie. Très atténuée et fondue par un masque en dégradé (sens inversé en arabe). Image absente : masquée sans casser la mise en page.
+- **Illustrations** (`src/lib/illustrations.ts`, `urlIllustration(donnee, taille)`) : `illustration_url` choisie par un admin, sinon l'image du pack en WebP sur R2 dans `web-assets/webp/` (`<nom>.webp` 1200 × 720 pour l'en-tête de fiche, `<nom>-600.webp` pour le coin haut de `CarteDonnee`), sinon la carte de l'Algérie. Atténuée et fondue par un masque en dégradé (sens inversé en arabe), luminosité +10 %. En-tête de fiche : image petite et centrée (environ 1/4 de la largeur, 1/2 sur mobile), jamais en plein fond. Image absente : masquée sans casser la mise en page.
 - **Drapeau** : `DrapeauAlgerie` (SVG aux proportions officielles, jamais l'emoji 🇩🇿 qui s'affiche « DZ » sous Windows), dans le badge du hero et le pied de page.
 - **Couleurs** : les couleurs shadcn (`popover`, `card`, `muted`, `accent`, `destructive`, `input`, `ring`) sont déclarées dans `tailwind.config.ts` à partir des variables CSS de `src/index.css` (clair et sombre). Ne jamais coder une couleur en dur à leur place : menus et listes déroulantes deviendraient transparents ou illisibles en mode sombre.
+
+## Tests (à mettre en place)
+Le site n'a encore **aucun test automatisé** (seule l'API en a, avec Vitest). À prévoir, par ordre de priorité :
+1. **Tests unitaires** (Vitest) des fonctions pures de `src/lib/` : `trierDonnees`, `grouperFichiers`, `suiteSure`, `cleErreur`, `texteTraduit`, `urlIllustration`, routes.
+2. **Tests de composants** (Testing Library) : catalogue (recherche, filtres, tri), fiche, dialogue de téléchargement, formulaires d'authentification et de proposition.
+3. **Tests de bout en bout** (Playwright) sur les parcours clés, en fr / en / ar et sur mobile : accueil → fiche → téléchargement, connexion, proposition, modération, `/admin/datasets`. Ils auraient détecté la colonne `illustration_url` absente en production.
+4. **Contrôle du schéma** : vérifier en CI que chaque migration de `supabase/migrations/` est appliquée sur la base cible (colonnes, fonctions `rpc`), à défaut d'un déploiement automatique des migrations.
+Toute nouvelle logique de `src/lib/` devrait arriver avec ses tests dès que Vitest est installé.
 
 ## Conventions
 - Noms de variables, fonctions et composants métier en **français** (`listeDonnees`, `chargerCatalogue`, `FicheDonnee`). Les noms imposés par les bibliothèques restent en anglais.
