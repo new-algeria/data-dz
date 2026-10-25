@@ -1,5 +1,4 @@
 import { appelerApi, ErreurApi, urlTelechargement } from "./api";
-import { supabase } from "./supabase";
 import type { Categorie, Donnee, Fichier, Ressource, ResumeDonnee, Source, Version } from "./types";
 
 /**
@@ -63,43 +62,22 @@ function fichiersDe(slug: string, ressources: Ressource[]): Fichier[] {
 
 // ---------------------------------------------------------------- Lectures
 
-/** Toutes les pages du catalogue publié de l'API (recherche plein texte de l'API si `q` est donné). */
-async function chargerToutesLesPages(categorie: string | null, q?: string): Promise<ResumeDonnee[]> {
+/**
+ * Données publiées du catalogue, filtrées par recherche et catégorie (toutes les pages).
+ * Avec une recherche, l'API renvoie les résultats du plus pertinent au moins pertinent (fonction
+ * rechercher_datasets, migration 20261025000010) : le site garde cet ordre tant qu'aucun tri n'est choisi.
+ */
+export async function chargerCatalogue({ terme, categorie }: FiltresCatalogue): Promise<ResumeDonnee[]> {
   const donnees: ResumeDonnee[] = [];
   for (let page = 1; ; page++) {
     const params = new URLSearchParams({ limit: "100", page: String(page) });
-    if (q) params.set("q", q);
+    const termeNettoye = terme.trim();
+    if (termeNettoye) params.set("q", termeNettoye);
     if (categorie) params.set("category", categorie);
     const reponse = await appelerApi<PageApi<ResumeApi>>(`/v1/datasets?${params}`);
     donnees.push(...reponse.data.map(versResume));
     if (page >= reponse.pagination.pages) return donnees;
   }
-}
-
-/**
- * Slugs trouvés par la recherche tolérante de la base (migration 20261025000010), les plus pertinents d'abord.
- * `null` en cas d'échec (migration pas encore appliquée, Supabase injoignable) : on se rabat alors sur la
- * recherche de l'API, moins tolérante mais toujours disponible.
- */
-async function rechercherSlugs(terme: string): Promise<string[] | null> {
-  const { data, error } = await supabase.rpc("rechercher_datasets", { terme });
-  if (error) return null;
-  return ((data ?? []) as { slug: string }[]).map((ligne) => ligne.slug);
-}
-
-/**
- * Données publiées du catalogue, filtrées par catégorie et par recherche (toutes les pages).
- * Avec une recherche, la liste suit l'ordre de pertinence : titres, mots-clés, catégorie et source d'abord,
- * puis tout le contenu de la fiche (description, README, colonnes, aperçu…).
- */
-export async function chargerCatalogue({ terme, categorie }: FiltresCatalogue): Promise<ResumeDonnee[]> {
-  const termeNettoye = terme.trim();
-  if (!termeNettoye) return chargerToutesLesPages(categorie);
-
-  const [slugs, catalogue] = await Promise.all([rechercherSlugs(termeNettoye), chargerToutesLesPages(categorie)]);
-  if (!slugs) return chargerToutesLesPages(categorie, termeNettoye);
-  const parSlug = new Map(catalogue.map((donnee) => [donnee.slug, donnee]));
-  return slugs.flatMap((slug) => parSlug.get(slug) ?? []);
 }
 
 export async function chargerCategories(): Promise<Categorie[]> {

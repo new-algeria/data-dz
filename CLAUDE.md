@@ -49,7 +49,7 @@ const { data, error } = await supabase
   .eq("statut", "publie")
   .order("titre->>fr");
 ```
-Recherche du catalogue : `rpc("rechercher_datasets", { terme })` (migration `20261025000010_recherche.sql`), voir « Recherche » plus bas. La recherche `q` de l'API reste `.textSearch("recherche", terme, { config: "simple", type: "websearch" })` (mots exacts).
+Recherche du catalogue : `?q=` de l'API, qui s'appuie sur `rpc("rechercher_datasets", { terme })` (migration `20261025000010_recherche.sql`), voir « Recherche » plus bas.
 
 ## Sécurité
 - La RLS est active partout : un visiteur ne voit que les données publiées. Ne jamais essayer de la contourner.
@@ -142,11 +142,11 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
 
 ## Recherche
-`chargerCatalogue()` (`src/lib/catalogue.ts`) : avec un terme, `rpc("rechercher_datasets", { terme })` donne les slugs publiés qui correspondent, du plus pertinent au moins pertinent, puis le catalogue de l'API est filtré dans cet ordre. Si la fonction échoue (migration pas appliquée, Supabase injoignable), repli sur `?q=` de l'API.
+Le site envoie la recherche à l'API (`/v1/datasets?q=`, `chargerCatalogue()`), comme le reste du catalogue : il n'appelle jamais `rechercher_datasets` lui-même. L'API utilise cette fonction de la base (migration `20261025000010_recherche.sql`) et renvoie les résultats du plus pertinent au moins pertinent quand aucun tri n'est demandé.
 
 - Chaque mot doit apparaître quelque part ; sans accents ni majuscules ; en début de mot (« pharmacie » → « pharmacies ») ; au milieu d'un mot de 4 lettres ou plus (« صيدليات » → « الصيدليات ») ; une faute de frappe est tolérée dans le titre, les mots-clés, la catégorie et la source (`pg_trgm`).
 - Contenu parcouru : titres fr / en / ar, mots-clés, catégorie, source (poids fort), puis descriptions, README, notes de version, noms des colonnes, valeurs de l'aperçu, licence, `infos_source`.
-- Tri : « Pertinence » (`relevance`, sans paramètre `sort` dans l'URL) tant qu'une recherche est active et qu'aucun autre tri n'est choisi.
+- Tri : « Pertinence » (`relevance`, sans paramètre `sort` dans l'URL) tant qu'une recherche est active et qu'aucun autre tri n'est choisi ; le site garde alors l'ordre renvoyé par l'API.
 - Fonction en `security invoker` : la RLS décide de ce qui est visible.
 
 ## Gestion des membres (admin)
