@@ -63,6 +63,18 @@
         "ecoles": "مدارس",
         "emploi": "التشغيل"
       }
+    },
+    "sources": {
+      "titre": "البيانات مصدرها",
+      "noms": {
+        "banqueMondiale": "البنك الدولي",
+        "ecmwf": "ECMWF",
+        "openMeteo": "Open-Meteo",
+        "openStreetMap": "OpenStreetMap",
+        "wikidata": "ويكي بيانات",
+        "asal": "ASAL · الوكالة الفضائية الجزائرية",
+        "journalOfficiel": "الجريدة الرسمية"
+      }
     }
   },
   "statistiques": {

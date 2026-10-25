@@ -28,6 +28,7 @@ export default {
         gradient: "gradient 8s linear infinite",
         rainbow: "rainbow var(--speed, 2s) infinite linear",
         marquee: "marquee var(--duration) linear infinite",
+        "marquee-rtl": "marquee-rtl var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         aurora: "aurora 60s linear infinite",
@@ -194,6 +195,15 @@ export default {
           },
           to: {
             transform: "translateX(calc(-100% - var(--gap)))",
+          },
+        },
+        // En arabe (RTL), la copie est à gauche : la bande défile vers la droite.
+        "marquee-rtl": {
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(calc(100% + var(--gap)))",
           },
         },
         "marquee-vertical": {

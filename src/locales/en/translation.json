@@ -55,6 +55,18 @@
         "ecoles": "Schools",
         "emploi": "Employment"
       }
+    },
+    "sources": {
+      "titre": "Data sourced from",
+      "noms": {
+        "banqueMondiale": "World Bank",
+        "ecmwf": "ECMWF",
+        "openMeteo": "Open-Meteo",
+        "openStreetMap": "OpenStreetMap",
+        "wikidata": "Wikidata",
+        "asal": "ASAL · Algerian Space Agency",
+        "journalOfficiel": "Official Journal"
+      }
     }
   },
   "statistiques": {
