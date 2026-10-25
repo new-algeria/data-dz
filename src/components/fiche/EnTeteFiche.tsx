@@ -25,13 +25,13 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
   return (
     <section className="relative overflow-hidden border-b border-emerald-900/5 bg-gradient-to-b from-emerald-50 via-white to-gray-50 pt-16 dark:border-white/5 dark:from-[#03140f] dark:via-gray-900 dark:to-gray-900">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {/* Illustration en fond, côté fin de ligne, fondue vers le texte par un dégradé (inversé en arabe). */}
+        {/* Illustration discrète, centrée dans la bannière (≈ 1/4 de la largeur), fondue sur ses bords comme sur les cartes. */}
         <img
           src={urlIllustration(donnee)}
           alt=""
           decoding="async"
           onError={(e) => (e.currentTarget.style.display = "none")}
-          className="absolute inset-y-0 end-0 h-full w-full object-cover opacity-15 saturate-[.85] [mask-image:linear-gradient(to_left,black_20%,transparent_85%)] rtl:[mask-image:linear-gradient(to_right,black_20%,transparent_85%)] dark:opacity-[.12] dark:brightness-75 md:w-3/4 lg:w-[60%]"
+          className="absolute inset-0 m-auto h-[70%] max-h-72 w-1/2 object-cover opacity-25 brightness-110 saturate-[.85] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)] dark:opacity-[.15] dark:brightness-[.85] sm:w-1/3 lg:w-1/4"
         />
         <div className="absolute -top-24 end-[-6rem] h-80 w-80 rounded-full bg-emerald-300/30 blur-3xl animate-flotter dark:bg-emerald-600/15" />
         <div className="absolute bottom-[-6rem] start-[-4rem] h-64 w-64 rounded-full bg-teal-200/40 blur-3xl animate-flotter-lent dark:bg-teal-500/10" />
@@ -52,7 +52,8 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
           )}
         </nav>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        {/* minmax(0,1fr) : sans lui, le lien API (une seule longue ligne) élargit la grille au-delà de l'écran sur mobile. */}
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="flex flex-wrap items-center gap-2">
               {donnee.categories && (
