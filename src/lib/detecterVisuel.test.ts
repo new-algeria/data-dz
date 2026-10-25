@@ -9,8 +9,6 @@ import {
   donneesBarres,
   donneesCourbe,
   extraireLignes,
-  miniatureGraphique,
-  miniaturePoints,
   optionsSeries,
   pointsDepuisLignes,
   titreCourbe,
@@ -256,21 +254,6 @@ describe("Barres et jeux sans visuel", () => {
 
   it("ne donne rien sans fichier utilisable", () => {
     expect(detecterVisuel([fichier("gros", "json", 9e6)], null)).toEqual({ carte: null, graphique: null });
-  });
-});
-
-describe("miniatures du catalogue", () => {
-  it("résume une courbe en valeurs et une carte en points dans le cadre de l'Algérie", () => {
-    const { graphique } = detecterDepuisLignes(fmi, "fmi.json");
-    const sparkline = miniatureGraphique(fmi, graphique as VisuelGraphique);
-    expect(sparkline?.genre).toBe("courbe");
-    expect(sparkline && sparkline.genre === "courbe" && sparkline.valeurs.length).toBe(52);
-
-    const points = miniaturePoints([
-      [3, 36.7],
-      [-100, 40],
-    ]);
-    expect(points).toEqual({ genre: "points", points: [[0.565, 0.027]] });
   });
 });
 

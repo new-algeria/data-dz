@@ -6,7 +6,6 @@ import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { BoutonsVote } from "@/components/communaute/BoutonsVote";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
-import { MiniVisuel } from "@/components/catalogue/MiniVisuel";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
@@ -37,21 +36,14 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
           colorTo="#10b981"
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         />
-        {/* Coin haut : miniature du visuel (courbe ou points) si la donnée en a un, sinon l'illustration. */}
-        <MiniVisuel
-          donnee={donnee}
-          className="absolute -top-2 end-0 -z-10 h-32 w-52"
-          classeMiniature="opacity-40 transition-opacity duration-300 [mask-image:linear-gradient(to_left,black_45%,transparent)] rtl:[mask-image:linear-gradient(to_right,black_45%,transparent)] group-hover:opacity-75"
-          repli={
-            <img
-              src={urlIllustration(donnee, "petite")}
-              alt=""
-              loading="lazy"
-              decoding="async"
-              onError={(e) => (e.currentTarget.style.display = "none")}
-              className="h-full w-full object-cover opacity-25 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_25%,transparent_70%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_25%,transparent_70%)] brightness-110 group-hover:opacity-40 dark:opacity-[.15] dark:brightness-[.85] dark:group-hover:opacity-25"
-            />
-          }
+        <img
+          src={urlIllustration(donnee, "petite")}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+          className="pointer-events-none absolute -top-2 end-0 -z-10 h-32 w-52 object-cover opacity-40 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_35%,transparent_75%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_35%,transparent_75%)] brightness-110 group-hover:opacity-60 dark:opacity-25 dark:brightness-95 dark:group-hover:opacity-40"
         />
         <CardHeader className="pb-3">
           {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="mb-2" />}

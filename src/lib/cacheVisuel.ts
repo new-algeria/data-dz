@@ -1,14 +1,11 @@
-import type { DetectionVisuel, Miniature } from "./detecterVisuel";
+import type { DetectionVisuel } from "./detecterVisuel";
 import type { Fichier } from "./types";
 
 // Cache de la détection dans le navigateur : même fichier (même nom, même taille) → même résultat,
 // sans retélécharger le fichier. Mémoire pour la visite, localStorage d'une visite à l'autre.
 
 export interface EntreeVisuel {
-  /** Détection d'une fiche (clé `cleVisuel`). */
-  detection?: DetectionVisuel;
-  /** Miniature du catalogue (sparkline ou points), calculée une fois. Absente : pas encore calculée. */
-  miniature?: Miniature | null;
+  detection: DetectionVisuel;
 }
 
 const CLE_STOCKAGE = "data-dz:visuels:v1";
@@ -33,7 +30,7 @@ export function lireVisuel(cle: string): EntreeVisuel | null {
   const enMemoire = memoire.get(cle);
   if (enMemoire) return enMemoire;
   const stocke = lireStockage()[cle];
-  if (stocke && (stocke.detection || "miniature" in stocke)) {
+  if (stocke?.detection) {
     memoire.set(cle, stocke);
     return stocke;
   }

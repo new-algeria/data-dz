@@ -35,10 +35,7 @@ export function useVisuel(slug: string, fichiers: Fichier[], vueDemandee: VueVis
   const fichierCarte = useMemo(() => choisirFichierCarte(fichiers), [fichiers]);
   const fichierJson = useMemo(() => choisirFichierGraphique(fichiers), [fichiers]);
   const cle = cleVisuel(slug, [fichierCarte, fichierJson]);
-  const enCache = useMemo(() => {
-    const entree = lireVisuel(cle);
-    return entree?.detection ? { detection: entree.detection } : null;
-  }, [cle]);
+  const enCache = useMemo(() => lireVisuel(cle), [cle]);
 
   const vueConnue = enCache ? vueDemandee ?? visuelParDefaut(enCache.detection) : null;
   const carteSansJson = enCache?.detection.carte?.genre === "points" && enCache.detection.carte.origine === "geojson";

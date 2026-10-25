@@ -31,7 +31,7 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
           alt=""
           decoding="async"
           onError={(e) => (e.currentTarget.style.display = "none")}
-          className="absolute inset-0 m-auto h-[70%] max-h-72 w-1/2 object-cover opacity-25 brightness-110 saturate-[.85] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)] dark:opacity-[.15] dark:brightness-[.85] sm:w-1/3 lg:w-1/4"
+          className="absolute inset-0 m-auto h-[70%] max-h-72 w-1/2 object-cover opacity-40 brightness-110 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)] dark:opacity-25 dark:brightness-95 sm:w-1/3 lg:w-1/4"
         />
         <div className="absolute -top-24 end-[-6rem] h-80 w-80 rounded-full bg-emerald-300/30 blur-3xl animate-flotter dark:bg-emerald-600/15" />
         <div className="absolute bottom-[-6rem] start-[-4rem] h-64 w-64 rounded-full bg-teal-200/40 blur-3xl animate-flotter-lent dark:bg-teal-500/10" />

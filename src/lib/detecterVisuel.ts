@@ -464,60 +464,6 @@ export function valeursWilayas(
   return valeurs;
 }
 
-// ---------------------------------------------------------------------------------------------
-// Miniature du catalogue
-// ---------------------------------------------------------------------------------------------
-
-export type Miniature = { genre: "courbe"; valeurs: number[] } | { genre: "points"; points: [number, number][] };
-
-const MAX_POINTS_MINIATURE = 400;
-const MAX_VALEURS_SPARKLINE = 60;
-/** Emprise de l'Algérie [ouest, sud, est, nord] : cadre de la miniature et de la carte. */
-export const EMPRISE_ALGERIE: [number, number, number, number] = [-8.7, 18.9, 12, 37.2];
-
-/** Coordonnées des points d'un GeoJSON (premier sommet des autres géométries), échantillonnées. */
-export function coordonneesGeojson(contenu: unknown): [number, number][] {
-  const features = estObjet(contenu) && Array.isArray(contenu.features) ? contenu.features : [];
-  const coordonnees: [number, number][] = [];
-  for (const feature of features) {
-    let geometrie = estObjet(feature) && estObjet(feature.geometry) ? feature.geometry.coordinates : null;
-    while (Array.isArray(geometrie) && Array.isArray(geometrie[0])) geometrie = geometrie[0];
-    if (Array.isArray(geometrie) && typeof geometrie[0] === "number" && typeof geometrie[1] === "number") coordonnees.push([geometrie[0], geometrie[1]]);
-  }
-  return coordonnees;
-}
-
-const echantillonner = <T>(valeurs: T[], max: number): T[] =>
-  valeurs.length <= max ? valeurs : Array.from({ length: max }, (_, indice) => valeurs[Math.floor((indice * valeurs.length) / max)]);
-
-/** Points ramenés dans le cadre de l'Algérie (0 à 1, nord en haut) pour la miniature. */
-export function miniaturePoints(coordonnees: [number, number][]): Miniature | null {
-  const [ouest, sud, est, nord] = EMPRISE_ALGERIE;
-  const dedans = coordonnees.filter(([lon, lat]) => lon >= ouest && lon <= est && lat >= sud && lat <= nord);
-  if (dedans.length === 0) return null;
-  const points = echantillonner(dedans, MAX_POINTS_MINIATURE).map(
-    ([lon, lat]) => [Math.round(((lon - ouest) / (est - ouest)) * 1000) / 1000, Math.round(((nord - lat) / (nord - sud)) * 1000) / 1000] as [number, number]
-  );
-  return { genre: "points", points };
-}
-
-/** Sparkline : la série par défaut du graphique (première série, ou première mesure). */
-export function miniatureGraphique(lignes: Ligne[], visuel: VisuelGraphique): Miniature | null {
-  let valeurs: number[] = [];
-  if (visuel.genre === "courbe") {
-    const serie = optionsSeries(lignes, visuel.dimensions)[0]?.cle ?? null;
-    const { points, series } = donneesCourbe(lignes, visuel, { serie, mesures: visuel.mesures.slice(0, 1) });
-    const cle = series[0]?.cle;
-    valeurs = points
-      .map((point) => (typeof point[cle] === "number" ? point[cle] : point[`${cle}_p`]))
-      .filter((valeur): valeur is number => typeof valeur === "number");
-  } else {
-    valeurs = donneesBarres(lignes, visuel.categorie, visuel.mesures[0]).map((barre) => barre.valeur);
-  }
-  if (valeurs.length < 2) return null;
-  return { genre: "courbe", valeurs: echantillonner(valeurs, MAX_VALEURS_SPARKLINE) };
-}
-
 /**
  * Unité affichée après une valeur : la colonne `unite` si elle existe, sinon déduite du nom de la mesure
  * (« nb_jours » → « jours », « nombre_de_lits » → « lits »).
