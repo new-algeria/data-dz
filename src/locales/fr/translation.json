@@ -54,7 +54,8 @@
         "gares": "Gares",
         "ecoles": "Écoles",
         "emploi": "Emploi"
-      }
+      },
+      "placeholderLong": "Rechercher une pharmacie, une gare…"
     },
     "sources": {
       "titre": "Données issues de",

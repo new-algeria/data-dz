@@ -54,7 +54,8 @@
         "gares": "Stations",
         "ecoles": "Schools",
         "emploi": "Employment"
-      }
+      },
+      "placeholderLong": "Search for a pharmacy, a school, a station…"
     },
     "sources": {
       "titre": "Data sourced from",
