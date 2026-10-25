@@ -8,7 +8,9 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
 import { EtatErreur } from "@/components/EtatErreur";
-import { Statistiques } from "@/components/catalogue/Statistiques";
+// Tuiles de chiffres masquées pour l'instant (remplacées par le bandeau des sources) : à réactiver plus tard.
+// import { Statistiques } from "@/components/catalogue/Statistiques";
+import { BandeauSources } from "@/components/accueil/BandeauSources";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
 import { RechercheHero } from "@/components/accueil/RechercheHero";
@@ -199,8 +201,13 @@ const Catalogue = () => {
               </Button>
             </motion.div>
 
+            {/* Tuiles de chiffres (jeux de données, catégories, lignes, membres) masquées temporairement.
             <div className="mt-6 max-w-xl mx-auto lg:mx-0 [@media(max-height:820px)]:mt-5">
               <Statistiques />
+            </div>
+            */}
+            <div className="mt-8 max-w-xl mx-auto lg:mx-0 [@media(max-height:820px)]:mt-6">
+              <BandeauSources />
             </div>
           </div>
 

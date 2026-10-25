@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { ArrowRight, BriefcaseBusiness, Lightbulb, Pill, School, Search, TrainFront } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,25 @@ const EXEMPLES = [
   { cle: "emploi", icone: BriefcaseBusiness },
 ] as const;
 
+// À partir de « sm », le champ est assez large pour un placeholder complet ; sur mobile il reste très court.
+const REQUETE_GRAND_ECRAN = "(min-width: 640px)";
+
+const useGrandEcran = () => {
+  const [grand, setGrand] = useState(() => typeof window !== "undefined" && window.matchMedia(REQUETE_GRAND_ECRAN).matches);
+  useEffect(() => {
+    const requete = window.matchMedia(REQUETE_GRAND_ECRAN);
+    const surChangement = () => setGrand(requete.matches);
+    requete.addEventListener("change", surChangement);
+    return () => requete.removeEventListener("change", surChangement);
+  }, []);
+  return grand;
+};
+
 /** Recherche du hero : remplit la recherche du catalogue puis y fait défiler la page. */
 export const RechercheHero = ({ onRechercher }: { onRechercher: (terme: string) => void }) => {
   const { t } = useTranslation();
   const [saisie, setSaisie] = useState("");
+  const grandEcran = useGrandEcran();
 
   const envoyer = (event: FormEvent) => {
     event.preventDefault();
@@ -29,7 +44,7 @@ export const RechercheHero = ({ onRechercher }: { onRechercher: (terme: string) 
           type="search"
           value={saisie}
           onChange={(event) => setSaisie(event.target.value)}
-          placeholder={t("accueil.recherche.placeholder")}
+          placeholder={t(grandEcran ? "accueil.recherche.placeholderLong" : "accueil.recherche.placeholder")}
           aria-label={t("catalogue.rechercheLabel")}
           // `!` : le plugin Flowbite impose bordure, fond et marges à tous les champs.
           className="min-w-0 flex-1 !border-0 !bg-transparent !px-0 !py-2 !shadow-none text-base text-gray-900 placeholder:text-gray-500 focus:outline-none focus:!ring-0 dark:text-white dark:placeholder:text-gray-400"

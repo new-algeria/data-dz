@@ -54,6 +54,19 @@
         "gares": "Stations",
         "ecoles": "Schools",
         "emploi": "Employment"
+      },
+      "placeholderLong": "Search for a pharmacy, a school, a station…"
+    },
+    "sources": {
+      "titre": "Data sourced from",
+      "noms": {
+        "banqueMondiale": "World Bank",
+        "ecmwf": "ECMWF",
+        "openMeteo": "Open-Meteo",
+        "openStreetMap": "OpenStreetMap",
+        "wikidata": "Wikidata",
+        "asal": "ASAL · Algerian Space Agency",
+        "journalOfficiel": "Official Journal"
       }
     }
   },
