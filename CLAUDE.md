@@ -49,7 +49,7 @@ const { data, error } = await supabase
   .eq("statut", "publie")
   .order("titre->>fr");
 ```
-Recherche : `.textSearch("recherche", terme, { config: "simple", type: "websearch" })`.
+Recherche du catalogue : `rpc("rechercher_datasets", { terme })` (migration `20261025000010_recherche.sql`), voir « Recherche » plus bas. La recherche `q` de l'API reste `.textSearch("recherche", terme, { config: "simple", type: "websearch" })` (mots exacts).
 
 ## Sécurité
 - La RLS est active partout : un visiteur ne voit que les données publiées. Ne jamais essayer de la contourner.
@@ -141,6 +141,14 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Clés React Query** : `["mes-votes", uid]`, `["mes-favoris", uid]`, `["favoris", uid]`, `["commentaires", datasetId]`, `["notifications", uid]`.
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
 
+## Recherche
+`chargerCatalogue()` (`src/lib/catalogue.ts`) : avec un terme, `rpc("rechercher_datasets", { terme })` donne les slugs publiés qui correspondent, du plus pertinent au moins pertinent, puis le catalogue de l'API est filtré dans cet ordre. Si la fonction échoue (migration pas appliquée, Supabase injoignable), repli sur `?q=` de l'API.
+
+- Chaque mot doit apparaître quelque part ; sans accents ni majuscules ; en début de mot (« pharmacie » → « pharmacies ») ; au milieu d'un mot de 4 lettres ou plus (« صيدليات » → « الصيدليات ») ; une faute de frappe est tolérée dans le titre, les mots-clés, la catégorie et la source (`pg_trgm`).
+- Contenu parcouru : titres fr / en / ar, mots-clés, catégorie, source (poids fort), puis descriptions, README, notes de version, noms des colonnes, valeurs de l'aperçu, licence, `infos_source`.
+- Tri : « Pertinence » (`relevance`, sans paramètre `sort` dans l'URL) tant qu'une recherche est active et qu'aucun autre tri n'est choisi.
+- Fonction en `security invoker` : la RLS décide de ce qui est visible.
+
 ## Gestion des membres (admin)
 Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateur_id, nouveau_role)` (security definer). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
 
@@ -166,7 +174,8 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 
 ## Interface
 - **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
-- **Hero de l'accueil** : toujours la hauteur de l'écran (`min-h-[100svh]`), le catalogue n'apparaît qu'au défilement ; sur les écrans peu hauts (`max-height: 820px`), titre et espacements se resserrent pour que tout tienne. Colonne gauche : badge, titre, recherche (`RechercheHero` : remplit la recherche du catalogue puis y fait défiler ; exemples traduits choisis parce qu'ils renvoient des résultats dans les trois langues), boutons, chiffres ; à droite le globe, jamais plus haut que l'écran.
+- **Hero de l'accueil** : toujours la hauteur de l'écran (`min-h-[100svh]`), le catalogue n'apparaît qu'au défilement ; sur les écrans peu hauts (`max-height: 820px`), titre et espacements se resserrent pour que tout tienne. Colonne gauche : badge, titre, recherche (`RechercheHero` : remplit la recherche du catalogue puis y fait défiler ; exemples traduits choisis parce qu'ils renvoient des résultats dans les trois langues), bouton « Explorer », chiffres ; à droite le globe, jamais plus haut que l'écran. « Proposer une donnée » n'est pas dans le hero : seulement dans l'en-tête et le menu mobile. La grille du hero est en `grid-cols-1` sur mobile (sinon un titre long élargit la colonne au-delà de l'écran).
+- **Champs de recherche** : texte en 16 px minimum (sinon iOS zoome la page au toucher). Placeholder du hero très court (il doit tenir sur un iPhone SE dans les trois langues) ; sur mobile, le bouton « Chercher » se réduit à sa flèche.
 - **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes), sur une ligne de 4 tuiles (2 × 2 sur mobile). Rien n'est écrit en dur.
 - **Filtres du catalogue sur mobile** : recherche sur toute la largeur, catégorie et tri côte à côte en dessous.
 - **Plugin Flowbite** : il impose bordure, fond et marges à tous les `input` ; un champ au style propre a besoin des modificateurs `!` (voir `RechercheHero`).
