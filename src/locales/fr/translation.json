@@ -34,15 +34,29 @@
     "corps": "Bonjour,\n\n"
   },
   "accueil": {
-    "titre": "Les données ouvertes sur l'Algérie,",
-    "titreSurligne": "au même endroit.",
-    "sousTitre": "Parcourez, prévisualisez et téléchargez librement des jeux de données sur l'Algérie, avec leur source et leur licence.",
+    "titre": "Les données publiques de l'Algérie,",
+    "titreSurligne": "enfin simples",
+    "sousTitre": "Pharmacies, écoles, gares, wilayas… Trouvez une donnée, visualisez-la sur une carte et téléchargez-la en un clic, avec sa source et sa licence.",
     "metaTitre": "data-dz - Données ouvertes sur l'Algérie",
     "metaDescription": "Portail open source de données sur l'Algérie : catalogue, aperçu, cartes et téléchargements, avec source et licence.",
     "badge": "Données ouvertes · Algérie",
     "explorer": "Explorer le catalogue",
     "globe": "Globe terrestre centré sur l'Algérie",
-    "proposer": "Proposer une donnée"
+    "proposer": "Proposer une donnée",
+    "titreFin": "à explorer.",
+    "explorerNombre_one": "Explorer le jeu de données",
+    "explorerNombre_other": "Explorer les {{count}} jeux de données",
+    "recherche": {
+      "placeholder": "Rechercher une pharmacie, une école, une gare, une wilaya…",
+      "bouton": "Chercher",
+      "exemples": "Exemples :",
+      "exemple": {
+        "pharmacies": "Pharmacies",
+        "gares": "Gares",
+        "ecoles": "Écoles",
+        "emploi": "Emploi"
+      }
+    }
   },
   "statistiques": {
     "donnees": "Jeux de données",
@@ -119,7 +133,8 @@
     "carteChoix": "Fichier affiché sur la carte",
     "toutSuperposer": "Tout superposer ({{count}} fichiers)",
     "legende": "Légende de la carte",
-    "telechargerFormat": "Télécharger {{nom}} au format {{format}}"
+    "telechargerFormat": "Télécharger {{nom}} au format {{format}}",
+    "carteIndisponible": "La carte ne peut pas s'afficher sur cet appareil (WebGL indisponible). Les fichiers restent téléchargeables."
   },
   "attribution": {
     "titre": "Attribution",

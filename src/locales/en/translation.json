@@ -34,15 +34,29 @@
     "corps": "Hello,\n\n"
   },
   "accueil": {
-    "titre": "Open data about Algeria,",
-    "titreSurligne": "all in one place.",
-    "sousTitre": "Browse, preview and freely download datasets about Algeria, with their source and licence.",
+    "titre": "Algeria's public data,",
+    "titreSurligne": "finally simple",
+    "sousTitre": "Pharmacies, schools, stations, wilayas… Find a dataset, see it on a map and download it in one click, with its source and licence.",
     "metaTitre": "data-dz - Open data about Algeria",
     "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence.",
     "badge": "Open data · Algeria",
     "explorer": "Explore the catalogue",
     "globe": "Globe centred on Algeria",
-    "proposer": "Submit a dataset"
+    "proposer": "Submit a dataset",
+    "titreFin": "to explore.",
+    "explorerNombre_one": "Explore the dataset",
+    "explorerNombre_other": "Explore the {{count}} datasets",
+    "recherche": {
+      "placeholder": "Search for a pharmacy, a school, a station, a wilaya…",
+      "bouton": "Search",
+      "exemples": "Examples:",
+      "exemple": {
+        "pharmacies": "Pharmacies",
+        "gares": "Stations",
+        "ecoles": "Schools",
+        "emploi": "Employment"
+      }
+    }
   },
   "statistiques": {
     "donnees": "Datasets",
@@ -119,7 +133,8 @@
     "carteChoix": "File shown on the map",
     "toutSuperposer": "Overlay all ({{count}} files)",
     "legende": "Map legend",
-    "telechargerFormat": "Download {{nom}} as {{format}}"
+    "telechargerFormat": "Download {{nom}} as {{format}}",
+    "carteIndisponible": "The map cannot be displayed on this device (WebGL unavailable). The files can still be downloaded."
   },
   "attribution": {
     "titre": "Attribution",

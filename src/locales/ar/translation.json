@@ -38,15 +38,33 @@
     "corps": "مرحبا،\n\n"
   },
   "accueil": {
-    "titre": "البيانات المفتوحة حول الجزائر،",
-    "titreSurligne": "في مكان واحد.",
-    "sousTitre": "تصفّح مجموعات البيانات حول الجزائر واطّلع عليها وحمّلها بحرية، مع ذكر مصدرها ورخصتها.",
+    "titre": "البيانات العامة للجزائر،",
+    "titreSurligne": "أخيرًا سهلة",
+    "sousTitre": "صيدليات، مدارس، محطات، ولايات… ابحث عن البيانات، شاهدها على الخريطة وحمّلها بنقرة واحدة، مع مصدرها ورخصتها.",
     "metaTitre": "data-dz - البيانات المفتوحة حول الجزائر",
     "metaDescription": "بوابة مفتوحة المصدر للبيانات حول الجزائر: فهرس، معاينة، خرائط وتحميلات، مع المصدر والرخصة.",
     "badge": "بيانات مفتوحة · الجزائر",
     "explorer": "استكشف الفهرس",
     "globe": "كرة أرضية متمركزة على الجزائر",
-    "proposer": "اقتراح بيانات"
+    "proposer": "اقتراح بيانات",
+    "titreFin": "الاستكشاف.",
+    "explorerNombre_zero": "استكشف الفهرس",
+    "explorerNombre_one": "استكشف مجموعة البيانات",
+    "explorerNombre_two": "استكشف مجموعتي البيانات",
+    "explorerNombre_few": "استكشف {{count}} مجموعات بيانات",
+    "explorerNombre_many": "استكشف {{count}} مجموعة بيانات",
+    "explorerNombre_other": "استكشف {{count}} مجموعة بيانات",
+    "recherche": {
+      "placeholder": "ابحث عن صيدلية، مدرسة، محطة، ولاية…",
+      "bouton": "بحث",
+      "exemples": "أمثلة:",
+      "exemple": {
+        "pharmacies": "صيدليات",
+        "gares": "محطات",
+        "ecoles": "مدارس",
+        "emploi": "التشغيل"
+      }
+    }
   },
   "statistiques": {
     "donnees": "مجموعات البيانات",
@@ -130,7 +148,8 @@
     "carteChoix": "الملف المعروض على الخريطة",
     "toutSuperposer": "عرض الكل معا ({{count}})",
     "legende": "مفتاح الخريطة",
-    "telechargerFormat": "تنزيل {{nom}} بصيغة {{format}}"
+    "telechargerFormat": "تنزيل {{nom}} بصيغة {{format}}",
+    "carteIndisponible": "لا يمكن عرض الخريطة على هذا الجهاز (WebGL غير متاح). يبقى تحميل الملفات ممكنًا."
   },
   "attribution": {
     "titre": "الإسناد",

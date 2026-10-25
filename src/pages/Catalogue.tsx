@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowDownWideNarrow, FilePlus2, Search, SearchX } from "lucide-react";
+import { ArrowDown, ArrowDownWideNarrow, Compass, FilePlus2, Search, SearchX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,6 +11,7 @@ import { EtatErreur } from "@/components/EtatErreur";
 import { Statistiques } from "@/components/catalogue/Statistiques";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
+import { RechercheHero } from "@/components/accueil/RechercheHero";
 import { IconeCategorie } from "@/components/BadgeCategorie";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Input } from "@/components/ui/input";
@@ -22,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
+import { chargerCatalogue, chargerCategories, chargerStatistiques } from "@/lib/catalogue";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
 import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
@@ -74,6 +75,14 @@ const Catalogue = () => {
     placeholderData: keepPreviousData,
   });
 
+  // Même clé que les tuiles de chiffres : une seule requête pour les deux.
+  const { data: statistiques } = useQuery({ queryKey: ["statistiques"], queryFn: chargerStatistiques });
+
+  const rechercherDepuisHero = (valeur: string) => {
+    setSaisie(valeur);
+    document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const categoriesParSlug = useMemo(
     () => new Map((requeteCategories.data ?? []).map((cat) => [cat.slug, cat])),
     [requeteCategories.data]
@@ -122,7 +131,8 @@ const Catalogue = () => {
       <CustomMetaTags title={t("accueil.metaTitre")} description={t("accueil.metaDescription")} />
       <Navbar />
 
-      <section className="relative overflow-hidden pt-16 bg-gradient-to-b from-emerald-50 via-white to-white dark:from-[#03140f] dark:via-[#020817] dark:to-[#020817]">
+      {/* Hero : toute la hauteur de l'écran (svh : barre d'adresse mobile comprise), le catalogue n'apparaît qu'au défilement. */}
+      <section className="relative flex min-h-[100svh] flex-col overflow-hidden pt-16 bg-gradient-to-b from-emerald-50 via-white to-white dark:from-[#03140f] dark:via-[#020817] dark:to-[#020817]">
         {/* Fond animé : bulles floues aux couleurs du drapeau et grille légère. */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div className="absolute -top-32 -start-32 h-[28rem] w-[28rem] rounded-full bg-emerald-300/40 dark:bg-emerald-600/20 blur-3xl animate-flotter" />
@@ -131,7 +141,8 @@ const Catalogue = () => {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(16,185,129,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(16,185,129,0.08)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
         </div>
 
-        <div className="relative container mx-auto px-4 py-12 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        {/* Écrans peu hauts (portables) : espacements et titre resserrés pour que tout tienne sans défiler. */}
+        <div className="relative container mx-auto flex-1 px-4 py-8 md:py-10 grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] gap-8 lg:gap-6 items-center [@media(max-height:820px)]:py-5">
           <div className="text-center lg:text-start">
             <motion.span
               initial={{ opacity: 0, y: -10 }}
@@ -147,19 +158,20 @@ const Catalogue = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5 text-4xl md:text-5xl xl:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight"
+              className="mt-4 text-4xl md:text-5xl xl:text-[3.5rem] font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.1] [@media(min-width:768px)_and_(max-height:820px)]:text-[2.6rem]"
             >
               {t("accueil.titre")}{" "}
-              <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-300 dark:to-teal-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] [--bg-size:200%]">
+              <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-300 dark:to-teal-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] [--bg-size:200%] underline decoration-wavy decoration-emerald-400/60 decoration-2 underline-offset-[0.2em] [text-decoration-skip-ink:none]">
                 {t("accueil.titreSurligne")}
-              </span>
+              </span>{" "}
+              {t("accueil.titreFin")}
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-5 text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0"
+              className="mt-4 text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto lg:mx-0"
             >
               {t("accueil.sousTitre")}
             </motion.p>
@@ -167,12 +179,22 @@ const Catalogue = () => {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-6 max-w-xl mx-auto lg:mx-0 text-start [@media(max-height:820px)]:mt-5"
+            >
+              <RechercheHero onRechercher={rechercherDepuisHero} />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start"
             >
               <Button asChild size="lg" className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group">
                 <a href="#catalog">
-                  {t("accueil.explorer")}
+                  <Compass />
+                  {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
                   <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
                 </a>
               </Button>
@@ -184,15 +206,17 @@ const Catalogue = () => {
               </Button>
             </motion.div>
 
-            <div className="mt-10 max-w-xl mx-auto lg:mx-0">
+            <div className="mt-6 max-w-xl mx-auto lg:mx-0 [@media(max-height:820px)]:mt-5">
               <Statistiques />
             </div>
           </div>
 
+          {/* Le globe ne dépasse jamais la hauteur disponible (écran moins l'en-tête et les marges). */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-auto w-full max-w-[min(22rem,100%)] sm:max-w-[min(28rem,100%)] lg:max-w-[min(560px,100%,calc(100svh-8rem))]"
           >
             <GlobeAccueil />
           </motion.div>
@@ -211,8 +235,9 @@ const Catalogue = () => {
             {t("catalogue.titre")}
           </motion.h2>
 
-          <div className="flex flex-col md:flex-row gap-3 mb-6">
-            <div className="relative flex-1">
+          {/* Mobile : recherche sur toute la largeur, catégorie et tri côte à côte en dessous. */}
+          <div className="grid grid-cols-2 gap-3 mb-6 md:flex md:flex-row">
+            <div className="relative col-span-2 md:flex-1">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden />
               <Input
                 type="search"
@@ -224,32 +249,34 @@ const Catalogue = () => {
               />
             </div>
             <Select value={categorie ?? TOUTES_CATEGORIES} onValueChange={choisirCategorie}>
-              <SelectTrigger className="md:w-72 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
+              <SelectTrigger className="min-w-0 text-start [&>span]:min-w-0 md:w-72 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
                 <SelectValue placeholder={t("catalogue.categorie")} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUTES_CATEGORIES}>
-                  <span className="flex items-center gap-2">
+                  <span className="flex min-w-0 items-center gap-2">
                     <IconeCategorie icone={null} />
-                    {t("catalogue.toutesCategories")}
+                    <span className="truncate">{t("catalogue.toutesCategories")}</span>
                   </span>
                 </SelectItem>
                 {requeteCategories.data?.map((cat) => (
                   <SelectItem key={cat.slug} value={cat.slug}>
-                    <span className="flex items-center gap-2">
+                    <span className="flex min-w-0 items-center gap-2">
                       <IconeCategorie icone={cat.icone} />
-                      {texteTraduit(cat.nom, langue)}
+                      <span className="truncate">{texteTraduit(cat.nom, langue)}</span>
                     </span>
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select value={tri} onValueChange={choisirTri}>
-              <SelectTrigger className="md:w-60 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
+              <SelectTrigger className="min-w-0 md:w-60 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
                 {/* div et non span : le déclencheur force ses span directs sur une seule ligne (line-clamp). */}
-                <div className="flex min-w-0 items-center gap-2">
+                <div className="flex min-w-0 items-center gap-2 text-start">
                   <ArrowDownWideNarrow className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-                  <SelectValue />
+                  <span className="truncate">
+                    <SelectValue />
+                  </span>
                 </div>
               </SelectTrigger>
               <SelectContent>
