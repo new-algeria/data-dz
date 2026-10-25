@@ -8,6 +8,7 @@ import {
   Castle,
   ChartLine,
   CircleOff,
+  Columns3,
   Earth,
   File,
   FileArchive,
@@ -69,6 +70,7 @@ const apparencesFormats: Record<string, Apparence> = {
   xlsx: { icone: Sheet, couleurs: "bg-green-100 text-green-800 dark:bg-green-400/15 dark:text-green-300" },
   xml: { icone: FileCode, couleurs: "bg-orange-100 text-orange-800 dark:bg-orange-400/15 dark:text-orange-300" },
   zip: { icone: FileArchive, couleurs: "bg-slate-200 text-slate-800 dark:bg-slate-400/15 dark:text-slate-300" },
+  parquet: { icone: Columns3, couleurs: "bg-indigo-100 text-indigo-800 dark:bg-indigo-400/15 dark:text-indigo-300" },
 };
 
 export function apparenceFormat(format: string): Apparence {
