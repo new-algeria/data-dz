@@ -44,7 +44,7 @@ export interface Fichier {
   url_telechargement: string;
 }
 
-export type FormatTelechargement = "csv" | "xlsx" | "json" | "geojson";
+export type FormatTelechargement = "csv" | "xlsx" | "json" | "geojson" | "parquet";
 
 /** Un fichier de la donnée et tous les formats dans lesquels l'API peut le livrer. */
 export interface Ressource {

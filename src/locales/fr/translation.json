@@ -146,7 +146,25 @@
     "toutSuperposer": "Tout superposer ({{count}} fichiers)",
     "legende": "Légende de la carte",
     "telechargerFormat": "Télécharger {{nom}} au format {{format}}",
-    "carteIndisponible": "La carte ne peut pas s'afficher sur cet appareil (WebGL indisponible). Les fichiers restent téléchargeables."
+    "carteIndisponible": "La carte ne peut pas s'afficher sur cet appareil (WebGL indisponible). Les fichiers restent téléchargeables.",
+    "couvertureCles": {
+      "nb_enregistrements": "Nombre de lignes",
+      "nb_wilayas_couvertes": "Wilayas couvertes",
+      "couverture_pct": "Couverture estimée",
+      "taux_geocodage": "Taux de géocodage",
+      "note_couverture": "Note sur la couverture",
+      "mis_a_jour_par_la_source": "Mise à jour par la source",
+      "derniere_annee_observee": "Dernière année observée",
+      "premiere_annee_observee": "Première année observée",
+      "derniere_annee_projetee": "Dernière année projetée",
+      "nb_series": "Nombre de séries",
+      "nb_indicateurs": "Nombre d'indicateurs",
+      "nb_pays": "Nombre de pays",
+      "periode": "Période couverte",
+      "frequence": "Fréquence",
+      "unite": "Unité",
+      "paquet": "Paquet"
+    }
   },
   "attribution": {
     "titre": "Attribution",
@@ -812,7 +830,18 @@
       "geojson": {
         "nom": "GeoJSON",
         "aide": "Cartes, QGIS, SIG"
+      },
+      "parquet": {
+        "nom": "Parquet",
+        "aide": "Analyse de gros volumes (Python, R, DuckDB)"
       }
+    },
+    "formatsCourts": {
+      "csv": "CSV",
+      "xlsx": "Excel",
+      "json": "JSON",
+      "geojson": "GeoJSON",
+      "parquet": "Parquet"
     }
   },
   "api": {
@@ -891,5 +920,26 @@
     "confirmerTexte": "« {{titre}} », ses versions et ses fichiers seront supprimés. Pour la retirer du site sans la perdre, masquez-la plutôt.",
     "confirmerSaisie": "Tapez « {{slug}} » pour confirmer",
     "supprimerDefinitivement": "Supprimer définitivement"
+  },
+  "visuel": {
+    "titre": "Visuel de la donnée",
+    "chargement": "Préparation du visuel…",
+    "carte": "Carte",
+    "graphique": "Graphique",
+    "choixVue": "Type de visuel",
+    "source": "Source : {{source}}",
+    "erreur": "Impossible de charger les données du visuel. Les fichiers restent téléchargeables.",
+    "aideMolette": "Cliquez sur la carte pour zoomer à la molette",
+    "projection": "Projection",
+    "telechargerImage": "Télécharger l'image (PNG)",
+    "serie": "Série affichée",
+    "mesures": "Mesures affichées",
+    "mesure": "Mesure affichée",
+    "periode": "Période",
+    "legende": "Légende du graphique",
+    "unite": "Unité : {{unite}}",
+    "aucuneValeur": "Aucune valeur à afficher pour ce choix.",
+    "sansValeur": "pas de donnée",
+    "titreBarres": "{{mesure}} : les {{nombre}} premiers"
   }
 }

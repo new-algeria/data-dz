@@ -43,7 +43,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
           loading="lazy"
           decoding="async"
           onError={(e) => (e.currentTarget.style.display = "none")}
-          className="pointer-events-none absolute -top-2 end-0 -z-10 h-32 w-52 object-cover opacity-25 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_25%,transparent_70%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_25%,transparent_70%)] brightness-110 group-hover:opacity-40 dark:opacity-[.15] dark:brightness-[.85] dark:group-hover:opacity-25"
+          className="pointer-events-none absolute -top-2 end-0 -z-10 h-32 w-52 object-cover opacity-40 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_35%,transparent_75%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_35%,transparent_75%)] brightness-110 group-hover:opacity-60 dark:opacity-25 dark:brightness-95 dark:group-hover:opacity-40"
         />
         <CardHeader className="pb-3">
           {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="mb-2" />}

@@ -18,10 +18,13 @@ import { ListeFichiers } from "@/components/fiche/ListeFichiers";
 import { BlocAttribution } from "@/components/fiche/BlocAttribution";
 import { BlocLicence } from "@/components/fiche/BlocLicence";
 import { InfosSource } from "@/components/fiche/InfosSource";
+import { aDesInfosSource } from "@/lib/couverture";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { ChiffresCles } from "@/components/fiche/ChiffresCles";
 import { SectionCommentaires } from "@/components/communaute/SectionCommentaires";
+import { VisuelDonnee } from "@/components/fiche/visuel/VisuelDonnee";
+import { choisirFichierCarte } from "@/lib/detecterVisuel";
 import { chargerFicheDonnee } from "@/lib/catalogue";
 import { texteTraduit } from "@/lib/traduction";
 import { localeNombres, trierFichiers } from "@/lib/fichiers";
@@ -88,6 +91,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const fichiers = trierFichiers(version?.fichiers ?? []);
   // Tous les fichiers spatiaux : la carte propose de choisir lequel afficher, ou de les superposer.
   const fichiersGeojson = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
+  // Les GeoJSON de plus de 5 Mo ne passent pas dans le visuel du haut : ils gardent leur carte plus bas (chargée sur demande).
+  const globeSepare = fichiersGeojson.length > 0 && !choisirFichierCarte(fichiers);
   const colonnes = Array.isArray(version?.colonnes) ? version.colonnes : [];
   const formatDate = (style: "medium" | "long") =>
     version?.publie_le
@@ -102,6 +107,10 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
       <div className="container mx-auto px-4 pb-12">
         <div className="-mt-6 relative">
+          <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} fichiers={fichiers} />
+        </div>
+
+        <div className="mt-6 relative">
           <ChiffresCles
             nbLignes={version?.nb_lignes}
             nbColonnes={colonnes.length}
@@ -117,7 +126,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           <div className="lg:col-span-2 space-y-6 min-w-0">
-            {fichiersGeojson.length > 0 && (
+            {globeSepare && (
               <Section id="titre-carte" titre={t("fiche.globe")} icone={Globe2}>
                 <Suspense fallback={<ChargementCarte />}>
                   <GlobeDonnees fichiers={fichiersGeojson} />
@@ -204,7 +213,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               </dl>
             </Section>
 
-            {donnee.infos_source && Object.keys(donnee.infos_source).length > 0 && (
+            {donnee.infos_source && aDesInfosSource(donnee.infos_source) && (
               <Section id="titre-couverture" titre={t("fiche.couverture")} icone={MapPinned}>
                 <InfosSource infos={donnee.infos_source} />
               </Section>

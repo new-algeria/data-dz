@@ -12,7 +12,12 @@ import type { FormatTelechargement, Ressource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { IconeFormat } from "./BadgeFormat";
 
-const ORDRE: FormatTelechargement[] = ["csv", "xlsx", "json", "geojson"];
+const ORDRE: FormatTelechargement[] = ["csv", "xlsx", "json", "geojson", "parquet"];
+// Formats connus dans l'ordre ci-dessus, formats inconnus à la fin.
+const rang = (format: string) => {
+  const indice = ORDRE.indexOf(format as FormatTelechargement);
+  return indice === -1 ? ORDRE.length : indice;
+};
 
 /**
  * Vérifie le lien avant d'ouvrir le téléchargement : l'API répond 302 (fichier prêt, éventuellement converti)
@@ -38,7 +43,11 @@ export const DialogueTelechargement = ({ ressources }: { ressources: Ressource[]
 
   const ressource = ressources.find((element) => element.nom === nom) ?? ressources[0];
   if (!ressource) return null;
-  const telechargements = [...ressource.telechargements].sort((a, b) => ORDRE.indexOf(a.format) - ORDRE.indexOf(b.format));
+  const telechargements = [...ressource.telechargements].sort((a, b) => rang(a.format) - rang(b.format));
+  // Sous le bouton : uniquement les formats réellement proposés par l'API pour ce jeu.
+  const formatsDisponibles = [...new Set(ressources.flatMap((element) => element.telechargements.map((telechargement) => telechargement.format)))].sort(
+    (a, b) => rang(a) - rang(b)
+  );
   const choisi = telechargements.find((element) => element.format === format) ?? telechargements[0];
 
   const choisir = (suite: () => void) => {
@@ -68,9 +77,11 @@ export const DialogueTelechargement = ({ ressources }: { ressources: Ressource[]
           <Download className="h-5 w-5" />
           <span className="flex flex-col items-start leading-tight">
             <span className="font-semibold">{t("fiche.telecharger")}</span>
-            <span className="text-xs font-normal opacity-80" dir="ltr">
-              CSV · Excel · JSON · GeoJSON
-            </span>
+            {formatsDisponibles.length > 0 && (
+              <span className="text-xs font-normal opacity-80" dir="ltr">
+                {formatsDisponibles.map((element) => t(`telechargement.formatsCourts.${element}`, { defaultValue: element.toUpperCase() })).join(" · ")}
+              </span>
+            )}
           </span>
         </Button>
       </DialogTrigger>
@@ -121,12 +132,12 @@ export const DialogueTelechargement = ({ ressources }: { ressources: Ressource[]
                   <IconeFormat format={element.format} className="h-9 w-9" />
                   <span className="min-w-0">
                     <span className="block font-semibold" dir="ltr">
-                      {t(`telechargement.formats.${element.format}.nom`)}
+                      {t(`telechargement.formats.${element.format}.nom`, { defaultValue: element.format.toUpperCase() })}
                     </span>
                     <span className="block text-xs text-muted-foreground">
                       {element.natif
                         ? [t("telechargement.original"), original?.taille_octets ? formaterTaille(original.taille_octets, langue) : null].filter(Boolean).join(" · ")
-                        : t(`telechargement.formats.${element.format}.aide`)}
+                        : t(`telechargement.formats.${element.format}.aide`, { defaultValue: "" })}
                     </span>
                   </span>
                   {actif && <Check className="absolute end-2 top-2 h-4 w-4 text-emerald-700 dark:text-emerald-300" aria-hidden />}

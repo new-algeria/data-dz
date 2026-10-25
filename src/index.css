@@ -112,16 +112,17 @@
     @apply mb-1 text-xs font-semibold uppercase tracking-wide;
   }
   .popup-donnee__titre {
-    @apply mb-2 border-b border-gray-200 pb-2 text-base font-semibold text-emerald-700 dark:border-gray-700 dark:text-emerald-400;
+    @apply text-base font-semibold text-emerald-700 dark:text-emerald-400;
   }
-  .popup-donnee__liste {
-    @apply grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] gap-x-3 gap-y-1;
+  .popup-donnee__champ {
+    @apply mt-1 break-words text-gray-700 dark:text-gray-300;
   }
-  .popup-donnee__liste dt {
-    @apply max-w-[9rem] truncate pt-0.5 font-mono text-xs text-gray-500 dark:text-gray-400;
+  /* Info-bulle de la carte des wilayas (« Adrar : 88 jours ») */
+  .popup-infobulle .maplibregl-popup-content {
+    @apply rounded-md bg-gray-900 px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg;
   }
-  .popup-donnee__liste dd {
-    @apply break-words font-medium;
+  .popup-infobulle .maplibregl-popup-tip {
+    @apply hidden;
   }
 }
 
