@@ -8,12 +8,13 @@
     "fermerMenu": "Fermer le menu",
     "menu": "Menu",
     "menuDescription": "Navigation, compte, langue et thème",
-    "inscription": "S'inscrire",
     "explorer": "Explorer",
     "catalogue": "Catalogue des données",
     "monEspace": "Mon espace",
     "administration": "Administration",
-    "preferences": "Préférences"
+    "preferences": "Préférences",
+    "langue": "Langue",
+    "theme": "Thème"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -21,7 +22,9 @@
   "theme": {
     "basculer": "Changer de thème",
     "passerClair": "Passer en mode clair",
-    "passerSombre": "Passer en mode sombre"
+    "passerSombre": "Passer en mode sombre",
+    "clair": "Clair",
+    "sombre": "Sombre"
   },
   "footer": {
     "projet": "Un projet open source porté par",
@@ -199,7 +202,6 @@
     "deconnexion": "Se déconnecter",
     "menuCompte": "Menu du compte",
     "monProfil": "Mon profil",
-    "maPagePublique": "Ma page publique",
     "verificationSession": "Vérification de la session…",
     "connexionTitre": "Bon retour 👋",
     "connexionSousTitre": "Connectez-vous pour gérer votre profil.",
@@ -246,7 +248,7 @@
   },
   "profil": {
     "titre": "Mon profil",
-    "sousTitre": "Ces informations sont visibles sur votre page publique.",
+    "sousTitre": "Ce que voient les autres membres est en haut de la page ; modifiez vos informations ci-dessous.",
     "photo": "Photo de profil",
     "changerPhoto": "Changer la photo",
     "retirerPhoto": "Retirer",
@@ -265,11 +267,12 @@
     "enregistrer": "Enregistrer",
     "enregistre": "Profil enregistré ✅",
     "compte": "Compte",
-    "changerMotDePasse": "Changer mon mot de passe"
+    "changerMotDePasse": "Changer mon mot de passe",
+    "copierLien": "Copier le lien de mon profil",
+    "lienCopie": "Lien copié !"
   },
   "membre": {
     "description": "Profil de {{nom}} sur data-dz.",
-    "modifier": "Modifier mon profil",
     "pasDeBio": "Ce membre n'a pas encore écrit de bio.",
     "inscritDepuis": "Membre depuis {{date}}",
     "erreur": "Impossible de charger ce profil pour le moment.",

@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Database, FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRound, UserRoundPen, UsersRound } from "lucide-react";
+import { Database, FilePlus2, Inbox, LogIn, LogOut, ShieldCheck, Star, UserRoundPen, UsersRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import { useEstModerateur } from "@/hooks/use-moderateur";
 import { deconnecter } from "@/lib/auth";
 import { avecSuite, routes } from "@/lib/routes";
 
-/** Bouton « Se connecter », ou menu du membre connecté (avatar, profil, page publique, déconnexion). */
+/** Bouton « Se connecter », ou menu du membre connecté (avatar, profil, déconnexion). */
 export const MenuUtilisateur = () => {
   const { t } = useTranslation();
   const { session, profil, chargement } = useAuth();
@@ -75,14 +75,6 @@ export const MenuUtilisateur = () => {
             {t("auth.monProfil")}
           </Link>
         </DropdownMenuItem>
-        {profil && (
-          <DropdownMenuItem asChild>
-            <Link to={routes.membre(profil.pseudo)} className="cursor-pointer gap-2">
-              <UserRound className="h-4 w-4" />
-              {t("auth.maPagePublique")}
-            </Link>
-          </DropdownMenuItem>
-        )}
         <DropdownMenuItem asChild>
           <Link to={routes.favoris} className="cursor-pointer gap-2">
             <Star className="h-4 w-4" />
