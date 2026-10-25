@@ -42,12 +42,11 @@
     "badge": "Données ouvertes · Algérie",
     "explorer": "Explorer le catalogue",
     "globe": "Globe terrestre centré sur l'Algérie",
-    "proposer": "Proposer une donnée",
     "titreFin": "à explorer.",
     "explorerNombre_one": "Explorer le jeu de données",
     "explorerNombre_other": "Explorer les {{count}} jeux de données",
     "recherche": {
-      "placeholder": "Rechercher une pharmacie, une école, une gare, une wilaya…",
+      "placeholder": "Pharmacies, gares…",
       "bouton": "Chercher",
       "exemples": "Exemples :",
       "exemple": {
@@ -87,7 +86,8 @@
       "libelle": "Trier",
       "top": "Les plus appréciés",
       "recent": "Récemment mis à jour",
-      "name": "A → Z"
+      "name": "A → Z",
+      "relevance": "Pertinence"
     }
   },
   "fiche": {

@@ -46,7 +46,6 @@
     "badge": "بيانات مفتوحة · الجزائر",
     "explorer": "استكشف الفهرس",
     "globe": "كرة أرضية متمركزة على الجزائر",
-    "proposer": "اقتراح بيانات",
     "titreFin": "الاستكشاف.",
     "explorerNombre_zero": "استكشف الفهرس",
     "explorerNombre_one": "استكشف مجموعة البيانات",
@@ -55,7 +54,7 @@
     "explorerNombre_many": "استكشف {{count}} مجموعة بيانات",
     "explorerNombre_other": "استكشف {{count}} مجموعة بيانات",
     "recherche": {
-      "placeholder": "ابحث عن صيدلية، مدرسة، محطة، ولاية…",
+      "placeholder": "صيدليات، محطات…",
       "bouton": "بحث",
       "exemples": "أمثلة:",
       "exemple": {
@@ -102,7 +101,8 @@
       "libelle": "ترتيب",
       "top": "الأكثر تقديرا",
       "recent": "المحدثة مؤخرا",
-      "name": "أبجديا"
+      "name": "أبجديا",
+      "relevance": "الأكثر صلة"
     }
   },
   "fiche": {
