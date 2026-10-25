@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import maplibregl, { type MapGeoJSONFeature } from "maplibre-gl";
 import type { GeoJsonObject } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -13,8 +13,9 @@ import { useChargementJSON } from "@/hooks/use-chargement-fichier";
 import { formaterTaille, nomSansFormat } from "@/lib/fichiers";
 import { calculerEmprise, type Emprise } from "@/lib/emprise";
 import { useLangue } from "@/hooks/use-langue";
-import { valeurEnTexte } from "@/lib/valeurs";
 import type { Fichier } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { champsLisibles, COULEUR_SANS_VALEUR, DEGRADE_VERT } from "@/lib/carte";
 
 // Au-delà de cette taille, le globe ne se charge que si le visiteur le demande.
 const SEUIL_GROS_FICHIER = 10 * 1024 * 1024;
@@ -24,6 +25,8 @@ const VERT = "#059669";
 const styleGlobe: maplibregl.StyleSpecification = {
   version: 8,
   projection: { type: "globe" },
+  // Polices des étiquettes (nombre de points d'un regroupement).
+  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
   sky: {
     "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0],
   },
@@ -42,11 +45,10 @@ const styleGlobe: maplibregl.StyleSpecification = {
   ],
 };
 
-// Propriétés utilisées comme titre de la popup, par ordre de préférence.
-const CLES_TITRE = ["nom", "name", "name_fr", "nom_fr", "titre", "label"];
-
 /** Contenu de popup construit avec textContent : les propriétés viennent de la source et ne sont jamais interprétées. */
-function contenuPopup(proprietes: Record<string, unknown>, couche?: { nom: string; couleur: string }): HTMLElement {
+function contenuPopup(proprietes: Record<string, unknown>, langue: string, couche?: { nom: string; couleur: string }): HTMLElement | null {
+  const champs = champsLisibles(proprietes, langue);
+  if (champs.length === 0 && !couche) return null;
   const conteneur = document.createElement("div");
   conteneur.className = "popup-donnee";
 
@@ -58,29 +60,14 @@ function contenuPopup(proprietes: Record<string, unknown>, couche?: { nom: strin
     conteneur.appendChild(origine);
   }
 
-  const cleTitre = CLES_TITRE.find((cle) => typeof proprietes[cle] === "string" && proprietes[cle]);
-  if (cleTitre) {
-    const titre = document.createElement("p");
-    titre.className = "popup-donnee__titre";
-    titre.textContent = String(proprietes[cleTitre]);
-    titre.dir = "auto";
-    conteneur.appendChild(titre);
-  }
-
-  const liste = document.createElement("dl");
-  liste.className = "popup-donnee__liste";
-  Object.entries(proprietes)
-    .filter(([cle, valeur]) => cle !== cleTitre && valeur !== null && valeur !== "")
-    .slice(0, 20)
-    .forEach(([cle, valeur]) => {
-      const terme = document.createElement("dt");
-      terme.textContent = cle;
-      const definition = document.createElement("dd");
-      definition.textContent = valeurEnTexte(valeur, 120);
-      definition.dir = "auto";
-      liste.append(terme, definition);
-    });
-  conteneur.appendChild(liste);
+  champs.forEach(([cle, valeur], indice) => {
+    const ligne = document.createElement("p");
+    ligne.className = indice === 0 ? "popup-donnee__titre" : "popup-donnee__champ";
+    ligne.textContent = valeur;
+    ligne.title = cle;
+    ligne.dir = "auto";
+    conteneur.appendChild(ligne);
+  });
   return conteneur;
 }
 
@@ -89,12 +76,27 @@ const COULEURS = ["#059669", "#2563eb", "#d97706", "#db2777", "#7c3aed", "#0891b
 // Au-delà, la superposition devient illisible : on propose seulement le choix fichier par fichier.
 const MAX_SUPERPOSES = COULEURS.length;
 
-interface Couche {
+export interface Couche {
   id: string;
   nom: string;
   couleur: string;
   donnees: GeoJsonObject;
+  /** Carte des wilayas : surfaces colorées selon la propriété `valeur`, info-bulle `infobulle` au survol. */
+  choroplethe?: { min: number; max: number };
 }
+
+// Au-delà, les points sont regroupés (clusters) pour rester lisibles et fluides.
+const SEUIL_REGROUPEMENT = 2000;
+const EMPRISE_ALGERIE: [number, number, number, number] = [-8.7, 18.9, 12, 37.2];
+
+const nbPoints = (donnees: GeoJsonObject) =>
+  "features" in donnees && Array.isArray(donnees.features)
+    ? (donnees.features as { geometry?: { type?: string } | null }[]).filter((feature) => feature.geometry?.type === "Point").length
+    : 0;
+
+/** Vrai si l'emprise des données recoupe l'Algérie : on garde alors le cadrage sur l'Algérie. */
+const recoupeAlgerie = ([ouest, sud, est, nord]: Emprise) =>
+  ouest <= EMPRISE_ALGERIE[2] && est >= EMPRISE_ALGERIE[0] && sud <= EMPRISE_ALGERIE[3] && nord >= EMPRISE_ALGERIE[1];
 
 /** Union des emprises des couches, ou null si aucune ne contient de coordonnées. */
 function empriseGlobale(couches: Couche[]): Emprise | null {
@@ -103,14 +105,32 @@ function empriseGlobale(couches: Couche[]): Emprise | null {
   return emprises.reduce((a, b) => [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[2], b[2]), Math.max(a[3], b[3])]);
 }
 
-const Globe = ({ couches }: { couches: Couche[] }) => {
+interface GlobeProps {
+  couches: Couche[];
+  /** Classes de hauteur du cadre (fixe dans le visuel de la fiche). */
+  hauteur?: string;
+  /** Légende ou sélecteurs posés sur la carte (carte des wilayas). */
+  enSurimpression?: ReactNode;
+  /** « mercator » : carte plane, mieux adaptée à un cadre bas centré sur l'Algérie (le bouton globe reste disponible). */
+  projection?: "globe" | "mercator";
+}
+
+/**
+ * Carte MapLibre (fond OpenStreetMap, projection globe), cadrée sur l'Algérie au départ.
+ * Molette : zoom seulement après un clic sur la carte (la page défile normalement sinon).
+ */
+export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, projection = "globe" }: GlobeProps) => {
   const { t } = useTranslation();
+  const langue = useLangue();
   const conteneur = useRef<HTMLDivElement>(null);
   const refCarte = useRef<maplibregl.Map | null>(null);
-  const calquesActifs = useRef<{ calques: string[]; couches: Map<string, Couche> }>({ calques: [], couches: new Map() });
+  const calquesActifs = useRef<{ calques: string[]; couches: Map<string, Couche>; regroupements: string[] }>({ calques: [], couches: new Map(), regroupements: [] });
+  const refLangue = useRef(langue);
+  refLangue.current = langue;
   const premiereArrivee = useRef(true);
   const [prete, setPrete] = useState(false);
   const [indisponible, setIndisponible] = useState(false);
+  const [molette, setMolette] = useState(false);
   const mouvementReduit = useReducedMotion();
 
   // La carte est créée une seule fois ; changer de fichier ne fait qu'échanger ses couches.
@@ -122,10 +142,9 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
     try {
       carte = new maplibregl.Map({
         container: conteneur.current,
-        style: styleGlobe,
-        // Vue de départ : la Terre entière, légèrement décalée pour que le globe pivote vers les données.
-        center: mouvementReduit ? [3, 28] : [-35, 18],
-        zoom: 0.8,
+        style: { ...styleGlobe, projection: { type: projection } },
+        bounds: EMPRISE_ALGERIE,
+        fitBoundsOptions: { padding: 16 },
         attributionControl: { compact: true },
         cooperativeGestures: false,
       });
@@ -139,31 +158,69 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
     carte.addControl(new maplibregl.GlobeControl(), "top-right");
     carte.addControl(new maplibregl.FullscreenControl(), "top-right");
 
+    // Molette activée au premier clic, désactivée quand la souris quitte la carte.
+    const activerMolette = () => {
+      carte.scrollZoom.enable();
+      setMolette(true);
+    };
+    const couperMolette = () => {
+      carte.scrollZoom.disable();
+      setMolette(false);
+    };
+    carte.getCanvasContainer().addEventListener("mouseleave", couperMolette);
+
+    const infobulle = new maplibregl.Popup({ closeButton: false, closeOnClick: false, className: "popup-infobulle", offset: 12 });
+
     carte.on("click", (evenement) => {
-      const { calques, couches: parCalque } = calquesActifs.current;
+      activerMolette();
+      const { calques, couches: parCalque, regroupements } = calquesActifs.current;
       const entite = carte.queryRenderedFeatures(evenement.point, { layers: calques })[0] as MapGeoJSONFeature | undefined;
-      if (!entite || Object.keys(entite.properties).length === 0) return;
+      if (!entite) return;
+      // Regroupement : on zoome dessus.
+      if (regroupements.includes(entite.layer.id) && entite.geometry.type === "Point") {
+        const source = carte.getSource(entite.source) as maplibregl.GeoJSONSource;
+        source.getClusterExpansionZoom(entite.properties.cluster_id).then((zoom) =>
+          carte.easeTo({ center: entite.geometry.type === "Point" ? (entite.geometry.coordinates as [number, number]) : evenement.lngLat, zoom })
+        );
+        return;
+      }
       const couche = parCalque.get(entite.layer.id);
-      // La popup ne doit jamais être plus large que le globe, sinon elle est coupée sur mobile.
-      new maplibregl.Popup({ maxWidth: `${Math.min(340, carte.getContainer().clientWidth - 32)}px`, className: "popup-globe" })
+      if (couche?.choroplethe) {
+        if (typeof entite.properties.infobulle === "string") infobulle.setLngLat(evenement.lngLat).setText(entite.properties.infobulle).addTo(carte);
+        return;
+      }
+      const contenu = contenuPopup(entite.properties, refLangue.current, new Set(parCalque.values()).size > 1 ? couche : undefined);
+      if (!contenu) return;
+      // La popup ne doit jamais être plus large que la carte, sinon elle est coupée sur mobile.
+      new maplibregl.Popup({ maxWidth: `${Math.min(300, carte.getContainer().clientWidth - 32)}px`, className: "popup-globe" })
         .setLngLat(evenement.lngLat)
-        .setDOMContent(contenuPopup(entite.properties, new Set(parCalque.values()).size > 1 ? couche : undefined))
+        .setDOMContent(contenu)
         .addTo(carte);
     });
     carte.on("mousemove", (evenement) => {
-      const { calques } = calquesActifs.current;
-      const survol = calques.length > 0 && carte.queryRenderedFeatures(evenement.point, { layers: calques }).length > 0;
-      carte.getCanvas().style.cursor = survol ? "pointer" : "";
+      const { calques, couches: parCalque } = calquesActifs.current;
+      const entite = calques.length > 0 ? carte.queryRenderedFeatures(evenement.point, { layers: calques })[0] : undefined;
+      carte.getCanvas().style.cursor = entite ? "pointer" : "";
+      // Carte des wilayas : « Adrar : 88 jours » au survol.
+      if (entite && parCalque.get(entite.layer.id)?.choroplethe && typeof entite.properties.infobulle === "string") {
+        infobulle.setLngLat(evenement.lngLat).setText(entite.properties.infobulle).addTo(carte);
+      } else {
+        infobulle.remove();
+      }
     });
+    carte.on("mouseout", () => infobulle.remove());
     carte.on("load", () => setPrete(true));
     refCarte.current = carte;
 
     return () => {
+      carte.getCanvasContainer().removeEventListener("mouseleave", couperMolette);
       carte.remove();
       refCarte.current = null;
       setPrete(false);
     };
-  }, [mouvementReduit]);
+    // La projection est fixée à la création de la carte (le bouton globe permet ensuite d'en changer).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const carte = refCarte.current;
@@ -175,18 +232,44 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
     Object.keys(style.sources).filter((id) => id.startsWith("donnees-")).forEach((id) => carte.removeSource(id));
 
     const calques: string[] = [];
+    const regroupements: string[] = [];
     const parCalque = new Map<string, Couche>();
     couches.forEach((couche, indice) => {
       const source = `donnees-${indice}`;
-      carte.addSource(source, { type: "geojson", data: couche.donnees as GeoJSON.GeoJSON });
-      const ajouter = (calque: maplibregl.AddLayerObject) => {
+      const regrouper = !couche.choroplethe && nbPoints(couche.donnees) > SEUIL_REGROUPEMENT;
+      carte.addSource(source, {
+        type: "geojson",
+        data: couche.donnees as GeoJSON.GeoJSON,
+        ...(regrouper ? { cluster: true, clusterRadius: 45, clusterMaxZoom: 12 } : {}),
+      });
+      const ajouter = (calque: maplibregl.AddLayerObject, cliquable = true) => {
         carte.addLayer(calque);
-        calques.push(calque.id);
+        if (cliquable) calques.push(calque.id);
         parCalque.set(calque.id, couche);
       };
+      const polygones: maplibregl.FilterSpecification = ["in", ["geometry-type"], ["literal", ["Polygon", "MultiPolygon"]]];
+
+      if (couche.choroplethe) {
+        const { min, max } = couche.choroplethe;
+        const pas = (max - min) / (DEGRADE_VERT.length - 1) || 1;
+        ajouter({
+          id: `${source}-surfaces`, type: "fill", source, filter: polygones,
+          paint: {
+            "fill-color": [
+              "case",
+              ["==", ["typeof", ["get", "valeur"]], "number"],
+              ["interpolate", ["linear"], ["get", "valeur"], ...DEGRADE_VERT.flatMap((couleur, rang) => [min + rang * pas, couleur])],
+              COULEUR_SANS_VALEUR,
+            ],
+            "fill-opacity": 0.85,
+          },
+        });
+        ajouter({ id: `${source}-contours`, type: "line", source, filter: polygones, paint: { "line-color": "#ffffff", "line-width": 0.8 } }, false);
+        return;
+      }
+
       ajouter({
-        id: `${source}-surfaces`, type: "fill", source,
-        filter: ["in", ["geometry-type"], ["literal", ["Polygon", "MultiPolygon"]]],
+        id: `${source}-surfaces`, type: "fill", source, filter: polygones,
         paint: { "fill-color": couche.couleur, "fill-opacity": couches.length > 1 ? 0.3 : 0.25 },
       });
       ajouter({
@@ -194,9 +277,32 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
         filter: ["in", ["geometry-type"], ["literal", ["Polygon", "MultiPolygon", "LineString", "MultiLineString"]]],
         paint: { "line-color": couche.couleur, "line-width": 1.2 },
       });
+      if (regrouper) {
+        ajouter({
+          id: `${source}-regroupements`, type: "circle", source, filter: ["has", "point_count"],
+          paint: {
+            "circle-color": couche.couleur,
+            "circle-opacity": 0.85,
+            "circle-radius": ["step", ["get", "point_count"], 14, 50, 18, 250, 24, 1000, 30],
+            "circle-stroke-color": "#ffffff",
+            "circle-stroke-width": 2,
+          },
+        });
+        regroupements.push(`${source}-regroupements`);
+        ajouter(
+          {
+            id: `${source}-nombres`, type: "symbol", source, filter: ["has", "point_count"],
+            layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Open Sans Semibold"], "text-size": 12 },
+            paint: { "text-color": "#ffffff" },
+          },
+          false
+        );
+      }
       ajouter({
         id: `${source}-points`, type: "circle", source,
-        filter: ["in", ["geometry-type"], ["literal", ["Point", "MultiPoint"]]],
+        filter: regrouper
+          ? ["all", ["!", ["has", "point_count"]], ["in", ["geometry-type"], ["literal", ["Point", "MultiPoint"]]]]
+          : ["in", ["geometry-type"], ["literal", ["Point", "MultiPoint"]]],
         paint: {
           "circle-color": couche.couleur,
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 2, 2.5, 8, 5, 14, 8],
@@ -205,64 +311,71 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
         },
       });
     });
-    calquesActifs.current = { calques, couches: parCalque };
+    calquesActifs.current = { calques, couches: parCalque, regroupements };
 
-    // Première arrivée : le globe pivote depuis l'espace ; ensuite, simple recadrage sur le fichier choisi.
+    // Cadrage : l'Algérie au départ ; on ne recadre que pour des données ailleurs, ou au changement de fichier.
     const emprise = empriseGlobale(couches);
-    if (!emprise) return;
     const premiere = premiereArrivee.current;
     premiereArrivee.current = false;
-    const minuteur = setTimeout(
-      () => carte.fitBounds(emprise, { padding: 40, maxZoom: 9, duration: mouvementReduit ? 0 : premiere ? 3500 : 1200, essential: false }),
-      premiere && !mouvementReduit ? 600 : 0
-    );
-    return () => clearTimeout(minuteur);
+    if (!emprise || (premiere && recoupeAlgerie(emprise))) return;
+    carte.fitBounds(emprise, { padding: 40, maxZoom: 9, duration: mouvementReduit || premiere ? 0 : 1200, essential: false });
   }, [couches, prete, mouvementReduit]);
 
   if (indisponible) {
     return (
-      <p className="flex h-40 items-center justify-center rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+      <p className={cn("flex items-center justify-center rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground", hauteur)}>
         {t("fiche.carteIndisponible")}
       </p>
     );
   }
 
   return (
-    <div className="space-y-2">
-      <div className="relative">
-        <div
-          ref={conteneur}
-          className="h-[30rem] rounded-xl overflow-hidden border bg-[radial-gradient(ellipse_at_center,#0f2b22_0%,#030712_75%)]"
-          dir="ltr"
-        />
-        {couches.length > 1 && (
-          <ul
-            className="absolute bottom-8 start-2 max-w-[60%] space-y-1 rounded-lg bg-white/90 p-2 text-xs shadow-md backdrop-blur dark:bg-gray-900/90"
-            aria-label={t("fiche.legende")}
-          >
-            {couches.map((couche) => (
-              <li key={couche.id} className="flex items-center gap-2">
-                <span className="h-3 w-3 shrink-0 rounded-full ring-2 ring-white" style={{ backgroundColor: couche.couleur }} aria-hidden />
-                <span className="truncate font-medium" dir="ltr">
-                  {couche.nom}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <p className="text-xs text-muted-foreground">{t("fiche.globeAide")}</p>
+    <div className="relative">
+      <div
+        ref={conteneur}
+        className={cn("rounded-xl overflow-hidden border bg-[radial-gradient(ellipse_at_center,#0f2b22_0%,#030712_75%)]", hauteur)}
+        dir="ltr"
+      />
+      {couches.length > 1 && (
+        <ul
+          className="absolute bottom-8 start-2 max-w-[60%] space-y-1 rounded-lg bg-white/90 p-2 text-xs shadow-md backdrop-blur dark:bg-gray-900/90"
+          aria-label={t("fiche.legende")}
+        >
+          {couches.map((couche) => (
+            <li key={couche.id} className="flex items-center gap-2">
+              <span className="h-3 w-3 shrink-0 rounded-full ring-2 ring-white" style={{ backgroundColor: couche.couleur }} aria-hidden />
+              <span className="truncate font-medium" dir="ltr">
+                {couche.nom}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {enSurimpression}
+      {!molette && (
+        <p className="pointer-events-none absolute top-2 start-2 rounded-md bg-white/85 px-2 py-1 text-[11px] text-gray-700 shadow-sm backdrop-blur dark:bg-gray-900/85 dark:text-gray-200 max-sm:hidden">
+          {t("visuel.aideMolette")}
+        </p>
+      )}
     </div>
   );
 };
 
 const TOUT = "tout";
 
-/** Globe des fichiers GeoJSON d'une fiche : choix du fichier affiché, ou superposition de tous. */
-export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
+interface GlobeDonneesProps {
+  fichiers: Fichier[];
+  projection?: "globe" | "mercator";
+  /** Fichier affiché au départ (sinon le principal, sinon le premier). */
+  initial?: string;
+  hauteur?: string;
+}
+
+/** Carte des fichiers GeoJSON d'une fiche : choix du fichier affiché, ou superposition de tous. */
+export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", projection }: GlobeDonneesProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
-  const parDefaut = (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.id ?? "";
+  const parDefaut = initial ?? (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.id ?? "";
   const [choix, setChoix] = useState(parDefaut);
   const [autorises, setAutorises] = useState<string[]>([]);
 
@@ -308,7 +421,7 @@ export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
   let contenu;
   if (!demande) {
     contenu = (
-      <div className="flex flex-col items-center justify-center text-center gap-3 h-72 rounded-xl border border-dashed bg-muted/40 p-6">
+      <div className={cn("flex flex-col items-center justify-center text-center gap-3 rounded-xl border border-dashed bg-muted/40 p-6", hauteur)}>
         <Globe2 className="h-10 w-10 text-muted-foreground" aria-hidden />
         <p className="text-sm text-muted-foreground max-w-md">{t("fiche.carteGrosFichier", { taille: formaterTaille(tailleSelection, langue) })}</p>
         <Button onClick={() => setAutorises((liste) => [...liste, choix])}>{t("fiche.afficherCarte")}</Button>
@@ -319,7 +432,7 @@ export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
   } else if (couches.length === 0) {
     const pourcentage = chargement.octetsTotal ? Math.min(100, Math.round((chargement.octetsCharges / chargement.octetsTotal) * 100)) : null;
     contenu = (
-      <div className="flex flex-col items-center justify-center gap-3 h-72 rounded-xl border bg-muted/40 p-6" role="status" aria-live="polite">
+      <div className={cn("flex flex-col items-center justify-center gap-3 rounded-xl border bg-muted/40 p-6", hauteur)} role="status" aria-live="polite">
         <Loader2 className="h-8 w-8 animate-spin text-green-600" aria-hidden />
         <p className="text-sm">{t("fiche.carteChargement")}</p>
         {pourcentage !== null && <Progress value={pourcentage} className="w-full max-w-sm" />}
@@ -333,7 +446,7 @@ export const GlobeDonnees = ({ fichiers }: { fichiers: Fichier[] }) => {
       </div>
     );
   } else {
-    contenu = <Globe couches={couches} />;
+    contenu = <Globe couches={couches} hauteur={hauteur} projection={projection} />;
   }
 
   return (
