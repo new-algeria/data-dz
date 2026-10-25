@@ -32,10 +32,11 @@ export const RechercheHero = ({ onRechercher }: { onRechercher: (terme: string) 
           placeholder={t("accueil.recherche.placeholder")}
           aria-label={t("catalogue.rechercheLabel")}
           // `!` : le plugin Flowbite impose bordure, fond et marges à tous les champs.
-          className="min-w-0 flex-1 !border-0 !bg-transparent !px-0 !py-2 !shadow-none text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:!ring-0 dark:text-white dark:placeholder:text-gray-400 sm:text-base"
+          className="min-w-0 flex-1 !border-0 !bg-transparent !px-0 !py-2 !shadow-none text-base text-gray-900 placeholder:text-gray-500 focus:outline-none focus:!ring-0 dark:text-white dark:placeholder:text-gray-400"
         />
-        <Button type="submit" className="shrink-0 bg-emerald-700 text-white hover:bg-emerald-800 group">
-          {t("accueil.recherche.bouton")}
+        {/* Sur mobile, le bouton se réduit à la flèche pour laisser toute la place au champ. */}
+        <Button type="submit" className="shrink-0 bg-emerald-700 text-white hover:bg-emerald-800 group max-sm:w-10 max-sm:px-0" aria-label={t("accueil.recherche.bouton")}>
+          <span className="max-sm:sr-only">{t("accueil.recherche.bouton")}</span>
           <ArrowRight className="transition-transform group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" aria-hidden />
         </Button>
       </form>
