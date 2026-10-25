@@ -161,7 +161,25 @@
     "toutSuperposer": "عرض الكل معا ({{count}})",
     "legende": "مفتاح الخريطة",
     "telechargerFormat": "تنزيل {{nom}} بصيغة {{format}}",
-    "carteIndisponible": "لا يمكن عرض الخريطة على هذا الجهاز (WebGL غير متاح). يبقى تحميل الملفات ممكنًا."
+    "carteIndisponible": "لا يمكن عرض الخريطة على هذا الجهاز (WebGL غير متاح). يبقى تحميل الملفات ممكنًا.",
+    "couvertureCles": {
+      "nb_enregistrements": "عدد الأسطر",
+      "nb_wilayas_couvertes": "الولايات المغطاة",
+      "couverture_pct": "التغطية المقدّرة",
+      "taux_geocodage": "نسبة الترميز الجغرافي",
+      "note_couverture": "ملاحظة حول التغطية",
+      "mis_a_jour_par_la_source": "تحديث المصدر",
+      "derniere_annee_observee": "آخر سنة مرصودة",
+      "premiere_annee_observee": "أول سنة مرصودة",
+      "derniere_annee_projetee": "آخر سنة متوقعة",
+      "nb_series": "عدد السلاسل",
+      "nb_indicateurs": "عدد المؤشرات",
+      "nb_pays": "عدد البلدان",
+      "periode": "الفترة المغطاة",
+      "frequence": "التواتر",
+      "unite": "الوحدة",
+      "paquet": "الحزمة"
+    }
   },
   "attribution": {
     "titre": "الإسناد",
@@ -871,7 +889,18 @@
       "geojson": {
         "nom": "GeoJSON",
         "aide": "الخرائط وQGIS ونظم المعلومات الجغرافية"
+      },
+      "parquet": {
+        "nom": "Parquet",
+        "aide": "تحليل البيانات الضخمة (Python وR وDuckDB)"
       }
+    },
+    "formatsCourts": {
+      "csv": "CSV",
+      "xlsx": "Excel",
+      "json": "JSON",
+      "geojson": "GeoJSON",
+      "parquet": "Parquet"
     }
   },
   "api": {
@@ -950,5 +979,26 @@
     "confirmerTexte": "سيتم حذف «{{titre}}» وإصداراتها وملفاتها. لإزالتها من الموقع دون فقدانها، أخفها بدلًا من ذلك.",
     "confirmerSaisie": "اكتب «{{slug}}» للتأكيد",
     "supprimerDefinitivement": "حذف نهائي"
+  },
+  "visuel": {
+    "titre": "عرض البيانات",
+    "chargement": "جارٍ تحضير العرض…",
+    "carte": "خريطة",
+    "graphique": "رسم بياني",
+    "choixVue": "نوع العرض",
+    "source": "المصدر: {{source}}",
+    "erreur": "تعذّر تحميل بيانات العرض. يمكن دائمًا تنزيل الملفات.",
+    "aideMolette": "انقر على الخريطة للتكبير بعجلة الفأرة",
+    "projection": "إسقاط",
+    "telechargerImage": "تنزيل الصورة (PNG)",
+    "serie": "السلسلة المعروضة",
+    "mesures": "المقاييس المعروضة",
+    "mesure": "المقياس المعروض",
+    "periode": "الفترة",
+    "legende": "مفتاح الرسم البياني",
+    "unite": "الوحدة: {{unite}}",
+    "aucuneValeur": "لا توجد قيم لعرضها لهذا الاختيار.",
+    "sansValeur": "لا توجد بيانات",
+    "titreBarres": "{{mesure}}: أعلى {{nombre}}"
   }
 }

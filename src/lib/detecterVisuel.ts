@@ -517,3 +517,20 @@ export function miniatureGraphique(lignes: Ligne[], visuel: VisuelGraphique): Mi
   if (valeurs.length < 2) return null;
   return { genre: "courbe", valeurs: echantillonner(valeurs, MAX_VALEURS_SPARKLINE) };
 }
+
+/**
+ * Unité affichée après une valeur : la colonne `unite` si elle existe, sinon déduite du nom de la mesure
+ * (« nb_jours » → « jours », « nombre_de_lits » → « lits »).
+ */
+export function uniteDepuisMesure(mesure: string, unite: string | null): string | null {
+  if (unite && unite.trim()) return unite.trim();
+  const correspondance = /^(nb|nbre|nombre)_(?:de_|d_)?(.+)$/.exec(normaliserCle(mesure));
+  return correspondance ? correspondance[2].replace(/_/g, " ") : null;
+}
+
+/** Première valeur non vide d'une colonne (unité d'une série…). */
+export function premiereValeur(lignes: Ligne[], colonne: string | null): string | null {
+  if (!colonne) return null;
+  const ligne = lignes.find((element) => !vide(element[colonne]));
+  return ligne ? String(ligne[colonne]) : null;
+}

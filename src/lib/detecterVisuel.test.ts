@@ -273,3 +273,14 @@ describe("miniatures du catalogue", () => {
     expect(points).toEqual({ genre: "points", points: [[0.565, 0.027]] });
   });
 });
+
+describe("unités", () => {
+  it("lit la colonne unite, sinon la déduit du nom de la mesure", async () => {
+    const { uniteDepuisMesure, premiereValeur } = await import("./detecterVisuel");
+    expect(uniteDepuisMesure("nb_jours", null)).toBe("jours");
+    expect(uniteDepuisMesure("nombre_de_lits", null)).toBe("lits");
+    expect(uniteDepuisMesure("valeur", "% du PIB")).toBe("% du PIB");
+    expect(uniteDepuisMesure("pib", null)).toBeNull();
+    expect(premiereValeur(fmi, "unite")).toBe("% du PIB");
+  });
+});

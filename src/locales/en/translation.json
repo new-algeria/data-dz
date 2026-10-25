@@ -146,7 +146,25 @@
     "toutSuperposer": "Overlay all ({{count}} files)",
     "legende": "Map legend",
     "telechargerFormat": "Download {{nom}} as {{format}}",
-    "carteIndisponible": "The map cannot be displayed on this device (WebGL unavailable). The files can still be downloaded."
+    "carteIndisponible": "The map cannot be displayed on this device (WebGL unavailable). The files can still be downloaded.",
+    "couvertureCles": {
+      "nb_enregistrements": "Number of rows",
+      "nb_wilayas_couvertes": "Wilayas covered",
+      "couverture_pct": "Estimated coverage",
+      "taux_geocodage": "Geocoding rate",
+      "note_couverture": "Coverage note",
+      "mis_a_jour_par_la_source": "Updated by the source",
+      "derniere_annee_observee": "Last observed year",
+      "premiere_annee_observee": "First observed year",
+      "derniere_annee_projetee": "Last projected year",
+      "nb_series": "Number of series",
+      "nb_indicateurs": "Number of indicators",
+      "nb_pays": "Number of countries",
+      "periode": "Period covered",
+      "frequence": "Frequency",
+      "unite": "Unit",
+      "paquet": "Package"
+    }
   },
   "attribution": {
     "titre": "Attribution",
@@ -812,7 +830,18 @@
       "geojson": {
         "nom": "GeoJSON",
         "aide": "Maps, QGIS, GIS"
+      },
+      "parquet": {
+        "nom": "Parquet",
+        "aide": "Large-scale analysis (Python, R, DuckDB)"
       }
+    },
+    "formatsCourts": {
+      "csv": "CSV",
+      "xlsx": "Excel",
+      "json": "JSON",
+      "geojson": "GeoJSON",
+      "parquet": "Parquet"
     }
   },
   "api": {
@@ -891,5 +920,26 @@
     "confirmerTexte": "“{{titre}}”, its versions and files will be deleted. To take it off the site without losing it, hide it instead.",
     "confirmerSaisie": "Type “{{slug}}” to confirm",
     "supprimerDefinitivement": "Delete permanently"
+  },
+  "visuel": {
+    "titre": "Data visual",
+    "chargement": "Preparing the visual…",
+    "carte": "Map",
+    "graphique": "Chart",
+    "choixVue": "Visual type",
+    "source": "Source: {{source}}",
+    "erreur": "The visual's data could not be loaded. The files can still be downloaded.",
+    "aideMolette": "Click the map to zoom with the mouse wheel",
+    "projection": "Projection",
+    "telechargerImage": "Download image (PNG)",
+    "serie": "Series shown",
+    "mesures": "Measures shown",
+    "mesure": "Measure shown",
+    "periode": "Period",
+    "legende": "Chart legend",
+    "unite": "Unit: {{unite}}",
+    "aucuneValeur": "No value to show for this selection.",
+    "sansValeur": "no data",
+    "titreBarres": "{{mesure}}: top {{nombre}}"
   }
 }
