@@ -65,9 +65,9 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 |---|---|---|
 | `/` (ancre `#catalog`, filtres `?q=`, `?category=`, tri `?sort=top\|recent\|name`) | Accueil et catalogue | public |
 | `/datasets/:slug` (ancres `#comments`, `#comment-<id>`) | Fiche d'une donnée, votes, favori, commentaires | public |
-| `/members/:username` | Page publique d'un membre | public |
+| `/members/:username` | Page publique d'un membre (sa propre page redirige vers `/profile`) | public |
 | `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/auth/callback` | Authentification (voir ci-dessous) | public |
-| `/profile` | Mon profil | connecté |
+| `/profile` | Mon profil : ce que voient les autres (en-tête public) + modification, sur une seule page | connecté |
 | `/favorites` | Mes favoris (données suivies) | connecté |
 | `/submit` | Proposer une donnée | connecté |
 | `/my-submissions`, `/my-submissions/:id` | Mes propositions, détail | connecté |
@@ -93,8 +93,8 @@ Les liens des emails et de Google reviennent avec un `?code=` que supabase-js é
 | `/forgot-password` | Envoie le lien de réinitialisation (`resetPasswordForEmail`) |
 | `/reset-password` | Arrivée du lien : événement `PASSWORD_RECOVERY`, puis `updateUser({ password })` ; accessible aussi à un membre connecté |
 | `/auth/callback` | Finalise la session (`?code=` PKCE, ou `?token_hash=&type=` via `verifyOtp`), traduit les erreurs de l'URL, puis renvoie vers `?next=` |
-| `/profile` | Protégée (`RouteProtegee`) : pseudo, nom affiché, bio, site web, avatar |
-| `/members/:username` | Page publique d'un membre ; 404 propre si le pseudo n'existe pas |
+| `/profile` | Protégée (`RouteProtegee`) : en haut l'en-tête public (`EnTeteMembre`, même composant que la page publique, bouton « Copier le lien de mon profil »), puis avatar, pseudo, nom affiché, bio, site web, compte. Il n'y a plus de lien « Ma page publique » |
+| `/members/:username` | Page publique d'un membre (`EnTeteMembre` + `CarteBio`, `src/components/membres/FicheMembre.tsx`) ; 404 propre si le pseudo n'existe pas ; redirige vers `/profile` si c'est le membre connecté |
 
 - **Redirections** : tous les `emailRedirectTo` / `redirectTo` sont construits avec `window.location.origin` (`urlRetour()` dans `src/lib/auth.ts`), donc ils marchent en local, sur les aperçus Vercel et en production. Chaque origine doit être autorisée dans Supabase → Authentication → URL Configuration.
 - **Page d'origine** : `RouteProtegee` envoie vers `/login?next=<page>` ; `suiteSure()` n'accepte que des chemins internes (pas de redirection ouverte).
@@ -177,7 +177,7 @@ Chaque fiche commence, juste sous l'en-tête, par un visuel détecté à partir 
 - **Cache** : la détection est gardée en mémoire et dans `localStorage` (`data-dz:visuels:v1`, clé = slug + fichiers retenus et leur taille). À la visite suivante, une carte issue d'un GeoJSON s'affiche sans retélécharger le JSON.
 
 ## Interface
-- **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème.
+- **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` pleine largeur sur téléphone, à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème. Visiteur : un seul bouton « Se connecter » (l'inscription est proposée sur la page de connexion), jamais deux. Langue et thème sont deux sélecteurs segmentés (« Clair | Sombre ») épinglés en bas du panneau ; « Se déconnecter » est dans « Mon espace ».
 - **Hero de l'accueil** : toujours la hauteur de l'écran (`min-h-[100svh]`), le catalogue n'apparaît qu'au défilement ; sur les écrans peu hauts (`max-height: 820px`), titre et espacements se resserrent pour que tout tienne. Colonne gauche : badge, titre, recherche (`RechercheHero` : remplit la recherche du catalogue puis y fait défiler ; exemples traduits choisis parce qu'ils renvoient des résultats dans les trois langues), bouton « Explorer », chiffres ; à droite le globe, jamais plus haut que l'écran. « Proposer une donnée » n'est pas dans le hero : seulement dans l'en-tête et le menu mobile. La grille du hero est en `grid-cols-1` sur mobile (sinon un titre long élargit la colonne au-delà de l'écran).
 - **Champs de recherche** : texte en 16 px minimum (sinon iOS zoome la page au toucher). Placeholder du hero très court (il doit tenir sur un iPhone SE dans les trois langues) ; sur mobile, le bouton « Chercher » se réduit à sa flèche.
 - **Statistiques du hero** : jeux de données, catégories, lignes et membres inscrits (nombre de lignes de `profils`, lu sans télécharger les lignes), sur une ligne de 4 tuiles (2 × 2 sur mobile). Rien n'est écrit en dur. **Masquées pour l'instant** (bloc commenté dans `Catalogue.tsx`) ; le bouton « Explorer les X jeux de données » garde son compteur.
