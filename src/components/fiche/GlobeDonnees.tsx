@@ -110,20 +110,30 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
   const calquesActifs = useRef<{ calques: string[]; couches: Map<string, Couche> }>({ calques: [], couches: new Map() });
   const premiereArrivee = useRef(true);
   const [prete, setPrete] = useState(false);
+  const [indisponible, setIndisponible] = useState(false);
   const mouvementReduit = useReducedMotion();
 
   // La carte est créée une seule fois ; changer de fichier ne fait qu'échanger ses couches.
   useEffect(() => {
     if (!conteneur.current) return;
-    const carte = new maplibregl.Map({
-      container: conteneur.current,
-      style: styleGlobe,
-      // Vue de départ : la Terre entière, légèrement décalée pour que le globe pivote vers les données.
-      center: mouvementReduit ? [3, 28] : [-35, 18],
-      zoom: 0.8,
-      attributionControl: { compact: true },
-      cooperativeGestures: false,
-    });
+    // Sans WebGL (vieil appareil, accélération matérielle coupée), MapLibre lève une erreur :
+    // on affiche un message au lieu de laisser l'erreur faire tomber toute la fiche.
+    let carte: maplibregl.Map;
+    try {
+      carte = new maplibregl.Map({
+        container: conteneur.current,
+        style: styleGlobe,
+        // Vue de départ : la Terre entière, légèrement décalée pour que le globe pivote vers les données.
+        center: mouvementReduit ? [3, 28] : [-35, 18],
+        zoom: 0.8,
+        attributionControl: { compact: true },
+        cooperativeGestures: false,
+      });
+    } catch (erreur) {
+      console.error("carte :", erreur);
+      setIndisponible(true);
+      return;
+    }
     carte.scrollZoom.disable();
     carte.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
     carte.addControl(new maplibregl.GlobeControl(), "top-right");
@@ -208,6 +218,14 @@ const Globe = ({ couches }: { couches: Couche[] }) => {
     );
     return () => clearTimeout(minuteur);
   }, [couches, prete, mouvementReduit]);
+
+  if (indisponible) {
+    return (
+      <p className="flex h-40 items-center justify-center rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+        {t("fiche.carteIndisponible")}
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-2">
