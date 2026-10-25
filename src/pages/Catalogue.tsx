@@ -30,7 +30,6 @@ import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
 
 const TOUTES_CATEGORIES = "toutes";
-const TRI_PERTINENCE = "relevance";
 const TAILLE_PAGE = 12;
 
 const Catalogue = () => {
@@ -42,10 +41,9 @@ const Catalogue = () => {
   // « category » ; l'ancien paramètre « categorie » reste lu pour les liens déjà partagés.
   const categorie = parametres.get("category") ?? parametres.get("categorie");
   const triDemande = parametres.get("sort");
+  const tri: Tri = estTri(triDemande) ? triDemande : TRI_PAR_DEFAUT;
   const [saisie, setSaisie] = useState(parametres.get("q") ?? "");
   const terme = useValeurDifferee(saisie.trim());
-  // Pendant une recherche, les résultats suivent la pertinence tant qu'aucun autre tri n'est choisi.
-  const tri: Tri | typeof TRI_PERTINENCE = estTri(triDemande) ? triDemande : terme ? TRI_PERTINENCE : TRI_PAR_DEFAUT;
   const [nbVisibles, setNbVisibles] = useState(TAILLE_PAGE);
 
   useEffect(() => {
@@ -106,7 +104,7 @@ const Catalogue = () => {
     setParametres(
       (precedents) => {
         const suivants = new URLSearchParams(precedents);
-        if (valeur === TRI_PERTINENCE || (valeur === TRI_PAR_DEFAUT && !terme)) suivants.delete("sort");
+        if (valeur === TRI_PAR_DEFAUT) suivants.delete("sort");
         else suivants.set("sort", valeur);
         return suivants;
       },
@@ -117,12 +115,12 @@ const Catalogue = () => {
   const reinitialiser = () => {
     setSaisie("");
     // On garde le tri choisi : seuls la recherche et la catégorie sont effacées.
-    setParametres(estTri(triDemande) && triDemande !== TRI_PAR_DEFAUT ? { sort: triDemande } : {}, { replace: true });
+    setParametres(tri === TRI_PAR_DEFAUT ? {} : { sort: tri }, { replace: true });
   };
 
   // Tri dans le navigateur : le catalogue est chargé en entier, et l'ordre alphabétique suit la langue affichée.
   const listeDonnees = useMemo(
-    () => (tri === TRI_PERTINENCE ? requeteCatalogue.data ?? [] : trierDonnees(requeteCatalogue.data ?? [], tri, langue)),
+    () => trierDonnees(requeteCatalogue.data ?? [], tri, langue),
     [requeteCatalogue.data, tri, langue]
   );
   const filtresActifs = Boolean(terme || categorie);
@@ -275,7 +273,6 @@ const Catalogue = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                {terme && <SelectItem value={TRI_PERTINENCE}>{t("catalogue.tri.relevance")}</SelectItem>}
                 {TRIS.map((valeur) => (
                   <SelectItem key={valeur} value={valeur}>
                     {t(`catalogue.tri.${valeur}`)}

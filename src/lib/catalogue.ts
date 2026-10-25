@@ -62,11 +62,7 @@ function fichiersDe(slug: string, ressources: Ressource[]): Fichier[] {
 
 // ---------------------------------------------------------------- Lectures
 
-/**
- * Données publiées du catalogue, filtrées par recherche et catégorie (toutes les pages).
- * Avec une recherche, l'API renvoie les résultats du plus pertinent au moins pertinent (fonction
- * rechercher_datasets, migration 20261025000010) : le site garde cet ordre tant qu'aucun tri n'est choisi.
- */
+/** Données publiées du catalogue, filtrées par recherche plein texte et catégorie (toutes les pages). */
 export async function chargerCatalogue({ terme, categorie }: FiltresCatalogue): Promise<ResumeDonnee[]> {
   const donnees: ResumeDonnee[] = [];
   for (let page = 1; ; page++) {

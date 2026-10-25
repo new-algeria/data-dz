@@ -49,7 +49,7 @@ const { data, error } = await supabase
   .eq("statut", "publie")
   .order("titre->>fr");
 ```
-Recherche du catalogue : `?q=` de l'API, qui s'appuie sur `rpc("rechercher_datasets", { terme })` (migration `20261025000010_recherche.sql`), voir « Recherche » plus bas.
+Recherche : `.textSearch("recherche", terme, { config: "simple", type: "websearch" })`.
 
 ## Sécurité
 - La RLS est active partout : un visiteur ne voit que les données publiées. Ne jamais essayer de la contourner.
@@ -140,14 +140,6 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Notifications** (`ClocheNotifications` dans l'en-tête) : 20 dernières et nombre de non lues, rafraîchies à l'ouverture et toutes les 60 secondes ; clic → marquée lue puis ouverture de `lien` (chemins internes seulement) ; « Tout marquer comme lu ». Types : `nouvelle_soumission`, `revue`, `publiee`, `reponse`, `nouvelle_version`.
 - **Clés React Query** : `["mes-votes", uid]`, `["mes-favoris", uid]`, `["favoris", uid]`, `["commentaires", datasetId]`, `["notifications", uid]`.
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
-
-## Recherche
-Le site envoie la recherche à l'API (`/v1/datasets?q=`, `chargerCatalogue()`), comme le reste du catalogue : il n'appelle jamais `rechercher_datasets` lui-même. L'API utilise cette fonction de la base (migration `20261025000010_recherche.sql`) et renvoie les résultats du plus pertinent au moins pertinent quand aucun tri n'est demandé.
-
-- Chaque mot doit apparaître quelque part ; sans accents ni majuscules ; en début de mot (« pharmacie » → « pharmacies ») ; au milieu d'un mot de 4 lettres ou plus (« صيدليات » → « الصيدليات ») ; une faute de frappe est tolérée dans le titre, les mots-clés, la catégorie et la source (`pg_trgm`).
-- Contenu parcouru : titres fr / en / ar, mots-clés, catégorie, source (poids fort), puis descriptions, README, notes de version, noms des colonnes, valeurs de l'aperçu, licence, `infos_source`.
-- Tri : « Pertinence » (`relevance`, sans paramètre `sort` dans l'URL) tant qu'une recherche est active et qu'aucun autre tri n'est choisi ; le site garde alors l'ordre renvoyé par l'API.
-- Fonction en `security invoker` : la RLS décide de ce qui est visible.
 
 ## Gestion des membres (admin)
 Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateur_id, nouveau_role)` (security definer). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
