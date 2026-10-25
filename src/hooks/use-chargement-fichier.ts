@@ -57,6 +57,11 @@ async function chargerUn(source: SourceJSON, signal: AbortSignal, progression: (
   return donnees;
 }
 
+/** Télécharge un fichier JSON (sans suivi de progression), en profitant du cache de la visite. */
+export function chargerJSON(source: SourceJSON, signal?: AbortSignal): Promise<unknown> {
+  return chargerUn(source, signal ?? new AbortController().signal, () => {});
+}
+
 /** Télécharge un ou plusieurs fichiers JSON en parallèle, avec une progression globale (utile pour les gros GeoJSON). */
 export function useChargementJSON<T>(sources: SourceJSON[], actif: boolean): EtatChargement<T> {
   const cle = sources.map((source) => source.url).join("|");
