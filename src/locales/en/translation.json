@@ -8,12 +8,13 @@
     "fermerMenu": "Close the menu",
     "menu": "Menu",
     "menuDescription": "Navigation, account, language and theme",
-    "inscription": "Sign up",
     "explorer": "Explore",
     "catalogue": "Data catalogue",
     "monEspace": "My space",
     "administration": "Administration",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "langue": "Language",
+    "theme": "Theme"
   },
   "langue": {
     "choisir": "Choose language"
@@ -21,7 +22,9 @@
   "theme": {
     "basculer": "Toggle theme",
     "passerClair": "Switch to light mode",
-    "passerSombre": "Switch to dark mode"
+    "passerSombre": "Switch to dark mode",
+    "clair": "Light",
+    "sombre": "Dark"
   },
   "footer": {
     "projet": "An open source project by",
@@ -199,7 +202,6 @@
     "deconnexion": "Sign out",
     "menuCompte": "Account menu",
     "monProfil": "My profile",
-    "maPagePublique": "My public page",
     "verificationSession": "Checking your session…",
     "connexionTitre": "Welcome back 👋",
     "connexionSousTitre": "Sign in to manage your profile.",
@@ -246,7 +248,7 @@
   },
   "profil": {
     "titre": "My profile",
-    "sousTitre": "This information is shown on your public page.",
+    "sousTitre": "What other members see is at the top of the page; edit your details below.",
     "photo": "Profile picture",
     "changerPhoto": "Change picture",
     "retirerPhoto": "Remove",
@@ -265,11 +267,12 @@
     "enregistrer": "Save",
     "enregistre": "Profile saved ✅",
     "compte": "Account",
-    "changerMotDePasse": "Change my password"
+    "changerMotDePasse": "Change my password",
+    "copierLien": "Copy my profile link",
+    "lienCopie": "Link copied!"
   },
   "membre": {
     "description": "{{nom}}'s profile on data-dz.",
-    "modifier": "Edit my profile",
     "pasDeBio": "This member has not written a bio yet.",
     "inscritDepuis": "Member since {{date}}",
     "erreur": "This profile cannot be loaded right now.",

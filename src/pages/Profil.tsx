@@ -2,12 +2,13 @@ import { useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } fr
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Camera, Check, ExternalLink, KeyRound, Loader2, Trash2, X } from "lucide-react";
+import { Camera, Check, KeyRound, Link2, Loader2, Trash2, X } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { MessageAuth } from "@/components/auth/MessageAuth";
+import { EnTeteMembre } from "@/components/membres/FicheMembre";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -324,6 +325,31 @@ const FormulaireProfil = ({ profil }: { profil: ProfilMembre }) => {
   );
 };
 
+/** Copie le lien de la page publique du membre (celle que voient les autres). */
+const BoutonLienPublic = ({ pseudo }: { pseudo: string }) => {
+  const { t } = useTranslation();
+  const [copie, setCopie] = useState(false);
+  const copier = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${routes.membre(pseudo)}`);
+      setCopie(true);
+      setTimeout(() => setCopie(false), 2000);
+    } catch {
+      // Presse-papiers refusé : rien à faire, le pseudo reste affiché.
+    }
+  };
+  return (
+    <Button type="button" variant="outline" size="sm" className="gap-2 bg-white/70 dark:bg-white/5" onClick={copier}>
+      {copie ? <Check className="h-4 w-4 text-emerald-600" /> : <Link2 className="h-4 w-4" />}
+      {copie ? t("profil.lienCopie") : t("profil.copierLien")}
+    </Button>
+  );
+};
+
+/**
+ * Mon profil : une seule page. En haut, le profil tel que les autres le voient (même en-tête que la page
+ * publique) ; en dessous, la photo, les informations et le compte, modifiables.
+ */
 const Profil = () => {
   const { t } = useTranslation();
   const { profil, utilisateur, chargementProfil } = useAuth();
@@ -332,47 +358,37 @@ const Profil = () => {
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
       <CustomMetaTags title={`${t("profil.titre")} - data-dz`} description={t("profil.titre")} path={routes.profil} />
       <Navbar />
-      <main className="container mx-auto max-w-3xl flex-1 px-4 pb-16 pt-24">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("profil.titre")}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{t("profil.sousTitre")}</p>
-          </div>
-          {profil && (
-            <Button asChild variant="outline" size="sm" className="gap-2">
-              <Link to={routes.membre(profil.pseudo)}>
-                <ExternalLink className="h-4 w-4" />
-                {t("auth.maPagePublique")}
-              </Link>
-            </Button>
-          )}
-        </div>
-
+      <main className="flex-1">
         {chargementProfil || !profil ? (
-          <div className="space-y-6" aria-busy="true">
+          <div className="container mx-auto max-w-3xl space-y-6 px-4 pb-16 pt-24" aria-busy="true">
+            <Skeleton className="h-32 rounded-2xl" />
             <Skeleton className="h-40 rounded-2xl" />
             <Skeleton className="h-96 rounded-2xl" />
           </div>
         ) : (
-          <div className="space-y-6">
-            <SectionAvatar profil={profil} />
-            {/* La clé recrée le formulaire si le profil change d'identité (autre compte). */}
-            <FormulaireProfil key={profil.id} profil={profil} />
-            <Carte titre={t("profil.compte")}>
-              <dl className="space-y-1 text-sm">
-                <dt className="text-muted-foreground">{t("auth.email")}</dt>
-                <dd className="font-medium" dir="ltr">
-                  {utilisateur?.email}
-                </dd>
-              </dl>
-              <Button asChild variant="outline" className="mt-4 gap-2">
-                <Link to={routes.nouveauMotDePasse}>
-                  <KeyRound className="h-4 w-4" />
-                  {t("profil.changerMotDePasse")}
-                </Link>
-              </Button>
-            </Carte>
-          </div>
+          <>
+            <EnTeteMembre membre={profil} action={<BoutonLienPublic pseudo={profil.pseudo} />} />
+            <div className="container mx-auto max-w-3xl space-y-6 px-4 pb-16 pt-6">
+              <p className="text-sm text-muted-foreground">{t("profil.sousTitre")}</p>
+              <SectionAvatar profil={profil} />
+              {/* La clé recrée le formulaire si le profil change d'identité (autre compte). */}
+              <FormulaireProfil key={profil.id} profil={profil} />
+              <Carte titre={t("profil.compte")}>
+                <dl className="space-y-1 text-sm">
+                  <dt className="text-muted-foreground">{t("auth.email")}</dt>
+                  <dd className="font-medium" dir="ltr">
+                    {utilisateur?.email}
+                  </dd>
+                </dl>
+                <Button asChild variant="outline" className="mt-4 gap-2">
+                  <Link to={routes.nouveauMotDePasse}>
+                    <KeyRound className="h-4 w-4" />
+                    {t("profil.changerMotDePasse")}
+                  </Link>
+                </Button>
+              </Carte>
+            </div>
+          </>
         )}
       </main>
       <Footer />
