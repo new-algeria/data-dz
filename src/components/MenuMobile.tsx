@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  Braces,
   Database,
   FilePlus2,
   Inbox,
@@ -146,6 +147,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           <Titre>{t("navbar.explorer")}</Titre>
           <Lien vers={routes.catalogue} icone={Database}>
             {t("navbar.catalogue")}
+          </Lien>
+          <Lien vers={routes.api} icone={Braces}>
+            {t("navbar.apiLong")}
           </Lien>
 
           {session && (
