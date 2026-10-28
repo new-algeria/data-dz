@@ -76,6 +76,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/moderation/datasets` | Statut des datasets (publié / brouillon / archivé) | modérateur / admin |
 | `/admin/users` | Gestion des membres et de leurs rôles | admin |
 | `/admin/datasets` | Gestion des données (créer, modifier, masquer, supprimer, illustration, fichiers) | admin |
+| `/api` | Page de l'API publique (thème violet) : adresse, exemples, routes, liste de toutes les données avec leur URL API | public |
 | `/privacy`, `/terms` | Pages légales | public |
 
 - **Anciennes URL françaises** (`/donnees/:slug`, `/dataset/:slug`, `/membres/:pseudo`, `/profil`, `/connexion`, `/inscription`, `/mot-de-passe-oublie`, `/nouveau-mot-de-passe`, `/auth/retour`, `/confidentialite`, `/conditions`) : redirection vers la nouvelle URL en gardant `?…` et `#…` (indispensable pour les liens d'email déjà envoyés).
@@ -175,6 +176,12 @@ Chaque fiche commence, juste sous l'en-tête, par un visuel détecté à partir 
 - Jamais tracés : identifiants, codes, latitude, longitude (`MOTIF_EXCLU`).
 - **Affichage** : hauteur fixe (`HAUTEUR_VISUEL` : 260 px, 380 px à partir de `md`) avec squelette, mention « Source : … », carte en projection plane (le bouton globe reste), axes inversés en arabe. MapLibre et Recharts sont chargés à la demande (`lazy`).
 - **Cache** : la détection est gardée en mémoire et dans `localStorage` (`data-dz:visuels:v1`, clé = slug + fichiers retenus et leur taille). À la visite suivante, une carte issue d'un GeoJSON s'affiche sans retélécharger le JSON.
+
+## Page API (`/api`)
+Code : `src/pages/PageApi.tsx`. Couleur de l'API sur tout le site : **violet** (comme `BoutonApi` sur la fiche).
+- En-tête : « data-dz / API » (le « / API » violet n'apparaît à droite du logo que sur cette page) ; ailleurs, lien « API » dans l'en-tête (grand écran), dans « Explorer » du menu mobile et dans le pied de page.
+- Contenu : adresse de base `${URL_API}/v1` à copier, liens vers la documentation interactive (`/docs`) et la spécification (`/openapi.json`), trois points clés (sans clé, formats, limites 120 / 30 appels par minute), exemple curl / JavaScript / Python avec une vraie donnée, routes principales, puis **toutes les données** (même requête que le catalogue, clé `["catalogue", "", null]`), filtrables, avec leur URL API à copier, « Voir le JSON » (`/data?limit=100`) et le lien vers la fiche.
+- Le code des exemples passe à la ligne (`whitespace-pre-wrap`) et les colonnes de grille ont `min-w-0` : sinon une longue URL élargit la page sur mobile.
 
 ## Interface
 - **En-tête** (`Navbar.tsx`) : « Proposer une donnée » mis en avant pour tous (GitHub n'est plus dans l'en-tête, seulement dans le pied de page). En dessous de `md`, cloche + menu hamburger (`MenuMobile.tsx`, panneau `Sheet` pleine largeur sur téléphone, à droite, à gauche en arabe) qui regroupe navigation, compte, modération, langue et thème. Visiteur : un seul bouton « Se connecter » (l'inscription est proposée sur la page de connexion), jamais deux. Langue et thème sont deux sélecteurs segmentés (« Clair | Sombre ») épinglés en bas du panneau ; « Se déconnecter » est dans « Mon espace ».
