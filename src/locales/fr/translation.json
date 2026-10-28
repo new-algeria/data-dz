@@ -14,7 +14,9 @@
     "administration": "Administration",
     "preferences": "Préférences",
     "langue": "Langue",
-    "theme": "Thème"
+    "theme": "Thème",
+    "api": "API",
+    "apiLong": "API publique"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -944,5 +946,56 @@
     "aucuneValeur": "Aucune valeur à afficher pour ce choix.",
     "sansValeur": "pas de donnée",
     "titreBarres": "{{mesure}} : les {{nombre}} premiers"
+  },
+  "pageApi": {
+    "badge": "API publique et gratuite",
+    "titre": "API data-dz",
+    "sousTitre": "Toutes les données du site en JSON, à utiliser dans vos applications, vos analyses ou vos projets d'études. Chaque jeu de données a son adresse.",
+    "base": "Adresse",
+    "copierBase": "Copier l'adresse de l'API",
+    "docs": "Documentation interactive",
+    "openapi": "Spécification OpenAPI",
+    "points": {
+      "sansCle": {
+        "titre": "Sans clé",
+        "texte": "Aucune inscription : il suffit d'appeler l'adresse."
+      },
+      "formats": {
+        "titre": "JSON, CSV, Excel, GeoJSON",
+        "texte": "Les fichiers sont convertis à la demande."
+      },
+      "limites": {
+        "titre": "Usage raisonnable",
+        "texte": "120 appels par minute, 30 pour les données détaillées."
+      }
+    },
+    "demarrer": "Démarrer en 30 secondes",
+    "demarrerTexte": "Un exemple prêt à copier, avec une vraie donnée du catalogue.",
+    "langage": "Langage de l'exemple",
+    "langages": {
+      "curl": "curl",
+      "javascript": "JavaScript",
+      "python": "Python"
+    },
+    "copierCode": "Copier l'exemple",
+    "routes": "Routes principales",
+    "routesDetail": {
+      "liste": "Liste des données publiées (recherche, catégorie, tri, pagination).",
+      "fiche": "Fiche d'une donnée : description, source, licence, colonnes et fichiers.",
+      "donnees": "Les enregistrements en JSON, par pages de 1 000 au plus.",
+      "telechargement": "Téléchargement du fichier en CSV, Excel (xlsx), JSON ou GeoJSON.",
+      "categories": "Catégories du catalogue.",
+      "stats": "Chiffres du site (données, lignes, membres)."
+    },
+    "donnees": "Toutes les données et leur API",
+    "donneesTexte": "Chaque donnée du catalogue, avec son adresse dans l'API.",
+    "nbDonnees_one": "{{count}} donnée disponible dans l'API",
+    "nbDonnees_other": "{{count}} données disponibles dans l'API",
+    "filtrer": "Filtrer les données…",
+    "aucune": "Aucune donnée ne correspond.",
+    "voirJson": "Voir le JSON",
+    "voirFiche": "Fiche",
+    "copie": "Copié dans le presse-papiers",
+    "licence": "Chaque donnée reste sous la licence de sa source : pensez à la citer (indiquée sur sa fiche et dans la réponse de l'API)."
   }
 }

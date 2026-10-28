@@ -3,7 +3,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const URL_SITE = "https://www.data-dz.com";
-const PAGES_FIXES = ["/", "/privacy", "/terms"];
+const PAGES_FIXES = ["/", "/api", "/privacy", "/terms"];
 
 /** Lit les variables VITE_* depuis l'environnement (Vercel) ou, en local, depuis .env.local / .env. */
 function lireVariable(nom) {

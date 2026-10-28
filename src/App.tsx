@@ -30,6 +30,7 @@ const ModerationDatasets = lazy(() => import("./pages/moderation/ModerationDatas
 const Favoris = lazy(() => import("./pages/communaute/Favoris"));
 const GestionMembres = lazy(() => import("./pages/admin/GestionMembres"));
 const GestionDonnees = lazy(() => import("./pages/admin/GestionDonnees"));
+const PageApi = lazy(() => import("./pages/PageApi"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -108,6 +109,7 @@ function App() {
             }
           />
 
+          <Route path={routes.api} element={<PageApi />} />
           <Route path={routes.confidentialite} element={<Confidentialite />} />
           <Route path={routes.conditions} element={<Conditions />} />
 

@@ -64,6 +64,10 @@ const Footer = () => {
       </a>
 
       <nav aria-label={t("legal.lienConditions")} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
+        <Link to={routes.api} className="hover:text-foreground hover:underline">
+          {t("navbar.apiLong")}
+        </Link>
+        <span aria-hidden>·</span>
         <Link to={routes.confidentialite} className="hover:text-foreground hover:underline">
           {t("legal.lienConfidentialite")}
         </Link>

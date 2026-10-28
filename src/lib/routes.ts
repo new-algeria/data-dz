@@ -23,6 +23,7 @@ export const routes = {
   favoris: "/favorites",
   adminMembres: "/admin/users",
   adminDonnees: "/admin/datasets",
+  api: "/api",
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

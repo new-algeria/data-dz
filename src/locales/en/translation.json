@@ -14,7 +14,9 @@
     "administration": "Administration",
     "preferences": "Preferences",
     "langue": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "api": "API",
+    "apiLong": "Public API"
   },
   "langue": {
     "choisir": "Choose language"
@@ -944,5 +946,56 @@
     "aucuneValeur": "No value to show for this selection.",
     "sansValeur": "no data",
     "titreBarres": "{{mesure}}: top {{nombre}}"
+  },
+  "pageApi": {
+    "badge": "Free public API",
+    "titre": "data-dz API",
+    "sousTitre": "All the site's data as JSON, ready for your apps, analyses or study projects. Every dataset has its own address.",
+    "base": "Base URL",
+    "copierBase": "Copy the API address",
+    "docs": "Interactive documentation",
+    "openapi": "OpenAPI specification",
+    "points": {
+      "sansCle": {
+        "titre": "No key",
+        "texte": "No sign-up: just call the address."
+      },
+      "formats": {
+        "titre": "JSON, CSV, Excel, GeoJSON",
+        "texte": "Files are converted on demand."
+      },
+      "limites": {
+        "titre": "Fair use",
+        "texte": "120 calls per minute, 30 for detailed records."
+      }
+    },
+    "demarrer": "Get started in 30 seconds",
+    "demarrerTexte": "A ready-to-copy example using a real dataset from the catalogue.",
+    "langage": "Example language",
+    "langages": {
+      "curl": "curl",
+      "javascript": "JavaScript",
+      "python": "Python"
+    },
+    "copierCode": "Copy the example",
+    "routes": "Main routes",
+    "routesDetail": {
+      "liste": "Published datasets (search, category, sort, pagination).",
+      "fiche": "A dataset: description, source, licence, columns and files.",
+      "donnees": "Records as JSON, in pages of up to 1,000.",
+      "telechargement": "Download the file as CSV, Excel (xlsx), JSON or GeoJSON.",
+      "categories": "Catalogue categories.",
+      "stats": "Site figures (datasets, rows, members)."
+    },
+    "donnees": "All datasets and their API",
+    "donneesTexte": "Every dataset in the catalogue, with its API address.",
+    "nbDonnees_one": "{{count}} dataset available in the API",
+    "nbDonnees_other": "{{count}} datasets available in the API",
+    "filtrer": "Filter datasets…",
+    "aucune": "No dataset matches.",
+    "voirJson": "View JSON",
+    "voirFiche": "Page",
+    "copie": "Copied to clipboard",
+    "licence": "Each dataset keeps its source's licence: please credit it (shown on its page and in the API response)."
   }
 }

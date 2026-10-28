@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Moon, Plus, ShieldCheck, Sun } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Braces, Moon, Plus, ShieldCheck, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -40,6 +40,8 @@ export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
   const { session } = useAuth();
+  const { pathname } = useLocation();
+  const surPageApi = pathname === routes.api;
   const [defile, setDefile] = useState(false);
 
   useEffect(() => {
@@ -59,16 +61,24 @@ export const Navbar = () => {
       )}
     >
       <nav className="container mx-auto flex h-16 items-center justify-between gap-3 px-4" aria-label="data-dz">
-        <Link to={routes.accueil} className="group flex shrink-0 items-center gap-2.5" aria-label="data-dz">
-          <img
-            src={ICONE_DATA_DZ}
-            alt=""
-            className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[20deg]"
-          />
-          <span className="whitespace-nowrap text-xl font-bold tracking-tight text-gray-900 dark:text-white" dir="ltr">
-            data<span className="text-emerald-600 dark:text-emerald-400">-dz</span>
-          </span>
-        </Link>
+        <div className="flex shrink-0 items-center gap-2" dir="ltr">
+          <Link to={routes.accueil} className="group flex shrink-0 items-center gap-2.5" aria-label="data-dz">
+            <img
+              src={ICONE_DATA_DZ}
+              alt=""
+              className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[20deg]"
+            />
+            <span className="whitespace-nowrap text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              data<span className="text-emerald-600 dark:text-emerald-400">-dz</span>
+            </span>
+          </Link>
+          {/* Sur la page API : « data-dz / API », en violet comme tout ce qui touche à l'API. */}
+          {surPageApi && (
+            <Link to={routes.api} className="whitespace-nowrap text-xl font-bold tracking-tight text-violet-600 dark:text-violet-400">
+              <span className="font-light text-gray-400 dark:text-gray-500">/</span> API
+            </Link>
+          )}
+        </div>
 
         {/* Grands écrans : tout est visible. Petits écrans : cloche + menu hamburger (le reste est dans le menu). */}
         <div className="flex items-center gap-1 lg:gap-2">
@@ -80,6 +90,14 @@ export const Navbar = () => {
               </Link>
             </Button>
             {session && <LienModeration />}
+            {!surPageApi && (
+              <Button asChild variant="ghost" size="sm" className="gap-1.5 text-violet-700 hover:bg-violet-50 hover:text-violet-800 dark:text-violet-300 dark:hover:bg-violet-500/10">
+                <Link to={routes.api}>
+                  <Braces className="h-4 w-4" />
+                  {t("navbar.api")}
+                </Link>
+              </Button>
+            )}
           </div>
           {session && <ClocheNotifications />}
           <div className="hidden items-center gap-1 md:flex lg:gap-2">
