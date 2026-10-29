@@ -1,4 +1,5 @@
-import { lazy, Suspense, useState } from "react";
+import { Suspense, useState } from "react";
+import { lazyAvecRechargement } from "@/lib/rechargement";
 import { useTranslation } from "react-i18next";
 import { ChartLine, Map as IconeCarte } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,9 +10,9 @@ import { useVisuel, type VueVisuel } from "@/hooks/use-visuel";
 import type { Fichier } from "@/lib/types";
 
 // MapLibre et Recharts ne sont chargés que sur les fiches qui en ont besoin.
-const GlobeDonnees = lazy(() => import("@/components/fiche/GlobeDonnees"));
-const CarteDepuisLignes = lazy(() => import("./CarteDepuisLignes"));
-const GraphiqueVisuel = lazy(() => import("./GraphiqueVisuel"));
+const GlobeDonnees = lazyAvecRechargement(() => import("@/components/fiche/GlobeDonnees"));
+const CarteDepuisLignes = lazyAvecRechargement(() => import("./CarteDepuisLignes"));
+const GraphiqueVisuel = lazyAvecRechargement(() => import("./GraphiqueVisuel"));
 
 /** Hauteur fixe du visuel : 260 px sur mobile, 380 px à partir de md. */
 export const HAUTEUR_VISUEL = "h-[260px] md:h-[380px]";

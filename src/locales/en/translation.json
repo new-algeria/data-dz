@@ -289,6 +289,9 @@
     "retourAccueil": "Back to home"
   },
   "erreurs": {
+    "pageTitre": "This page could not be displayed",
+    "pageTexte": "The site may have been updated during your visit. Reload the page to get the latest version.",
+    "recharger": "Reload the page",
     "identifiantsInvalides": "Incorrect email or password.",
     "emailNonConfirme": "Your email is not confirmed yet: click the link we emailed you.",
     "compteExistant": "An account already exists with this email.",
