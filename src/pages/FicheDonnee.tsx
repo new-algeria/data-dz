@@ -101,7 +101,13 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
   return (
     <>
-      <CustomMetaTags title={`${titre} - data-dz`} description={description || titre} path={routes.donnee(donnee.slug)} />
+      {/* Image de partage générée pour cette donnée (api/og.ts) ; les robots des réseaux sociaux reçoivent api/partage.ts. */}
+      <CustomMetaTags
+        title={`${titre} - data-dz`}
+        description={description || titre}
+        path={routes.donnee(donnee.slug)}
+        image={`/api/og?slug=${encodeURIComponent(donnee.slug)}`}
+      />
 
       <EnTeteFiche donnee={donnee} />
 
