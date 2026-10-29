@@ -8,7 +8,9 @@ export class ErreurApi extends Error {
   constructor(
     readonly statut: number,
     readonly code: string,
-    message: string
+    message: string,
+    /** Précisions de l'API (ex. `{ slug }` pour une source qui existe déjà). */
+    readonly details?: unknown
   ) {
     super(message);
   }
@@ -31,7 +33,7 @@ export async function appelerApi<T>(chemin: string, { authentifie, headers, ...i
   if (reponse.status === 204) return undefined as T;
   const corps = await reponse.json().catch(() => null);
   if (!reponse.ok) {
-    throw new ErreurApi(reponse.status, corps?.code ?? "http_error", corps?.title ?? `HTTP ${reponse.status}`);
+    throw new ErreurApi(reponse.status, corps?.code ?? "http_error", corps?.title ?? `HTTP ${reponse.status}`, corps?.details);
   }
   return corps as T;
 }

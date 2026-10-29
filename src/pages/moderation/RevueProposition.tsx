@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { ArrowLeft, CheckCircle2, ClipboardList, FolderCog, Loader2, MessageSquare, PencilLine, Rocket, XCircle, type LucideIcon } from "lucide-react";
 import { MiseEnPage, Carte } from "@/components/MiseEnPage";
 import { AvatarMembre } from "@/components/AvatarMembre";
+import { ChoixSource } from "@/components/admin/ChoixSource";
+import { useSourcesAdmin } from "@/hooks/use-sources-admin";
 import { EtatErreur } from "@/components/EtatErreur";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { FichiersRevue } from "@/components/moderation/FichiersRevue";
@@ -25,6 +27,7 @@ import { cleErreur } from "@/lib/erreurs";
 import { champsVides, valeursDepuisSoumission } from "@/lib/formulaire-soumission";
 import { localeNombres } from "@/lib/fichiers";
 import { routes } from "@/lib/routes";
+import { sourceCorrespondante, SOURCE_COMMUNAUTE } from "@/lib/sources";
 import {
   chargerSoumission,
   deciderSoumission,
@@ -150,11 +153,20 @@ const BoutonMiseEnLigne = ({ soumission, surMiseEnLigne }: { soumission: Soumiss
   const { t } = useTranslation();
   const langue = useLangue();
   const [envoi, setEnvoi] = useState(false);
+  const nouvelleDonnee = soumission.type === "nouvelle_donnee";
+  const { data: sources = [] } = useSourcesAdmin();
+  // La source tapée par l'auteur (texte libre) est reconnue si elle existe déjà ; sinon « communauté », à changer.
+  const correspondance = useMemo(
+    () => sourceCorrespondante(sources, soumission.source_nom, soumission.source_url),
+    [sources, soumission.source_nom, soumission.source_url]
+  );
+  const [sourceChoisie, setSourceChoisie] = useState<string | null>(null);
+  const source = sourceChoisie ?? correspondance?.slug ?? SOURCE_COMMUNAUTE;
 
   const mettreEnLigne = async () => {
     setEnvoi(true);
     try {
-      const resultat = await mettreEnLigneProposition(soumission.id);
+      const resultat = await mettreEnLigneProposition(soumission.id, nouvelleDonnee ? source : undefined);
       toast.success(t("moderation.revue.miseEnLigneFaite", { titre: texteTraduit(soumission.titre, langue) }));
       if (resultat.fichiers_ignores.length > 0) toast.warning(t("moderation.revue.fichiersIgnores", { noms: resultat.fichiers_ignores.join(", ") }));
       await surMiseEnLigne();
@@ -166,12 +178,32 @@ const BoutonMiseEnLigne = ({ soumission, surMiseEnLigne }: { soumission: Soumiss
   };
 
   return (
-    <div className="mt-3 space-y-1.5">
-      <Button type="button" className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800" disabled={envoi} onClick={() => void mettreEnLigne()}>
-        {envoi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Rocket className="h-4 w-4" />}
-        {t("moderation.revue.mettreEnLigne")}
-      </Button>
-      <p className="text-xs opacity-80">{t("moderation.revue.mettreEnLigneAide")}</p>
+    <div className="mt-3 space-y-3">
+      {nouvelleDonnee && (
+        <div className="grid max-w-sm gap-1.5">
+          <Label htmlFor="source-mise-en-ligne">{t("moderation.revue.sourceDonnee")}</Label>
+          <ChoixSource
+            id="source-mise-en-ligne"
+            valeur={source}
+            onChange={setSourceChoisie}
+            suggestion={{ nom: soumission.source_nom, url: soumission.source_url }}
+          />
+          {soumission.source_nom && sourceChoisie === null && (
+            <p className="text-xs opacity-80" dir="auto">
+              {correspondance
+                ? t("moderation.revue.sourceReconnue", { nom: correspondance.nom })
+                : t("moderation.revue.sourceInconnue", { nom: soumission.source_nom })}
+            </p>
+          )}
+        </div>
+      )}
+      <div className="space-y-1.5">
+        <Button type="button" className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800" disabled={envoi} onClick={() => void mettreEnLigne()}>
+          {envoi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Rocket className="h-4 w-4" />}
+          {t("moderation.revue.mettreEnLigne")}
+        </Button>
+        <p className="text-xs opacity-80">{t("moderation.revue.mettreEnLigneAide")}</p>
+      </div>
     </div>
   );
 };
