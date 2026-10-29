@@ -289,6 +289,9 @@
     "retourAccueil": "Retour à l'accueil"
   },
   "erreurs": {
+    "pageTitre": "Cette page n'a pas pu s'afficher",
+    "pageTexte": "Le site a peut-être été mis à jour pendant votre visite. Rechargez la page pour obtenir la dernière version.",
+    "recharger": "Recharger la page",
     "identifiantsInvalides": "Email ou mot de passe incorrect.",
     "emailNonConfirme": "Votre email n'est pas encore confirmé : cliquez sur le lien reçu par email.",
     "compteExistant": "Un compte existe déjà avec cet email.",

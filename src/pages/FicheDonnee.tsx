@@ -1,4 +1,5 @@
-import { lazy, Suspense, type ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
+import { lazyAvecRechargement } from "@/lib/rechargement";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -33,7 +34,7 @@ import type { Donnee } from "@/lib/types";
 import { routes } from "@/lib/routes";
 
 // MapLibre n'est chargé que sur les fiches qui affichent un globe.
-const GlobeDonnees = lazy(() => import("@/components/fiche/GlobeDonnees"));
+const GlobeDonnees = lazyAvecRechargement(() => import("@/components/fiche/GlobeDonnees"));
 
 const Section = ({
   id,
