@@ -4,13 +4,15 @@ interface MetaTagsProps {
   title: string;
   description: string;
   path?: string;
+  /** Image d'aperçu (1200 × 630) ; par défaut celle du site. */
+  image?: string;
 }
 
 const urlSite = "https://www.data-dz.com";
 
-export const CustomMetaTags = ({ title, description, path = "" }: MetaTagsProps) => {
+export const CustomMetaTags = ({ title, description, path = "", image }: MetaTagsProps) => {
   const urlComplete = `${urlSite}${path}`;
-  const urlImage = `${urlSite}/og-image.png`;
+  const urlImage = image ?? `${urlSite}/og-image.png`;
 
   return (
     <Helmet>

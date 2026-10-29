@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Database, Scale, Building2, MessageSquare } from "lucide-react";
+import { Database, Scale, Building2, MessageSquare, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
@@ -9,6 +9,7 @@ import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
+import { estRecente, JOURS_RECENTS } from "@/lib/recents";
 import { useLangue } from "@/hooks/use-langue";
 import type { Categorie, ResumeDonnee } from "@/lib/types";
 import { routes } from "@/lib/routes";
@@ -23,6 +24,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const langue = useLangue();
   const nbLignes = donnee.versions?.nb_lignes;
   const description = texteTraduit(donnee.description, langue);
+  const recente = estRecente(donnee);
 
   return (
     // Le lien du titre couvre toute la carte (after:inset-0) ; les boutons de vote et de favori passent au-dessus.
@@ -46,7 +48,20 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
           className="pointer-events-none absolute -top-2 end-0 -z-10 h-32 w-52 object-cover opacity-40 transition-opacity duration-300 [mask-image:radial-gradient(ellipse_at_top_right,black_35%,transparent_75%)] rtl:[mask-image:radial-gradient(ellipse_at_top_left,black_35%,transparent_75%)] brightness-110 group-hover:opacity-60 dark:opacity-25 dark:brightness-95 dark:group-hover:opacity-40"
         />
         <CardHeader className="pb-3">
-          {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="mb-2" />}
+          {(categorie || recente) && (
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              {recente && (
+                <span
+                  className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300"
+                  title={t("catalogue.recenteAide", { count: JOURS_RECENTS })}
+                >
+                  <Sparkles className="h-3.5 w-3.5" aria-hidden />
+                  {t("catalogue.recente")}
+                </span>
+              )}
+              {categorie && <BadgeCategorie nom={categorie.nom} icone={categorie.icone} />}
+            </div>
+          )}
           <CardTitle className="text-lg font-semibold leading-snug">
             <Link to={routes.donnee(donnee.slug)} className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none">
               {texteTraduit(donnee.titre, langue)}

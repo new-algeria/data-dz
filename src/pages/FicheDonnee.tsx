@@ -31,6 +31,7 @@ import { texteTraduit } from "@/lib/traduction";
 import { localeNombres, trierFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee } from "@/lib/types";
+import { urlApercu } from "@/lib/api";
 import { routes } from "@/lib/routes";
 
 // MapLibre n'est chargé que sur les fiches qui affichent un globe.
@@ -102,7 +103,12 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
   return (
     <>
-      <CustomMetaTags title={`${titre} - data-dz`} description={description || titre} path={routes.donnee(donnee.slug)} />
+      <CustomMetaTags
+        title={`${titre} - data-dz`}
+        description={description || titre}
+        path={routes.donnee(donnee.slug)}
+        image={urlApercu(donnee.slug, langue, donnee.mis_a_jour_le)}
+      />
 
       <EnTeteFiche donnee={donnee} />
 
