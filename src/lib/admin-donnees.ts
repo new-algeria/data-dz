@@ -82,6 +82,27 @@ export const creerDonnee = (slug: string, champs: ChampsDonnee) =>
 export const modifierDonnee = (slug: string, champs: Partial<ChampsDonnee>) =>
   appelerApi<DonneeAdmin>(`/v1/admin/datasets/${slug}`, { method: "PATCH", authentifie: true, ...json(champs) });
 
+export interface DisponibiliteSlug {
+  slug: string;
+  disponible: boolean;
+  /** Donnée qui porte cet identifiant, ou qui l'a porté (`ancien_identifiant`). */
+  utilise_par: string | null;
+  ancien_identifiant: boolean;
+}
+
+export const verifierSlug = (slug: string) => appelerApi<DisponibiliteSlug>(`/v1/admin/slugs/${slug}`, { authentifie: true });
+
+/**
+ * Change l'identifiant : l'ancien redirige vers le nouveau (`redirection: false` tant que la migration
+ * 20261029000010 manque). `illustrationActuelle` : image par défaut affichée, gardée telle quelle.
+ */
+export const renommerDonnee = (ancien: string, nouveau: string, illustrationActuelle?: string) =>
+  appelerApi<{ donnee: DonneeAdmin; redirection: boolean }>(`/v1/admin/datasets/${ancien}/rename`, {
+    method: "POST",
+    authentifie: true,
+    ...json({ slug: nouveau, ...(illustrationActuelle ? { illustration_actuelle: illustrationActuelle } : {}) }),
+  });
+
 export const supprimerDonnee = (slug: string) =>
   appelerApi<void>(`/v1/admin/datasets/${slug}?files=true`, { method: "DELETE", authentifie: true });
 

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ImagePlus, Loader2, RotateCcw, Star, Trash2, Upload } from "lucide-react";
+import { CheckCircle2, ImagePlus, Loader2, RotateCcw, Star, Trash2, Upload, XCircle } from "lucide-react";
+import { toast } from "sonner";
 import { ChoixSource } from "@/components/admin/ChoixSource";
 import { useSourcesAdmin } from "@/hooks/use-sources-admin";
 import { Button } from "@/components/ui/button";
@@ -19,22 +20,26 @@ import {
   modifierDonnee,
   preparerIllustration,
   publierFichiers,
+  renommerDonnee,
   retirerIllustration,
   STATUTS_DONNEE,
   TAILLE_MAX_FICHIER,
   type ChampsDonnee,
   type DonneeAdmin,
   type StatutDonnee,
+  verifierSlug,
 } from "@/lib/admin-donnees";
 import { chargerCategories } from "@/lib/catalogue";
 import { formaterTaille } from "@/lib/fichiers";
-import { urlIllustration } from "@/lib/illustrations";
+import { aUneImageDuPack, urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
+import { useValeurDifferee } from "@/hooks/use-valeur-differee";
 import { LANGUES as LANGUES_SITE } from "@/lib/langues";
 import { cn } from "@/lib/utils";
 
 const AUCUNE = "aucune";
+const MOTIF_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const LANGUES = LANGUES_SITE.map((langue) => langue.code);
 
 /** Slug d'URL tiré du titre français : minuscules, sans accents, mots séparés par des tirets. */
@@ -137,7 +142,25 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
     if (illustration) URL.revokeObjectURL(illustration.apercu);
   }, [illustration]);
 
+  // La synchronisation retrouve ses données par leur identifiant : celui d'une donnée synchronisée ne change pas.
+  const synchroniseeOrigine = donnee?.sources?.type === "synchronisee";
   const synchronisee = useMemo(() => sources.find((source) => source.slug === formulaire.source)?.type === "synchronisee", [sources, formulaire.source]);
+  // Identifiant : libre en création, modifiable ensuite (sauf donnée synchronisée), vérifié auprès de l'API.
+  const slugValide = MOTIF_SLUG.test(formulaire.slug);
+  const slugChange = !creation && formulaire.slug !== donnee.slug;
+  const slugAVerifier = useValeurDifferee(formulaire.slug, 400);
+  const verification = useQuery({
+    queryKey: ["admin", "slug", slugAVerifier],
+    queryFn: () => verifierSlug(slugAVerifier),
+    enabled: ouvert && MOTIF_SLUG.test(slugAVerifier) && slugAVerifier !== donnee?.slug,
+    staleTime: 10 * 1000,
+  });
+  // Revenir à un de ses propres anciens identifiants est permis.
+  const slugPris =
+    slugValide && formulaire.slug !== donnee?.slug && verification.data?.slug === formulaire.slug && !verification.data.disponible && verification.data.utilise_par !== donnee?.slug;
+  const slugLibre =
+    slugValide && formulaire.slug !== donnee?.slug && verification.data?.slug === formulaire.slug && !slugPris;
+
   const modifier = <K extends keyof Formulaire>(champ: K, valeur: Formulaire[K]) => setFormulaire((actuel) => ({ ...actuel, [champ]: valeur }));
   const enCours = etape !== null;
 
@@ -170,7 +193,8 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
   const enregistrer = async () => {
     setErreur(null);
     if (!formulaire.titre.fr.trim()) return setErreur(t("adminDonnees.titreObligatoire"));
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(formulaire.slug)) return setErreur(t("adminDonnees.slugInvalide"));
+    if (!slugValide) return setErreur(t("adminDonnees.slugInvalide"));
+    if (slugPris) return setErreur(t("adminDonnees.identifiant.pris", { slug: verification.data?.utilise_par }));
 
     const champs: ChampsDonnee = {
       titre: { ...sansVides(formulaire.titre), fr: formulaire.titre.fr.trim() },
@@ -187,7 +211,14 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
     try {
       setEtape(t("adminDonnees.etapes.enregistrement"));
       if (creation) await creerDonnee(formulaire.slug, champs);
-      else await modifierDonnee(formulaire.slug, champs);
+      else {
+        if (slugChange) {
+          // L'image par défaut dépend de l'identifiant : celle affichée jusqu'ici est gardée.
+          const { redirection } = await renommerDonnee(donnee.slug, formulaire.slug, !donnee.illustration_url && aUneImageDuPack(donnee.slug) ? urlIllustration(donnee) : undefined);
+          if (!redirection) toast.warning(t("adminDonnees.identifiant.sansRedirection"));
+        }
+        await modifierDonnee(formulaire.slug, champs);
+      }
 
       if (illustration) {
         setEtape(t("adminDonnees.etapes.illustration"));
@@ -305,13 +336,40 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
                 id="slug"
                 dir="ltr"
                 value={formulaire.slug}
-                disabled={!creation}
+                disabled={!creation && synchroniseeOrigine}
+                aria-invalid={slugPris || (formulaire.slug !== "" && !slugValide)}
+                aria-describedby="aide-slug"
                 onChange={(e) => {
                   setSlugManuel(true);
-                  modifier("slug", e.target.value.toLowerCase());
+                  modifier("slug", e.target.value.toLowerCase().replace(/\s+/g, "-"));
                 }}
               />
-              {creation && <p className="text-xs text-muted-foreground">{t("adminDonnees.aideSlug")}</p>}
+              <div id="aide-slug" className="space-y-1 text-xs" aria-live="polite">
+                {!creation && synchroniseeOrigine ? (
+                  <p className="text-muted-foreground">{t("adminDonnees.identifiant.synchronisee")}</p>
+                ) : formulaire.slug !== "" && !slugValide ? (
+                  <p className="text-red-600 dark:text-red-400">{t("adminDonnees.slugInvalide")}</p>
+                ) : slugPris ? (
+                  <p className="flex items-center gap-1 text-red-600 dark:text-red-400">
+                    <XCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    {t(verification.data?.ancien_identifiant ? "adminDonnees.identifiant.ancien" : "adminDonnees.identifiant.pris", { slug: verification.data?.utilise_par })}
+                  </p>
+                ) : slugLibre ? (
+                  <p className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
+                    <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    {t("adminDonnees.identifiant.libre")}
+                  </p>
+                ) : slugValide && formulaire.slug !== donnee?.slug && !verification.isError ? (
+                  <p className="flex items-center gap-1 text-muted-foreground">
+                    <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" aria-hidden />
+                    {t("adminDonnees.identifiant.verification")}
+                  </p>
+                ) : null}
+                <p className="text-muted-foreground">{t("adminDonnees.aideSlug")}</p>
+                {slugChange && slugValide && !slugPris && (
+                  <p className="text-amber-700 dark:text-amber-400">{t("adminDonnees.identifiant.redirection", { ancien: donnee.slug })}</p>
+                )}
+              </div>
             </div>
             <div className="grid gap-1.5">
               <Label>{t("adminDonnees.champs.statut")}</Label>
