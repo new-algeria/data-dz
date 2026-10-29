@@ -39,6 +39,9 @@ const illustrationsParSlug: Record<string, string> = {
 
 const illustrationParDefaut = "09-carte-algerie-donnees";
 
+/** Vrai si l'identifiant a sa propre image dans le pack (elle serait perdue en le changeant). */
+export const aUneImageDuPack = (slug: string) => slug in illustrationsParSlug;
+
 export function urlIllustration(
   donnee: { slug: string; illustration_url?: string | null },
   taille: "grande" | "petite" = "grande"

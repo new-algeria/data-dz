@@ -1,6 +1,6 @@
 import { Suspense, type ReactNode } from "react";
 import { lazyAvecRechargement } from "@/lib/rechargement";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -253,6 +253,7 @@ const SqueletteFiche = () => {
 const FicheDonnee = () => {
   const { t } = useTranslation();
   const { slug = "" } = useParams();
+  const emplacement = useLocation();
 
   const requete = useQuery({
     queryKey: ["fiche", slug],
@@ -268,6 +269,11 @@ const FicheDonnee = () => {
       </Link>
     </Button>
   );
+
+  // Donnée renommée : l'API a suivi la redirection de l'ancien identifiant, l'URL prend le nouveau.
+  if (requete.data && requete.data.slug !== slug) {
+    return <Navigate to={`${routes.donnee(requete.data.slug)}${emplacement.search}${emplacement.hash}`} replace />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">

@@ -902,7 +902,16 @@
       "numero": "Version number",
       "notes": "Release notes"
     },
-    "aideSlug": "Lowercase letters, digits and dashes. Can't be changed later.",
+    "aideSlug": "Lowercase letters, digits and hyphens. It appears in the address of the dataset page and of the API.",
+    "identifiant": {
+      "verification": "Checking…",
+      "libre": "Identifier available.",
+      "pris": "Already used by the dataset “{{slug}}”.",
+      "ancien": "Former identifier of “{{slug}}” (its old links lead there): pick another one.",
+      "synchronisee": "Synchronised dataset: its identifier cannot change (the synchronisation finds it with it).",
+      "redirection": "Old links to “{{ancien}}” will redirect to the new identifier.",
+      "sansRedirection": "Identifier changed, but the former-identifiers migration is not applied: old links do not redirect yet."
+    },
     "aideMotsCles": "comma-separated",
     "sources": {
       "nouvelle": "New source",

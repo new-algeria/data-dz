@@ -100,7 +100,8 @@ export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
       sources: source,
       categories: categorie,
       licences: licence,
-      versions: version ? { ...version, fichiers: fichiersDe(slug, reste.ressources) } : null,
+      // Identifiant renvoyé par l'API : après un renommage, l'ancien redirige vers lui.
+      versions: version ? { ...version, fichiers: fichiersDe(reste.slug, reste.ressources) } : null,
     };
   } catch (erreur) {
     if (erreur instanceof ErreurApi && (erreur.statut === 404 || erreur.statut === 400)) return null;

@@ -902,7 +902,16 @@
       "numero": "Numéro de version",
       "notes": "Notes de version"
     },
-    "aideSlug": "Minuscules, chiffres et tirets. Ne pourra plus changer.",
+    "aideSlug": "Minuscules, chiffres et tirets. Il apparaît dans l'adresse de la fiche et de l'API.",
+    "identifiant": {
+      "verification": "Vérification…",
+      "libre": "Identifiant disponible.",
+      "pris": "Déjà utilisé par la donnée « {{slug}} ».",
+      "ancien": "Ancien identifiant de « {{slug}} » (ses anciens liens y mènent) : choisissez-en un autre.",
+      "synchronisee": "Donnée synchronisée : son identifiant ne change pas (la synchronisation la retrouve grâce à lui).",
+      "redirection": "Les anciens liens vers « {{ancien}} » redirigeront vers le nouvel identifiant.",
+      "sansRedirection": "Identifiant changé, mais la migration des anciens identifiants n'est pas appliquée : les anciens liens ne redirigent pas encore."
+    },
     "aideMotsCles": "séparés par des virgules",
     "sources": {
       "nouvelle": "Nouvelle source",
