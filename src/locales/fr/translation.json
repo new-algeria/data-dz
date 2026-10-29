@@ -611,7 +611,7 @@
     "accesReserveTexte": "Cet espace est réservé aux modérateurs et aux administrateurs de data-dz.",
     "filtrerStatut": "Filtrer par statut",
     "fileVide": "Aucune proposition avec ce statut.",
-    "aideAcceptees": "Les propositions acceptées attendent leur mise en ligne par le script d'administration. Elles passeront ensuite en « Publiée ».",
+    "aideAcceptees": "Les propositions acceptées attendent leur mise en ligne par un administrateur (bouton « Mettre en ligne » de la page de revue). Elles passent ensuite en « Publiée ».",
     "revue": {
       "auteur": "Proposée par",
       "decider": "Décision",
@@ -619,7 +619,7 @@
       "decisions": {
         "acceptee": {
           "titre": "Accepter",
-          "texte": "La donnée sera mise en ligne par le script d'administration."
+          "texte": "Un administrateur mettra ensuite la donnée en ligne."
         },
         "modifications_demandees": {
           "titre": "Demander des modifications",
@@ -639,7 +639,12 @@
       "valider": "Enregistrer la décision",
       "decisionEnregistree": "Décision enregistrée. Nouveau statut : {{statut}}.",
       "dejaTraitee": "Cette proposition est déjà traitée : plus aucune décision n'est possible.",
-      "aideAcceptee": "Le script d'administration la publiera dans le catalogue ; elle passera alors en « Publiée ».",
+      "aideAcceptee": "Un administrateur la met en ligne depuis cette page ; elle passera alors en « Publiée ».",
+      "mettreEnLigne": "Mettre en ligne",
+      "mettreEnLigneAide": "Crée la donnée dans le catalogue avec le contenu et les fichiers de la proposition (CSV, JSON, GeoJSON, Excel), puis prévient son auteur.",
+      "miseEnLigneFaite": "« {{titre}} » est en ligne.",
+      "fichiersIgnores": "Fichiers non publiés (format non pris en charge) : {{noms}}",
+      "miseEnLigneErreur": "La mise en ligne a échoué.",
       "apercu": "Aperçu",
       "apercuChargement": "Chargement de l'aperçu…",
       "apercuErreur": "Impossible d'afficher l'aperçu de ce fichier (contenu illisible ou lien expiré). Téléchargez-le pour l'ouvrir.",

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { ArrowLeft, CheckCircle2, ClipboardList, FolderCog, Loader2, MessageSquare, PencilLine, Rocket, XCircle, type LucideIcon } from "lucide-react";
 import { MiseEnPage, Carte } from "@/components/MiseEnPage";
 import { AvatarMembre } from "@/components/AvatarMembre";
@@ -19,6 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
+import { mettreEnLigneProposition } from "@/lib/admin-donnees";
 import { cleErreur } from "@/lib/erreurs";
 import { champsVides, valeursDepuisSoumission } from "@/lib/formulaire-soumission";
 import { localeNombres } from "@/lib/fichiers";
@@ -143,6 +145,37 @@ const FormulaireDecision = ({ soumission, surDecision }: { soumission: Soumissio
   );
 };
 
+/** Admin : création de la donnée à partir de la proposition acceptée, par l'API (`/v1/admin/submissions/:id/publish`). */
+const BoutonMiseEnLigne = ({ soumission, surMiseEnLigne }: { soumission: Soumission; surMiseEnLigne: () => Promise<void> }) => {
+  const { t } = useTranslation();
+  const langue = useLangue();
+  const [envoi, setEnvoi] = useState(false);
+
+  const mettreEnLigne = async () => {
+    setEnvoi(true);
+    try {
+      const resultat = await mettreEnLigneProposition(soumission.id);
+      toast.success(t("moderation.revue.miseEnLigneFaite", { titre: texteTraduit(soumission.titre, langue) }));
+      if (resultat.fichiers_ignores.length > 0) toast.warning(t("moderation.revue.fichiersIgnores", { noms: resultat.fichiers_ignores.join(", ") }));
+      await surMiseEnLigne();
+    } catch (erreur) {
+      toast.error(erreur instanceof Error ? erreur.message : t("moderation.revue.miseEnLigneErreur"));
+    } finally {
+      setEnvoi(false);
+    }
+  };
+
+  return (
+    <div className="mt-3 space-y-1.5">
+      <Button type="button" className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800" disabled={envoi} onClick={() => void mettreEnLigne()}>
+        {envoi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Rocket className="h-4 w-4" />}
+        {t("moderation.revue.mettreEnLigne")}
+      </Button>
+      <p className="text-xs opacity-80">{t("moderation.revue.mettreEnLigneAide")}</p>
+    </div>
+  );
+};
+
 const RevueProposition = () => {
   const { t } = useTranslation();
   const langue = useLangue();
@@ -158,6 +191,11 @@ const RevueProposition = () => {
     clientRequetes.invalidateQueries({ queryKey: ["mes-soumissions"] });
     await requete.refetch();
     setConfirmation(t("moderation.revue.decisionEnregistree", { statut: t(`propositions.statuts.${statut}`) }));
+  };
+
+  const apresMiseEnLigne = async () => {
+    for (const cle of ["moderation", "mes-soumissions", "catalogue", "fiche", "statistiques", "admin"]) clientRequetes.invalidateQueries({ queryKey: [cle] });
+    await requete.refetch();
   };
 
   const apresModification = async () => {
@@ -221,6 +259,7 @@ const RevueProposition = () => {
               <div>
                 <p className="font-semibold">{t("propositions.enAttenteMiseEnLigne")}</p>
                 <p className="mt-0.5 opacity-90">{t("moderation.revue.aideAcceptee")}</p>
+                {profil?.role === "admin" && <BoutonMiseEnLigne soumission={soumission} surMiseEnLigne={apresMiseEnLigne} />}
               </div>
             </div>
           )}

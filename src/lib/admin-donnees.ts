@@ -186,3 +186,15 @@ export async function preparerIllustration(fichier: File): Promise<Blob> {
     URL.revokeObjectURL(url);
   }
 }
+
+// ---------------------------------------------------------------- Propositions
+
+export interface MiseEnLigne {
+  slug: string;
+  creee: boolean;
+  fichiers_ignores: string[];
+}
+
+/** Met en ligne une proposition acceptée : l'API crée la donnée (ou sa nouvelle version) et marque la proposition publiée. */
+export const mettreEnLigneProposition = (id: string) =>
+  appelerApi<MiseEnLigne>(`/v1/admin/submissions/${id}/publish`, { method: "POST", authentifie: true, ...json({}) });
