@@ -611,7 +611,7 @@
     "accesReserveTexte": "This area is reserved for data-dz moderators and administrators.",
     "filtrerStatut": "Filter by status",
     "fileVide": "No submission with this status.",
-    "aideAcceptees": "Accepted submissions are waiting to be published by the administration script. They will then move to “Published”.",
+    "aideAcceptees": "Accepted submissions are waiting to be published by an administrator (“Publish” button on the review page). They then move to “Published”.",
     "revue": {
       "auteur": "Submitted by",
       "decider": "Decision",
@@ -619,7 +619,7 @@
       "decisions": {
         "acceptee": {
           "titre": "Accept",
-          "texte": "The dataset will be published by the administration script."
+          "texte": "An administrator will then publish the dataset."
         },
         "modifications_demandees": {
           "titre": "Request changes",
@@ -639,7 +639,12 @@
       "valider": "Save the decision",
       "decisionEnregistree": "Decision saved. New status: {{statut}}.",
       "dejaTraitee": "This submission has already been reviewed: no further decision is possible.",
-      "aideAcceptee": "The administration script will publish it in the catalogue; it will then move to “Published”.",
+      "aideAcceptee": "An administrator publishes it from this page; it will then move to “Published”.",
+      "mettreEnLigne": "Publish",
+      "mettreEnLigneAide": "Creates the dataset in the catalogue from the submission's content and files (CSV, JSON, GeoJSON, Excel), then notifies its author.",
+      "miseEnLigneFaite": "“{{titre}}” is live.",
+      "fichiersIgnores": "Files not published (unsupported format): {{noms}}",
+      "miseEnLigneErreur": "Publishing failed.",
       "apercu": "Preview",
       "apercuChargement": "Loading preview…",
       "apercuErreur": "Unable to preview this file (unreadable content or expired link). Download it to open it.",
