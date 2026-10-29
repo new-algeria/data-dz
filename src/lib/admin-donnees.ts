@@ -48,6 +48,7 @@ export interface SourceApi {
   slug: string;
   nom: string;
   type: string;
+  url?: string | null;
 }
 
 export interface LicenceApi {
@@ -68,6 +69,11 @@ export async function chargerDonneesAdmin(terme: string, statut: StatutDonnee | 
 }
 
 export const chargerSources = async () => (await appelerApi<{ data: SourceApi[] }>("/v1/sources")).data;
+/** Sources sans le cache CDN d'une heure de `/v1/sources` : une source créée apparaît tout de suite. */
+export const chargerSourcesAdmin = async () => (await appelerApi<{ data: SourceApi[] }>("/v1/admin/sources", { authentifie: true })).data;
+
+export const creerSource = (nom: string, url: string | null) =>
+  appelerApi<SourceApi>("/v1/admin/sources", { method: "POST", authentifie: true, ...json({ nom, url }) });
 export const chargerLicencesApi = async () => (await appelerApi<{ data: LicenceApi[] }>("/v1/licences")).data;
 
 export const creerDonnee = (slug: string, champs: ChampsDonnee) =>
@@ -195,6 +201,13 @@ export interface MiseEnLigne {
   fichiers_ignores: string[];
 }
 
-/** Met en ligne une proposition acceptée : l'API crée la donnée (ou sa nouvelle version) et marque la proposition publiée. */
-export const mettreEnLigneProposition = (id: string) =>
-  appelerApi<MiseEnLigne>(`/v1/admin/submissions/${id}/publish`, { method: "POST", authentifie: true, ...json({}) });
+/**
+ * Met en ligne une proposition acceptée : l'API crée la donnée (avec la source choisie) ou sa nouvelle version,
+ * puis marque la proposition publiée.
+ */
+export const mettreEnLigneProposition = (id: string, sourceSlug?: string) =>
+  appelerApi<MiseEnLigne>(`/v1/admin/submissions/${id}/publish`, {
+    method: "POST",
+    authentifie: true,
+    ...json(sourceSlug ? { source_slug: sourceSlug } : {}),
+  });

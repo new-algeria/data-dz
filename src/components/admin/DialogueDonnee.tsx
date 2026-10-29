@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { ImagePlus, Loader2, RotateCcw, Star, Trash2, Upload } from "lucide-react";
+import { ChoixSource } from "@/components/admin/ChoixSource";
+import { useSourcesAdmin } from "@/hooks/use-sources-admin";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -11,7 +13,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import {
   chargerLicencesApi,
-  chargerSources,
   creerDonnee,
   envoyerIllustration,
   formatDuFichier,
@@ -118,7 +119,7 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
   const [erreur, setErreur] = useState<string | null>(null);
 
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: chargerCategories, staleTime: 60 * 60 * 1000 });
-  const { data: sources = [] } = useQuery({ queryKey: ["sources"], queryFn: chargerSources, staleTime: 60 * 60 * 1000 });
+  const { data: sources = [] } = useSourcesAdmin();
   const { data: licences = [] } = useQuery({ queryKey: ["licences-api"], queryFn: chargerLicencesApi, staleTime: 60 * 60 * 1000 });
 
   useEffect(() => {
@@ -344,19 +345,8 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
               </Select>
             </div>
             <div className="grid gap-1.5">
-              <Label>{t("adminDonnees.champs.source")}</Label>
-              <Select value={formulaire.source} onValueChange={(valeur) => modifier("source", valeur)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {sources.map((source) => (
-                    <SelectItem key={source.slug} value={source.slug}>
-                      {source.nom}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label htmlFor="source">{t("adminDonnees.champs.source")}</Label>
+              <ChoixSource id="source" valeur={formulaire.source} onChange={(valeur) => modifier("source", valeur)} />
             </div>
             <div className="grid gap-1.5">
               <Label>{t("adminDonnees.champs.licence")}</Label>
