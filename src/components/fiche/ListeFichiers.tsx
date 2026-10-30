@@ -4,12 +4,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formaterTaille, grouperFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
-import { cn } from "@/lib/utils";
-import type { Fichier } from "@/lib/types";
+import type { Fichier, Ressource } from "@/lib/types";
 import { IconeFormat } from "./BadgeFormat";
+import { DialogueTelechargement } from "./DialogueTelechargement";
 
-/** Une ligne par fichier ; ses différents formats (GeoJSON, JSON, CSV…) ont chacun leur bouton de téléchargement. */
-export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
+/**
+ * Une ligne par fichier : ses formats d'origine et leur taille, et un bouton « Télécharger » qui ouvre le même
+ * dialogue que l'en-tête de la fiche, sur ce fichier (choix du format, conversions comprises).
+ */
+export const ListeFichiers = ({ fichiers, ressources }: { fichiers: Fichier[]; ressources: Ressource[] }) => {
   const { t } = useTranslation();
   const langue = useLangue();
 
@@ -19,55 +22,54 @@ export const ListeFichiers = ({ fichiers }: { fichiers: Fichier[] }) => {
 
   return (
     <ul className="divide-y rounded-xl border bg-white dark:bg-gray-900">
-      {grouperFichiers(fichiers).map((groupe) => (
-        <li key={groupe.cle} className="space-y-3 p-3">
-          <div className="flex items-center gap-3">
+      {grouperFichiers(fichiers).map((groupe) => {
+        const ressource = ressources.find((element) => element.nom.toLowerCase() === groupe.cle);
+        return (
+          <li key={groupe.cle} className="flex flex-wrap items-center gap-x-3 gap-y-2 p-3">
             <IconeFormat format={groupe.fichiers[0].format} />
-            <p className="min-w-0 flex-1 truncate font-semibold" dir="ltr">
-              {groupe.nom}
-            </p>
-            {groupe.principal && (
-              <Badge variant="secondary" className="shrink-0 gap-1">
-                <Star className="h-3 w-3" aria-hidden />
-                {t("fiche.principal")}
-              </Badge>
-            )}
-          </div>
-          <div className={cn("grid gap-2", groupe.fichiers.length > 1 ? "grid-cols-2 sm:flex sm:flex-wrap" : "sm:flex")}>
-            {groupe.fichiers.map((fichier, indice) => (
-              <Button
-                key={fichier.id}
-                asChild
-                size="sm"
-                variant={indice === 0 ? "default" : "outline"}
-                className={cn(
-                  "h-auto min-h-9 justify-center gap-2 py-1.5",
-                  indice === 0
-                    ? "bg-emerald-700 text-white hover:bg-emerald-800"
-                    : "border-emerald-700/40 text-emerald-800 hover:bg-emerald-50 dark:border-emerald-400/40 dark:text-emerald-300 dark:hover:bg-emerald-500/10"
+            <div className="min-w-0 flex-1">
+              <p className="flex items-center gap-2">
+                <span className="truncate font-semibold" dir="ltr">
+                  {groupe.nom}
+                </span>
+                {groupe.principal && (
+                  <Badge variant="secondary" className="shrink-0 gap-1">
+                    <Star className="h-3 w-3" aria-hidden />
+                    {t("fiche.principal")}
+                  </Badge>
                 )}
-              >
-                <a
-                  href={fichier.url_telechargement}
-                  download
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t("fiche.telechargerFormat", { nom: groupe.nom, format: fichier.format.toUpperCase() })}
-                >
-                  <Download aria-hidden />
-                  {/* Taille sous le format sur mobile, à côté sur grand écran : rien n'est coupé */}
-                  <span className="flex flex-col items-start leading-tight sm:flex-row sm:items-baseline sm:gap-2">
-                    <span className="font-semibold" dir="ltr">
-                      {fichier.format.toUpperCase()}
-                    </span>
-                    {fichier.taille_octets !== null && <span className="text-xs font-normal opacity-80">{formaterTaille(fichier.taille_octets, langue)}</span>}
-                  </span>
-                </a>
-              </Button>
-            ))}
-          </div>
-        </li>
-      ))}
+              </p>
+              {/* Formats d'origine et taille : simple information, le choix du format se fait dans le dialogue. */}
+              <p className="text-xs text-muted-foreground" dir="ltr">
+                {groupe.fichiers
+                  .map((fichier) =>
+                    [fichier.format === "geojson" ? "GeoJSON" : fichier.format.toUpperCase(), fichier.taille_octets !== null ? formaterTaille(fichier.taille_octets, langue) : null]
+                      .filter(Boolean)
+                      .join(" ")
+                  )
+                  .join(" · ")}
+              </p>
+            </div>
+            {ressource && (
+              <DialogueTelechargement
+                ressources={ressources}
+                nomInitial={ressource.nom}
+                declencheur={
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full gap-2 border-emerald-700/40 text-emerald-800 hover:bg-emerald-50 sm:w-auto dark:border-emerald-400/40 dark:text-emerald-300 dark:hover:bg-emerald-500/10"
+                    aria-label={t("fiche.telechargerFichier", { nom: groupe.nom })}
+                  >
+                    <Download className="h-4 w-4" aria-hidden />
+                    {t("fiche.telecharger")}
+                  </Button>
+                }
+              />
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 };

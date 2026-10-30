@@ -153,7 +153,7 @@
     "carteChoix": "Fichier affiché sur la carte",
     "toutSuperposer": "Tout superposer ({{count}} fichiers)",
     "legende": "Légende de la carte",
-    "telechargerFormat": "Télécharger {{nom}} au format {{format}}",
+    "telechargerFichier": "Télécharger {{nom}}",
     "carteIndisponible": "La carte ne peut pas s'afficher sur cet appareil (WebGL indisponible). Les fichiers restent téléchargeables.",
     "couvertureCles": {
       "nb_enregistrements": "Nombre de lignes",
