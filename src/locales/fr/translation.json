@@ -82,9 +82,20 @@
     "membres": "Membres inscrits"
   },
   "catalogue": {
-    "recente": "Récent",
-    "recenteAide_one": "Ajoutée au catalogue il y a moins de {{count}} jour",
-    "recenteAide_other": "Ajoutée au catalogue il y a moins de {{count}} jours",
+    "carte": {
+      "nouveau": "Nouveau",
+      "nouveauAide_one": "Publiée il y a moins de {{count}} jour",
+      "nouveauAide_other": "Publiée il y a moins de {{count}} jours",
+      "voirCarte": "Voir la carte",
+      "graphique": "Graphique",
+      "telechargerDonnee": "Télécharger « {{titre}} »",
+      "libre": "Libre d'utilisation",
+      "source": "Source : {{nom}}",
+      "separateurPeriode": ", ",
+      "misAJour": "Mis à jour {{quand}}",
+      "indicateurs_one": "indicateur",
+      "indicateurs_other": "indicateurs"
+    },
     "titre": "Catalogue des données",
     "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
     "rechercheLabel": "Rechercher dans le catalogue",
