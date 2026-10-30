@@ -54,6 +54,8 @@ export interface SourceApi {
 export interface LicenceApi {
   code: string;
   nom: string;
+  /** Réutilisation commerciale permise : « Libre d'utilisation » sur les cartes du catalogue. */
+  usage_commercial?: boolean;
 }
 
 const json = (corps: unknown): RequestInit => ({

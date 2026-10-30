@@ -83,7 +83,12 @@ export interface ResumeDonnee extends CompteursDonnee {
   licence_code: string | null;
   mots_cles: string[] | null;
   sources: Source | null;
-  versions: Pick<Version, "numero" | "nb_lignes" | "publie_le"> | null;
+  /** `colonnes` : séries temporelles et coordonnées (cartes du catalogue) ; absentes des favoris. */
+  versions: (Pick<Version, "numero" | "nb_lignes" | "publie_le"> & { colonnes?: Colonne[] | null }) | null;
+  /** Chiffres écrits par la synchronisation (nombre d'indicateurs, années…). */
+  infos_source?: Record<string, unknown> | null;
+  /** Fichiers et liens de téléchargement (comme la fiche), pour le bouton « Télécharger » des cartes. */
+  ressources?: Ressource[];
   mis_a_jour_le: string;
   /** Première publication dans le catalogue (et création) : une donnée de moins de 4 jours est « Récente ». */
   publie_le?: string | null;
