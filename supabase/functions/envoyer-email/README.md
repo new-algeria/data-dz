@@ -12,7 +12,12 @@ Envoie par email les notifications importantes :
 notification insérée ──trigger──▶ pg_net (asynchrone) ──POST + secret──▶ envoyer-email ──▶ Resend ──▶ boîte mail
 ```
 
-La fonction ne reçoit que l'identifiant de la notification : elle la relit en base, cherche l'email du compte (confirmé uniquement) et construit le message (français puis arabe) dans `contenu.ts`.
+La fonction ne reçoit que l'identifiant de la notification : elle la relit en base, cherche l'email du compte (confirmé uniquement) et construit le message dans `contenu.ts` : **en anglais**, HTML aux couleurs du site (en-tête vert avec le logo et la bande du drapeau, pastille de statut, carte de la donnée, commentaire du modérateur, bouton), mis en page en tableaux avec styles en ligne pour Gmail, Outlook et Apple Mail, plus une version texte. Tests : `contenu.test.ts` (`npm test` à la racine).
+
+**Après chaque changement de `contenu.ts`, redéployer la fonction** (le site ne la déploie pas) :
+```bash
+npx supabase functions deploy envoyer-email --no-verify-jwt
+```
 
 ## Mise en route (une seule fois)
 
