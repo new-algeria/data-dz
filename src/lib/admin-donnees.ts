@@ -68,7 +68,6 @@ export async function chargerDonneesAdmin(terme: string, statut: StatutDonnee | 
   return (await appelerApi<{ data: DonneeAdmin[] }>(`/v1/admin/datasets?${params}`, { authentifie: true })).data;
 }
 
-export const chargerSources = async () => (await appelerApi<{ data: SourceApi[] }>("/v1/sources")).data;
 /** Sources sans le cache CDN d'une heure de `/v1/sources` : une source créée apparaît tout de suite. */
 export const chargerSourcesAdmin = async () => (await appelerApi<{ data: SourceApi[] }>("/v1/admin/sources", { authentifie: true })).data;
 

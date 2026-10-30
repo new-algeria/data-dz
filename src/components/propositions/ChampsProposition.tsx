@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IconeCategorie } from "@/components/BadgeCategorie";
 import { ChampMotsCles } from "./ChampMotsCles";
+import { ChoixSourceProposition } from "./ChoixSourceProposition";
 import { SelecteurWilayas } from "./SelecteurWilayas";
 import { chargerCategories } from "@/lib/catalogue";
 import { chargerLicences } from "@/lib/referentiels";
@@ -16,7 +17,6 @@ import { useLangue } from "@/hooks/use-langue";
 import {
   LONGUEUR_MAX_DESCRIPTION,
   LONGUEUR_MAX_MESSAGE,
-  LONGUEUR_MAX_SOURCE_NOM,
   LONGUEUR_MAX_TITRE,
   type ValeursFormulaire,
 } from "@/lib/formulaire-soumission";
@@ -162,7 +162,7 @@ export const ChampsProposition = ({ valeurs: v, onChange }: ChampsPropositionPro
       <fieldset className="grid gap-4 md:grid-cols-2">
         <legend className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground md:col-span-2">{t("propositions.sections.source")}</legend>
         <Champ id="source-nom" libelle={t("propositions.champs.sourceNom")} facultatif aide={t("propositions.champs.sourceAide")}>
-          <Input id="source-nom" value={v.sourceNom} onChange={(e) => onChange({ sourceNom: e.target.value })} maxLength={LONGUEUR_MAX_SOURCE_NOM} dir="auto" />
+          <ChoixSourceProposition id="source-nom" sourceNom={v.sourceNom} sourceUrl={v.sourceUrl} onChange={onChange} />
         </Champ>
         <Champ id="source-url" libelle={t("propositions.champs.sourceUrl")} facultatif>
           <Input id="source-url" value={v.sourceUrl} onChange={(e) => onChange({ sourceUrl: e.target.value })} inputMode="url" placeholder="https://" dir="ltr" />
