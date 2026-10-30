@@ -41,6 +41,13 @@ export async function appelerApi<T>(chemin: string, { authentifie, headers, ...i
 /** URL d'une donnée dans l'API (affichée et copiée depuis la fiche). */
 export const urlApiDonnee = (slug: string) => `${URL_API}/v1/datasets/${slug}`;
 
+/**
+ * Image d'aperçu d'une fiche (1200 × 630, générée par l'API). Les robots des réseaux sociaux ne lancent pas
+ * le JavaScript : `vercel.json` leur sert `/v1/datasets/<slug>/share`, qui pointe vers la même image.
+ */
+export const urlApercu = (slug: string, langue: string, version?: string) =>
+  `${urlApiDonnee(slug)}/preview.png?lng=${langue}&v=${encodeURIComponent(version ?? "")}`;
+
 /** Lien de téléchargement stable (l'API redirige vers un lien signé qui expire). */
 export function urlTelechargement(slug: string, nom: string, format: string, inline = false): string {
   const params = new URLSearchParams({ format, file: nom });

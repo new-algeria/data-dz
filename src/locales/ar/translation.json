@@ -90,6 +90,13 @@
     "membres": "الأعضاء المسجلون"
   },
   "catalogue": {
+    "recente": "جديد",
+    "recenteAide_zero": "أضيفت إلى الفهرس منذ أقل من {{count}} يوم",
+    "recenteAide_one": "أضيفت إلى الفهرس منذ أقل من يوم واحد",
+    "recenteAide_two": "أضيفت إلى الفهرس منذ أقل من يومين",
+    "recenteAide_few": "أضيفت إلى الفهرس منذ أقل من {{count}} أيام",
+    "recenteAide_many": "أضيفت إلى الفهرس منذ أقل من {{count}} يومًا",
+    "recenteAide_other": "أضيفت إلى الفهرس منذ أقل من {{count}} يوم",
     "titre": "فهرس البيانات",
     "recherche": "ابحث (مثلا: صيدليات، ولايات، مدارس…)",
     "rechercheLabel": "البحث في الفهرس",

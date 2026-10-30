@@ -82,6 +82,9 @@
     "membres": "Registered members"
   },
   "catalogue": {
+    "recente": "New",
+    "recenteAide_one": "Added to the catalogue less than {{count}} day ago",
+    "recenteAide_other": "Added to the catalogue less than {{count}} days ago",
     "titre": "Data catalogue",
     "recherche": "Search (e.g. pharmacies, wilayas, schools…)",
     "rechercheLabel": "Search the catalogue",

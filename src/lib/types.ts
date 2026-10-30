@@ -85,6 +85,9 @@ export interface ResumeDonnee extends CompteursDonnee {
   sources: Source | null;
   versions: Pick<Version, "numero" | "nb_lignes" | "publie_le"> | null;
   mis_a_jour_le: string;
+  /** Première publication dans le catalogue (et création) : une donnée de moins de 4 jours est « Récente ». */
+  publie_le?: string | null;
+  cree_le?: string;
   /** Illustration choisie par un administrateur (sinon image par défaut du slug). */
   illustration_url?: string | null;
 }
@@ -106,6 +109,8 @@ export interface Donnee extends CompteursDonnee {
   licences: Licence | null;
   versions: Version | null;
   illustration_url?: string | null;
+  /** Dernière mise à jour : sert de version à l'image d'aperçu (cache des réseaux sociaux). */
+  mis_a_jour_le?: string;
   /** Fichiers regroupés par nom, avec leurs formats de téléchargement (API). */
   ressources: Ressource[];
 }

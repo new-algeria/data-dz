@@ -82,6 +82,9 @@
     "membres": "Membres inscrits"
   },
   "catalogue": {
+    "recente": "Récent",
+    "recenteAide_one": "Ajoutée au catalogue il y a moins de {{count}} jour",
+    "recenteAide_other": "Ajoutée au catalogue il y a moins de {{count}} jours",
     "titre": "Catalogue des données",
     "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
     "rechercheLabel": "Rechercher dans le catalogue",
