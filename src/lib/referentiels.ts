@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import { appelerApi } from "./api";
+import type { SourceApi } from "./admin-donnees";
 import type { TexteMultilingue } from "./types";
 
 export interface LicenceResume {
@@ -12,6 +13,9 @@ export async function chargerLicences(): Promise<LicenceResume[]> {
   if (error) throw error;
   return (data ?? []) as LicenceResume[];
 }
+
+/** Sources connues du catalogue (API publique, en cache 1 h) : proposées dans le formulaire de proposition. */
+export const chargerSources = async (): Promise<SourceApi[]> => (await appelerApi<{ data: SourceApi[] }>("/v1/sources")).data;
 
 // ---------------------------------------------------------------------------------------------
 // Wilayas : noms lus dans le fichier publié du catalogue (GeoAlgeria, json/wilayas.json),
