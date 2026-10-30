@@ -172,7 +172,7 @@
     "carteChoix": "الملف المعروض على الخريطة",
     "toutSuperposer": "عرض الكل معا ({{count}})",
     "legende": "مفتاح الخريطة",
-    "telechargerFormat": "تنزيل {{nom}} بصيغة {{format}}",
+    "telechargerFichier": "تنزيل {{nom}}",
     "carteIndisponible": "لا يمكن عرض الخريطة على هذا الجهاز (WebGL غير متاح). يبقى تحميل الملفات ممكنًا.",
     "couvertureCles": {
       "nb_enregistrements": "عدد الأسطر",

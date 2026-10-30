@@ -153,7 +153,7 @@
     "carteChoix": "File shown on the map",
     "toutSuperposer": "Overlay all ({{count}} files)",
     "legende": "Map legend",
-    "telechargerFormat": "Download {{nom}} as {{format}}",
+    "telechargerFichier": "Download {{nom}}",
     "carteIndisponible": "The map cannot be displayed on this device (WebGL unavailable). The files can still be downloaded.",
     "couvertureCles": {
       "nb_enregistrements": "Number of rows",

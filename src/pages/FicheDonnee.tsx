@@ -142,7 +142,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
             )}
 
             <Section id="titre-fichiers" titre={t("fiche.fichiers")} icone={FileDown}>
-              <ListeFichiers fichiers={fichiers} />
+              <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} />
             </Section>
 
             <motion.section

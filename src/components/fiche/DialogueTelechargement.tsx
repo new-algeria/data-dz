@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Check, Download, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -31,12 +31,24 @@ async function verifierLien(url: string): Promise<void> {
   throw new ErreurApi(reponse.status, corps?.code ?? "http_error", corps?.title ?? `HTTP ${reponse.status}`);
 }
 
-/** Bouton principal de la fiche : choix du fichier (s'il y en a plusieurs) et du format, conversion par l'API. */
-export const DialogueTelechargement = ({ ressources }: { ressources: Ressource[] }) => {
+interface DialogueTelechargementProps {
+  ressources: Ressource[];
+  /** Fichier choisi à l'ouverture (sinon le principal). */
+  nomInitial?: string;
+  /** Bouton qui ouvre le dialogue (sinon le grand bouton « Télécharger » de l'en-tête). */
+  declencheur?: ReactElement;
+}
+
+/**
+ * Téléchargement d'une donnée : choix du fichier (s'il y en a plusieurs) et du format, conversion par l'API.
+ * Même dialogue pour le bouton principal de l'en-tête et pour chaque fichier de la liste (`ListeFichiers`).
+ */
+export const DialogueTelechargement = ({ ressources, nomInitial, declencheur }: DialogueTelechargementProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const [ouvert, setOuvert] = useState(false);
-  const [nom, setNom] = useState(() => (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "");
+  const nomParDefaut = () => nomInitial ?? (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "";
+  const [nom, setNom] = useState(nomParDefaut);
   const [format, setFormat] = useState<FormatTelechargement>("csv");
   const [statut, setStatut] = useState<"pret" | "conversion" | "erreur">("pret");
   const [erreur, setErreur] = useState<string | null>(null);
@@ -71,19 +83,28 @@ export const DialogueTelechargement = ({ ressources }: { ressources: Ressource[]
   };
 
   return (
-    <Dialog open={ouvert} onOpenChange={setOuvert}>
+    <Dialog
+      open={ouvert}
+      onOpenChange={(valeur) => {
+        // Chaque ouverture repart du fichier du bouton utilisé.
+        if (valeur) choisir(() => setNom(nomParDefaut()));
+        setOuvert(valeur);
+      }}
+    >
       <DialogTrigger asChild>
-        <Button size="lg" className="h-auto justify-start gap-3 bg-emerald-700 py-3 text-white shadow-lg shadow-emerald-700/25 hover:bg-emerald-800">
-          <Download className="h-5 w-5" />
-          <span className="flex flex-col items-start leading-tight">
-            <span className="font-semibold">{t("fiche.telecharger")}</span>
-            {formatsDisponibles.length > 0 && (
-              <span className="text-xs font-normal opacity-80" dir="ltr">
-                {formatsDisponibles.map((element) => t(`telechargement.formatsCourts.${element}`, { defaultValue: element.toUpperCase() })).join(" · ")}
-              </span>
-            )}
-          </span>
-        </Button>
+        {declencheur ?? (
+          <Button size="lg" className="h-auto justify-start gap-3 bg-emerald-700 py-3 text-white shadow-lg shadow-emerald-700/25 hover:bg-emerald-800">
+            <Download className="h-5 w-5" />
+            <span className="flex flex-col items-start leading-tight">
+              <span className="font-semibold">{t("fiche.telecharger")}</span>
+              {formatsDisponibles.length > 0 && (
+                <span className="text-xs font-normal opacity-80" dir="ltr">
+                  {formatsDisponibles.map((element) => t(`telechargement.formatsCourts.${element}`, { defaultValue: element.toUpperCase() })).join(" · ")}
+                </span>
+              )}
+            </span>
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-lg">
