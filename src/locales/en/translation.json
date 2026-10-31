@@ -56,7 +56,7 @@
     "explorerNombre_one": "Explore the dataset",
     "explorerNombre_other": "Explore the {{count}} datasets",
     "recherche": {
-      "placeholder": "Pharmacies, trains…",
+      "placeholder": "Search datasets…",
       "bouton": "Search",
       "exemples": "Examples:",
       "exemple": {
@@ -65,7 +65,9 @@
         "ecoles": "Schools",
         "emploi": "Employment"
       },
-      "placeholderLong": "Search for a pharmacy, a school, a station…"
+      "placeholderLong": "Search for a pharmacy, a school, a station…",
+      "autresExemples": "More examples",
+      "placeholderCourt": "Search…"
     },
     "sources": {
       "titre": "Data sourced from",

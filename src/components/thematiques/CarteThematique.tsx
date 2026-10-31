@@ -13,7 +13,18 @@ import { cn } from "@/lib/utils";
  * Carte d'une thématique : icône aux couleurs de la catégorie, nom, nombre de données ; mène au catalogue filtré.
  * `detaillee` (page des thématiques) ajoute quelques données de la catégorie.
  */
-export const CarteThematique = ({ thematique, detaillee = false, className }: { thematique: Thematique; detaillee?: boolean; className?: string }) => {
+export const CarteThematique = ({
+  thematique,
+  detaillee = false,
+  copie = false,
+  className,
+}: {
+  thematique: Thematique;
+  detaillee?: boolean;
+  /** Copie qui sert à boucler le défilement : hors tabulation (elle est aussi masquée aux lecteurs d'écran). */
+  copie?: boolean;
+  className?: string;
+}) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const { categorie, nb, exemples } = thematique;
@@ -27,7 +38,7 @@ export const CarteThematique = ({ thematique, detaillee = false, className }: { 
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-gray-900 dark:text-white">{nom}</span>
-        <span className="block text-sm text-muted-foreground">{t("thematiques.nbDonnees", { count: nb })}</span>
+        <span className="block truncate text-sm text-muted-foreground">{t("thematiques.nbDonnees", { count: nb })}</span>
       </span>
     </>
   );
@@ -36,6 +47,7 @@ export const CarteThematique = ({ thematique, detaillee = false, className }: { 
     return (
       <Link
         to={catalogueParCategorie(categorie.slug)}
+        tabIndex={copie ? -1 : undefined}
         className={cn(
           "group flex items-center gap-3 rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-500/50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-white/10 dark:bg-gray-900",
           className

@@ -64,7 +64,7 @@
     "explorerNombre_many": "استكشف {{count}} مجموعة بيانات",
     "explorerNombre_other": "استكشف {{count}} مجموعة بيانات",
     "recherche": {
-      "placeholder": "صيدليات، محطات…",
+      "placeholder": "ابحث عن بيانات…",
       "bouton": "بحث",
       "exemples": "أمثلة:",
       "exemple": {
@@ -73,7 +73,9 @@
         "ecoles": "مدارس",
         "emploi": "التشغيل"
       },
-      "placeholderLong": "ابحث عن صيدلية، مدرسة، محطة…"
+      "placeholderLong": "ابحث عن صيدلية، مدرسة، محطة…",
+      "autresExemples": "أمثلة أخرى",
+      "placeholderCourt": "بحث…"
     },
     "sources": {
       "titre": "البيانات مصدرها",

@@ -56,7 +56,7 @@
     "explorerNombre_one": "Explorer le jeu de données",
     "explorerNombre_other": "Explorer les {{count}} jeux de données",
     "recherche": {
-      "placeholder": "Pharmacies, gares…",
+      "placeholder": "Rechercher une donnée…",
       "bouton": "Chercher",
       "exemples": "Exemples :",
       "exemple": {
@@ -65,7 +65,9 @@
         "ecoles": "Écoles",
         "emploi": "Emploi"
       },
-      "placeholderLong": "Rechercher une pharmacie, une gare…"
+      "placeholderLong": "Rechercher une pharmacie, une gare…",
+      "autresExemples": "Voir d'autres exemples",
+      "placeholderCourt": "Rechercher…"
     },
     "sources": {
       "titre": "Données issues de",
