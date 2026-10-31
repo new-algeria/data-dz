@@ -1,4 +1,4 @@
-import { Barcode, CloudSun, Globe, Rocket, ScrollText, Search, Waves, type LucideIcon } from "lucide-react";
+import { Barcode, CloudSun, Globe, MapPinned, Rocket, ScrollText, Search, Waves, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface SourceBandeau {
@@ -11,6 +11,7 @@ interface SourceBandeau {
 }
 
 const SOURCES: SourceBandeau[] = [
+  { cle: "geoalgeria", url: "https://geoalgeria.com", icone: MapPinned },
   { cle: "banqueMondiale", url: "https://data.worldbank.org", icone: Globe },
   { cle: "ecmwf", url: "https://www.ecmwf.int", icone: Waves },
   { cle: "openMeteo", url: "https://open-meteo.com", icone: CloudSun },
