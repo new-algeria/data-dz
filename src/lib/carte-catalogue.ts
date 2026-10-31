@@ -53,7 +53,7 @@ export type Chiffre =
  * synchronisation) ; sinon nombre de lignes et unité devinée du titre (« 586 plages »).
  */
 export function chiffreCarte(
-  donnee: Pick<ResumeDonnee, "versions" | "infos_source">,
+  donnee: Pick<ResumeDonnee, "slug" | "versions" | "infos_source">,
   titre: string,
   langue: LangueUnite
 ): Chiffre | null {
@@ -70,7 +70,7 @@ export function chiffreCarte(
     }
   }
   const lignes = donnee.versions?.nb_lignes;
-  return lignes === null || lignes === undefined ? null : { genre: "compte", nombre: lignes, unite: devinerUnite(titre, langue) };
+  return lignes === null || lignes === undefined ? null : { genre: "compte", nombre: lignes, unite: devinerUnite(titre, langue, donnee.slug) };
 }
 
 /** Nom de la source, court : avant une parenthèse ou un tiret, 28 caractères au plus. */
