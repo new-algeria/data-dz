@@ -35,21 +35,21 @@ describe("cartes du catalogue", () => {
   });
 
   it("compte les lignes avec l'unité devinée du titre", () => {
-    expect(chiffreCarte({ versions: { numero: "1", nb_lignes: 586, publie_le: null, colonnes: colonnes("nom") } }, "Plages", "fr")).toEqual({
+    expect(chiffreCarte({ slug: "x", versions: { numero: "1", nb_lignes: 586, publie_le: null, colonnes: colonnes("nom") } }, "Plages", "fr")).toEqual({
       genre: "compte",
       nombre: 586,
       unite: "plages",
     });
-    expect(chiffreCarte({ versions: null }, "Plages", "fr")).toBeNull();
+    expect(chiffreCarte({ slug: "x", versions: null }, "Plages", "fr")).toBeNull();
   });
 
   it("résume une série temporelle en indicateurs et années", () => {
     const serie = { numero: "1", nb_lignes: 1200, publie_le: null, colonnes: colonnes("indicateur", "annee", "valeur") };
     expect(
-      chiffreCarte({ versions: serie, infos_source: { nb_indicateurs: 14, premiere_annee_observee: 1980, derniere_annee_projetee: "2031" } }, "Économie : chiffres et prévisions du FMI", "fr")
+      chiffreCarte({ slug: "x", versions: serie, infos_source: { nb_indicateurs: 14, premiere_annee_observee: 1980, derniere_annee_projetee: "2031" } }, "Économie : chiffres et prévisions du FMI", "fr")
     ).toEqual({ genre: "serie", nombre: 14, debut: 1980, fin: 2031 });
     // Sans le nombre d'indicateurs : le compte des lignes.
-    expect(chiffreCarte({ versions: serie, infos_source: null }, "Économie : chiffres", "fr")).toEqual({ genre: "compte", nombre: 1200, unite: "éléments" });
+    expect(chiffreCarte({ slug: "x", versions: serie, infos_source: null }, "Économie : chiffres", "fr")).toEqual({ genre: "compte", nombre: 1200, unite: "éléments" });
   });
 
   it("raccourcit la source et lit la licence", () => {

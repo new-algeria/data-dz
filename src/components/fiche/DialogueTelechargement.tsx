@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ErreurApi } from "@/lib/api";
+import { verifierLien } from "@/lib/telechargement";
 import { formaterTaille } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
 import type { FormatTelechargement, Ressource } from "@/lib/types";
@@ -19,39 +20,47 @@ const rang = (format: string) => {
   return indice === -1 ? ORDRE.length : indice;
 };
 
-/**
- * Vérifie le lien avant d'ouvrir le téléchargement : l'API répond 302 (fichier prêt, éventuellement converti)
- * ou une erreur lisible (ex. pas de coordonnées pour un GeoJSON). Sans cette étape, l'erreur s'afficherait
- * en JSON brut dans un nouvel onglet.
- */
-async function verifierLien(url: string): Promise<void> {
-  const reponse = await fetch(url, { redirect: "manual" });
-  if (reponse.type === "opaqueredirect" || (reponse.status >= 300 && reponse.status < 400)) return;
-  const corps = await reponse.json().catch(() => null);
-  throw new ErreurApi(reponse.status, corps?.code ?? "http_error", corps?.title ?? `HTTP ${reponse.status}`);
-}
 
 interface DialogueTelechargementProps {
   ressources: Ressource[];
   /** Fichier choisi à l'ouverture (sinon le principal). */
   nomInitial?: string;
-  /** Bouton qui ouvre le dialogue (sinon le grand bouton « Télécharger » de l'en-tête). */
-  declencheur?: ReactElement;
+  /** Bouton qui ouvre le dialogue (sinon le grand bouton « Télécharger » de l'en-tête) ; `null` : aucun bouton. */
+  declencheur?: ReactElement | null;
+  /** Ouverture pilotée de l'extérieur (ex. depuis un menu, qui se ferme avant le dialogue). */
+  ouvert?: boolean;
+  onOuvertChange?: (ouvert: boolean) => void;
 }
 
 /**
  * Téléchargement d'une donnée : choix du fichier (s'il y en a plusieurs) et du format, conversion par l'API.
  * Même dialogue pour le bouton principal de l'en-tête et pour chaque fichier de la liste (`ListeFichiers`).
  */
-export const DialogueTelechargement = ({ ressources, nomInitial, declencheur }: DialogueTelechargementProps) => {
+export const DialogueTelechargement = ({ ressources, nomInitial, declencheur, ouvert: ouvertExterne, onOuvertChange }: DialogueTelechargementProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
-  const [ouvert, setOuvert] = useState(false);
+  const [ouvertInterne, setOuvertInterne] = useState(false);
+  const ouvert = ouvertExterne ?? ouvertInterne;
+  const setOuvert = (valeur: boolean) => {
+    if (ouvertExterne === undefined) setOuvertInterne(valeur);
+    onOuvertChange?.(valeur);
+  };
   const nomParDefaut = () => nomInitial ?? (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "";
   const [nom, setNom] = useState(nomParDefaut);
   const [format, setFormat] = useState<FormatTelechargement>("csv");
   const [statut, setStatut] = useState<"pret" | "conversion" | "erreur">("pret");
   const [erreur, setErreur] = useState<string | null>(null);
+
+  // Chaque ouverture (bouton ou pilotage extérieur) repart du fichier demandé.
+  const [ouvertAvant, setOuvertAvant] = useState(ouvert);
+  if (ouvert !== ouvertAvant) {
+    setOuvertAvant(ouvert);
+    if (ouvert) {
+      setNom(nomParDefaut());
+      setStatut("pret");
+      setErreur(null);
+    }
+  }
 
   const ressource = ressources.find((element) => element.nom === nom) ?? ressources[0];
   if (!ressource) return null;
@@ -85,27 +94,25 @@ export const DialogueTelechargement = ({ ressources, nomInitial, declencheur }: 
   return (
     <Dialog
       open={ouvert}
-      onOpenChange={(valeur) => {
-        // Chaque ouverture repart du fichier du bouton utilisé.
-        if (valeur) choisir(() => setNom(nomParDefaut()));
-        setOuvert(valeur);
-      }}
+      onOpenChange={setOuvert}
     >
-      <DialogTrigger asChild>
-        {declencheur ?? (
-          <Button size="lg" className="h-auto justify-start gap-3 bg-emerald-700 py-3 text-white shadow-lg shadow-emerald-700/25 hover:bg-emerald-800">
-            <Download className="h-5 w-5" />
-            <span className="flex flex-col items-start leading-tight">
-              <span className="font-semibold">{t("fiche.telecharger")}</span>
-              {formatsDisponibles.length > 0 && (
-                <span className="text-xs font-normal opacity-80" dir="ltr">
-                  {formatsDisponibles.map((element) => t(`telechargement.formatsCourts.${element}`, { defaultValue: element.toUpperCase() })).join(" · ")}
-                </span>
-              )}
-            </span>
-          </Button>
-        )}
-      </DialogTrigger>
+      {declencheur !== null && (
+        <DialogTrigger asChild>
+          {declencheur ?? (
+            <Button size="lg" className="h-auto justify-start gap-3 bg-emerald-700 py-3 text-white shadow-lg shadow-emerald-700/25 hover:bg-emerald-800">
+              <Download className="h-5 w-5" />
+              <span className="flex flex-col items-start leading-tight">
+                <span className="font-semibold">{t("fiche.telecharger")}</span>
+                {formatsDisponibles.length > 0 && (
+                  <span className="text-xs font-normal opacity-80" dir="ltr">
+                    {formatsDisponibles.map((element) => t(`telechargement.formatsCourts.${element}`, { defaultValue: element.toUpperCase() })).join(" · ")}
+                  </span>
+                )}
+              </span>
+            </Button>
+          )}
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>

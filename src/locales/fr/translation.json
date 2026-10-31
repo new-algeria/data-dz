@@ -122,6 +122,37 @@
     }
   },
   "fiche": {
+    "sourceNom": "Source : {{nom}}",
+    "pageSource": "Page de la source",
+    "entete": {
+      "wilayas_one": "wilaya couverte",
+      "wilayas_other": "wilayas couvertes",
+      "miseAJour": "dernière mise à jour",
+      "autresFormats": "Autres formats",
+      "autresFichiers_one": "Choisir le fichier…",
+      "autresFichiers_other": "Les {{count}} fichiers…",
+      "voirCarte": "Voir la carte",
+      "voirGraphique": "Voir le graphique",
+      "partager": "Partager",
+      "lienCopie": "Lien copié"
+    },
+    "developpeurs": {
+      "titre": "Pour les développeurs",
+      "resume": "API, formats, fichiers, colonnes",
+      "api": "API",
+      "documentation": "Documentation de l'API",
+      "formats": "Formats",
+      "colonnes_one": "{{count}} colonne",
+      "colonnes_other": "{{count}} colonnes",
+      "publieeLe": "publiée le {{date}}"
+    },
+    "utile": {
+      "question": "Ces données vous ont-elles été utiles ?",
+      "merci": "Merci pour votre retour !",
+      "oui": "Oui",
+      "non": "Pas vraiment",
+      "commenter": "Commenter"
+    },
     "retour": "Retour au catalogue",
     "chargement": "Chargement de la fiche…",
     "introuvable": "Cette donnée n'existe pas ou n'est pas encore publiée.",
@@ -158,7 +189,6 @@
     "filAriane": "Fil d'Ariane",
     "catalogue": "Catalogue",
     "sourceVerifiee": "Source vérifiée",
-    "parSource": "Publié par",
     "miseAJour": "Mise à jour",
     "ongletApercu": "Aperçu",
     "carteChoix": "Fichier affiché sur la carte",

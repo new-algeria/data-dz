@@ -122,6 +122,37 @@
     }
   },
   "fiche": {
+    "sourceNom": "Source: {{nom}}",
+    "pageSource": "Source page",
+    "entete": {
+      "wilayas_one": "wilaya covered",
+      "wilayas_other": "wilayas covered",
+      "miseAJour": "last updated",
+      "autresFormats": "Other formats",
+      "autresFichiers_one": "Choose the file…",
+      "autresFichiers_other": "All {{count}} files…",
+      "voirCarte": "View map",
+      "voirGraphique": "View chart",
+      "partager": "Share",
+      "lienCopie": "Link copied"
+    },
+    "developpeurs": {
+      "titre": "For developers",
+      "resume": "API, formats, files, columns",
+      "api": "API",
+      "documentation": "API documentation",
+      "formats": "Formats",
+      "colonnes_one": "{{count}} column",
+      "colonnes_other": "{{count}} columns",
+      "publieeLe": "published on {{date}}"
+    },
+    "utile": {
+      "question": "Was this data useful to you?",
+      "merci": "Thanks for your feedback!",
+      "oui": "Yes",
+      "non": "Not really",
+      "commenter": "Comment"
+    },
     "retour": "Back to catalogue",
     "chargement": "Loading dataset…",
     "introuvable": "This dataset does not exist or is not published yet.",
@@ -158,7 +189,6 @@
     "filAriane": "Breadcrumb",
     "catalogue": "Catalogue",
     "sourceVerifiee": "Verified source",
-    "parSource": "Published by",
     "miseAJour": "Updated",
     "ongletApercu": "Preview",
     "carteChoix": "File shown on the map",
