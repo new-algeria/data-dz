@@ -16,7 +16,12 @@
     "langue": "Language",
     "theme": "Theme",
     "api": "API",
-    "apiLong": "Public API"
+    "apiLong": "Public API",
+    "rechercher": "Search datasets…",
+    "rechercheDescription": "Type a word: matching datasets appear below.",
+    "rechercheChargement": "Loading datasets…",
+    "aucunResultat": "No dataset matches.",
+    "voirTousResultats": "See all results for “{{terme}}”"
   },
   "langue": {
     "choisir": "Choose language"
@@ -1073,5 +1078,16 @@
     "voirFiche": "Page",
     "copie": "Copied to clipboard",
     "licence": "Each dataset keeps its source's licence: please credit it (shown on its page and in the API response)."
+  },
+  "thematiques": {
+    "titre": "Themes",
+    "titreAccueil": "Explore by theme",
+    "sousTitre": "Health, education, transport… find a field's data in one click.",
+    "sousTitrePage": "Every theme in the catalogue, with its latest datasets.",
+    "voirToutes": "See all themes",
+    "nbDonnees_one": "{{count}} dataset",
+    "nbDonnees_other": "{{count}} datasets",
+    "voirDonnees_one": "See the dataset",
+    "voirDonnees_other": "See the {{count}} datasets"
   }
 }
