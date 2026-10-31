@@ -24,6 +24,7 @@ export const routes = {
   adminMembres: "/admin/users",
   adminDonnees: "/admin/datasets",
   api: "/api",
+  thematiques: "/themes",
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

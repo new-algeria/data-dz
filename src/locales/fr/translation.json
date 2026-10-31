@@ -16,7 +16,12 @@
     "langue": "Langue",
     "theme": "Thème",
     "api": "API",
-    "apiLong": "API publique"
+    "apiLong": "API publique",
+    "rechercher": "Rechercher une donnée…",
+    "rechercheDescription": "Tapez un mot : les données correspondantes s'affichent en dessous.",
+    "rechercheChargement": "Chargement des données…",
+    "aucunResultat": "Aucune donnée ne correspond.",
+    "voirTousResultats": "Voir tous les résultats pour « {{terme}} »"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -1073,5 +1078,16 @@
     "voirFiche": "Fiche",
     "copie": "Copié dans le presse-papiers",
     "licence": "Chaque donnée reste sous la licence de sa source : pensez à la citer (indiquée sur sa fiche et dans la réponse de l'API)."
+  },
+  "thematiques": {
+    "titre": "Thématiques",
+    "titreAccueil": "Explorer par thématique",
+    "sousTitre": "Santé, éducation, transport… trouvez les données d'un domaine en un clic.",
+    "sousTitrePage": "Toutes les thématiques du catalogue, avec leurs données les plus récentes.",
+    "voirToutes": "Voir toutes les thématiques",
+    "nbDonnees_one": "{{count}} jeu de données",
+    "nbDonnees_other": "{{count}} jeux de données",
+    "voirDonnees_one": "Voir le jeu de données",
+    "voirDonnees_other": "Voir les {{count}} jeux de données"
   }
 }

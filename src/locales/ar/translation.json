@@ -20,7 +20,12 @@
     "langue": "اللغة",
     "theme": "المظهر",
     "api": "API",
-    "apiLong": "واجهة API العامة"
+    "apiLong": "واجهة API العامة",
+    "rechercher": "ابحث عن بيانات…",
+    "rechercheDescription": "اكتب كلمة: تظهر البيانات المطابقة في الأسفل.",
+    "rechercheChargement": "جارٍ تحميل البيانات…",
+    "aucunResultat": "لا توجد بيانات مطابقة.",
+    "voirTousResultats": "عرض كل النتائج لـ «{{terme}}»"
   },
   "langue": {
     "choisir": "اختر اللغة"
@@ -1156,5 +1161,24 @@
     "voirFiche": "البطاقة",
     "copie": "تم النسخ",
     "licence": "تبقى كل مجموعة بيانات تحت رخصة مصدرها: يُرجى ذكره (مبيّن في بطاقتها وفي استجابة الواجهة)."
+  },
+  "thematiques": {
+    "titre": "المواضيع",
+    "titreAccueil": "استكشف حسب الموضوع",
+    "sousTitre": "الصحة، التعليم، النقل… اعثر على بيانات أي مجال بنقرة واحدة.",
+    "sousTitrePage": "كل مواضيع الفهرس مع أحدث بياناتها.",
+    "voirToutes": "عرض كل المواضيع",
+    "nbDonnees_zero": "لا توجد مجموعات بيانات",
+    "nbDonnees_one": "مجموعة بيانات واحدة",
+    "nbDonnees_two": "مجموعتا بيانات",
+    "nbDonnees_few": "{{count}} مجموعات بيانات",
+    "nbDonnees_many": "{{count}} مجموعة بيانات",
+    "nbDonnees_other": "{{count}} مجموعة بيانات",
+    "voirDonnees_zero": "عرض البيانات",
+    "voirDonnees_one": "عرض مجموعة البيانات",
+    "voirDonnees_two": "عرض مجموعتي البيانات",
+    "voirDonnees_few": "عرض {{count}} مجموعات بيانات",
+    "voirDonnees_many": "عرض {{count}} مجموعة بيانات",
+    "voirDonnees_other": "عرض {{count}} مجموعة بيانات"
   }
 }

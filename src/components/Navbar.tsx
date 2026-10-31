@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Braces, Moon, Plus, ShieldCheck, Sun } from "lucide-react";
+import { Moon, Search, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useTheme } from "@/hooks/use-theme";
-import { useEstModerateur, useNbEnAttente } from "@/hooks/use-moderateur";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -12,29 +12,8 @@ import { LanguageSelector } from "./LanguageSelector";
 import { MenuUtilisateur } from "./auth/MenuUtilisateur";
 import { ClocheNotifications } from "./communaute/ClocheNotifications";
 import { MenuMobile } from "./MenuMobile";
+import { RechercheNavbar } from "./RechercheNavbar";
 import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
-
-/** Lien « Modération » avec le nombre de propositions en attente (modérateurs et admins seulement). */
-const LienModeration = () => {
-  const { t } = useTranslation();
-  const { data: moderateur } = useEstModerateur();
-  const { data: enAttente = 0 } = useNbEnAttente(Boolean(moderateur));
-  if (!moderateur) return null;
-  const libelle = enAttente > 0 ? t("navbar.moderationEnAttente", { count: enAttente }) : t("navbar.moderation");
-  return (
-    <Button asChild variant="ghost" size="sm" className="relative gap-2 px-2 sm:px-3">
-      <Link to={routes.moderation} aria-label={libelle} title={libelle}>
-        <ShieldCheck className="h-4 w-4" />
-        <span className="hidden lg:inline">{t("navbar.moderation")}</span>
-        {enAttente > 0 && (
-          <span className="absolute -end-0.5 -top-0.5 min-w-[1.15rem] rounded-full bg-amber-500 px-1 text-center text-[10px] font-bold leading-[1.15rem] text-white tabular-nums lg:static lg:text-xs">
-            {enAttente > 99 ? "99+" : enAttente}
-          </span>
-        )}
-      </Link>
-    </Button>
-  );
-};
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -43,6 +22,7 @@ export const Navbar = () => {
   const { pathname } = useLocation();
   const surPageApi = pathname === routes.api;
   const [defile, setDefile] = useState(false);
+  const [rechercheOuverte, setRechercheOuverte] = useState(false);
 
   useEffect(() => {
     const surDefilement = () => setDefile(window.scrollY > 8);
@@ -60,7 +40,7 @@ export const Navbar = () => {
           : "border-b border-transparent bg-white/40 backdrop-blur-sm dark:bg-gray-950/30"
       )}
     >
-      <nav className="container mx-auto flex h-16 items-center justify-between gap-3 px-4" aria-label="data-dz">
+      <nav className="container mx-auto flex h-16 items-center justify-between gap-2 px-4" aria-label="data-dz">
         <div className="flex shrink-0 items-center gap-2" dir="ltr">
           <Link to={routes.accueil} className="group flex shrink-0 items-center gap-2.5" aria-label="data-dz">
             <img
@@ -80,38 +60,38 @@ export const Navbar = () => {
           )}
         </div>
 
-        {/* Grands écrans : tout est visible. Petits écrans : cloche + menu hamburger (le reste est dans le menu). */}
-        <div className="flex items-center gap-1 lg:gap-2">
-          <div className="hidden items-center gap-1 md:flex lg:gap-2">
-            <Button asChild size="sm" className="gap-2 bg-emerald-700 text-white shadow-sm hover:bg-emerald-800">
-              <Link to={routes.proposer}>
-                <Plus className="h-4 w-4" />
-                {t("navbar.proposer")}
-              </Link>
-            </Button>
-            {session && <LienModeration />}
-            {!surPageApi && (
-              <Button asChild variant="ghost" size="sm" className="gap-1.5 text-violet-700 hover:bg-violet-50 hover:text-violet-800 dark:text-violet-300 dark:hover:bg-violet-500/10">
-                <Link to={routes.api}>
-                  <Braces className="h-4 w-4" />
-                  {t("navbar.api")}
-                </Link>
-              </Button>
-            )}
-          </div>
-          {session && <ClocheNotifications />}
-          <div className="hidden items-center gap-1 md:flex lg:gap-2">
+        {/* Grands écrans : grande recherche (résultats en dessous) au centre. */}
+        <div className="mx-4 hidden max-w-xl flex-1 md:block lg:mx-8">
+          <RechercheNavbar />
+        </div>
+
+        {/* À droite : langue (grand écran), thème, cloche, compte. Petits écrans : loupe, thème, cloche, avatar ou hamburger. */}
+        <div className="flex shrink-0 items-center gap-1 lg:gap-1.5">
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setRechercheOuverte(true)} aria-label={t("navbar.rechercher")}>
+            <Search className="h-5 w-5" />
+          </Button>
+          <div className="hidden md:block">
             <LanguageSelector />
-            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
-              {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-            <div className="ms-1">
-              <MenuUtilisateur />
-            </div>
+          </div>
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
+          {session && <ClocheNotifications />}
+          <div className="ms-1 hidden md:block">
+            <MenuUtilisateur />
           </div>
           <MenuMobile theme={theme} basculerTheme={toggleTheme} />
         </div>
       </nav>
+
+      {/* Petits écrans : la loupe ouvre la recherche en haut de l'écran, résultats en dessous. */}
+      <Dialog open={rechercheOuverte} onOpenChange={setRechercheOuverte}>
+        <DialogContent className="top-3 max-w-[calc(100%-1.5rem)] translate-y-0 gap-0 rounded-2xl p-3 pr-12 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2">
+          <DialogTitle className="sr-only">{t("navbar.rechercher")}</DialogTitle>
+          <DialogDescription className="sr-only">{t("navbar.rechercheDescription")}</DialogDescription>
+          <RechercheNavbar autoFocus onTermine={() => setRechercheOuverte(false)} />
+        </DialogContent>
+      </Dialog>
     </header>
   );
 };

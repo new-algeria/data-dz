@@ -7,6 +7,7 @@ import {
   FilePlus2,
   Inbox,
   Languages,
+  LayoutGrid,
   LogIn,
   LogOut,
   Menu,
@@ -100,10 +101,22 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
   return (
     <Sheet open={ouvert} onOpenChange={setOuvert}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative md:hidden" aria-label={t("navbar.ouvrirMenu")}>
-          <Menu className="h-6 w-6" />
-          {moderateur && enAttente > 0 && <span className="absolute end-1.5 top-1.5 h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
-        </Button>
+        {/* Membre connecté : son avatar ouvre le menu (comme une appli) ; visiteur : le hamburger. */}
+        {session && profil ? (
+          <button
+            type="button"
+            className="relative rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 md:hidden"
+            aria-label={t("navbar.ouvrirMenu")}
+          >
+            <AvatarMembre profil={profil} className="h-9 w-9" />
+            {moderateur && enAttente > 0 && <span className="absolute -end-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-white dark:ring-gray-950" aria-hidden />}
+          </button>
+        ) : (
+          <Button variant="ghost" size="icon" className="relative md:hidden" aria-label={t("navbar.ouvrirMenu")}>
+            <Menu className="h-6 w-6" />
+            {moderateur && enAttente > 0 && <span className="absolute end-1.5 top-1.5 h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent
         side={i18n.dir() === "rtl" ? "left" : "right"}
@@ -147,6 +160,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           <Titre>{t("navbar.explorer")}</Titre>
           <Lien vers={routes.catalogue} icone={Database}>
             {t("navbar.catalogue")}
+          </Lien>
+          <Lien vers={routes.thematiques} icone={LayoutGrid}>
+            {t("thematiques.titre")}
           </Lien>
           <Lien vers={routes.api} icone={Braces}>
             {t("navbar.apiLong")}
