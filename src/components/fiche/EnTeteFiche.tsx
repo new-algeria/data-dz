@@ -143,7 +143,7 @@ const BoutonPartager = ({ titre }: { titre: string }) => {
 
 /**
  * En-tête de la fiche, en deux colonnes (une seule sur mobile, illustration d'abord) : à gauche badges, titre,
- * résumé, source, trois chiffres clés et actions ; à droite l'illustration dans une carte 4/3.
+ * résumé, source, trois chiffres clés et actions ; à droite l'illustration, posée sans carte ni bordure.
  * Le texte ne passe jamais sur l'illustration.
  */
 export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
@@ -181,15 +181,19 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:order-last"
+            // Téléphone : toute la largeur de l'écran (on annule la marge du conteneur).
+            className="-mx-4 sm:mx-0 lg:order-last"
           >
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-emerald-900/10 bg-muted shadow-xl shadow-emerald-900/10 dark:border-white/10">
+            {/* Les illustrations ont un fond blanc (souvent en vague) : pas de carte, de bordure ni d'ombre autour.
+                En clair, « multiply » fond ce blanc dans le dégradé de l'en-tête ; en sombre, simples coins arrondis.
+                Format d'origine (1200 × 720, 5/3) : rien n'est rogné. */}
+            <div className="relative aspect-[5/3]">
               <img
                 src={urlIllustration(donnee)}
                 alt=""
                 decoding="async"
                 onError={(e) => (e.currentTarget.style.display = "none")}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal dark:sm:rounded-2xl"
               />
             </div>
           </motion.div>
