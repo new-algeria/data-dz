@@ -304,6 +304,7 @@
   },
   "erreurs": {
     "pageTitre": "Cette page n'a pas pu s'afficher",
+    "detailsTechniques": "Détails techniques",
     "pageTexte": "Le site a peut-être été mis à jour pendant votre visite. Rechargez la page pour obtenir la dernière version.",
     "recharger": "Recharger la page",
     "identifiantsInvalides": "Email ou mot de passe incorrect.",

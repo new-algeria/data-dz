@@ -304,6 +304,7 @@
   },
   "erreurs": {
     "pageTitre": "This page could not be displayed",
+    "detailsTechniques": "Technical details",
     "pageTexte": "The site may have been updated during your visit. Reload the page to get the latest version.",
     "recharger": "Reload the page",
     "identifiantsInvalides": "Incorrect email or password.",

@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
 import ScrollToTop from "./components/ScrollToTop";
-import { LimiteErreur } from "./components/LimiteErreur";
+import { LimiteErreurParPage } from "./components/LimiteErreur";
 import { RouteProtegee } from "./components/auth/RouteProtegee";
 import { RouteModerateur } from "./components/moderation/RouteModerateur";
 import { RouteAdmin } from "./components/admin/RouteAdmin";
@@ -67,7 +67,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <Toaster position="bottom-center" richColors closeButton dir={i18n.dir()} />
-      <LimiteErreur>
+      <LimiteErreurParPage>
         <Suspense fallback={<ChargementPage />}>
           <Routes>
             <Route path={routes.accueil} element={<Catalogue />} />
@@ -135,7 +135,7 @@ function App() {
             <Route path="*" element={<Navigate to={routes.accueil} replace />} />
           </Routes>
         </Suspense>
-      </LimiteErreur>
+      </LimiteErreurParPage>
     </Router>
   );
 }
