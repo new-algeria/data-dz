@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Check, ChartLine, Download, Map as IconeCarte, Sparkles } from "lucide-react";
+import { Check, ChartLine, Download, Map as IconeCarte, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { DialogueTelechargement } from "@/components/fiche/DialogueTelechargement";
 import { chargerLicencesApi } from "@/lib/admin-donnees";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
-import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
+import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
@@ -130,7 +130,17 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             {fraicheur && <p>{t("catalogue.carte.misAJour", { quand: fraicheur })}</p>}
           </div>
 
-          {/* 5. Actions */}
+          {/* 5. Actions (données non redistribuables : lien vers le paquet de la source à la place) */}
+          {estRestreinte(donnee) && donnee.lien_paquet && (
+            <div className="relative z-10 pt-1">
+              <Button asChild variant="outline" className="w-full gap-2 dark:border-white/15 dark:bg-transparent dark:hover:bg-white/10">
+                <a href={donnee.lien_paquet} target="_blank" rel="noopener noreferrer">
+                  <Package className="h-4 w-4" aria-hidden />
+                  {t("fiche.restreinte.bouton")}
+                </a>
+              </Button>
+            </div>
+          )}
           {(action || principal) && (
             <div className={cn("relative z-10 grid gap-2 pt-1", action && principal ? "grid-cols-2" : "grid-cols-1")}>
               {action && (

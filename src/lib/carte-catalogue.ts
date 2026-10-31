@@ -33,7 +33,12 @@ export function aDesCoordonnees(donnee: Pick<ResumeDonnee, "ressources" | "versi
 }
 
 /** Bouton d'action de la carte, à côté de « Télécharger ». */
-export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versions">): "carte" | "graphique" | null {
+/** Fichiers non redistribuables par data-dz (`diffusion_restreinte`) : ni téléchargement, ni API, ni visuel. */
+export const estRestreinte = (donnee: { diffusion_restreinte?: boolean }) => donnee.diffusion_restreinte === true;
+
+export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versions" | "diffusion_restreinte">): "carte" | "graphique" | null {
+  // Rien à montrer sans les fichiers.
+  if (estRestreinte(donnee)) return null;
   if (aDesCoordonnees(donnee)) return "carte";
   if (estSerieTemporelle(donnee.versions?.colonnes)) return "graphique";
   return null;

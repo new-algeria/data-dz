@@ -95,6 +95,10 @@ export interface ResumeDonnee extends CompteursDonnee {
   cree_le?: string;
   /** Illustration choisie par un administrateur (sinon image par défaut du slug). */
   illustration_url?: string | null;
+  /** Fichiers non redistribuables par data-dz : pas de téléchargement ni d'API, lien vers le paquet de la source. */
+  diffusion_restreinte?: boolean;
+  /** Où obtenir une donnée restreinte (paquet npm de la source). */
+  lien_paquet?: string | null;
 }
 
 /** Fiche complète d'une donnée. */
@@ -120,4 +124,6 @@ export interface Donnee extends CompteursDonnee {
   wilayas?: string[] | null;
   /** Fichiers regroupés par nom, avec leurs formats de téléchargement (API). */
   ressources: Ressource[];
+  diffusion_restreinte?: boolean;
+  lien_paquet?: string | null;
 }

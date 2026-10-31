@@ -78,7 +78,8 @@
         "openStreetMap": "OpenStreetMap",
         "wikidata": "Wikidata",
         "asal": "ASAL · Agence spatiale algérienne",
-        "journalOfficiel": "Journal officiel"
+        "journalOfficiel": "Journal officiel",
+        "geoalgeria": "GeoAlgeria"
       }
     }
   },
@@ -220,6 +221,10 @@
       "frequence": "Fréquence",
       "unite": "Unité",
       "paquet": "Paquet"
+    },
+    "restreinte": {
+      "bouton": "Obtenir via npm",
+      "explication": "data-dz n'a pas le droit de redistribuer ces données : elles ne sont ni téléchargeables ni disponibles par l'API. Vous pouvez les obtenir dans le paquet npm de leur source."
     }
   },
   "attribution": {
@@ -1079,7 +1084,8 @@
     "voirJson": "Voir le JSON",
     "voirFiche": "Fiche",
     "copie": "Copié dans le presse-papiers",
-    "licence": "Chaque donnée reste sous la licence de sa source : pensez à la citer (indiquée sur sa fiche et dans la réponse de l'API)."
+    "licence": "Chaque donnée reste sous la licence de sa source : pensez à la citer (indiquée sur sa fiche et dans la réponse de l'API).",
+    "nonRedistribuable": "Non redistribuable par data-dz"
   },
   "thematiques": {
     "titre": "Thématiques",
