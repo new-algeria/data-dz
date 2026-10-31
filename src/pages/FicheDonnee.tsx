@@ -4,7 +4,7 @@ import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { ArrowLeft, Building2, FileDown, Globe2, Info, Loader2, MapPinned, SearchX } from "lucide-react";
+import { ArrowLeft, Building2, ExternalLink, Globe2, Info, Loader2, MapPinned, SearchX } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -15,14 +15,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TableauColonnes } from "@/components/fiche/TableauColonnes";
 import { ApercuDonnees } from "@/components/fiche/ApercuDonnees";
-import { ListeFichiers } from "@/components/fiche/ListeFichiers";
 import { BlocAttribution } from "@/components/fiche/BlocAttribution";
 import { BlocLicence } from "@/components/fiche/BlocLicence";
 import { InfosSource } from "@/components/fiche/InfosSource";
 import { aDesInfosSource } from "@/lib/couverture";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
-import { ChiffresCles } from "@/components/fiche/ChiffresCles";
+import { PourDeveloppeurs } from "@/components/fiche/PourDeveloppeurs";
+import { DonneesUtiles } from "@/components/fiche/DonneesUtiles";
 import { SectionCommentaires } from "@/components/communaute/SectionCommentaires";
 import { VisuelDonnee } from "@/components/fiche/visuel/VisuelDonnee";
 import { choisirFichierCarte } from "@/lib/detecterVisuel";
@@ -113,18 +113,11 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
       <EnTeteFiche donnee={donnee} />
 
       <div className="container mx-auto px-4 pb-12">
-        <div className="-mt-6 relative">
+        {/* Ancre des boutons « Voir la carte » / « Voir le graphique » de l'en-tête */}
+        <div id="visuel" className="mt-6 relative scroll-mt-24">
           <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} fichiers={fichiers} />
         </div>
 
-        <div className="mt-6 relative">
-          <ChiffresCles
-            nbLignes={version?.nb_lignes}
-            nbColonnes={colonnes.length}
-            nbFichiers={fichiers.length}
-            miseAJour={formatDate("medium")}
-          />
-        </div>
 
         {/* Attribution visible dès le haut de la fiche sur mobile, dans la colonne latérale sur grand écran. */}
         <div className="lg:hidden mt-6">
@@ -141,9 +134,6 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               </Section>
             )}
 
-            <Section id="titre-fichiers" titre={t("fiche.fichiers")} icone={FileDown}>
-              <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} />
-            </Section>
 
             <motion.section
               initial={{ opacity: 0, y: 20 }}
@@ -180,6 +170,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               </Tabs>
             </motion.section>
 
+            <PourDeveloppeurs donnee={donnee} fichiers={fichiers} />
+            <DonneesUtiles datasetId={donnee.id} />
             <SectionCommentaires datasetId={donnee.id} slug={donnee.slug} />
           </div>
 
@@ -217,6 +209,25 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
                   </Information>
                 )}
                 {formatDate("long") && <Information libelle={t("fiche.publieLe")}>{formatDate("long")}</Information>}
+                {donnee.mots_cles && donnee.mots_cles.length > 0 && (
+                  <Information libelle={t("fiche.motsCles")}>
+                    <span className="flex flex-wrap justify-end gap-1">
+                      {donnee.mots_cles.slice(0, 5).map((motCle) => (
+                        <span key={motCle} className="rounded-md bg-gray-900/5 px-2 py-0.5 text-xs font-normal dark:bg-white/10">
+                          {motCle}
+                        </span>
+                      ))}
+                    </span>
+                  </Information>
+                )}
+                {donnee.url_source && (
+                  <Information libelle={t("fiche.pageSource")}>
+                    <a href={donnee.url_source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400">
+                      {t("fiche.voirSource")}
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                    </a>
+                  </Information>
+                )}
               </dl>
             </Section>
 

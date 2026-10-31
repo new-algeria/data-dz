@@ -116,6 +116,8 @@ export interface Donnee extends CompteursDonnee {
   illustration_url?: string | null;
   /** Dernière mise à jour : sert de version à l'image d'aperçu (cache des réseaux sociaux). */
   mis_a_jour_le?: string;
+  /** Codes des wilayas couvertes (« 16 », « 31 »…), renvoyés par l'API. */
+  wilayas?: string[] | null;
   /** Fichiers regroupés par nom, avec leurs formats de téléchargement (API). */
   ressources: Ressource[];
 }
