@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowDownWideNarrow, Compass, Search, SearchX } from "lucide-react";
@@ -14,6 +14,8 @@ import { BandeauSources } from "@/components/accueil/BandeauSources";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
 import { RechercheHero } from "@/components/accueil/RechercheHero";
+import { EVENEMENT_RECHERCHE } from "@/components/RechercheNavbar";
+import { SectionThematiques } from "@/components/thematiques/SectionThematiques";
 import { IconeCategorie } from "@/components/BadgeCategorie";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Input } from "@/components/ui/input";
@@ -84,6 +86,24 @@ const Catalogue = () => {
     setSaisie(valeur);
     document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // Recherche de l'en-tête lancée depuis l'accueil : même effet que celle du hero, sans recharger la page.
+  useEffect(() => {
+    const surRecherche = (evenement: Event) => {
+      setSaisie((evenement as CustomEvent<string>).detail);
+      document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+    };
+    window.addEventListener(EVENEMENT_RECHERCHE, surRecherche);
+    return () => window.removeEventListener(EVENEMENT_RECHERCHE, surRecherche);
+  }, []);
+
+  // Lien vers « /…#catalog » (thématique, recherche depuis une autre page) : on descend jusqu'au catalogue.
+  const emplacement = useLocation();
+  useEffect(() => {
+    if (emplacement.hash !== "#catalog") return;
+    const minuteur = window.setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50);
+    return () => window.clearTimeout(minuteur);
+  }, [emplacement.key, emplacement.hash]);
 
   const categoriesParSlug = useMemo(
     () => new Map((requeteCategories.data ?? []).map((cat) => [cat.slug, cat])),
@@ -224,6 +244,10 @@ const Catalogue = () => {
           </motion.div>
         </div>
       </section>
+
+      <div className="bg-accent dark:bg-inherit">
+        <SectionThematiques />
+      </div>
 
       <section id="catalog" className="scroll-mt-16 py-14 px-4 bg-accent dark:bg-inherit flex-1">
         <div className="max-w-7xl mx-auto">
