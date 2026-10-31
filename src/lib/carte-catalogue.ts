@@ -1,6 +1,6 @@
 import { devinerUnite, type LangueUnite } from "./deviner-unite";
 import { normaliserCle } from "./detecterVisuel";
-import { dateAjout } from "./recents";
+import { ajouteeDepuis } from "./recents";
 import type { Colonne, Licence, ResumeDonnee } from "./types";
 
 /**
@@ -8,13 +8,13 @@ import type { Colonne, Licence, ResumeDonnee } from "./types";
  * badge « Nouveau », grand chiffre et son unité, bouton « Voir la carte » ou « Graphique », ligne discrète.
  */
 
-/** Badge « Nouveau » : donnée publiée depuis moins de 14 jours (la place en tête du catalogue reste à 4 jours). */
+/** Badge « Nouveau » : donnée ajoutée depuis moins de 14 jours, après l'import initial (la place en tête reste à 4 jours). */
 export const JOURS_NOUVEAU = 14;
 const JOUR = 24 * 60 * 60 * 1000;
 
-export function estNouvelle(donnee: Pick<ResumeDonnee, "publie_le" | "cree_le">, maintenant = Date.now()): boolean {
-  const date = dateAjout(donnee);
-  return date !== null && maintenant - date < JOURS_NOUVEAU * JOUR;
+/** `seuil` : fin de l'import initial (`seuilNouveautes()`), les données importées d'un bloc ne sont pas « Nouveau ». */
+export function estNouvelle(donnee: Pick<ResumeDonnee, "publie_le" | "cree_le">, seuil: number | null, maintenant = Date.now()): boolean {
+  return ajouteeDepuis(donnee, JOURS_NOUVEAU * JOUR, seuil, maintenant);
 }
 
 const noms = (colonnes: Colonne[] | null | undefined) => new Set((colonnes ?? []).map((colonne) => normaliserCle(colonne.nom)));

@@ -8,11 +8,15 @@ const colonnes = (...nomsColonnes: string[]) => nomsColonnes.map((nom) => ({ nom
 const ressource = (format: string): Ressource => ({ nom: "f", principal: true, fichiers: [{ format, taille_octets: 1, url: "u" }], telechargements: [] });
 
 describe("cartes du catalogue", () => {
-  it("affiche « Nouveau » pendant 14 jours", () => {
-    expect(estNouvelle({ publie_le: ilYaJours(13) }, maintenant)).toBe(true);
-    expect(estNouvelle({ publie_le: ilYaJours(15) }, maintenant)).toBe(false);
-    expect(estNouvelle({ publie_le: null, cree_le: ilYaJours(2) }, maintenant)).toBe(true);
-    expect(estNouvelle({}, maintenant)).toBe(false);
+  it("affiche « Nouveau » pendant 14 jours, jamais pour l'import initial", () => {
+    const seuil = Date.parse(ilYaJours(300));
+    expect(estNouvelle({ publie_le: ilYaJours(13) }, seuil, maintenant)).toBe(true);
+    expect(estNouvelle({ publie_le: ilYaJours(15) }, seuil, maintenant)).toBe(false);
+    expect(estNouvelle({ publie_le: null, cree_le: ilYaJours(2) }, seuil, maintenant)).toBe(true);
+    expect(estNouvelle({}, seuil, maintenant)).toBe(false);
+    // Importée avant le seuil (catalogue importé d'un bloc il y a 10 jours) : pas « Nouveau ».
+    expect(estNouvelle({ publie_le: ilYaJours(10) }, Date.parse(ilYaJours(7)), maintenant)).toBe(false);
+    expect(estNouvelle({ publie_le: ilYaJours(2) }, null, maintenant)).toBe(false);
   });
 
   it("reconnaît une série temporelle (année + valeur)", () => {
