@@ -1091,5 +1091,15 @@
     "nbDonnees_other": "{{count}} jeux de données",
     "voirDonnees_one": "Voir le jeu de données",
     "voirDonnees_other": "Voir les {{count}} jeux de données"
+  },
+  "ia": {
+    "libelle": "IA",
+    "bientot": "Bientôt",
+    "bouton": "Assistant IA : bientôt disponible",
+    "fermer": "Fermer",
+    "enDeveloppement": "En cours de développement",
+    "titre": "Une IA arrive bientôt sur data-dz",
+    "premiere": "La première IA algérienne branchée sur de vraies données.",
+    "description": "Elle vous aidera à explorer et à comprendre les données du catalogue. Restez connectés !"
   }
 }
