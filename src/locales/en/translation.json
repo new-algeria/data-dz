@@ -1091,5 +1091,15 @@
     "nbDonnees_other": "{{count}} datasets",
     "voirDonnees_one": "See the dataset",
     "voirDonnees_other": "See the {{count}} datasets"
+  },
+  "ia": {
+    "libelle": "AI",
+    "bientot": "Soon",
+    "bouton": "AI assistant: coming soon",
+    "fermer": "Close",
+    "enDeveloppement": "In development",
+    "titre": "An AI is coming to data-dz",
+    "premiere": "The first Algerian AI built on real data.",
+    "description": "It will help you explore and understand the catalogue's data. Stay tuned!"
   }
 }

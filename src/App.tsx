@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { useTranslation } from "react-i18next";
 import ScrollToTop from "./components/ScrollToTop";
 import { LimiteErreurParPage } from "./components/LimiteErreur";
+import { BulleIA } from "./components/BulleIA";
 import { RouteProtegee } from "./components/auth/RouteProtegee";
 import { RouteModerateur } from "./components/moderation/RouteModerateur";
 import { RouteAdmin } from "./components/admin/RouteAdmin";
@@ -67,6 +68,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <BulleIA />
       <Toaster position="bottom-center" richColors closeButton dir={i18n.dir()} />
       <LimiteErreurParPage>
         <Suspense fallback={<ChargementPage />}>
