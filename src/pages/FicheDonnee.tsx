@@ -19,6 +19,7 @@ import { BlocAttribution } from "@/components/fiche/BlocAttribution";
 import { BlocLicence } from "@/components/fiche/BlocLicence";
 import { InfosSource } from "@/components/fiche/InfosSource";
 import { aDesInfosSource } from "@/lib/couverture";
+import { estRestreinte } from "@/lib/carte-catalogue";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { PourDeveloppeurs } from "@/components/fiche/PourDeveloppeurs";
@@ -90,7 +91,9 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const titre = texteTraduit(donnee.titre, langue);
   const description = texteTraduit(donnee.description, langue);
   const version = donnee.versions;
-  const fichiers = trierFichiers(version?.fichiers ?? []);
+  // Données non redistribuables : aucun fichier, aucun aperçu, pas de « Pour les développeurs » (l'API ne les sert pas).
+  const restreinte = estRestreinte(donnee);
+  const fichiers = restreinte ? [] : trierFichiers(version?.fichiers ?? []);
   // Tous les fichiers spatiaux : la carte propose de choisir lequel afficher, ou de les superposer.
   const fichiersGeojson = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
   // Les GeoJSON de plus de 5 Mo ne passent pas dans le visuel du haut : ils gardent leur carte plus bas (chargée sur demande).
@@ -114,9 +117,11 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
       <div className="container mx-auto px-4 pb-12">
         {/* Ancre des boutons « Voir la carte » / « Voir le graphique » de l'en-tête */}
-        <div id="visuel" className="mt-6 relative scroll-mt-24">
-          <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} fichiers={fichiers} />
-        </div>
+        {!restreinte && (
+          <div id="visuel" className="mt-6 relative scroll-mt-24">
+            <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} fichiers={fichiers} />
+          </div>
+        )}
 
 
         {/* Attribution visible dès le haut de la fiche sur mobile, dans la colonne latérale sur grand écran. */}
@@ -142,9 +147,9 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               transition={{ duration: 0.45, ease: "easeOut" }}
               className="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-sm"
             >
-              <Tabs defaultValue="apercu">
+              <Tabs defaultValue={restreinte ? "colonnes" : "apercu"}>
                 <TabsList className="mb-4 flex h-auto w-full max-w-full justify-start gap-1 overflow-x-auto bg-muted/70 p-1 sm:w-auto [&>*]:shrink-0">
-                  <TabsTrigger value="apercu">{t("fiche.ongletApercu")}</TabsTrigger>
+                  {!restreinte && <TabsTrigger value="apercu">{t("fiche.ongletApercu")}</TabsTrigger>}
                   <TabsTrigger value="colonnes" className="gap-1.5">
                     {t("fiche.colonnes")}
                     <span className="rounded-full bg-emerald-100 px-1.5 text-xs text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200">
@@ -153,10 +158,12 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
                   </TabsTrigger>
                   {donnee.readme && <TabsTrigger value="documentation">{t("fiche.readme")}</TabsTrigger>}
                 </TabsList>
-                <TabsContent value="apercu">
-                  <p className="mb-3 text-sm text-muted-foreground">{t("fiche.apercu")}</p>
-                  <ApercuDonnees apercu={version?.apercu} colonnes={colonnes} />
-                </TabsContent>
+                {!restreinte && (
+                  <TabsContent value="apercu">
+                    <p className="mb-3 text-sm text-muted-foreground">{t("fiche.apercu")}</p>
+                    <ApercuDonnees apercu={version?.apercu} colonnes={colonnes} />
+                  </TabsContent>
+                )}
                 <TabsContent value="colonnes">
                   <TableauColonnes colonnes={colonnes} />
                 </TabsContent>
@@ -170,7 +177,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               </Tabs>
             </motion.section>
 
-            <PourDeveloppeurs donnee={donnee} fichiers={fichiers} />
+            {!restreinte && <PourDeveloppeurs donnee={donnee} fichiers={fichiers} />}
             <DonneesUtiles datasetId={donnee.id} />
             <SectionCommentaires datasetId={donnee.id} slug={donnee.slug} />
           </div>

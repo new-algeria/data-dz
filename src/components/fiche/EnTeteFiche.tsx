@@ -16,7 +16,7 @@ import {
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { ErreurApi } from "@/lib/api";
-import { actionVisuelle, chiffreCarte } from "@/lib/carte-catalogue";
+import { actionVisuelle, chiffreCarte, estRestreinte } from "@/lib/carte-catalogue";
 import { verifierLien } from "@/lib/telechargement";
 import { deuxPhrases, formatsBouton, ressourcePrincipale, wilayasCouvertes } from "@/lib/fiche";
 import { formaterNombre } from "@/lib/fichiers";
@@ -26,6 +26,7 @@ import { useLangue } from "@/hooks/use-langue";
 import type { Donnee, Ressource } from "@/lib/types";
 import { catalogueParCategorie, routes } from "@/lib/routes";
 import { DialogueTelechargement } from "./DialogueTelechargement";
+import { ObtenirPaquet } from "./ObtenirPaquet";
 
 /** « il y a 2 j » : forme courte, pour le chiffre clé de fraîcheur. */
 function ilYACourt(date: string | undefined, langue: string): string | null {
@@ -156,6 +157,7 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
   const wilayas = wilayasCouvertes(donnee);
   const fraicheur = ilYACourt(donnee.mis_a_jour_le ?? donnee.versions?.publie_le ?? undefined, langue);
   const action = actionVisuelle(donnee);
+  const restreinte = estRestreinte(donnee);
 
   return (
     <section className="border-b border-emerald-900/5 bg-gradient-to-b from-emerald-50 via-white to-gray-50 pt-16 dark:border-white/5 dark:from-[#03140f] dark:via-gray-900 dark:to-gray-900">
@@ -205,7 +207,8 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
                   <BadgeCategorie nom={donnee.categories.nom} icone={donnee.categories.icone} taille="md" />
                 </Link>
               )}
-              {donnee.sources?.verifiee && (
+              {/* Pas de « Source vérifiée » sur une donnée que data-dz ne peut pas redistribuer. */}
+              {donnee.sources?.verifiee && !restreinte && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-white/70 px-3 py-1 text-xs font-medium text-emerald-800 dark:bg-white/5 dark:text-emerald-300">
                   <BadgeCheck className="h-3.5 w-3.5" aria-hidden />
                   {t("fiche.sourceVerifiee")}
@@ -230,7 +233,11 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
 
             {/* Actions */}
             <div className="mt-6 flex flex-wrap items-center gap-2">
-              {donnee.ressources.length > 0 && <BoutonTelecharger ressources={donnee.ressources} />}
+              {restreinte ? (
+                <ObtenirPaquet lien={donnee.lien_paquet} explication={false} />
+              ) : (
+                donnee.ressources.length > 0 && <BoutonTelecharger ressources={donnee.ressources} />
+              )}
               {action && (
                 <Button asChild size="lg" variant="outline" className="gap-2 bg-white/80 dark:bg-white/5">
                   <a href="#visuel">
@@ -244,6 +251,7 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
                 <BoutonPartager titre={titre} />
               </div>
             </div>
+            {restreinte && <p className="mt-3 max-w-xl text-sm text-muted-foreground">{t("fiche.restreinte.explication")}</p>}
           </motion.div>
         </div>
       </div>

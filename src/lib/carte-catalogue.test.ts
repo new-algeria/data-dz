@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
+import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
 import type { Ressource } from "./types";
 
 const maintenant = Date.parse("2026-10-30T12:00:00Z");
@@ -17,6 +17,14 @@ describe("cartes du catalogue", () => {
     // Importée avant le seuil (catalogue importé d'un bloc il y a 10 jours) : pas « Nouveau ».
     expect(estNouvelle({ publie_le: ilYaJours(10) }, Date.parse(ilYaJours(7)), maintenant)).toBe(false);
     expect(estNouvelle({ publie_le: ilYaJours(2) }, null, maintenant)).toBe(false);
+  });
+
+  it("pas de « Voir la carte » ni de « Graphique » pour une donnée non redistribuable", () => {
+    const colonnesCarte = { ressources: [ressource("geojson")], versions: { nb_lignes: 1, colonnes: colonnes("name", "lat", "lon") } } as never;
+    expect(actionVisuelle(colonnesCarte)).toBe("carte");
+    expect(actionVisuelle({ ...(colonnesCarte as object), diffusion_restreinte: true } as never)).toBeNull();
+    expect(estRestreinte({ diffusion_restreinte: true })).toBe(true);
+    expect(estRestreinte({})).toBe(false);
   });
 
   it("reconnaît une série temporelle (année + valeur)", () => {

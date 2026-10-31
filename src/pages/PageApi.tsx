@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { BookOpen, Braces, Check, Copy, ExternalLink, FileJson, Gauge, KeyRound, Search, SearchX, Terminal, Zap } from "lucide-react";
+import { BookOpen, Braces, Check, Copy, ExternalLink, FileJson, Gauge, KeyRound, Package, Search, SearchX, Terminal, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLangue } from "@/hooks/use-langue";
 import { URL_API, urlApiDonnee } from "@/lib/api";
+import { estRestreinte } from "@/lib/carte-catalogue";
 import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
 import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
@@ -99,7 +100,8 @@ const PageApi = () => {
       .sort((a, b) => collateur.compare(texteTraduit(a.titre, langue), texteTraduit(b.titre, langue)));
   }, [requete.data, saisie, langue, collateur]);
 
-  const slugExemple = requete.data?.[0]?.slug ?? "pharmacies";
+  // Exemple sur une donnée que l'API sert vraiment (pas une donnée non redistribuable).
+  const slugExemple = requete.data?.find((donnee) => !estRestreinte(donnee))?.slug ?? "pharmacies";
   const code = exemples(slugExemple)[langage];
 
   return (
@@ -285,6 +287,21 @@ const PageApi = () => {
                           {donnee.sources?.nom && <span>{donnee.sources.nom}</span>}
                         </div>
                       </div>
+                      {estRestreinte(donnee) ? (
+                        // Non redistribuable : ni URL d'API ni JSON, seulement le paquet de la source.
+                        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                          {donnee.lien_paquet && (
+                            <Button asChild size="sm" variant="outline" className="gap-1.5">
+                              <a href={donnee.lien_paquet} target="_blank" rel="noopener noreferrer">
+                                <Package className="h-4 w-4" aria-hidden />
+                                {t("fiche.restreinte.bouton")}
+                              </a>
+                            </Button>
+                          )}
+                          <span>{t("pageApi.nonRedistribuable")}</span>
+                        </div>
+                      ) : (
+                      <>
                       <div className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-violet-500/25 bg-violet-50/70 py-1 pe-1 ps-2 dark:bg-violet-500/10">
                         <Verbe />
                         <code className="min-w-0 flex-1 truncate font-mono text-xs text-violet-950 dark:text-violet-100" dir="ltr" title={url}>
@@ -299,6 +316,10 @@ const PageApi = () => {
                             {t("pageApi.voirJson")}
                           </a>
                         </Button>
+                      </div>
+                      </>
+                      )}
+                      <div className="flex shrink-0 gap-2">
                         <Button asChild size="sm" variant="ghost" className="gap-1.5">
                           <Link to={routes.donnee(donnee.slug)}>{t("pageApi.voirFiche")}</Link>
                         </Button>
