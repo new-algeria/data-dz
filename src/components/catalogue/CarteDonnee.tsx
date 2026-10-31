@@ -9,6 +9,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { DialogueTelechargement } from "@/components/fiche/DialogueTelechargement";
 import { chargerLicencesApi } from "@/lib/admin-donnees";
+import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
@@ -40,7 +41,8 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const ressources = donnee.ressources ?? [];
   const principal = (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom;
   const fraicheur = ilYA(donnee.mis_a_jour_le, langue);
-  const nouvelle = estNouvelle(donnee);
+  const seuilNouveautes = useSeuilNouveautes();
+  const nouvelle = estNouvelle(donnee, seuilNouveautes);
 
   return (
     // Le lien du titre couvre toute la carte (after:inset-0) ; l'étoile et les boutons passent au-dessus (z-10).
@@ -60,7 +62,8 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/35 to-transparent" aria-hidden />
-          <div className="absolute inset-x-3 top-3 flex items-start gap-2 pe-11">
+          {/* Place laissée à l'étoile, plus large quand elle affiche le nombre de favoris (à partir de 2). */}
+          <div className={`absolute inset-x-3 top-3 flex items-start gap-2 ${donnee.nb_favoris > 1 ? "pe-[4.5rem]" : "pe-11"}`}>
             {categorie && (
               <BadgeCategorie nom={categorie.nom} icone={categorie.icone} className="shadow-sm dark:bg-gray-900/85" />
             )}

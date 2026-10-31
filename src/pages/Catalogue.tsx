@@ -30,6 +30,7 @@ import {
 import { chargerCatalogue, chargerCategories, chargerStatistiques } from "@/lib/catalogue";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
 import { recentsEnPremier } from "@/lib/recents";
+import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
@@ -143,9 +144,10 @@ const Catalogue = () => {
 
   // Tri dans le navigateur : le catalogue est chargé en entier, et l'ordre alphabétique suit la langue affichée.
   // Les données ajoutées depuis moins de 4 jours passent devant, quel que soit le tri ou le filtre.
+  const seuil = useSeuilNouveautes();
   const listeDonnees = useMemo(
-    () => recentsEnPremier(trierDonnees(requeteCatalogue.data ?? [], tri, langue)),
-    [requeteCatalogue.data, tri, langue]
+    () => recentsEnPremier(trierDonnees(requeteCatalogue.data ?? [], tri, langue), seuil),
+    [requeteCatalogue.data, tri, langue, seuil]
   );
   const filtresActifs = Boolean(terme || categorie);
 
