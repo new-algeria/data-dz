@@ -48,7 +48,10 @@ function lireDate(valeur: string, parametres: string): DateICS | null {
   ) return null;
   const cleJour = `${annee}-${mois}-${jour}`;
   if (dateSeule) return { date: new Date(instantLocal), jour: cleJour, journeeEntiere: true };
-  if (utc) return { date: new Date(instantLocal), jour: cleJour, journeeEntiere: false };
+  if (utc) {
+    const date = new Date(instantLocal);
+    return { date, jour: formatPartsJour(date), journeeEntiere: false };
+  }
 
   // Les heures sans suffixe Z sont flottantes, ou propres au TZID. Elles sont ramenées à l'heure d'Alger.
   const tzid = /(?:^|;)TZID="?([^;:"]+)/i.exec(parametres)?.[1] ?? FUSEAU;
