@@ -175,12 +175,15 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null }: { don
   const nomCategorie = donnee.categories ? texteTraduit(donnee.categories.nom, langue) : null;
   const chiffreBase = chiffreCarte(donnee, titre, langue === "ar" || langue === "en" ? langue : "fr");
   const contientCalendrier = donnee.ressources.some((ressource) => ressource.fichiers.some((fichier) => fichier.format.toLowerCase().split(";")[0].trim() === "ics"));
+  const nombreEvenementsEnregistre =
+    nombreEvenementsCalendrier ??
+    (chiffreBase?.genre === "compte" && chiffreBase.nombre > 0 ? chiffreBase.nombre : null);
   const chiffre = contientCalendrier
-    ? nombreEvenementsCalendrier === null
+    ? nombreEvenementsEnregistre === null
       ? null
       : {
           genre: "compte" as const,
-          nombre: nombreEvenementsCalendrier,
+          nombre: nombreEvenementsEnregistre,
           unite: chiffreBase?.genre === "compte" ? chiffreBase.unite : t("fiche.entete.evenements"),
         }
     : chiffreBase;
