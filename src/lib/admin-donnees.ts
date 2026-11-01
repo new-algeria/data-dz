@@ -147,7 +147,7 @@ export function nomLogique(fichier: File): string {
 
 /**
  * Publie une nouvelle version : chaque fichier est envoyé directement à R2 par une URL signée,
- * puis l'API relit les fichiers et crée la version (lignes, colonnes, aperçu).
+ * puis l'API relit les fichiers et crée la version (nombre de lignes ou d'événements, colonnes, aperçu).
  */
 export async function publierFichiers(
   slug: string,
