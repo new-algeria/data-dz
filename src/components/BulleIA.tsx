@@ -140,7 +140,6 @@ export const BulleIA = () => {
           </DialogHeader>
 
           <div
-            ref={undefined}
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
