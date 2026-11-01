@@ -144,11 +144,12 @@
       "voirGraphique": "Voir le graphique",
       "voirCalendrier": "Voir le calendrier",
       "partager": "Partager",
-      "lienCopie": "Lien copié"
+      "lienCopie": "Lien copié",
+      "evenements": "événements"
     },
     "developpeurs": {
       "titre": "Pour les développeurs",
-      "resume": "API, formats, fichiers, colonnes",
+      "resume": "API, formats, colonnes",
       "api": "API",
       "documentation": "Documentation de l'API",
       "formats": "Formats",
@@ -227,6 +228,9 @@
     "restreinte": {
       "bouton": "Obtenir via npm",
       "explication": "data-dz n'a pas le droit de redistribuer ces données : elles ne sont ni téléchargeables ni disponibles par l'API. Vous pouvez les obtenir dans le paquet npm de leur source."
+    },
+    "donneesSimilaires": {
+      "titre": "Données du même thème"
     }
   },
   "attribution": {
@@ -1128,5 +1132,3 @@
     "description": "Elle vous aidera à explorer et à comprendre les données du catalogue. Restez connectés !"
   }
 }
-
-

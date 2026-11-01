@@ -181,7 +181,7 @@ function moisCourant(): Date {
   return debutMois(jour);
 }
 
-export default function CalendrierICS({ fichier, source, sourceUrl }: { fichier: Fichier; source: string | null; sourceUrl?: string | null }) {
+export default function CalendrierICS({ fichier, source, sourceUrl, onNombreEvenementsChange }: { fichier: Fichier; source: string | null; sourceUrl?: string | null; onNombreEvenementsChange?: (nombre: number | null) => void }) {
   const { t } = useTranslation();
   const [evenements, setEvenements] = useState<EvenementICS[] | null>(null);
   const [erreur, setErreur] = useState(false);
@@ -193,6 +193,7 @@ export default function CalendrierICS({ fichier, source, sourceUrl }: { fichier:
     let annule = false;
     setChargement(true);
     setErreur(false);
+    onNombreEvenementsChange?.(null);
     fetch(fichier.url)
       .then(async (reponse) => {
         if (!reponse.ok) throw new Error("download");
@@ -201,11 +202,11 @@ export default function CalendrierICS({ fichier, source, sourceUrl }: { fichier:
         if (type.includes("text/calendar") || /BEGIN:VCALENDAR/i.test(texte)) return lireEvenements(texte);
         throw new Error("not-ics");
       })
-      .then((resultat) => { if (!annule) { setEvenements(resultat); setErreur(false); } })
-      .catch(() => { if (!annule) { setEvenements(null); setErreur(true); } })
+      .then((resultat) => { if (!annule) { setEvenements(resultat); setErreur(false); onNombreEvenementsChange?.(resultat.length); } })
+      .catch(() => { if (!annule) { setEvenements(null); setErreur(true); onNombreEvenementsChange?.(null); } })
       .finally(() => { if (!annule) setChargement(false); });
     return () => { annule = true; };
-  }, [fichier.url]);
+  }, [fichier.url, onNombreEvenementsChange]);
 
   const moisSuivant = useMemo(() => new Date(Date.UTC(mois.getUTCFullYear(), mois.getUTCMonth() + 1, 1)), [mois]);
   const cellules = useMemo(() => {

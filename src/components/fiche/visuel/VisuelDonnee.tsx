@@ -45,13 +45,14 @@ interface VisuelDonneeProps {
   source: string | null;
   sourceUrl?: string | null;
   fichiers: Fichier[];
+  onNombreEvenementsChange?: (nombre: number | null) => void;
 }
 
 /**
  * Visuel détecté automatiquement en tête de fiche : carte (GeoJSON, coordonnées, wilayas) ou graphique.
  * Rien n'est affiché si le jeu n'a rien de traçable. Si les deux existent, un sélecteur permet de basculer.
  */
-export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers }: VisuelDonneeProps) => {
+export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers, onNombreEvenementsChange }: VisuelDonneeProps) => {
   const { t } = useTranslation();
   const [vueDemandee, setVueDemandee] = useState<VueVisuel | null>(null);
   const fichierICS = useMemo(() => fichiers.find(estFichierICS) ?? null, [fichiers]);
@@ -68,7 +69,7 @@ export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers }: Visue
         className="relative rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm md:p-5 dark:border-white/10 dark:bg-gray-800"
       >
         <Suspense fallback={<Squelette />}>
-          <CalendrierICS fichier={fichierICS} source={source} sourceUrl={sourceUrl} />
+          <CalendrierICS fichier={fichierICS} source={source} sourceUrl={sourceUrl} onNombreEvenementsChange={onNombreEvenementsChange} />
         </Suspense>
       </motion.section>
     );
