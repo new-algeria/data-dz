@@ -225,9 +225,14 @@ export default function CalendrierICS({ fichier, source, sourceUrl, onNombreEven
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"><CalendarDays className="h-5 w-5" aria-hidden /></span>
         <h2 className="text-lg font-semibold">{t("visuel.calendrier.titre")}</h2>
+        {!chargement && !erreur && evenements && (
+          <span className="ms-auto rounded-full bg-muted px-2.5 py-1 text-sm font-medium" aria-live="polite">
+            {t("visuel.calendrier.resume", { count: evenements.length })}
+          </span>
+        )}
       </div>
 
       {chargement ? <p className="py-10 text-center text-sm text-muted-foreground" role="status">{t("visuel.calendrier.chargement")}</p> : erreur ? (

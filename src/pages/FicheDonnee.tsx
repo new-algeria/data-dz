@@ -98,6 +98,11 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   // Données non redistribuables : aucun fichier, aucun aperçu, pas de « Pour les développeurs » (l'API ne les sert pas).
   const restreinte = estRestreinte(donnee);
   const fichiers = restreinte ? [] : trierFichiers(version?.fichiers ?? []);
+  const estCalendrierICS = fichiers.some((fichier) => {
+    const format = fichier.format.toLowerCase();
+    const mime = fichier.type_mime?.toLowerCase() ?? "";
+    return format === "ics" || mime.includes("calendar") || mime.includes("ical");
+  });
   // Tous les fichiers spatiaux : la carte propose de choisir lequel afficher, ou de les superposer.
   const fichiersGeojson = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
   // Les GeoJSON de plus de 5 Mo ne passent pas dans le visuel du haut : ils gardent leur carte plus bas (chargée sur demande).
@@ -144,13 +149,14 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
             )}
 
 
-            <motion.section
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-sm"
-            >
+            {!estCalendrierICS && (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                className="rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-sm"
+              >
               <Tabs defaultValue={restreinte ? "colonnes" : "apercu"}>
                 <TabsList className="mb-4 flex h-auto w-full max-w-full justify-start gap-1 overflow-x-auto bg-muted/70 p-1 sm:w-auto [&>*]:shrink-0">
                   {!restreinte && <TabsTrigger value="apercu">{t("fiche.ongletApercu")}</TabsTrigger>}
@@ -179,7 +185,15 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
                   </TabsContent>
                 )}
               </Tabs>
-            </motion.section>
+              </motion.section>
+            )}
+            {estCalendrierICS && donnee.readme && (
+              <Section id="titre-documentation" titre={t("fiche.readme")} icone={Info}>
+                <div className="prose dark:prose-invert max-w-none" dir="auto">
+                  <CustomMarkdown content={donnee.readme} />
+                </div>
+              </Section>
+            )}
 
             {!restreinte && fichiers.length > 0 && (
               <Section id="titre-fichiers" titre={t("fiche.fichiers")} icone={FileArchive}>

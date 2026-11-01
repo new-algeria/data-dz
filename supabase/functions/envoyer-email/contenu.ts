@@ -10,6 +10,7 @@ export interface NotificationEmail {
     titre?: TexteMultilingue;
     decision?: string;
     commentaire?: string | null;
+    role?: TexteMultilingue;
   };
 }
 
@@ -114,6 +115,17 @@ function message(n: NotificationEmail, titre: string): Message | null {
         phrase: "Thank you! Your submission is now published on data-dz, free for everyone to explore, map and download.",
         bouton: "View the dataset",
       };
+    case "role_attribue": {
+      const role = n.donnees.role?.en || n.donnees.role?.fr || "data-dz member";
+      return {
+        sujet: "A special role was assigned to your data-dz account",
+        statut: "Role assigned",
+        ton: "violet",
+        titre: "Your role has been updated",
+        phrase: `A special role has been assigned to your account: ${role}.`,
+        bouton: "View my profile",
+      };
+    }
     default:
       return null;
   }
@@ -121,13 +133,19 @@ function message(n: NotificationEmail, titre: string): Message | null {
 
 /** Construit l'email d'une notification, ou null si ce type n'est pas envoyé par email. */
 export function construireEmail(n: NotificationEmail, urlSite: string): Email | null {
-  const titre = titreDans(n.donnees.titre);
+  const titre = n.type === "role_attribue"
+    ? n.donnees.role?.en || n.donnees.role?.fr || n.donnees.role?.ar || "—"
+    : titreDans(n.donnees.titre);
   const m = message(n, titre);
   if (!m) return null;
 
   const racine = urlSite.replace(/\/+$/, "");
   const url = racine + cheminSur(n.lien);
   const commentaire = n.type === "revue" ? n.donnees.commentaire?.trim() || null : null;
+  const contexteLibelle = n.type === "role_attribue" ? "Account role" : "Dataset";
+  const contexteValeur = n.type === "role_attribue"
+    ? n.donnees.role?.en || n.donnees.role?.fr || "data-dz member"
+    : titre;
   const ton = TONS[m.ton];
   const u = echapper(url);
 
@@ -166,8 +184,8 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
     <tr><td style="padding:24px 32px 0">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px">
         <tr><td style="padding:16px 20px">
-          <p style="margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#64748b">Dataset</p>
-          <p dir="auto" style="margin:0;font-size:17px;font-weight:700;line-height:1.4;color:#0f172a">${echapper(titre)}</p>
+          <p style="margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#64748b">${echapper(contexteLibelle)}</p>
+          <p dir="auto" style="margin:0;font-size:17px;font-weight:700;line-height:1.4;color:#0f172a">${echapper(contexteValeur)}</p>
         </td></tr>
       </table>
     </td></tr>${
@@ -214,7 +232,7 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
     "",
     m.phrase,
     "",
-    `Dataset: ${titre}`,
+    `${contexteLibelle}: ${contexteValeur}`,
     ...(commentaire ? ["", "Comment from the moderation team:", commentaire] : []),
     "",
     `${m.bouton}: ${url}`,

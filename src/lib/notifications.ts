@@ -5,7 +5,7 @@ import type { TexteMultilingue } from "./types";
 // Notifications (table notifications — migration 20261019000005), créées uniquement par les triggers de la base.
 // Le lien est un chemin du site, déjà en anglais (migration 20261022000006).
 
-export const TYPES_NOTIFICATION = ["nouvelle_soumission", "revue", "publiee", "reponse", "nouvelle_version"] as const;
+export const TYPES_NOTIFICATION = ["nouvelle_soumission", "revue", "publiee", "reponse", "nouvelle_version", "role_attribue"] as const;
 export type TypeNotification = (typeof TYPES_NOTIFICATION)[number];
 
 export interface Notification {
@@ -19,6 +19,7 @@ export interface Notification {
     dataset_slug?: string;
     slug?: string | null;
     type?: string;
+    role?: TexteMultilingue;
   };
   lien: string | null;
   lue: boolean;
@@ -79,6 +80,8 @@ export function texteNotification(n: Notification, langue: string): { cle: strin
       return { cle: "notifications.types.reponse", valeurs: { titre: n.donnees.dataset_slug ?? "" } };
     case "nouvelle_version":
       return { cle: "notifications.types.nouvelle_version", valeurs: { titre, version: n.donnees.version ?? "" } };
+    case "role_attribue":
+      return { cle: "notifications.types.role_attribue", valeurs: { role: texteTraduit(n.donnees.role, langue) } };
     default:
       return { cle: "notifications.types.autre", valeurs: {} };
   }

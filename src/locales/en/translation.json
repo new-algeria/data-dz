@@ -103,18 +103,23 @@
       "separateurPeriode": ", ",
       "misAJour": "Updated {{quand}}",
       "indicateurs_one": "indicator",
-      "indicateurs_other": "indicators"
+      "indicateurs_other": "indicators",
+      "couvertureNonPrecisee": "Coverage not specified",
+      "touteAlgerie": "All Algeria",
+      "wilayas": "Wilayas: {{liste}}",
+      "formats": "Formats",
+      "periode": "Period: {{periode}}"
     },
     "titre": "Data catalogue",
     "recherche": "Search (e.g. pharmacies, wilayas, schools…)",
     "rechercheLabel": "Search the catalogue",
-    "categorie": "Category",
-    "toutesCategories": "All categories",
+    "categorie": "Theme",
+    "toutesCategories": "All themes",
     "resultats_zero": "No datasets",
     "resultats_one": "{{count}} dataset",
     "resultats_other": "{{count}} datasets",
     "aucunResultat": "No dataset matches your search.",
-    "aucunResultatAide": "Try another keyword or remove the category filter.",
+    "aucunResultatAide": "Try a different keyword or remove a filter.",
     "reinitialiser": "Reset filters",
     "erreur": "The catalogue cannot be loaded right now.",
     "reessayer": "Try again",
@@ -128,7 +133,11 @@
       "top": "Most appreciated",
       "recent": "Recently updated",
       "name": "A → Z"
-    }
+    },
+    "filtrerWilaya": "Wilaya",
+    "toutesWilayas": "All wilayas",
+    "filtrerFormat": "Format",
+    "tousFormats": "All formats"
   },
   "fiche": {
     "sourceNom": "Source: {{nom}}",
@@ -312,7 +321,7 @@
   },
   "profil": {
     "titre": "My profile",
-    "sousTitre": "What other members see is at the top of the page; edit your details below.",
+    "sousTitre": "Your profile is shown above. Use the button below to edit your information.",
     "photo": "Profile picture",
     "changerPhoto": "Change picture",
     "retirerPhoto": "Remove",
@@ -333,7 +342,9 @@
     "compte": "Account",
     "changerMotDePasse": "Change my password",
     "copierLien": "Copy my profile link",
-    "lienCopie": "Link copied!"
+    "lienCopie": "Link copied!",
+    "modifier": "Edit profile",
+    "annulerModification": "Cancel editing"
   },
   "membre": {
     "description": "{{nom}}'s profile on data-dz.",
@@ -842,7 +853,8 @@
       "publiee": "Your submission “{{titre}}” is online. Thank you!",
       "reponse": "New reply to your comment on “{{titre}}”",
       "nouvelle_version": "New version {{version}} of “{{titre}}”",
-      "autre": "New notification"
+      "autre": "New notification",
+      "role_attribue": "A special role has been assigned to you: {{role}}."
     }
   },
   "admin": {
@@ -1025,7 +1037,8 @@
     "confirmerTitre": "Delete permanently?",
     "confirmerTexte": "“{{titre}}”, its versions and files will be deleted. To take it off the site without losing it, hide it instead.",
     "confirmerSaisie": "Type “{{slug}}” to confirm",
-    "supprimerDefinitivement": "Delete permanently"
+    "supprimerDefinitivement": "Delete permanently",
+    "chargement": "Loading datasets…"
   },
   "visuel": {
     "titre": "Data visual",
@@ -1049,7 +1062,9 @@
       "duree": "Duration: {{duree}}",
       "touteLaJournee": "All day",
       "lienEvenement": "Event link",
-      "source": "Source: {{source}}"
+      "source": "Source: {{source}}",
+      "resume_one": "{{count}} event",
+      "resume_other": "{{count}} events"
     },
     "erreur": "The visual's data could not be loaded. The files can still be downloaded.",
     "aideMolette": "Click the map to zoom with the mouse wheel",
