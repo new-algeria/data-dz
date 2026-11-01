@@ -1149,13 +1149,34 @@
     "voirDonnees_other": "See the {{count}} datasets"
   },
   "ia": {
-    "libelle": "AI",
-    "bientot": "Soon",
-    "bouton": "AI assistant: coming soon",
+    "libelle": "DjazAI",
+    "bientot": "DjazAI",
+    "bouton": "Open DjazAI",
     "fermer": "Close",
-    "enDeveloppement": "In development",
-    "titre": "An AI is coming to data-dz",
-    "premiere": "The first Algerian AI built on real data.",
-    "description": "It will help you explore and understand the catalogue's data. Stay tuned!"
+    "enDeveloppement": "Catalogue data",
+    "titre": "DjazAI, your guide to Algerian data",
+    "premiere": "Ask about published datasets and explore answers with their sources.",
+    "description": "The data-dz catalogue assistant.",
+    "descriptionChat": "Explore the catalogue with answers linked to their sources.",
+    "bienvenue": "Salam, what would you like to discover?",
+    "suggestions": [
+      "Which datasets cover the wilayas?",
+      "What datasets are available about education?",
+      "What does the public holidays dataset contain?"
+    ],
+    "question": "Ask a question about the data…",
+    "envoyer": "Send question",
+    "chargement": "Searching the catalogue…",
+    "nouvelle": "New conversation",
+    "sources": "Sources used",
+    "source": "Source organization",
+    "sourceOfficielle": "View original source",
+    "misAJour": "Updated",
+    "version": "Version",
+    "licence": "Licence",
+    "avertissement": "Answers use the available dataset records and previews. Check the sources before reusing data.",
+    "erreurConfiguration": "DjazAI is not configured yet. Please try again later.",
+    "erreurLimite": "DjazAI is temporarily unavailable. Please try again shortly.",
+    "erreurGenerique": "DjazAI couldn’t answer. Please try again shortly."
   }
 }
