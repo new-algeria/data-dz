@@ -393,7 +393,7 @@
     "fichierTropLourd": "Fichier trop lourd : 50 Mo maximum.",
     "fichierVide": "Ce fichier est vide.",
     "fichiersARetirer": "Retirez d'abord les fichiers signalés en rouge.",
-    "formatFichier": "Format non accepté : CSV, JSON, GeoJSON, XLSX, XML, ZIP ou PDF uniquement.",
+    "formatFichier": "Format non accepté : CSV, JSON, GeoJSON, XLSX, XML, ZIP, PDF ou ICS uniquement.",
     "limitePropositions": "Vous avez déjà {{max}} propositions en cours, c'est le maximum. Attendez qu'une soit traitée ou retirez-en une.",
     "nonAutorise": "Cette action n'est pas (ou plus) autorisée pour votre compte.",
     "propreProposition": "Un modérateur ne peut pas décider de sa propre proposition : un autre modérateur doit s'en charger.",
@@ -634,7 +634,7 @@
       "message": "Message aux modérateurs",
       "messageAide": "Contexte, méthode de collecte, limites connues… Visible seulement par vous et les modérateurs.",
       "fichiers": "Fichiers",
-      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP ou PDF, 50 Mo maximum par fichier.",
+      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP, PDF ou ICS, 50 Mo maximum par fichier.",
       "deposer": "Glissez vos fichiers ici ou cliquez pour les choisir",
       "retirerFichier": "Retirer {{nom}}"
     },
@@ -1128,4 +1128,5 @@
     "description": "Elle vous aidera à explorer et à comprendre les données du catalogue. Restez connectés !"
   }
 }
+
 
