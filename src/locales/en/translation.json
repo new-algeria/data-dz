@@ -132,7 +132,12 @@
       "libelle": "Sort",
       "top": "Most appreciated",
       "recent": "Recently updated",
-      "name": "A → Z"
+      "name": "A → Z",
+      "court": {
+        "top": "Popular",
+        "recent": "Recent",
+        "name": "A → Z"
+      }
     },
     "filtrerWilaya": "Wilaya",
     "toutesWilayas": "All wilayas",

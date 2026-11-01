@@ -334,7 +334,11 @@ const Catalogue = () => {
             </div>
             <Select value={categorie ?? TOUTES_CATEGORIES} onValueChange={choisirCategorie}>
               <SelectTrigger className="min-w-0 w-full text-start [&>span]:min-w-0 lg:w-48 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
-                <SelectValue placeholder={t("catalogue.categorie")} />
+                <SelectValue>
+                  {categorie
+                    ? texteTraduit(categoriesParSlug.get(categorie)?.nom, langue) || categorie
+                    : t("catalogue.categorie")}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUTES_CATEGORIES}>
@@ -355,7 +359,11 @@ const Catalogue = () => {
             </Select>
             <Select value={wilaya ?? TOUTES_WILAYAS} onValueChange={(valeur) => choisirFiltre("wilaya", valeur, TOUTES_WILAYAS)}>
               <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-40" aria-label={t("catalogue.filtrerWilaya")}>
-                <SelectValue placeholder={t("catalogue.filtrerWilaya")} />
+                <SelectValue>
+                  {wilaya
+                    ? texteTraduit(requeteWilayas.data?.find((item) => item.code === wilaya)?.nom, langue) || wilaya
+                    : t("catalogue.filtrerWilaya")}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUTES_WILAYAS}>{t("catalogue.toutesWilayas")}</SelectItem>
@@ -368,7 +376,7 @@ const Catalogue = () => {
             </Select>
             <Select value={format ?? TOUS_FORMATS} onValueChange={(valeur) => choisirFiltre("format", valeur, TOUS_FORMATS)}>
               <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-36" aria-label={t("catalogue.filtrerFormat")}>
-                <SelectValue placeholder={t("catalogue.filtrerFormat")} />
+                <SelectValue>{format ? format.toUpperCase() : t("catalogue.filtrerFormat")}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUS_FORMATS}>{t("catalogue.tousFormats")}</SelectItem>
@@ -383,7 +391,7 @@ const Catalogue = () => {
                 <div className="flex min-w-0 items-center gap-2 text-start">
                   <ArrowDownWideNarrow className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
                   <span className="truncate">
-                    <SelectValue />
+                    <SelectValue>{t(`catalogue.tri.court.${tri}`)}</SelectValue>
                   </span>
                 </div>
               </SelectTrigger>
