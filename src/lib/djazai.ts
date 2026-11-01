@@ -11,6 +11,8 @@ export interface SourceDjazAI {
   id: string;
   titre: string;
   url: string;
+  image_url?: string | null;
+  formats?: string[];
   source_nom: string | null;
   source_url: string | null;
   mis_a_jour_le: string | null;
