@@ -50,6 +50,7 @@ export const BulleIA = () => {
   const [quotaEnCours, setQuotaEnCours] = useState(false);
   const [erreurQuota, setErreurQuota] = useState(false);
   const finMessagesRef = useRef<HTMLDivElement>(null);
+  const utilisateurId = session?.user.id;
   const suggestions = t("ia.suggestions", { returnObjects: true }) as string[];
 
   const rechargerQuota = useCallback(async () => {
@@ -63,6 +64,13 @@ export const BulleIA = () => {
       setQuotaEnCours(false);
     }
   }, []);
+
+  useEffect(() => {
+    setMessages([]);
+    setQuestion("");
+    setQuota(null);
+    setErreurQuota(false);
+  }, [utilisateurId]);
 
   useEffect(() => {
     if (!ouverte || chargementAuth) return;
@@ -217,7 +225,7 @@ export const BulleIA = () => {
                   </Link>
                 </div>
               </div>
-            ) : messages.length === 0 && quotaEnCours ? (
+            ) : messages.length === 0 && (quotaEnCours || (!quota && !erreurQuota)) ? (
               <div className="flex min-h-full items-center justify-center gap-2 text-sm text-muted-foreground" role="status">
                 <LoaderCircle className="h-5 w-5 animate-spin text-emerald-700" aria-hidden />
                 {t("ia.verificationQuota")}
