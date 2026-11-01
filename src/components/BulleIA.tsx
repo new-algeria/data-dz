@@ -374,13 +374,13 @@ export const BulleIA = () => {
                 aria-label={t("ia.question")}
                 maxLength={1200}
                 rows={2}
-                disabled={envoiEnCours}
+                disabled={envoiEnCours || chargementAuth || quotaEnCours || erreurQuota || !quota || (!quota.is_admin && (quota.remaining ?? 0) === 0)}
                 className="min-h-[44px] max-h-32 resize-none rounded-2xl border-border bg-card px-4 py-3 text-base shadow-sm focus-visible:ring-emerald-600"
               />
               <button
                 type="submit"
                 aria-label={t("ia.envoyer")}
-                disabled={envoiEnCours || !question.trim()}
+                disabled={envoiEnCours || !question.trim() || chargementAuth || quotaEnCours || erreurQuota || !quota || (!quota.is_admin && (quota.remaining ?? 0) === 0)}
                 className="mb-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white shadow-sm transition-colors hover:bg-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 {envoiEnCours ? <LoaderCircle className="h-5 w-5 animate-spin" aria-hidden /> : <Send className="h-5 w-5" aria-hidden />}
