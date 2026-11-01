@@ -488,7 +488,7 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
                 <input
                   type="file"
                   multiple
-                  accept=".json,.geojson,.csv,application/json,application/geo+json,text/csv"
+                  accept=".json,.geojson,.csv,.ics,application/json,application/geo+json,text/csv,text/calendar"
                   className="sr-only"
                   onChange={(e) => {
                     ajouterFichiers(e.target.files);

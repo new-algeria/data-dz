@@ -123,12 +123,12 @@ export const retirerIllustration = (slug: string) =>
 
 // ---------------------------------------------------------------- Fichiers
 
-export type FormatEnvoi = "json" | "geojson" | "csv";
+export type FormatEnvoi = "json" | "geojson" | "csv" | "ics";
 export const TAILLE_MAX_FICHIER = 100 * 1024 * 1024;
 
 export function formatDuFichier(fichier: File): FormatEnvoi | null {
   const extension = fichier.name.split(".").pop()?.toLowerCase();
-  return extension === "json" || extension === "geojson" || extension === "csv" ? extension : null;
+  return extension === "json" || extension === "geojson" || extension === "csv" || extension === "ics" ? extension : null;
 }
 
 /** Nom logique tiré du nom de fichier (`Pharmacies 2026.geojson` → `pharmacies-2026`). */

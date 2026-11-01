@@ -8,12 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ErreurApi } from "@/lib/api";
 import { verifierLien } from "@/lib/telechargement";
 import { formaterTaille } from "@/lib/fichiers";
+import { telechargementsRessource } from "@/lib/fiche";
 import { useLangue } from "@/hooks/use-langue";
-import type { FormatTelechargement, Ressource } from "@/lib/types";
+import type { Ressource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { IconeFormat } from "./BadgeFormat";
 
-const ORDRE: FormatTelechargement[] = ["csv", "xlsx", "json", "geojson", "parquet"];
+const ORDRE = ["csv", "xlsx", "json", "geojson", "parquet", "ics", "pdf", "xml", "zip"];
 // Formats connus dans l'ordre ci-dessus, formats inconnus à la fin.
 const rang = (format: string) => {
   const indice = ORDRE.indexOf(format as FormatTelechargement);
@@ -47,7 +48,7 @@ export const DialogueTelechargement = ({ ressources, nomInitial, declencheur, ou
   };
   const nomParDefaut = () => nomInitial ?? (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "";
   const [nom, setNom] = useState(nomParDefaut);
-  const [format, setFormat] = useState<FormatTelechargement>("csv");
+  const [format, setFormat] = useState("csv");
   const [statut, setStatut] = useState<"pret" | "conversion" | "erreur">("pret");
   const [erreur, setErreur] = useState<string | null>(null);
 
@@ -64,9 +65,10 @@ export const DialogueTelechargement = ({ ressources, nomInitial, declencheur, ou
 
   const ressource = ressources.find((element) => element.nom === nom) ?? ressources[0];
   if (!ressource) return null;
-  const telechargements = [...ressource.telechargements].sort((a, b) => rang(a.format) - rang(b.format));
-  // Sous le bouton : uniquement les formats réellement proposés par l'API pour ce jeu.
-  const formatsDisponibles = [...new Set(ressources.flatMap((element) => element.telechargements.map((telechargement) => telechargement.format)))].sort(
+  const telechargements = [...telechargementsRessource(ressource)].sort((a, b) => rang(a.format) - rang(b.format));
+  if (telechargements.length === 0) return null;
+  // Sous le bouton : uniquement les conversions possibles et les formats natifs réellement fournis.
+  const formatsDisponibles = [...new Set(ressources.flatMap((element) => telechargementsRessource(element).map((telechargement) => telechargement.format)))].sort(
     (a, b) => rang(a) - rang(b)
   );
   const choisi = telechargements.find((element) => element.format === format) ?? telechargements[0];
