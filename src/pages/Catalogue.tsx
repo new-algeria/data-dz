@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { chargerCatalogue, chargerCategories, chargerStatistiques } from "@/lib/catalogue";
+import { chargerWilayas } from "@/lib/referentiels";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
 import { recentsEnPremier } from "@/lib/recents";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
@@ -36,6 +37,8 @@ import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
 
 const TOUTES_CATEGORIES = "toutes";
+const TOUTES_WILAYAS = "toutes";
+const TOUS_FORMATS = "tous";
 const TAILLE_PAGE = 12;
 
 const Catalogue = () => {
@@ -46,6 +49,8 @@ const Catalogue = () => {
   // Recherche et catégorie sont gardées dans l'URL pour pouvoir partager un lien filtré.
   // « category » ; l'ancien paramètre « categorie » reste lu pour les liens déjà partagés.
   const categorie = parametres.get("category") ?? parametres.get("categorie");
+  const wilaya = parametres.get("wilaya");
+  const format = parametres.get("format")?.toLowerCase() ?? null;
   const triDemande = parametres.get("sort");
   const tri: Tri = estTri(triDemande) ? triDemande : TRI_PAR_DEFAUT;
   const [saisie, setSaisie] = useState(parametres.get("q") ?? "");
@@ -66,12 +71,17 @@ const Catalogue = () => {
 
   useEffect(() => {
     setNbVisibles(TAILLE_PAGE);
-  }, [terme, categorie]);
+  }, [terme, categorie, wilaya, format]);
 
   const requeteCategories = useQuery({
     queryKey: ["categories"],
     queryFn: chargerCategories,
     staleTime: 60 * 60 * 1000,
+  });
+  const requeteWilayas = useQuery({
+    queryKey: ["wilayas"],
+    queryFn: chargerWilayas,
+    staleTime: 24 * 60 * 60 * 1000,
   });
 
   const requeteCatalogue = useQuery({
@@ -85,14 +95,20 @@ const Catalogue = () => {
 
   const rechercherDepuisHero = (valeur: string) => {
     setSaisie(valeur);
-    document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("catalog")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
   };
 
   // Recherche de l'en-tête lancée depuis l'accueil : même effet que celle du hero, sans recharger la page.
   useEffect(() => {
     const surRecherche = (evenement: Event) => {
       setSaisie((evenement as CustomEvent<string>).detail);
-      document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("catalog")?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
     };
     window.addEventListener(EVENEMENT_RECHERCHE, surRecherche);
     return () => window.removeEventListener(EVENEMENT_RECHERCHE, surRecherche);
@@ -102,7 +118,14 @@ const Catalogue = () => {
   const emplacement = useLocation();
   useEffect(() => {
     if (emplacement.hash !== "#catalog") return;
-    const minuteur = window.setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 50);
+    const minuteur = window.setTimeout(
+      () =>
+        document.getElementById("catalog")?.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+          block: "start",
+        }),
+      50
+    );
     return () => window.clearTimeout(minuteur);
   }, [emplacement.key, emplacement.hash]);
 
@@ -124,6 +147,18 @@ const Catalogue = () => {
     );
   };
 
+  const choisirFiltre = (cle: "wilaya" | "format", valeur: string, valeurToutes: string) => {
+    setParametres(
+      (precedents) => {
+        const suivants = new URLSearchParams(precedents);
+        if (valeur === valeurToutes) suivants.delete(cle);
+        else suivants.set(cle, valeur);
+        return suivants;
+      },
+      { replace: true }
+    );
+  };
+
   const choisirTri = (valeur: string) => {
     setParametres(
       (precedents) => {
@@ -138,18 +173,41 @@ const Catalogue = () => {
 
   const reinitialiser = () => {
     setSaisie("");
-    // On garde le tri choisi : seuls la recherche et la catégorie sont effacées.
+    // On garde le tri choisi ; recherche, thème, wilaya et format sont remis à zéro.
     setParametres(tri === TRI_PAR_DEFAUT ? {} : { sort: tri }, { replace: true });
   };
 
-  // Tri dans le navigateur : le catalogue est chargé en entier, et l'ordre alphabétique suit la langue affichée.
-  // Les données ajoutées depuis moins de 4 jours passent devant, quel que soit le tri ou le filtre.
-  const seuil = useSeuilNouveautes();
-  const listeDonnees = useMemo(
-    () => recentsEnPremier(trierDonnees(requeteCatalogue.data ?? [], tri, langue), seuil),
-    [requeteCatalogue.data, tri, langue, seuil]
+  const defilerAuCatalogue = () => {
+    document.getElementById("catalog")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
+  // Les filtres de couverture et de format s'appliquent aux métadonnées déjà chargées du catalogue.
+  const formatsDisponibles = useMemo(
+    () =>
+      [...new Set((requeteCatalogue.data ?? []).flatMap((donnee) =>
+        (donnee.ressources ?? []).flatMap((ressource) => [
+          ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
+          ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
+        ])
+      ))].sort(),
+    [requeteCatalogue.data]
   );
-  const filtresActifs = Boolean(terme || categorie);
+  const seuil = useSeuilNouveautes();
+  const listeDonnees = useMemo(() => {
+    const filtrees = (requeteCatalogue.data ?? []).filter((donnee) => {
+      const wilayas = (donnee.wilayas ?? []).map((code) => String(code).padStart(2, "0"));
+      const formats = (donnee.ressources ?? []).flatMap((ressource) => [
+        ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
+        ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
+      ]);
+      return (!wilaya || wilayas.includes(wilaya)) && (!format || formats.includes(format));
+    });
+    return recentsEnPremier(trierDonnees(filtrees, tri, langue), seuil);
+  }, [requeteCatalogue.data, wilaya, format, tri, langue, seuil]);
+  const filtresActifs = Boolean(terme || categorie || wilaya || format);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-[#020817]">
@@ -157,9 +215,9 @@ const Catalogue = () => {
       <Navbar />
 
       {/* Hero : toute la hauteur de l'écran (svh : barre d'adresse mobile comprise), le catalogue n'apparaît qu'au défilement. */}
-      <section className="relative flex min-h-[100svh] flex-col overflow-hidden pt-16 bg-gradient-to-b from-emerald-50 via-white to-white dark:from-[#03140f] dark:via-[#020817] dark:to-[#020817]">
+      <section className="relative flex min-h-[100svh] flex-col overflow-visible pt-16 bg-gradient-to-b from-emerald-50 via-white to-white dark:from-[#03140f] dark:via-[#020817] dark:to-[#020817]">
         {/* Fond animé : bulles floues aux couleurs du drapeau et grille légère. */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
           <div className="absolute -top-32 -start-32 h-[28rem] w-[28rem] rounded-full bg-emerald-300/40 dark:bg-emerald-600/20 blur-3xl animate-flotter" />
           <div className="absolute top-40 end-[-10rem] h-[24rem] w-[24rem] rounded-full bg-teal-200/50 dark:bg-teal-500/10 blur-3xl animate-flotter-lent" />
           <div className="absolute bottom-[-8rem] start-1/3 h-72 w-72 rounded-full bg-rose-200/40 dark:bg-rose-600/10 blur-3xl animate-flotter" />
@@ -205,7 +263,7 @@ const Catalogue = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-6 max-w-xl mx-auto lg:mx-0 text-start [@media(max-height:820px)]:mt-5"
+              className="relative z-20 mt-6 max-w-xl mx-auto lg:mx-0 text-start [@media(max-height:820px)]:mt-5"
             >
               <RechercheHero onRechercher={rechercherDepuisHero} />
             </motion.div>
@@ -216,12 +274,10 @@ const Catalogue = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <Button asChild size="lg" className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group">
-                <a href="#catalog">
-                  <Compass />
-                  {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
-                  <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
-                </a>
+              <Button type="button" size="lg" onClick={defilerAuCatalogue} className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group">
+                <Compass />
+                {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
+                <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
               </Button>
             </motion.div>
 
@@ -263,9 +319,9 @@ const Catalogue = () => {
             {t("catalogue.titre")}
           </motion.h2>
 
-          {/* Mobile : recherche sur toute la largeur, catégorie et tri côte à côte en dessous. */}
-          <div className="grid grid-cols-2 gap-3 mb-6 md:flex md:flex-row">
-            <div className="relative col-span-2 md:flex-1">
+          {/* Filtres visibles : recherche, thème, wilaya, formats disponibles et tri. */}
+          <div className="mb-6 grid grid-cols-2 gap-3 lg:flex lg:flex-row">
+            <div className="relative col-span-2 lg:flex-1">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden />
               <Input
                 type="search"
@@ -277,7 +333,7 @@ const Catalogue = () => {
               />
             </div>
             <Select value={categorie ?? TOUTES_CATEGORIES} onValueChange={choisirCategorie}>
-              <SelectTrigger className="min-w-0 text-start [&>span]:min-w-0 md:w-72 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
+              <SelectTrigger className="min-w-0 w-full text-start [&>span]:min-w-0 lg:w-48 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
                 <SelectValue placeholder={t("catalogue.categorie")} />
               </SelectTrigger>
               <SelectContent>
@@ -297,8 +353,32 @@ const Catalogue = () => {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={wilaya ?? TOUTES_WILAYAS} onValueChange={(valeur) => choisirFiltre("wilaya", valeur, TOUTES_WILAYAS)}>
+              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-40" aria-label={t("catalogue.filtrerWilaya")}>
+                <SelectValue placeholder={t("catalogue.filtrerWilaya")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={TOUTES_WILAYAS}>{t("catalogue.toutesWilayas")}</SelectItem>
+                {requeteWilayas.data?.map((item) => (
+                  <SelectItem key={item.code} value={item.code}>
+                    {texteTraduit(item.nom, langue) || item.code}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={format ?? TOUS_FORMATS} onValueChange={(valeur) => choisirFiltre("format", valeur, TOUS_FORMATS)}>
+              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-36" aria-label={t("catalogue.filtrerFormat")}>
+                <SelectValue placeholder={t("catalogue.filtrerFormat")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={TOUS_FORMATS}>{t("catalogue.tousFormats")}</SelectItem>
+                {formatsDisponibles.map((valeur) => (
+                  <SelectItem key={valeur} value={valeur}>{valeur.toUpperCase()}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={tri} onValueChange={choisirTri}>
-              <SelectTrigger className="min-w-0 md:w-60 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
+              <SelectTrigger className="min-w-0 w-full lg:w-40 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
                 {/* div et non span : le déclencheur force ses span directs sur une seule ligne (line-clamp). */}
                 <div className="flex min-w-0 items-center gap-2 text-start">
                   <ArrowDownWideNarrow className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />

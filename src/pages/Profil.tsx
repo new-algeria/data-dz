@@ -2,7 +2,7 @@ import { useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } fr
 import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Camera, Check, KeyRound, Link2, Loader2, Trash2, X } from "lucide-react";
+import { Camera, Check, KeyRound, Link2, Loader2, Pencil, Trash2, X } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -353,6 +353,7 @@ const BoutonLienPublic = ({ pseudo }: { pseudo: string }) => {
 const Profil = () => {
   const { t } = useTranslation();
   const { profil, utilisateur, chargementProfil } = useAuth();
+  const [modeEdition, setModeEdition] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
@@ -370,9 +371,34 @@ const Profil = () => {
             <EnTeteMembre membre={profil} action={<BoutonLienPublic pseudo={profil.pseudo} />} />
             <div className="container mx-auto max-w-3xl space-y-6 px-4 pb-16 pt-6">
               <p className="text-sm text-muted-foreground">{t("profil.sousTitre")}</p>
-              <SectionAvatar profil={profil} />
-              {/* La clé recrée le formulaire si le profil change d'identité (autre compte). */}
-              <FormulaireProfil key={profil.id} profil={profil} />
+              {modeEdition ? (
+                <>
+                  <div className="flex justify-end">
+                    <Button type="button" variant="ghost" className="gap-2" onClick={() => setModeEdition(false)}>
+                      <X className="h-4 w-4" aria-hidden />
+                      {t("profil.annulerModification")}
+                    </Button>
+                  </div>
+                  <SectionAvatar profil={profil} />
+                  {/* La clé recrée le formulaire si le profil change d'identité (autre compte). */}
+                  <FormulaireProfil key={profil.id} profil={profil} />
+                </>
+              ) : (
+                <Carte titre={t("profil.informations")}>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <AvatarMembre profil={profil} className="h-16 w-16 shrink-0 text-xl" />
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <p className="font-semibold">{profil.nom_affiche || profil.pseudo}</p>
+                      <p className="text-sm text-muted-foreground" dir="ltr">@{profil.pseudo}</p>
+                      {profil.bio && <p className="line-clamp-2 text-sm text-muted-foreground">{profil.bio}</p>}
+                    </div>
+                    <Button type="button" onClick={() => setModeEdition(true)} className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800">
+                      <Pencil className="h-4 w-4" aria-hidden />
+                      {t("profil.modifier")}
+                    </Button>
+                  </div>
+                </Carte>
+              )}
               <Carte titre={t("profil.compte")}>
                 <dl className="space-y-1 text-sm">
                   <dt className="text-muted-foreground">{t("auth.email")}</dt>

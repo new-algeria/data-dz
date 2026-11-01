@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Bell, CheckCheck, ClipboardCheck, Inbox, Loader2, RefreshCw, Reply, Rocket, type LucideIcon } from "lucide-react";
+import { Bell, CheckCheck, ClipboardCheck, Inbox, Loader2, RefreshCw, Reply, Rocket, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useAuth } from "@/contexte/ContexteAuth";
@@ -26,6 +26,7 @@ const icones: Record<string, LucideIcon> = {
   publiee: Rocket,
   reponse: Reply,
   nouvelle_version: RefreshCw,
+  role_attribue: ShieldCheck,
 };
 
 const INTERVALLE_RAFRAICHISSEMENT = 60 * 1000;

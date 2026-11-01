@@ -61,9 +61,11 @@ export const Navbar = () => {
         </div>
 
         {/* Grands écrans : grande recherche (résultats en dessous) au centre. */}
-        <div className="mx-4 hidden max-w-xl flex-1 md:block lg:mx-8">
-          <RechercheNavbar />
-        </div>
+        {(pathname !== routes.accueil || defile) && (
+          <div className="mx-4 hidden max-w-xl flex-1 md:block lg:mx-8">
+            <RechercheNavbar />
+          </div>
+        )}
 
         {/* À droite : langue (grand écran), thème, cloche, compte. Petits écrans : loupe, thème, cloche, avatar ou hamburger. */}
         <div className="flex shrink-0 items-center gap-1 lg:gap-1.5">

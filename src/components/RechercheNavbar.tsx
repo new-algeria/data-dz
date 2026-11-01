@@ -18,7 +18,24 @@ export const EVENEMENT_RECHERCHE = "data-dz:rechercher";
  * Recherche de l'en-tête : résultats sous le champ pendant la frappe (catalogue déjà chargé, même clé React Query
  * que l'accueil), flèches et Entrée au clavier ; Entrée sans choix → catalogue filtré (`?q=`).
  */
-export const RechercheNavbar = ({ autoFocus = false, onTermine, className }: { autoFocus?: boolean; onTermine?: () => void; className?: string }) => {
+export const RechercheNavbar = ({
+  autoFocus = false,
+  onTermine,
+  className,
+  variante = "entete",
+  placeholder,
+  ariaLabel,
+  onRechercher,
+}: {
+  autoFocus?: boolean;
+  onTermine?: () => void;
+  className?: string;
+  variante?: "entete" | "hero";
+  placeholder?: string;
+  ariaLabel?: string;
+  onRechercher?: (terme: string) => void;
+}) => {
+  const estHero = variante === "hero";
   const { t } = useTranslation();
   const langue = useLangue();
   const naviguer = useNavigate();
@@ -51,7 +68,8 @@ export const RechercheNavbar = ({ autoFocus = false, onTermine, className }: { a
 
   const allerAuCatalogue = () => {
     if (!terme) return;
-    if (pathname === routes.accueil) window.dispatchEvent(new CustomEvent(EVENEMENT_RECHERCHE, { detail: terme }));
+    if (onRechercher) onRechercher(terme);
+    else if (pathname === routes.accueil) window.dispatchEvent(new CustomEvent(EVENEMENT_RECHERCHE, { detail: terme }));
     else naviguer(`/?q=${encodeURIComponent(terme)}#catalog`);
     setSaisie("");
     champ.current?.blur();
@@ -84,7 +102,11 @@ export const RechercheNavbar = ({ autoFocus = false, onTermine, className }: { a
   };
 
   return (
-    <div className={cn("relative w-full", className)}>
+    <div
+      role={estHero ? "search" : undefined}
+      aria-label={estHero ? ariaLabel : undefined}
+      className={cn("relative w-full", estHero && "rounded-xl bg-emerald-50/80 p-1.5 ps-3 dark:bg-white/5", className)}
+    >
       <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
       <input
         ref={champ}
@@ -94,8 +116,8 @@ export const RechercheNavbar = ({ autoFocus = false, onTermine, className }: { a
         aria-controls={idListe}
         aria-autocomplete="list"
         aria-activedescendant={montrer && actif >= 0 ? `${idListe}-${actif}` : undefined}
-        aria-label={t("navbar.rechercher")}
-        placeholder={t("navbar.rechercher")}
+        aria-label={ariaLabel ?? t("navbar.rechercher")}
+        placeholder={placeholder ?? t("navbar.rechercher")}
         autoFocus={autoFocus}
         value={saisie}
         onChange={(e) => {
@@ -110,8 +132,21 @@ export const RechercheNavbar = ({ autoFocus = false, onTermine, className }: { a
         onBlur={() => window.setTimeout(() => setOuvert(false), 150)}
         onKeyDown={surTouche}
         // Plugin Flowbite : les « ! » remplacent son style imposé aux input ; 16 px pour éviter le zoom d'iOS.
-        className="!h-10 !w-full !rounded-full !border !border-gray-200 !bg-white/90 !pe-4 !ps-10 !text-base !text-gray-900 shadow-sm !outline-none transition-colors placeholder:text-gray-400 focus:!border-emerald-500 focus:!ring-2 focus:!ring-emerald-500/20 dark:!border-white/10 dark:!bg-gray-900/80 dark:!text-white md:!text-sm"
+        className={cn(
+          "!w-full !rounded-full !border !border-gray-200 !bg-white/90 !ps-10 !text-base !text-gray-900 shadow-sm !outline-none transition-colors placeholder:text-gray-400 focus:!border-emerald-500 focus:!ring-2 focus:!ring-emerald-500/20 dark:!border-white/10 dark:!bg-gray-900/80 dark:!text-white md:!text-sm",
+          estHero ? "!h-11 !pe-12 !py-2" : "!h-10 !pe-4"
+        )}
       />
+      {estHero && (
+        <button
+          type="button"
+          onClick={allerAuCatalogue}
+          aria-label={t("accueil.recherche.bouton")}
+          className="absolute end-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-emerald-700 text-white transition-colors hover:bg-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+        >
+          <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
+        </button>
+      )}
 
       {montrer && (
         <div

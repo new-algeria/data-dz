@@ -103,18 +103,23 @@
       "separateurPeriode": ", ",
       "misAJour": "Mis à jour {{quand}}",
       "indicateurs_one": "indicateur",
-      "indicateurs_other": "indicateurs"
+      "indicateurs_other": "indicateurs",
+      "couvertureNonPrecisee": "Couverture non précisée",
+      "touteAlgerie": "Toute l’Algérie",
+      "wilayas": "Wilayas : {{liste}}",
+      "formats": "Formats",
+      "periode": "Période : {{periode}}"
     },
     "titre": "Catalogue des données",
     "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
     "rechercheLabel": "Rechercher dans le catalogue",
-    "categorie": "Catégorie",
-    "toutesCategories": "Toutes les catégories",
+    "categorie": "Thème",
+    "toutesCategories": "Tous les thèmes",
     "resultats_zero": "Aucun jeu de données",
     "resultats_one": "{{count}} jeu de données",
     "resultats_other": "{{count}} jeux de données",
     "aucunResultat": "Aucun jeu de données ne correspond à votre recherche.",
-    "aucunResultatAide": "Essayez un autre mot-clé ou retirez le filtre de catégorie.",
+    "aucunResultatAide": "Essayez un autre mot-clé ou retirez un filtre.",
     "reinitialiser": "Réinitialiser les filtres",
     "erreur": "Impossible de charger le catalogue pour le moment.",
     "reessayer": "Réessayer",
@@ -128,7 +133,11 @@
       "top": "Les plus appréciés",
       "recent": "Récemment mis à jour",
       "name": "A → Z"
-    }
+    },
+    "filtrerWilaya": "Wilaya",
+    "toutesWilayas": "Toutes les wilayas",
+    "filtrerFormat": "Format",
+    "tousFormats": "Tous les formats"
   },
   "fiche": {
     "sourceNom": "Source : {{nom}}",
@@ -312,7 +321,7 @@
   },
   "profil": {
     "titre": "Mon profil",
-    "sousTitre": "Ce que voient les autres membres est en haut de la page ; modifiez vos informations ci-dessous.",
+    "sousTitre": "Votre profil est affiché ci-dessus. Utilisez le bouton ci-dessous pour modifier vos informations.",
     "photo": "Photo de profil",
     "changerPhoto": "Changer la photo",
     "retirerPhoto": "Retirer",
@@ -333,7 +342,9 @@
     "compte": "Compte",
     "changerMotDePasse": "Changer mon mot de passe",
     "copierLien": "Copier le lien de mon profil",
-    "lienCopie": "Lien copié !"
+    "lienCopie": "Lien copié !",
+    "modifier": "Modifier le profil",
+    "annulerModification": "Annuler les modifications"
   },
   "membre": {
     "description": "Profil de {{nom}} sur data-dz.",
@@ -842,7 +853,8 @@
       "publiee": "Votre proposition « {{titre}} » est en ligne. Merci !",
       "reponse": "Nouvelle réponse à votre commentaire sur « {{titre}} »",
       "nouvelle_version": "Nouvelle version {{version}} de « {{titre}} »",
-      "autre": "Nouvelle notification"
+      "autre": "Nouvelle notification",
+      "role_attribue": "Un rôle spécial vous a été attribué : {{role}}."
     }
   },
   "admin": {
@@ -1025,7 +1037,8 @@
     "confirmerTitre": "Supprimer définitivement ?",
     "confirmerTexte": "« {{titre}} », ses versions et ses fichiers seront supprimés. Pour la retirer du site sans la perdre, masquez-la plutôt.",
     "confirmerSaisie": "Tapez « {{slug}} » pour confirmer",
-    "supprimerDefinitivement": "Supprimer définitivement"
+    "supprimerDefinitivement": "Supprimer définitivement",
+    "chargement": "Chargement des données…"
   },
   "visuel": {
     "titre": "Visuel de la donnée",
@@ -1049,7 +1062,9 @@
       "duree": "Durée : {{duree}}",
       "touteLaJournee": "Toute la journée",
       "lienEvenement": "Lien de l'événement",
-      "source": "Source : {{source}}"
+      "source": "Source : {{source}}",
+      "resume_one": "{{count}} événement",
+      "resume_other": "{{count}} événements"
     },
     "erreur": "Impossible de charger les données du visuel. Les fichiers restent téléchargeables.",
     "aideMolette": "Cliquez sur la carte pour zoomer à la molette",

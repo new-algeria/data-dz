@@ -82,6 +82,8 @@ export interface ResumeDonnee extends CompteursDonnee {
   titre: TexteMultilingue;
   description: TexteMultilingue | null;
   categorie_slug: string | null;
+  /** Codes des wilayas couvertes, transmis par le catalogue public. */
+  wilayas?: string[] | null;
   licence_code: string | null;
   mots_cles: string[] | null;
   sources: Source | null;

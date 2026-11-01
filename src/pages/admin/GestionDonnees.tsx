@@ -98,8 +98,8 @@ const GestionDonnees = () => {
 
   return (
     <MiseEnPage titre={t("adminDonnees.titre")} sousTitre={t("adminDonnees.sousTitre")} chemin={routes.adminDonnees} largeur="large">
-      <div className="mb-4 flex flex-wrap gap-3">
-        <div className="relative min-w-[14rem] flex-1">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_12rem_auto]">
+        <div className="relative min-w-0">
           <Search className="absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
           <Input
             type="search"
@@ -111,7 +111,7 @@ const GestionDonnees = () => {
           />
         </div>
         <Select value={filtre} onValueChange={(valeur) => setFiltre(valeur as StatutDonnee | typeof TOUS)}>
-          <SelectTrigger className="w-48 bg-white dark:bg-gray-900" aria-label={t("adminDonnees.filtrerStatut")}>
+          <SelectTrigger className="w-full bg-white dark:bg-gray-900" aria-label={t("adminDonnees.filtrerStatut")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -123,32 +123,45 @@ const GestionDonnees = () => {
             ))}
           </SelectContent>
         </Select>
-        <Button onClick={() => setEdition({ donnee: null })} className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800">
+        <Button onClick={() => setEdition({ donnee: null })} className="w-full gap-2 bg-emerald-700 text-white hover:bg-emerald-800 sm:w-auto">
           <Plus className="h-4 w-4" aria-hidden />
           {t("adminDonnees.nouvelle")}
         </Button>
       </div>
 
+      {!requete.isPending && requete.isFetching && (
+        <p className="mb-3 flex items-center gap-2 text-sm text-muted-foreground" role="status" aria-live="polite">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          {t("adminDonnees.chargement")}
+        </p>
+      )}
+
       {requete.isPending ? (
-        <Skeleton className="h-96 rounded-2xl" />
+        <div className="space-y-3" role="status" aria-live="polite">
+          <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            {t("adminDonnees.chargement")}
+          </p>
+          <Skeleton className="h-96 rounded-2xl" />
+        </div>
       ) : requete.isError ? (
         <EtatErreur message={requete.error.message} onReessayer={() => requete.refetch()} />
       ) : requete.data.length === 0 ? (
         <p className="rounded-2xl border border-dashed p-10 text-center text-muted-foreground">{t("adminDonnees.aucune")}</p>
       ) : (
-        <ul className={cn("grid gap-3 transition-opacity", requete.isPlaceholderData && "opacity-60")}>
+        <ul aria-busy={requete.isFetching} className={cn("grid gap-3 transition-opacity", requete.isPlaceholderData && "opacity-60")}>
           {requete.data.map((donnee) => {
             const titre = texteTraduit(donnee.titre, langue);
             return (
               <li
                 key={donnee.id}
-                className="flex flex-wrap items-center gap-4 rounded-2xl border border-gray-200/80 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-gray-800"
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-gray-200/80 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-gray-800 sm:flex sm:gap-4"
               >
                 <img
                   src={urlIllustration(donnee, "petite")}
                   alt=""
                   loading="lazy"
-                  className="h-16 w-28 shrink-0 rounded-lg object-cover"
+                  className="col-span-2 h-36 w-full rounded-lg object-cover sm:col-auto sm:h-16 sm:w-28 sm:shrink-0"
                   onError={(e) => (e.currentTarget.style.visibility = "hidden")}
                 />
                 <div className="min-w-0 flex-1">
@@ -166,7 +179,7 @@ const GestionDonnees = () => {
                   </p>
                   <p className="text-xs text-muted-foreground">{t("adminDonnees.majLe", { date: formatDate.format(new Date(donnee.mis_a_jour_le)) })}</p>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="col-span-2 flex flex-wrap items-center justify-end gap-1 sm:col-auto">
                   {enCours === donnee.id && <Loader2 className="me-1 h-4 w-4 animate-spin text-muted-foreground" aria-hidden />}
                   {donnee.statut === "publie" && (
                     <Button asChild size="icon" variant="ghost" title={t("adminDonnees.voir")}>

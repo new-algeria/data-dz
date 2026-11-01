@@ -119,13 +119,18 @@
       "indicateurs_two": "مؤشران",
       "indicateurs_few": "مؤشرات",
       "indicateurs_many": "مؤشرًا",
-      "indicateurs_other": "مؤشر"
+      "indicateurs_other": "مؤشر",
+      "couvertureNonPrecisee": "التغطية غير محددة",
+      "touteAlgerie": "كل الجزائر",
+      "wilayas": "الولايات: {{liste}}",
+      "formats": "الصيغ",
+      "periode": "الفترة: {{periode}}"
     },
     "titre": "فهرس البيانات",
     "recherche": "ابحث (مثلا: صيدليات، ولايات، مدارس…)",
     "rechercheLabel": "البحث في الفهرس",
-    "categorie": "الفئة",
-    "toutesCategories": "كل الفئات",
+    "categorie": "الموضوع",
+    "toutesCategories": "كل المواضيع",
     "resultats_zero": "لا توجد مجموعات بيانات",
     "resultats_one": "مجموعة بيانات واحدة",
     "resultats_two": "مجموعتا بيانات",
@@ -133,7 +138,7 @@
     "resultats_many": "{{count}} مجموعة بيانات",
     "resultats_other": "{{count}} مجموعة بيانات",
     "aucunResultat": "لا توجد مجموعة بيانات تطابق بحثك.",
-    "aucunResultatAide": "جرّب كلمة أخرى أو أزل تصفية الفئة.",
+    "aucunResultatAide": "جرّب كلمة أخرى أو أزل أحد عوامل التصفية.",
     "reinitialiser": "إعادة ضبط التصفية",
     "erreur": "تعذّر تحميل الفهرس حاليا.",
     "reessayer": "إعادة المحاولة",
@@ -151,7 +156,11 @@
       "top": "الأكثر تقديرا",
       "recent": "المحدثة مؤخرا",
       "name": "أبجديا"
-    }
+    },
+    "filtrerWilaya": "الولاية",
+    "toutesWilayas": "كل الولايات",
+    "filtrerFormat": "الصيغة",
+    "tousFormats": "كل الصيغ"
   },
   "fiche": {
     "sourceNom": "المصدر: {{nom}}",
@@ -347,7 +356,7 @@
   },
   "profil": {
     "titre": "ملفي الشخصي",
-    "sousTitre": "ما يراه الأعضاء الآخرون في أعلى الصفحة؛ عدّل معلوماتك أدناه.",
+    "sousTitre": "يظهر ملفك الشخصي أعلاه. استخدم الزر أدناه لتعديل معلوماتك.",
     "photo": "صورة الملف الشخصي",
     "changerPhoto": "تغيير الصورة",
     "retirerPhoto": "إزالة",
@@ -368,7 +377,9 @@
     "compte": "الحساب",
     "changerMotDePasse": "تغيير كلمة المرور",
     "copierLien": "نسخ رابط ملفي",
-    "lienCopie": "تم نسخ الرابط!"
+    "lienCopie": "تم نسخ الرابط!",
+    "modifier": "تعديل الملف الشخصي",
+    "annulerModification": "إلغاء التعديلات"
   },
   "membre": {
     "description": "الملف الشخصي لـ {{nom}} على data-dz.",
@@ -917,7 +928,8 @@
       "publiee": "اقتراحك «{{titre}}» منشور الآن. شكرا!",
       "reponse": "رد جديد على تعليقك في «{{titre}}»",
       "nouvelle_version": "إصدار جديد {{version}} من «{{titre}}»",
-      "autre": "إشعار جديد"
+      "autre": "إشعار جديد",
+      "role_attribue": "تم منحك صلاحية خاصة: {{role}}."
     }
   },
   "admin": {
@@ -1104,7 +1116,8 @@
     "confirmerTitre": "حذف نهائي؟",
     "confirmerTexte": "سيتم حذف «{{titre}}» وإصداراتها وملفاتها. لإزالتها من الموقع دون فقدانها، أخفها بدلًا من ذلك.",
     "confirmerSaisie": "اكتب «{{slug}}» للتأكيد",
-    "supprimerDefinitivement": "حذف نهائي"
+    "supprimerDefinitivement": "حذف نهائي",
+    "chargement": "جارٍ تحميل البيانات…"
   },
   "visuel": {
     "titre": "عرض البيانات",
@@ -1128,7 +1141,13 @@
       "duree": "المدة: {{duree}}",
       "touteLaJournee": "طوال اليوم",
       "lienEvenement": "رابط الحدث",
-      "source": "المصدر: {{source}}"
+      "source": "المصدر: {{source}}",
+      "resume_zero": "لا توجد أحداث",
+      "resume_one": "حدث واحد",
+      "resume_two": "حدثان",
+      "resume_few": "{{count}} أحداث",
+      "resume_many": "{{count}} حدثًا",
+      "resume_other": "{{count}} حدث"
     },
     "erreur": "تعذّر تحميل بيانات العرض. يمكن دائمًا تنزيل الملفات.",
     "aideMolette": "انقر على الخريطة للتكبير بعجلة الفأرة",
