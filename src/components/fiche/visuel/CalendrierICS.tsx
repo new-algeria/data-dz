@@ -112,8 +112,8 @@ function lireEvenements(texte: string): EvenementICS[] {
     const finExclusive = jourEntier
       ? fin?.jour ?? (finDuree ? finJour : ajouterJours(debutJourUTC, 1).toISOString().slice(0, 10))
       : finJour;
-    const titre = dechaper(proprietes.get("SUMMARY")?.valeur ?? "").trim();
-    const description = dechaper(proprietes.get("DESCRIPTION")?.valeur ?? "").trim();
+    const titre = dechapper(proprietes.get("SUMMARY")?.valeur ?? "").trim();
+    const description = dechapper(proprietes.get("DESCRIPTION")?.valeur ?? "").trim();
     const lien = proprietes.get("URL")?.valeur.trim() ?? "";
     const statut = proprietes.get("STATUS")?.valeur.toUpperCase();
     return [{
