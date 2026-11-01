@@ -19,9 +19,21 @@ export interface SourceDjazAI {
   licence_url: string | null;
 }
 
+export interface QuotaDjazAI {
+  is_admin: boolean;
+  daily_limit: number | null;
+  remaining: number | null;
+  resets_at: string | null;
+}
+
 export interface ReponseDjazAI {
   answer_markdown: string;
   sources: SourceDjazAI[];
+  quota: QuotaDjazAI;
+}
+
+export async function chargerQuotaDjazAI(): Promise<QuotaDjazAI> {
+  return appelerApi<QuotaDjazAI>("/v1/assistant/quota", { authentifie: true });
 }
 
 export async function interrogerDjazAI(
@@ -31,6 +43,7 @@ export async function interrogerDjazAI(
 ): Promise<ReponseDjazAI> {
   return appelerApi<ReponseDjazAI>("/v1/assistant/query", {
     method: "POST",
+    authentifie: true,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       question,
