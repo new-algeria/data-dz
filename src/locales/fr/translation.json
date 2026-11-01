@@ -1149,13 +1149,34 @@
     "voirDonnees_other": "Voir les {{count}} jeux de données"
   },
   "ia": {
-    "libelle": "IA",
-    "bientot": "Bientôt",
-    "bouton": "Assistant IA : bientôt disponible",
+    "libelle": "DjazAI",
+    "bientot": "DjazAI",
+    "bouton": "Ouvrir DjazAI",
     "fermer": "Fermer",
-    "enDeveloppement": "En cours de développement",
-    "titre": "Une IA arrive bientôt sur data-dz",
-    "premiere": "La première IA algérienne branchée sur de vraies données.",
-    "description": "Elle vous aidera à explorer et à comprendre les données du catalogue. Restez connectés !"
+    "enDeveloppement": "Données du catalogue",
+    "titre": "DjazAI, l’assistant des données algériennes",
+    "premiere": "Pose une question sur les données publiées et explore les réponses avec leurs sources.",
+    "description": "L’assistant du catalogue data-dz.",
+    "descriptionChat": "Explore le catalogue avec des réponses accompagnées de sources.",
+    "bienvenue": "Salam, que veux-tu découvrir ?",
+    "suggestions": [
+      "Quels jeux de données parlent des wilayas ?",
+      "Quelles données sont disponibles sur l’éducation ?",
+      "Que contient le jeu de données des jours fériés ?"
+    ],
+    "question": "Pose ta question sur les données…",
+    "envoyer": "Envoyer la question",
+    "chargement": "Je cherche dans le catalogue…",
+    "nouvelle": "Nouvelle conversation",
+    "sources": "Sources utilisées",
+    "source": "Organisme source",
+    "sourceOfficielle": "Consulter la source",
+    "misAJour": "Mis à jour",
+    "version": "Version",
+    "licence": "Licence",
+    "avertissement": "Les réponses s’appuient sur les fiches et aperçus disponibles. Vérifie les sources avant de réutiliser une donnée.",
+    "erreurConfiguration": "DjazAI n’est pas encore configuré. Réessaie plus tard.",
+    "erreurLimite": "DjazAI est momentanément indisponible. Réessaie dans un instant.",
+    "erreurGenerique": "DjazAI n’a pas pu répondre. Réessaie dans un instant."
   }
 }
