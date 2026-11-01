@@ -30,7 +30,7 @@ function dateLisible(dateTexte: string | null, langue: string): string | null {
   if (!dateTexte) return null;
   const date = new Date(dateTexte);
   if (Number.isNaN(date.getTime())) return dateTexte;
-  return new Intl.DateTimeFormat(langue, { dateStyle: "medium" }).format(date);
+  return date.toLocaleDateString(langue, { day: "numeric", month: "short", year: "numeric" });
 }
 
 /**
