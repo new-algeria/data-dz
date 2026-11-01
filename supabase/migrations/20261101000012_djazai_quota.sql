@@ -26,7 +26,7 @@ returns table (
 )
 language plpgsql
 security definer
-set search_path = pg_catalog, public
+set search_path = pg_catalog
 as $$
 declare
   v_jour date := (statement_timestamp() at time zone 'Africa/Algiers')::date;
@@ -62,7 +62,7 @@ begin
 
   return query
   select
-    case when p_consommer then v_questions < 5 or v_questions <= 5 and v_questions > 0 else v_questions < 5 end,
+    case when p_consommer then v_questions <= 5 else v_questions < 5 end,
     5,
     greatest(0, 5 - v_questions),
     (v_jour + 1)::timestamp at time zone 'Africa/Algiers';
