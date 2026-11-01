@@ -1,24 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, CalendarDays, ChartLine, ChevronDown, ChevronRight, Download, Loader2, Map as IconeCarte, Share2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Map as IconeCarte, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
-import { ErreurApi } from "@/lib/api";
 import { actionVisuelle, chiffreCarte, estRestreinte } from "@/lib/carte-catalogue";
-import { verifierLien } from "@/lib/telechargement";
-import { deuxPhrases, formatsBouton, ressourcePrincipale, wilayasCouvertes } from "@/lib/fiche";
+import { aSourceConvertible, deuxPhrases, ressourcePrincipale, telechargementsRessource, wilayasCouvertes } from "@/lib/fiche";
 import { formaterNombre } from "@/lib/fichiers";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
@@ -50,88 +39,42 @@ const ChiffreCle = ({ valeur, libelle }: { valeur: string; libelle: string }) =>
   </div>
 );
 
-/** « Télécharger (Excel) ▾ » : Excel en un clic, CSV / JSON / GeoJSON dans le menu, les autres fichiers dans le dialogue. */
-const BoutonTelecharger = ({ ressources }: { ressources: Ressource[] }) => {
+/** Un seul bouton : ouvre le choix fichier/format dès qu'il y a plusieurs possibilités. */
+const BoutonTelecharger = ({ ressources, slug }: { ressources: Ressource[]; slug: string }) => {
   const { t } = useTranslation();
-  const [enCours, setEnCours] = useState<string | null>(null);
-  const [dialogue, setDialogue] = useState(false);
-  const formats = formatsBouton(ressourcePrincipale(ressources));
-  if (!formats) return null;
-  const nomFormat = (format: string) => t(`telechargement.formatsCourts.${format}`, { defaultValue: format.toUpperCase() });
+  const ressource = ressourcePrincipale(ressources);
+  if (!ressource) return null;
+  const formats = telechargementsRessource(ressource);
+  if (formats.length === 0) return null;
 
-  const telecharger = async (url: string, format: string) => {
-    setEnCours(format);
-    try {
-      await verifierLien(url);
-      window.location.assign(url);
-    } catch (erreur) {
-      toast.error(erreur instanceof ErreurApi && erreur.statut === 422 ? t("telechargement.indisponible") : t("telechargement.erreur"));
-    } finally {
-      setEnCours(null);
-    }
-  };
+  const choixNecessaire = ressources.length > 1 || formats.length > 1 || aSourceConvertible(ressource);
+  const etiquetteFormat = (format: string) => t(`telechargement.formatsCourts.${format}`, { defaultValue: format.toUpperCase() });
 
-  if (formats.autres.length === 0 && ressources.length === 1) {
+  if (choixNecessaire) {
     return (
-      <Button
-        size="lg"
-        onClick={() => void telecharger(formats.principal.url, formats.principal.format)}
-        disabled={enCours !== null}
-        className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800"
-      >
-        {enCours === formats.principal.format ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> : <Download className="h-5 w-5" aria-hidden />}
-        {t("fiche.telecharger")}
-        <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">
-          {nomFormat(formats.principal.format)}
-        </span>
-      </Button>
+      <DialogueTelechargement
+        ressources={ressources}
+        slug={slug}
+        apercu
+        declencheur={
+          <Button size="lg" className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800">
+            <Download className="h-5 w-5" aria-hidden />
+            {t("fiche.telecharger")}
+          </Button>
+        }
+      />
     );
   }
 
+  const fichier = formats[0];
   return (
-    <div className="inline-flex rounded-lg shadow-lg shadow-emerald-700/20">
-      <Button
-        size="lg"
-        onClick={() => void telecharger(formats.principal.url, formats.principal.format)}
-        disabled={enCours !== null}
-        className="gap-2 rounded-e-none bg-emerald-700 text-white hover:bg-emerald-800"
-      >
-        {enCours === formats.principal.format ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> : <Download className="h-5 w-5" aria-hidden />}
+    <Button asChild size="lg" className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800">
+      <a href={fichier.url}>
+        <Download className="h-5 w-5" aria-hidden />
         {t("fiche.telecharger")}
-        <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">
-          {nomFormat(formats.principal.format)}
-        </span>
-      </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            size="lg"
-            disabled={enCours !== null}
-            className="rounded-s-none border-s border-white/25 bg-emerald-700 px-3 text-white hover:bg-emerald-800"
-            aria-label={t("fiche.entete.autresFormats")}
-          >
-            {enCours && enCours !== formats.principal.format ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ChevronDown className="h-4 w-4" aria-hidden />}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-48">
-          <DropdownMenuLabel>{t("fiche.entete.autresFormats")}</DropdownMenuLabel>
-          {formats.autres.map((element) => (
-            <DropdownMenuItem key={element.format} onSelect={() => void telecharger(element.url, element.format)} className="gap-2">
-              <Download className="h-4 w-4" aria-hidden />
-              <span dir="ltr">{nomFormat(element.format)}</span>
-            </DropdownMenuItem>
-          ))}
-          {ressources.length > 1 && (
-            <>
-              <DropdownMenuSeparator />
-              {/* Les autres fichiers et toutes les conversions : le dialogue complet, ouvert hors du menu. */}
-              <DropdownMenuItem onSelect={() => setDialogue(true)}>{t("fiche.entete.autresFichiers", { count: ressources.length })}</DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      {ressources.length > 1 && <DialogueTelechargement ressources={ressources} declencheur={null} ouvert={dialogue} onOuvertChange={setDialogue} />}
-    </div>
+        <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">{etiquetteFormat(fichier.format)}</span>
+      </a>
+    </Button>
   );
 };
 
@@ -269,7 +212,7 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null }: { don
               {restreinte ? (
                 <ObtenirPaquet lien={donnee.lien_paquet} explication={false} />
               ) : (
-                donnee.ressources.length > 0 && <BoutonTelecharger ressources={donnee.ressources} />
+                donnee.ressources.length > 0 && <BoutonTelecharger ressources={donnee.ressources} slug={donnee.slug} />
               )}
               {action && (
                 <Button asChild size="lg" variant="outline" className="gap-2 bg-white/80 dark:bg-white/5">

@@ -154,6 +154,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
               {principal && (
                 <DialogueTelechargement
                   ressources={ressources}
+                  slug={donnee.slug}
                   nomInitial={principal}
                   declencheur={
                     <Button variant="outline" className="gap-2 dark:border-white/15 dark:bg-transparent dark:hover:bg-white/10" aria-label={t("catalogue.carte.telechargerDonnee", { titre })}>

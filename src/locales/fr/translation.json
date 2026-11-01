@@ -888,7 +888,7 @@
   "drapeau": "Drapeau de l'Algérie",
   "telechargement": {
     "titre": "Télécharger les données",
-    "description": "Choisissez le format : la conversion est faite par l'API data-dz, puis le téléchargement démarre.",
+    "description": "Choisissez un fichier puis un format. L’aperçu affiche un échantillon sans charger le fichier complet.",
     "fichier": "Fichier",
     "format": "Format",
     "original": "Format d'origine",
@@ -896,6 +896,13 @@
     "preparation": "Préparation du fichier…",
     "indisponible": "Ce format n'est pas disponible pour ce fichier (pas de tableau ou pas de coordonnées). Choisissez-en un autre.",
     "erreur": "Le téléchargement a échoué. Réessayez dans un instant.",
+    "apercu": {
+      "titre": "Aperçu du fichier",
+      "description": "Échantillon des 5 premières lignes.",
+      "chargement": "Chargement de l’aperçu…",
+      "erreur": "Aperçu indisponible pour le moment.",
+      "vide": "Aucune ligne à afficher."
+    },
     "formats": {
       "csv": {
         "nom": "CSV",

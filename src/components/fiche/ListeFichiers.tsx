@@ -12,7 +12,7 @@ import { DialogueTelechargement } from "./DialogueTelechargement";
  * Une ligne par fichier : ses formats d'origine et leur taille, et un bouton « Télécharger » qui ouvre le même
  * dialogue que l'en-tête de la fiche, sur ce fichier (choix du format, conversions comprises).
  */
-export const ListeFichiers = ({ fichiers, ressources }: { fichiers: Fichier[]; ressources: Ressource[] }) => {
+export const ListeFichiers = ({ fichiers, ressources, slug }: { fichiers: Fichier[]; ressources: Ressource[]; slug: string }) => {
   const { t } = useTranslation();
   const langue = useLangue();
 
@@ -53,6 +53,8 @@ export const ListeFichiers = ({ fichiers, ressources }: { fichiers: Fichier[]; r
             {ressource && (
               <DialogueTelechargement
                 ressources={ressources}
+                slug={slug}
+                apercu
                 nomInitial={ressource.nom}
                 declencheur={
                   <Button
