@@ -1177,6 +1177,19 @@
     "avertissement": "Les réponses s’appuient sur les fiches et aperçus disponibles. Vérifie les sources avant de réutiliser une donnée.",
     "erreurConfiguration": "DjazAI n’est pas encore configuré. Réessaie plus tard.",
     "erreurLimite": "DjazAI est momentanément indisponible. Réessaie dans un instant.",
-    "erreurGenerique": "DjazAI n’a pas pu répondre. Réessaie dans un instant."
+    "erreurGenerique": "DjazAI n’a pas pu répondre. Réessaie dans un instant.",
+    "connexionRequise": "Connecte-toi pour utiliser DjazAI",
+    "connexionExplication": "La conversation est réservée aux membres connectés. Chaque compte dispose de 5 questions par jour.",
+    "seConnecter": "Se connecter",
+    "creerCompte": "Créer un compte",
+    "verificationConnexion": "Vérification de ta connexion…",
+    "verificationQuota": "Vérification de ton quota quotidien…",
+    "quotaAdmin": "Accès administrateur · sans limite quotidienne",
+    "quotaRestante": "Questions restantes aujourd’hui : {{count}}",
+    "quotaAtteint": "Tu as utilisé tes 5 questions pour aujourd’hui. Le quota se réinitialise à minuit, heure d’Alger.",
+    "quotaIndisponible": "Le quota DjazAI est temporairement indisponible.",
+    "quotaErreurAide": "Réessaie dans un instant. Les questions ne seront pas envoyées tant que la vérification du quota n’aura pas abouti.",
+    "reessayer": "Réessayer",
+    "sessionExpiree": "Ta session a expiré. Connecte-toi de nouveau pour continuer."
   }
 }
