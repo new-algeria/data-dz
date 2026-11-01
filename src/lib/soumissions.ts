@@ -198,6 +198,7 @@ export const TYPES_FICHIER: Record<string, string> = {
   xml: "application/xml",
   zip: "application/zip",
   pdf: "application/pdf",
+  ics: "text/calendar",
 };
 
 export const extensionFichier = (nom: string) => nom.split(".").pop()?.toLowerCase() ?? "";
@@ -349,3 +350,4 @@ export async function ouvrirFichierPrive(chemin: string): Promise<void> {
     throw e;
   }
 }
+

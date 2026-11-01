@@ -428,7 +428,7 @@
     "fichierTropLourd": "الملف كبير جدا: 50 ميغابايت كحد أقصى.",
     "fichierVide": "هذا الملف فارغ.",
     "fichiersARetirer": "أزل أولا الملفات المشار إليها باللون الأحمر.",
-    "formatFichier": "صيغة غير مقبولة: CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF فقط.",
+    "formatFichier": "صيغة غير مقبولة: CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF أو ICS فقط.",
     "limitePropositions": "لديك بالفعل {{max}} اقتراحات قيد المعالجة، وهو الحد الأقصى. انتظر معالجة أحدها أو اسحب واحدا.",
     "nonAutorise": "هذا الإجراء غير مسموح (أو لم يعد مسموحا) لحسابك.",
     "propreProposition": "لا يمكن للمشرف أن يقرر بشأن اقتراحه الخاص: يجب أن يتولاه مشرف آخر.",
@@ -681,7 +681,7 @@
       "message": "رسالة إلى المشرفين",
       "messageAide": "السياق، طريقة الجمع، الحدود المعروفة… لا يراها إلا أنت والمشرفون.",
       "fichiers": "الملفات",
-      "fichiersAide": "CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF، بحد أقصى 50 ميغابايت لكل ملف.",
+      "fichiersAide": "CSV أو JSON أو GeoJSON أو XLSX أو XML أو ZIP أو PDF أو ICS، بحد أقصى 50 ميغابايت لكل ملف.",
       "deposer": "اسحب ملفاتك إلى هنا أو انقر لاختيارها",
       "retirerFichier": "إزالة {{nom}}"
     },
@@ -1219,4 +1219,5 @@
     "description": "سيساعدك على استكشاف بيانات الفهرس وفهمها. ترقّبوا!"
   }
 }
+
 

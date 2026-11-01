@@ -393,7 +393,7 @@
     "fichierTropLourd": "File too large: 50 MB maximum.",
     "fichierVide": "This file is empty.",
     "fichiersARetirer": "First remove the files flagged in red.",
-    "formatFichier": "Format not accepted: CSV, JSON, GeoJSON, XLSX, XML, ZIP or PDF only.",
+    "formatFichier": "Format not accepted: CSV, JSON, GeoJSON, XLSX, XML, ZIP, PDF or ICS only.",
     "limitePropositions": "You already have {{max}} submissions in progress, which is the maximum. Wait for one to be reviewed or withdraw one.",
     "nonAutorise": "This action is not (or no longer) allowed for your account.",
     "propreProposition": "A moderator cannot decide on their own submission: another moderator must handle it.",
@@ -634,7 +634,7 @@
       "message": "Message to moderators",
       "messageAide": "Context, collection method, known limitations… Only visible to you and the moderators.",
       "fichiers": "Files",
-      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP or PDF, 50 MB maximum per file.",
+      "fichiersAide": "CSV, JSON, GeoJSON, XLSX, XML, ZIP, PDF or ICS, 50 MB maximum per file.",
       "deposer": "Drop your files here or click to choose them",
       "retirerFichier": "Remove {{nom}}"
     },
@@ -1128,4 +1128,5 @@
     "description": "It will help you explore and understand the catalogue's data. Stay tuned!"
   }
 }
+
 
