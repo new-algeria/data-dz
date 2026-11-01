@@ -105,9 +105,9 @@ export const RechercheNavbar = ({
     <div
       role={estHero ? "search" : undefined}
       aria-label={estHero ? ariaLabel : undefined}
-      className={cn("relative w-full", estHero && "rounded-xl bg-emerald-50/80 p-1.5 ps-3 dark:bg-white/5", className)}
+      className={cn("relative w-full", estHero && "rounded-xl", className)}
     >
-      <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+      <Search className={cn("pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground", estHero ? "start-4" : "start-3.5")} aria-hidden />
       <input
         ref={champ}
         type="search"
@@ -133,8 +133,8 @@ export const RechercheNavbar = ({
         onKeyDown={surTouche}
         // Plugin Flowbite : les « ! » remplacent son style imposé aux input ; 16 px pour éviter le zoom d'iOS.
         className={cn(
-          "!w-full !rounded-full !border !border-gray-200 !bg-white/90 !ps-10 !text-base !text-gray-900 shadow-sm !outline-none transition-colors placeholder:text-gray-400 focus:!border-emerald-500 focus:!ring-2 focus:!ring-emerald-500/20 dark:!border-white/10 dark:!bg-gray-900/80 dark:!text-white md:!text-sm",
-          estHero ? "!h-11 !pe-12 !py-2" : "!h-10 !pe-4"
+          "!w-full !rounded-full !border !border-gray-200 !bg-white/90 !text-base !text-gray-900 shadow-sm !outline-none transition-colors placeholder:text-gray-400 focus:!border-emerald-500 focus:!ring-2 focus:!ring-emerald-500/20 dark:!border-white/10 dark:!bg-gray-900/80 dark:!text-white md:!text-sm",
+          estHero ? "!h-11 !pe-12 !ps-12 !py-2" : "!h-10 !pe-4 !ps-10"
         )}
       />
       {estHero && (
