@@ -3,9 +3,8 @@ import { useTranslation } from "react-i18next";
 import { URL_API } from "@/lib/api";
 import { localeNombres } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
-import type { Donnee, Fichier } from "@/lib/types";
+import type { Donnee } from "@/lib/types";
 import { BoutonApi } from "./BoutonApi";
-import { ListeFichiers } from "./ListeFichiers";
 
 const Ligne = ({ libelle, children }: { libelle: string; children: React.ReactNode }) => (
   <div className="grid gap-1.5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-4">
@@ -14,8 +13,8 @@ const Ligne = ({ libelle, children }: { libelle: string; children: React.ReactNo
   </div>
 );
 
-/** « Pour les développeurs », replié par défaut : URL de l'API, formats, fichiers et leurs URL, colonnes, version. */
-export const PourDeveloppeurs = ({ donnee, fichiers }: { donnee: Donnee; fichiers: Fichier[] }) => {
+/** « Pour les développeurs », replié par défaut : URL de l'API, formats, colonnes et version. */
+export const PourDeveloppeurs = ({ donnee }: { donnee: Donnee }) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const version = donnee.versions;
@@ -51,23 +50,6 @@ export const PourDeveloppeurs = ({ donnee, fichiers }: { donnee: Donnee; fichier
             <span dir="ltr">{formats.map((format) => t(`telechargement.formatsCourts.${format}`, { defaultValue: format.toUpperCase() })).join(" · ")}</span>
           </Ligne>
         )}
-        <Ligne libelle={t("fiche.fichiers")}>
-          <div className="space-y-3">
-            <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} />
-            {/* URL stables de l'API (le fichier d'origine, affiché dans le navigateur) */}
-            <ul className="space-y-1">
-              {donnee.ressources.flatMap((ressource) =>
-                ressource.fichiers.map((fichier) => (
-                  <li key={`${ressource.nom}.${fichier.format}`}>
-                    <code className="block break-all rounded bg-muted px-2 py-1 font-mono text-xs" dir="ltr">
-                      {fichier.url}
-                    </code>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-        </Ligne>
         {colonnes.length > 0 && (
           <Ligne libelle={t("fiche.developpeurs.colonnes", { count: colonnes.length })}>
             <ul className="flex flex-wrap gap-1.5" dir="ltr">

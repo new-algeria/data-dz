@@ -1,10 +1,10 @@
-import { Suspense, type ReactNode } from "react";
+import { Suspense, useCallback, useState, type ReactNode } from "react";
 import { lazyAvecRechargement } from "@/lib/rechargement";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { ArrowLeft, Building2, ExternalLink, Globe2, Info, Loader2, MapPinned, SearchX } from "lucide-react";
+import { ArrowLeft, Building2, ExternalLink, FileArchive, Globe2, Info, Loader2, MapPinned, SearchX } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -23,6 +23,8 @@ import { estRestreinte } from "@/lib/carte-catalogue";
 import { EnTeteFiche } from "@/components/fiche/EnTeteFiche";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { PourDeveloppeurs } from "@/components/fiche/PourDeveloppeurs";
+import { ListeFichiers } from "@/components/fiche/ListeFichiers";
+import { DonneesSimilaires } from "@/components/fiche/DonneesSimilaires";
 import { DonneesUtiles } from "@/components/fiche/DonneesUtiles";
 import { SectionCommentaires } from "@/components/communaute/SectionCommentaires";
 import { VisuelDonnee } from "@/components/fiche/visuel/VisuelDonnee";
@@ -87,6 +89,8 @@ const ChargementCarte = () => {
 const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const { t } = useTranslation();
   const langue = useLangue();
+  const [nombreEvenementsCalendrier, setNombreEvenementsCalendrier] = useState<number | null>(null);
+  const publierNombreEvenements = useCallback((nombre: number | null) => setNombreEvenementsCalendrier(nombre), []);
 
   const titre = texteTraduit(donnee.titre, langue);
   const description = texteTraduit(donnee.description, langue);
@@ -113,13 +117,13 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
         image={urlApercu(donnee.slug, langue, donnee.mis_a_jour_le)}
       />
 
-      <EnTeteFiche donnee={donnee} />
+      <EnTeteFiche donnee={donnee} nombreEvenementsCalendrier={nombreEvenementsCalendrier} />
 
       <div className="container mx-auto px-4 pb-12">
         {/* Ancre des boutons « Voir la carte » / « Voir le graphique » de l'en-tête */}
         {!restreinte && (
           <div id="visuel" className="mt-6 relative scroll-mt-24">
-            <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} sourceUrl={donnee.sources?.url ?? donnee.url_source} fichiers={fichiers} />
+            <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} sourceUrl={donnee.sources?.url ?? donnee.url_source} fichiers={fichiers} onNombreEvenementsChange={publierNombreEvenements} />
           </div>
         )}
 
@@ -177,7 +181,12 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
               </Tabs>
             </motion.section>
 
-            {!restreinte && <PourDeveloppeurs donnee={donnee} fichiers={fichiers} />}
+            {!restreinte && fichiers.length > 0 && (
+              <Section id="titre-fichiers" titre={t("fiche.fichiers")} icone={FileArchive}>
+                <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} />
+              </Section>
+            )}
+            {!restreinte && <PourDeveloppeurs donnee={donnee} />}
             <DonneesUtiles datasetId={donnee.id} />
             <SectionCommentaires datasetId={donnee.id} slug={donnee.slug} />
           </div>
@@ -245,6 +254,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
             )}
           </aside>
         </div>
+        {!restreinte && <DonneesSimilaires donnee={donnee} />}
       </div>
     </>
   );

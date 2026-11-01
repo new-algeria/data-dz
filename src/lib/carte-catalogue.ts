@@ -95,8 +95,11 @@ export const estLibre = (licence: Pick<Licence, "usage_commercial"> | null | und
 export function ilYA(date: string, langue: string, maintenant = Date.now()): string | null {
   const instant = Date.parse(date);
   if (Number.isNaN(instant)) return null;
-  const jours = Math.max(0, Math.floor((maintenant - instant) / JOUR));
+  const age = Math.max(0, maintenant - instant);
   const format = new Intl.RelativeTimeFormat(langue, { numeric: "auto" });
+  if (age < 60 * 60_000) return format.format(-Math.max(1, Math.floor(age / 60_000)), "minute");
+  if (age < 24 * 60 * 60_000) return format.format(-Math.floor(age / 3_600_000), "hour");
+  const jours = Math.floor(age / JOUR);
   if (jours < 30) return format.format(-jours, "day");
   if (jours < 365) return format.format(-Math.floor(jours / 30), "month");
   return format.format(-Math.floor(jours / 365), "year");

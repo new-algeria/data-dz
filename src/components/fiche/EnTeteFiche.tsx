@@ -32,9 +32,12 @@ import { ObtenirPaquet } from "./ObtenirPaquet";
 function ilYACourt(date: string | undefined, langue: string): string | null {
   const instant = date ? Date.parse(date) : Number.NaN;
   if (Number.isNaN(instant)) return null;
-  const jours = Math.max(0, Math.floor((Date.now() - instant) / 86_400_000));
+  const age = Math.max(0, Date.now() - instant);
   // Arabe en forme longue : la forme courte donne « خلال » (futur) pour certains mois passés.
   const format = new Intl.RelativeTimeFormat(langue, { numeric: "always", style: langue === "ar" ? "long" : "short" });
+  if (age < 60 * 60_000) return format.format(-Math.max(1, Math.floor(age / 60_000)), "minute");
+  if (age < 24 * 60 * 60_000) return format.format(-Math.floor(age / 3_600_000), "hour");
+  const jours = Math.floor(age / 86_400_000);
   if (jours < 30) return format.format(-jours, "day");
   if (jours < 365) return format.format(-Math.floor(jours / 30), "month");
   return format.format(-Math.floor(jours / 365), "year");
@@ -147,13 +150,23 @@ const BoutonPartager = ({ titre }: { titre: string }) => {
  * résumé, source, trois chiffres clés et actions ; à droite l'illustration, posée sans carte ni bordure.
  * Le texte ne passe jamais sur l'illustration.
  */
-export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
+export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null }: { donnee: Donnee; nombreEvenementsCalendrier?: number | null }) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const titre = texteTraduit(donnee.titre, langue);
   const resume = deuxPhrases(texteTraduit(donnee.description, langue));
   const nomCategorie = donnee.categories ? texteTraduit(donnee.categories.nom, langue) : null;
-  const chiffre = chiffreCarte(donnee, titre, langue === "ar" || langue === "en" ? langue : "fr");
+  const chiffreBase = chiffreCarte(donnee, titre, langue === "ar" || langue === "en" ? langue : "fr");
+  const contientCalendrier = donnee.ressources.some((ressource) => ressource.fichiers.some((fichier) => fichier.format.toLowerCase().split(";")[0].trim() === "ics"));
+  const chiffre = contientCalendrier
+    ? nombreEvenementsCalendrier === null
+      ? null
+      : {
+          genre: "compte" as const,
+          nombre: nombreEvenementsCalendrier,
+          unite: chiffreBase?.genre === "compte" ? chiffreBase.unite : t("fiche.entete.evenements"),
+        }
+    : chiffreBase;
   const wilayas = wilayasCouvertes(donnee);
   const fraicheur = ilYACourt(donnee.mis_a_jour_le ?? donnee.versions?.publie_le ?? undefined, langue);
   const action = actionVisuelle(donnee);
