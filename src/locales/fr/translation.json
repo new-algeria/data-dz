@@ -990,7 +990,7 @@
     "aucune": "Aucune",
     "fichiers": "Fichiers",
     "nouvelleVersion": "Nouvelle version des fichiers",
-    "aideFichiers": "JSON, GeoJSON ou CSV, 100 Mo maximum chacun. L'étoile désigne le fichier principal (lignes, colonnes et aperçu).",
+    "aideFichiers": "JSON, GeoJSON, CSV ou ICS, 100 Mo maximum chacun. L'étoile désigne le fichier principal (nombre de lignes ou d'événements, colonnes et aperçu).",
     "ajouterFichiers": "Ajouter des fichiers",
     "retirerFichier": "Retirer ce fichier",
     "fichiersRefuses": "Certains fichiers ont été ignorés (format non pris en charge ou plus de 100 Mo).",

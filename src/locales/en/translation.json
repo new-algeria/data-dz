@@ -990,7 +990,7 @@
     "aucune": "None",
     "fichiers": "Files",
     "nouvelleVersion": "New file version",
-    "aideFichiers": "JSON, GeoJSON or CSV, up to 100 MB each. The star marks the main file (rows, columns and preview).",
+    "aideFichiers": "JSON, GeoJSON, CSV or ICS, up to 100 MB each. The star marks the main file (row or event count, columns and preview).",
     "ajouterFichiers": "Add files",
     "retirerFichier": "Remove this file",
     "fichiersRefuses": "Some files were skipped (unsupported format or over 100 MB).",

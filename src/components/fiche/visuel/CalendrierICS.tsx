@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { AlertCircle, ArrowLeft, ArrowRight, CalendarDays, Download, ExternalLink } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, CalendarDays, ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Fichier } from "@/lib/types";
 
 const FUSEAU = "Africa/Algiers";
@@ -187,7 +188,7 @@ export default function CalendrierICS({ fichier, source, sourceUrl, onNombreEven
   const [erreur, setErreur] = useState(false);
   const [mois, setMois] = useState(moisCourant);
   const [chargement, setChargement] = useState(true);
-  const nomFichier = fichier.nom ?? fichier.id;
+  const [evenementSelectionne, setEvenementSelectionne] = useState<EvenementICS | null>(null);
 
   useEffect(() => {
     let annule = false;
@@ -220,24 +221,13 @@ export default function CalendrierICS({ fichier, source, sourceUrl, onNombreEven
     });
   }, [mois]);
 
-  const premierJourMois = jourCle(mois.getUTCFullYear(), mois.getUTCMonth(), 1);
-  const premierJourMoisSuivant = jourCle(moisSuivant.getUTCFullYear(), moisSuivant.getUTCMonth(), 1);
-  const evenementsMois = useMemo(() => (evenements ?? []).filter((e) => e.dateDebut < premierJourMoisSuivant && dernierJour(e) >= premierJourMois), [evenements, premierJourMois, premierJourMoisSuivant]);
   const joursSemaine = Array.from({ length: 7 }, (_, index) => JOURS.format(new Date(Date.UTC(2024, 0, 1 + index))));
-  const lienTelechargement = fichier.url_telechargement || fichier.url;
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"><CalendarDays className="h-5 w-5" aria-hidden /></span>
-          <h2 className="text-lg font-semibold">{t("visuel.calendrier.titre")}</h2>
-        </div>
-        <Button asChild variant="outline" className="gap-2">
-          <a href={lienTelechargement} download={nomFichier}>
-            <Download className="h-4 w-4" aria-hidden />{t("visuel.calendrier.telecharger")}
-          </a>
-        </Button>
+      <div className="flex items-center gap-2">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"><CalendarDays className="h-5 w-5" aria-hidden /></span>
+        <h2 className="text-lg font-semibold">{t("visuel.calendrier.titre")}</h2>
       </div>
 
       {chargement ? <p className="py-10 text-center text-sm text-muted-foreground" role="status">{t("visuel.calendrier.chargement")}</p> : erreur ? (
@@ -259,29 +249,48 @@ export default function CalendrierICS({ fichier, source, sourceUrl, onNombreEven
               const duJour = (evenements ?? []).filter((evenement) => chevaucheJour(evenement, cellule.cle));
               return <div key={cellule.cle} className={`min-h-16 border-b border-e border-border p-1 text-start last:border-e-0 sm:min-h-24 sm:p-2 ${cellule.dansMois ? "bg-background" : "bg-muted/20 text-muted-foreground"}`}>
                 <span className="text-xs tabular-nums">{cellule.date.getUTCDate()}</span>
-                <div className="mt-1 space-y-1">
-                  {duJour.slice(0, 2).map((evenement) => <div key={evenement.id} title={evenement.titre || t("visuel.calendrier.evenementSansTitre")} className={`truncate rounded px-1 py-0.5 text-[10px] leading-4 sm:text-xs ${evenement.tentative ? "bg-amber-100 text-amber-900 dark:bg-amber-900/50 dark:text-amber-100" : "bg-emerald-100 text-emerald-900 dark:bg-emerald-900/50 dark:text-emerald-100"}`}>{evenement.tentative && <span aria-label={t("visuel.calendrier.previsionnel")}>~ </span>}{evenement.titre || t("visuel.calendrier.evenementSansTitre")}</div>)}
-                  {duJour.length > 2 && <span className="text-[10px] text-muted-foreground">{t("visuel.calendrier.plusEvenements", { count: duJour.length - 2 })}</span>}
+                <div className="mt-1 max-h-16 space-y-1 overflow-y-auto sm:max-h-20">
+                  {duJour.map((evenement) => (
+                    <button
+                      key={evenement.id}
+                      type="button"
+                      onClick={() => setEvenementSelectionne(evenement)}
+                      title={evenement.titre || t("visuel.calendrier.evenementSansTitre")}
+                      aria-label={`${evenement.titre || t("visuel.calendrier.evenementSansTitre")} · ${dateAffichee(evenement)}`}
+                      className={`block w-full truncate rounded px-1 py-0.5 text-start text-[10px] leading-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 sm:text-xs ${evenement.tentative ? "bg-amber-100 text-amber-900 hover:bg-amber-200 dark:bg-amber-900/50 dark:text-amber-100 dark:hover:bg-amber-900" : "bg-emerald-100 text-emerald-900 hover:bg-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-100 dark:hover:bg-emerald-900"}`}
+                    >
+                      {evenement.tentative && <span aria-label={t("visuel.calendrier.previsionnel")}>~ </span>}{evenement.titre || t("visuel.calendrier.evenementSansTitre")}
+                    </button>
+                  ))}
                 </div>
               </div>;
             })}
           </div>
 
-          <section aria-labelledby="liste-evenements-mois" className="space-y-3">
-            <h3 id="liste-evenements-mois" className="font-semibold">{t("visuel.calendrier.evenementsDuMois", { mois: MOIS.format(mois) })}</h3>
-            {evenementsMois.length ? evenementsMois.map((evenement) => <article key={evenement.id} className="rounded-xl border border-border p-4">
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <h4 className="font-semibold">{evenement.titre || t("visuel.calendrier.evenementSansTitre")}</h4>
-                {evenement.tentative && <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">{t("visuel.calendrier.previsionnel")}</span>}
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">{dateAffichee(evenement)}{evenement.journeeEntiere && ` · ${t("visuel.calendrier.touteLaJournee")}`} · {t("visuel.calendrier.duree", { duree: dureeTexte(evenement) })}</p>
-              {evenement.description && <p className="mt-3 whitespace-pre-line text-sm">{evenement.description}</p>}
-              {(evenement.url || source || sourceUrl) && <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                {evenement.url && <a href={evenement.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400">{t("visuel.calendrier.lienEvenement")}<ExternalLink className="h-3.5 w-3.5" aria-hidden /></a>}
-                {sourceUrl ? <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400">{t("visuel.calendrier.source", { source: source ?? t("fiche.pageSource") })}<ExternalLink className="h-3.5 w-3.5" aria-hidden /></a> : source && <span className="text-muted-foreground">{t("visuel.source", { source })}</span>}
-              </div>}
-            </article>) : <p className="rounded-lg bg-muted/40 p-4 text-sm text-muted-foreground">{t("visuel.calendrier.aucunEvenement")}</p>}
-          </section>
+          <Dialog open={Boolean(evenementSelectionne)} onOpenChange={(ouvert) => { if (!ouvert) setEvenementSelectionne(null); }}>
+            <DialogContent className="sm:max-w-lg">
+              {evenementSelectionne && (
+                <>
+                  <DialogHeader>
+                    <DialogTitle>{evenementSelectionne.titre || t("visuel.calendrier.evenementSansTitre")}</DialogTitle>
+                    <DialogDescription>
+                      {dateAffichee(evenementSelectionne)}
+                      {evenementSelectionne.journeeEntiere && ` · ${t("visuel.calendrier.touteLaJournee")}`}
+                      {` · ${t("visuel.calendrier.duree", { duree: dureeTexte(evenementSelectionne) })}`}
+                    </DialogDescription>
+                  </DialogHeader>
+                  {evenementSelectionne.tentative && <span className="w-fit rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">{t("visuel.calendrier.previsionnel")}</span>}
+                  {evenementSelectionne.description && <p className="whitespace-pre-line text-sm">{evenementSelectionne.description}</p>}
+                  {(evenementSelectionne.url || source || sourceUrl) && (
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                      {evenementSelectionne.url && <a href={evenementSelectionne.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400">{t("visuel.calendrier.lienEvenement")}<ExternalLink className="h-3.5 w-3.5" aria-hidden /></a>}
+                      {sourceUrl ? <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-700 hover:underline dark:text-emerald-400">{t("visuel.calendrier.source", { source: source ?? t("fiche.pageSource") })}<ExternalLink className="h-3.5 w-3.5" aria-hidden /></a> : source && <span className="text-muted-foreground">{t("visuel.source", { source })}</span>}
+                    </div>
+                  )}
+                </>
+              )}
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </div>

@@ -1,9 +1,7 @@
-import { useId, useMemo, useRef, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
-import { ImageDown, Loader2 } from "lucide-react";
 import { ChartContainer, ChartTooltip, type ChartConfig } from "@/components/ui/chart";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,7 +18,6 @@ import {
   type Ligne,
   type VisuelGraphique,
 } from "@/lib/detecterVisuel";
-import { telechargerGraphiquePng } from "@/lib/exporterImage";
 import { localeNombres } from "@/lib/fichiers";
 import { cn } from "@/lib/utils";
 
@@ -107,14 +104,12 @@ const Infobulle = ({
 };
 
 /** Courbe (séries dans le temps, partie projetée en pointillés) ou barres horizontales (top 15). */
-const GraphiqueVisuel = ({ visuel, lignes, titreJeu, source, slug, hauteur }: GraphiqueVisuelProps) => {
+const GraphiqueVisuel = ({ visuel, lignes, titreJeu, hauteur }: GraphiqueVisuelProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const rtl = langue === "ar";
   const { compact } = useFormats();
   const id = useId();
-  const zone = useRef<HTMLDivElement>(null);
-  const [export_, setExport] = useState(false);
 
   const series = useMemo(() => (visuel.genre === "courbe" ? optionsSeries(lignes, visuel.dimensions, langue) : []), [visuel, lignes, langue]);
   const [serie, setSerie] = useState<string | null>(series[0]?.cle ?? null);
@@ -158,24 +153,6 @@ const GraphiqueVisuel = ({ visuel, lignes, titreJeu, source, slug, hauteur }: Gr
   }, [courbe, mesure, visuel, serie]);
   const libelles = Object.fromEntries(Object.entries(config).map(([cle, valeur]) => [cle, String(valeur.label ?? cle)]));
 
-  const exporter = async () => {
-    const svg = zone.current?.querySelector<SVGSVGElement>("svg.recharts-surface");
-    if (!svg) return;
-    setExport(true);
-    try {
-      const sombre = document.documentElement.classList.contains("dark");
-      await telechargerGraphiquePng(svg, `${slug}-graphique`, {
-        titre,
-        source: source ? t("visuel.source", { source }) : null,
-        fond: sombre ? "#111827" : "#ffffff",
-        texte: sombre ? "#f3f4f6" : "#111827",
-        rtl,
-      });
-    } finally {
-      setExport(false);
-    }
-  };
-
   const aProjection = Boolean(courbe?.series.some((element) => element.aProjection));
   const vide = courbe ? courbe.points.length === 0 || courbe.series.length === 0 : barres.length === 0;
 
@@ -185,10 +162,6 @@ const GraphiqueVisuel = ({ visuel, lignes, titreJeu, source, slug, hauteur }: Gr
         <h3 className="me-auto min-w-0 text-base font-semibold leading-snug" dir="auto">
           {titre}
         </h3>
-        <Button type="button" variant="outline" size="sm" className="gap-1.5" onClick={exporter} disabled={export_ || vide}>
-          {export_ ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <ImageDown className="h-4 w-4" aria-hidden />}
-          {t("visuel.telechargerImage")}
-        </Button>
       </div>
 
       {/* Choix de la série (format long) et des mesures (format large) */}
@@ -248,7 +221,7 @@ const GraphiqueVisuel = ({ visuel, lignes, titreJeu, source, slug, hauteur }: Gr
         </div>
       )}
 
-      <div ref={zone}>
+      <div>
         {vide ? (
           <p className={cn("flex items-center justify-center rounded-xl border border-dashed text-sm text-muted-foreground", hauteur)}>{t("visuel.aucuneValeur")}</p>
         ) : courbe ? (

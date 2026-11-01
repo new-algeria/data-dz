@@ -71,6 +71,23 @@ const BoutonTelecharger = ({ ressources }: { ressources: Ressource[] }) => {
     }
   };
 
+  if (formats.autres.length === 0 && ressources.length === 1) {
+    return (
+      <Button
+        size="lg"
+        onClick={() => void telecharger(formats.principal.url, formats.principal.format)}
+        disabled={enCours !== null}
+        className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800"
+      >
+        {enCours === formats.principal.format ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> : <Download className="h-5 w-5" aria-hidden />}
+        {t("fiche.telecharger")}
+        <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">
+          {nomFormat(formats.principal.format)}
+        </span>
+      </Button>
+    );
+  }
+
   return (
     <div className="inline-flex rounded-lg shadow-lg shadow-emerald-700/20">
       <Button
