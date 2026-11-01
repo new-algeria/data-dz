@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowDownWideNarrow, Compass, Search, SearchX } from "lucide-react";
+import { ArrowDown, ArrowDownWideNarrow, Compass, FileText, MapPin, RotateCcw, Search, SearchX } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -207,7 +207,7 @@ const Catalogue = () => {
     });
     return recentsEnPremier(trierDonnees(filtrees, tri, langue), seuil);
   }, [requeteCatalogue.data, wilaya, format, tri, langue, seuil]);
-  const filtresActifs = Boolean(terme || categorie || wilaya || format);
+  const filtresActifs = Boolean(saisie.trim() || categorie || wilaya || format);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-[#020817]">
@@ -320,25 +320,28 @@ const Catalogue = () => {
           </motion.h2>
 
           {/* Filtres visibles : recherche, thème, wilaya, formats disponibles et tri. */}
-          <div className="mb-6 grid grid-cols-2 gap-3 lg:flex lg:flex-row">
-            <div className="relative col-span-2 lg:flex-1">
+          <div className="mb-6 grid grid-cols-2 gap-3 xl:flex xl:items-center">
+            <div className="relative col-span-2 xl:w-80 xl:flex-none">
               <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden />
               <Input
                 type="search"
                 value={saisie}
                 onChange={(event) => setSaisie(event.target.value)}
-                placeholder={t("catalogue.recherche")}
+                placeholder={t("navbar.rechercher")}
                 aria-label={t("catalogue.rechercheLabel")}
                 className="ps-9 bg-white dark:bg-gray-900"
               />
             </div>
             <Select value={categorie ?? TOUTES_CATEGORIES} onValueChange={choisirCategorie}>
-              <SelectTrigger className="min-w-0 w-full text-start [&>span]:min-w-0 lg:w-48 bg-white dark:bg-gray-900" aria-label={t("catalogue.categorie")}>
-                <SelectValue>
-                  {categorie
-                    ? texteTraduit(categoriesParSlug.get(categorie)?.nom, langue) || categorie
-                    : t("catalogue.categorie")}
-                </SelectValue>
+              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 xl:w-44" aria-label={t("catalogue.categorie")}>
+                <div className="flex min-w-0 items-center gap-2">
+                  <IconeCategorie icone={categorie ? categoriesParSlug.get(categorie)?.icone ?? null : null} />
+                  <SelectValue className="min-w-0 truncate">
+                    {categorie
+                      ? texteTraduit(categoriesParSlug.get(categorie)?.nom, langue) || categorie
+                      : t("catalogue.categorie")}
+                  </SelectValue>
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUTES_CATEGORIES}>
@@ -358,12 +361,15 @@ const Catalogue = () => {
               </SelectContent>
             </Select>
             <Select value={wilaya ?? TOUTES_WILAYAS} onValueChange={(valeur) => choisirFiltre("wilaya", valeur, TOUTES_WILAYAS)}>
-              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-40" aria-label={t("catalogue.filtrerWilaya")}>
-                <SelectValue>
-                  {wilaya
-                    ? texteTraduit(requeteWilayas.data?.find((item) => item.code === wilaya)?.nom, langue) || wilaya
-                    : t("catalogue.filtrerWilaya")}
-                </SelectValue>
+              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 xl:w-40" aria-label={t("catalogue.filtrerWilaya")}>
+                <div className="flex min-w-0 items-center gap-2">
+                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                  <SelectValue className="min-w-0 truncate">
+                    {wilaya
+                      ? texteTraduit(requeteWilayas.data?.find((item) => item.code === wilaya)?.nom, langue) || wilaya
+                      : t("catalogue.filtrerWilaya")}
+                  </SelectValue>
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUTES_WILAYAS}>{t("catalogue.toutesWilayas")}</SelectItem>
@@ -375,8 +381,11 @@ const Catalogue = () => {
               </SelectContent>
             </Select>
             <Select value={format ?? TOUS_FORMATS} onValueChange={(valeur) => choisirFiltre("format", valeur, TOUS_FORMATS)}>
-              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 lg:w-36" aria-label={t("catalogue.filtrerFormat")}>
-                <SelectValue>{format ? format.toUpperCase() : t("catalogue.filtrerFormat")}</SelectValue>
+              <SelectTrigger className="min-w-0 w-full bg-white text-start dark:bg-gray-900 xl:w-32" aria-label={t("catalogue.filtrerFormat")}>
+                <div className="flex min-w-0 items-center gap-2">
+                  <FileText className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                  <SelectValue className="min-w-0 truncate">{format ? format.toUpperCase() : t("catalogue.filtrerFormat")}</SelectValue>
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={TOUS_FORMATS}>{t("catalogue.tousFormats")}</SelectItem>
@@ -386,7 +395,7 @@ const Catalogue = () => {
               </SelectContent>
             </Select>
             <Select value={tri} onValueChange={choisirTri}>
-              <SelectTrigger className="min-w-0 w-full lg:w-40 bg-white dark:bg-gray-900" aria-label={t("catalogue.tri.libelle")}>
+              <SelectTrigger className="min-w-0 w-full bg-white dark:bg-gray-900 xl:w-36" aria-label={t("catalogue.tri.libelle")}>
                 {/* div et non span : le déclencheur force ses span directs sur une seule ligne (line-clamp). */}
                 <div className="flex min-w-0 items-center gap-2 text-start">
                   <ArrowDownWideNarrow className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
@@ -403,6 +412,19 @@ const Catalogue = () => {
                 ))}
               </SelectContent>
             </Select>
+            {filtresActifs && (
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={reinitialiser}
+                className="col-span-2 justify-self-end xl:col-span-1 xl:justify-self-auto"
+                title={t("catalogue.reinitialiser")}
+                aria-label={t("catalogue.reinitialiser")}
+              >
+                <RotateCcw className="h-4 w-4" aria-hidden />
+              </Button>
+            )}
           </div>
 
           {requeteCatalogue.isError ? (
