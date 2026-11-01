@@ -96,6 +96,7 @@
       "nouveauAide_other": "Publiée il y a moins de {{count}} jours",
       "voirCarte": "Voir la carte",
       "graphique": "Graphique",
+      "calendrier": "Calendrier",
       "telechargerDonnee": "Télécharger « {{titre}} »",
       "libre": "Libre d'utilisation",
       "source": "Source : {{nom}}",
@@ -141,6 +142,7 @@
       "autresFichiers_other": "Les {{count}} fichiers…",
       "voirCarte": "Voir la carte",
       "voirGraphique": "Voir le graphique",
+      "voirCalendrier": "Voir le calendrier",
       "partager": "Partager",
       "lienCopie": "Lien copié"
     },
@@ -1021,6 +1023,23 @@
     "graphique": "Graphique",
     "choixVue": "Type de visuel",
     "source": "Source : {{source}}",
+    "calendrier": {
+      "titre": "Calendrier des événements",
+      "telecharger": "Télécharger le calendrier (.ics)",
+      "chargement": "Chargement du calendrier…",
+      "erreur": "Ce fichier calendrier est illisible ou invalide. Vous pouvez tout de même télécharger le fichier .ics.",
+      "moisPrecedent": "Mois précédent",
+      "moisSuivant": "Mois suivant",
+      "evenementsDuMois": "Événements en {{mois}}",
+      "aucunEvenement": "Aucun événement prévu ce mois-ci.",
+      "evenementSansTitre": "Événement sans titre",
+      "previsionnel": "Prévisionnel",
+      "plusEvenements": "+{{count}} autres",
+      "duree": "Durée : {{duree}}",
+      "touteLaJournee": "Toute la journée",
+      "lienEvenement": "Lien de l'événement",
+      "source": "Source : {{source}}"
+    },
     "erreur": "Impossible de charger les données du visuel. Les fichiers restent téléchargeables.",
     "aideMolette": "Cliquez sur la carte pour zoomer à la molette",
     "projection": "Projection",
@@ -1109,3 +1128,4 @@
     "description": "Elle vous aidera à explorer et à comprendre les données du catalogue. Restez connectés !"
   }
 }
+

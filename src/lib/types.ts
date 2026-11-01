@@ -36,6 +36,8 @@ export interface Fichier {
   id: string;
   nom: string | null;
   format: string;
+  /** Type MIME annoncé par la source, lorsqu'il est disponible. */
+  type_mime?: string | null;
   principal: boolean;
   taille_octets: number | null;
   /** Lecture dans le navigateur (carte, aperçu). */
@@ -50,7 +52,7 @@ export type FormatTelechargement = "csv" | "xlsx" | "json" | "geojson" | "parque
 export interface Ressource {
   nom: string;
   principal: boolean;
-  fichiers: { format: string; taille_octets: number | null; url: string }[];
+  fichiers: { format: string; taille_octets: number | null; url: string; type_mime?: string | null }[];
   telechargements: { format: FormatTelechargement; natif: boolean; url: string }[];
 }
 
@@ -127,3 +129,4 @@ export interface Donnee extends CompteursDonnee {
   diffusion_restreinte?: boolean;
   lien_paquet?: string | null;
 }
+

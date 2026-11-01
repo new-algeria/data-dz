@@ -108,6 +108,7 @@
       "nouveauAide_other": "نُشرت منذ أقل من {{count}} يوم",
       "voirCarte": "عرض الخريطة",
       "graphique": "رسم بياني",
+      "calendrier": "التقويم",
       "telechargerDonnee": "تنزيل «{{titre}}»",
       "libre": "حرة الاستخدام",
       "source": "المصدر: {{nom}}",
@@ -172,6 +173,7 @@
       "autresFichiers_other": "الملفات الـ{{count}}…",
       "voirCarte": "عرض الخريطة",
       "voirGraphique": "عرض الرسم البياني",
+      "voirCalendrier": "عرض التقويم",
       "partager": "مشاركة",
       "lienCopie": "تم نسخ الرابط"
     },
@@ -1100,6 +1102,23 @@
     "graphique": "رسم بياني",
     "choixVue": "نوع العرض",
     "source": "المصدر: {{source}}",
+    "calendrier": {
+      "titre": "تقويم الأحداث",
+      "telecharger": "تنزيل التقويم (.ics)",
+      "chargement": "جارٍ تحميل التقويم…",
+      "erreur": "تعذّرت قراءة ملف التقويم أو أنه غير صالح. يمكنك تنزيل ملف .ics على أي حال.",
+      "moisPrecedent": "الشهر السابق",
+      "moisSuivant": "الشهر التالي",
+      "evenementsDuMois": "أحداث شهر {{mois}}",
+      "aucunEvenement": "لا توجد أحداث هذا الشهر.",
+      "evenementSansTitre": "حدث بلا عنوان",
+      "previsionnel": "مبدئي",
+      "plusEvenements": "+{{count}} أخرى",
+      "duree": "المدة: {{duree}}",
+      "touteLaJournee": "طوال اليوم",
+      "lienEvenement": "رابط الحدث",
+      "source": "المصدر: {{source}}"
+    },
     "erreur": "تعذّر تحميل بيانات العرض. يمكن دائمًا تنزيل الملفات.",
     "aideMolette": "انقر على الخريطة للتكبير بعجلة الفأرة",
     "projection": "إسقاط",
@@ -1200,3 +1219,4 @@
     "description": "سيساعدك على استكشاف بيانات الفهرس وفهمها. ترقّبوا!"
   }
 }
+
