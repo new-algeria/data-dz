@@ -17,7 +17,7 @@ import { IconeFormat } from "./BadgeFormat";
 const ORDRE = ["csv", "xlsx", "json", "geojson", "parquet", "ics", "pdf", "xml", "zip"];
 // Formats connus dans l'ordre ci-dessus, formats inconnus à la fin.
 const rang = (format: string) => {
-  const indice = ORDRE.indexOf(format as FormatTelechargement);
+  const indice = ORDRE.indexOf(format);
   return indice === -1 ? ORDRE.length : indice;
 };
 
