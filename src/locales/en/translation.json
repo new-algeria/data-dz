@@ -96,6 +96,7 @@
       "nouveauAide_other": "Published less than {{count}} days ago",
       "voirCarte": "View map",
       "graphique": "Chart",
+      "calendrier": "Calendar",
       "telechargerDonnee": "Download “{{titre}}”",
       "libre": "Free to use",
       "source": "Source: {{nom}}",
@@ -141,6 +142,7 @@
       "autresFichiers_other": "All {{count}} files…",
       "voirCarte": "View map",
       "voirGraphique": "View chart",
+      "voirCalendrier": "View calendar",
       "partager": "Share",
       "lienCopie": "Link copied"
     },
@@ -1021,6 +1023,23 @@
     "graphique": "Chart",
     "choixVue": "Visual type",
     "source": "Source: {{source}}",
+    "calendrier": {
+      "titre": "Event calendar",
+      "telecharger": "Download calendar (.ics)",
+      "chargement": "Loading calendar…",
+      "erreur": "This calendar file is unreadable or invalid. You can still download the .ics file.",
+      "moisPrecedent": "Previous month",
+      "moisSuivant": "Next month",
+      "evenementsDuMois": "Events in {{mois}}",
+      "aucunEvenement": "No events this month.",
+      "evenementSansTitre": "Untitled event",
+      "previsionnel": "Tentative",
+      "plusEvenements": "+{{count}} more",
+      "duree": "Duration: {{duree}}",
+      "touteLaJournee": "All day",
+      "lienEvenement": "Event link",
+      "source": "Source: {{source}}"
+    },
     "erreur": "The visual's data could not be loaded. The files can still be downloaded.",
     "aideMolette": "Click the map to zoom with the mouse wheel",
     "projection": "Projection",
@@ -1109,3 +1128,4 @@
     "description": "It will help you explore and understand the catalogue's data. Stay tuned!"
   }
 }
+

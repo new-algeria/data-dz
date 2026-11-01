@@ -1,7 +1,7 @@
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { lazyAvecRechargement } from "@/lib/rechargement";
 import { useTranslation } from "react-i18next";
-import { ChartLine, Map as IconeCarte } from "lucide-react";
+import { CalendarDays, ChartLine, Map as IconeCarte } from "lucide-react";
 import { motion } from "framer-motion";
 import { EtatErreur } from "@/components/EtatErreur";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +13,18 @@ import type { Fichier } from "@/lib/types";
 const GlobeDonnees = lazyAvecRechargement(() => import("@/components/fiche/GlobeDonnees"));
 const CarteDepuisLignes = lazyAvecRechargement(() => import("./CarteDepuisLignes"));
 const GraphiqueVisuel = lazyAvecRechargement(() => import("./GraphiqueVisuel"));
+const CalendrierICS = lazyAvecRechargement(() => import("./CalendrierICS"));
+const AUCUN_FICHIER: Fichier[] = [];
+
+const estFichierICS = (fichier: Fichier) => {
+  const format = fichier.format.toLowerCase().split(";")[0].trim();
+  const nom = fichier.nom ?? fichier.id;
+  return (
+    /\.ics$/i.test(nom) ||
+    ["ics", "text/calendar", "application/ics", "application/icalendar+xml"].includes(format) ||
+    ["text/calendar", "application/ics", "application/icalendar+xml"].includes(fichier.type_mime?.toLowerCase().split(";")[0].trim() ?? "")
+  );
+};
 
 /** Hauteur fixe du visuel : 260 px sur mobile, 380 px à partir de md. */
 export const HAUTEUR_VISUEL = "h-[260px] md:h-[380px]";
@@ -31,6 +43,7 @@ interface VisuelDonneeProps {
   slug: string;
   titre: string;
   source: string | null;
+  sourceUrl?: string | null;
   fichiers: Fichier[];
 }
 
@@ -38,10 +51,28 @@ interface VisuelDonneeProps {
  * Visuel détecté automatiquement en tête de fiche : carte (GeoJSON, coordonnées, wilayas) ou graphique.
  * Rien n'est affiché si le jeu n'a rien de traçable. Si les deux existent, un sélecteur permet de basculer.
  */
-export const VisuelDonnee = ({ slug, titre, source, fichiers }: VisuelDonneeProps) => {
+export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers }: VisuelDonneeProps) => {
   const { t } = useTranslation();
   const [vueDemandee, setVueDemandee] = useState<VueVisuel | null>(null);
-  const etat = useVisuel(slug, fichiers, vueDemandee);
+  const fichierICS = useMemo(() => fichiers.find(estFichierICS) ?? null, [fichiers]);
+  // Un calendrier est prioritaire et ne déclenche aucun téléchargement du JSON pour carte/graphique.
+  const etat = useVisuel(slug, fichierICS ? AUCUN_FICHIER : fichiers, vueDemandee);
+
+  if (fichierICS) {
+    return (
+      <motion.section
+        aria-label={t("visuel.titre")}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative rounded-2xl border border-gray-200/80 bg-white p-4 shadow-sm md:p-5 dark:border-white/10 dark:bg-gray-800"
+      >
+        <Suspense fallback={<Squelette />}>
+          <CalendrierICS fichier={fichierICS} source={source} sourceUrl={sourceUrl} />
+        </Suspense>
+      </motion.section>
+    );
+  }
 
   if (etat.statut === "aucun") return null;
   const { detection, vue, lignes } = etat;
@@ -98,3 +129,4 @@ export const VisuelDonnee = ({ slug, titre, source, fichiers }: VisuelDonneeProp
     </motion.section>
   );
 };
+

@@ -45,11 +45,11 @@ export function nomFichier(fichier: Fichier): string {
 
 /** Même nom sans extension de format : « 5g-mobilis.geojson » et « 5g-mobilis.json » donnent « 5g-mobilis ». */
 export function nomSansFormat(fichier: Fichier): string {
-  return nomFichier(fichier).replace(/\.(geojson|json|csv|tsv|xlsx|xls|xml|zip|pdf|parquet)$/i, "");
+  return nomFichier(fichier).replace(/\.(geojson|json|csv|tsv|xlsx|xls|xml|zip|pdf|parquet|ics)$/i, "");
 }
 
 // Ordre des formats dans un groupe : le spatial d'abord, puis les formats tabulaires.
-const ORDRE_FORMATS = ["geojson", "json", "csv", "xlsx", "xml", "parquet", "zip", "pdf"];
+const ORDRE_FORMATS = ["geojson", "json", "csv", "xlsx", "xml", "parquet", "ics", "zip", "pdf"];
 const rangFormat = (format: string) => {
   const rang = ORDRE_FORMATS.indexOf(format.toLowerCase());
   return rang === -1 ? ORDRE_FORMATS.length : rang;
@@ -78,3 +78,4 @@ export function grouperFichiers(fichiers: Fichier[]): GroupeFichiers[] {
     .map((groupe) => ({ ...groupe, fichiers: [...groupe.fichiers].sort((a, b) => rangFormat(a.format) - rangFormat(b.format)) }))
     .sort((a, b) => (a.principal !== b.principal ? (a.principal ? -1 : 1) : a.nom.localeCompare(b.nom, undefined, { numeric: true })));
 }
+

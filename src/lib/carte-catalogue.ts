@@ -36,9 +36,13 @@ export function aDesCoordonnees(donnee: Pick<ResumeDonnee, "ressources" | "versi
 /** Fichiers non redistribuables par data-dz (`diffusion_restreinte`) : ni téléchargement, ni API, ni visuel. */
 export const estRestreinte = (donnee: { diffusion_restreinte?: boolean }) => donnee.diffusion_restreinte === true;
 
-export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versions" | "diffusion_restreinte">): "carte" | "graphique" | null {
+export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versions" | "diffusion_restreinte">): "carte" | "graphique" | "calendrier" | null {
   // Rien à montrer sans les fichiers.
   if (estRestreinte(donnee)) return null;
+  if ((donnee.ressources ?? []).some((ressource) => ressource.fichiers.some((fichier) =>
+    ["ics", "text/calendar", "application/ics", "application/icalendar+xml"].includes(fichier.format.toLowerCase().split(";")[0].trim()) ||
+    ["text/calendar", "application/ics", "application/icalendar+xml"].includes(fichier.type_mime?.toLowerCase().split(";")[0].trim() ?? "")
+  ))) return "calendrier";
   if (aDesCoordonnees(donnee)) return "carte";
   if (estSerieTemporelle(donnee.versions?.colonnes)) return "graphique";
   return null;
@@ -97,3 +101,4 @@ export function ilYA(date: string, langue: string, maintenant = Date.now()): str
   if (jours < 365) return format.format(-Math.floor(jours / 30), "month");
   return format.format(-Math.floor(jours / 365), "year");
 }
+

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, ChartLine, ChevronDown, ChevronRight, Download, Loader2, Map as IconeCarte, Share2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, ChartLine, ChevronDown, ChevronRight, Download, Loader2, Map as IconeCarte, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -241,8 +241,8 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
               {action && (
                 <Button asChild size="lg" variant="outline" className="gap-2 bg-white/80 dark:bg-white/5">
                   <a href="#visuel">
-                    {action === "carte" ? <IconeCarte className="h-5 w-5" aria-hidden /> : <ChartLine className="h-5 w-5" aria-hidden />}
-                    {t(action === "carte" ? "fiche.entete.voirCarte" : "fiche.entete.voirGraphique")}
+                    {action === "carte" ? <IconeCarte className="h-5 w-5" aria-hidden /> : action === "calendrier" ? <CalendarDays className="h-5 w-5" aria-hidden /> : <ChartLine className="h-5 w-5" aria-hidden />}
+                    {t(action === "carte" ? "fiche.entete.voirCarte" : action === "calendrier" ? "fiche.entete.voirCalendrier" : "fiche.entete.voirGraphique")}
                   </a>
                 </Button>
               )}
@@ -258,3 +258,4 @@ export const EnTeteFiche = ({ donnee }: { donnee: Donnee }) => {
     </section>
   );
 };
+

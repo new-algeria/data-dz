@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Check, ChartLine, Download, Map as IconeCarte, Package, Sparkles } from "lucide-react";
+import { CalendarDays, Check, ChartLine, Download, Map as IconeCarte, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -146,8 +146,8 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
               {action && (
                 <Button asChild className="gap-2 bg-emerald-700 text-white hover:bg-emerald-800">
                   <Link to={routes.donnee(donnee.slug)}>
-                    {action === "carte" ? <IconeCarte className="h-4 w-4" aria-hidden /> : <ChartLine className="h-4 w-4" aria-hidden />}
-                    {t(action === "carte" ? "catalogue.carte.voirCarte" : "catalogue.carte.graphique")}
+                    {action === "carte" ? <IconeCarte className="h-4 w-4" aria-hidden /> : action === "calendrier" ? <CalendarDays className="h-4 w-4" aria-hidden /> : <ChartLine className="h-4 w-4" aria-hidden />}
+                    {t(action === "carte" ? "catalogue.carte.voirCarte" : action === "calendrier" ? "catalogue.carte.calendrier" : "catalogue.carte.graphique")}
                   </Link>
                 </Button>
               )}
@@ -187,3 +187,4 @@ export function CarteDonneeSquelette() {
     </Card>
   );
 }
+

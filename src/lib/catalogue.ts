@@ -52,6 +52,7 @@ function fichiersDe(slug: string, ressources: Ressource[]): Fichier[] {
       id: `${ressource.nom}.${fichier.format}`,
       nom: ressource.nom,
       format: fichier.format,
+      type_mime: fichier.type_mime ?? null,
       principal: ressource.principal,
       taille_octets: fichier.taille_octets,
       url: fichier.url,
@@ -108,3 +109,4 @@ export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
     throw erreur;
   }
 }
+
