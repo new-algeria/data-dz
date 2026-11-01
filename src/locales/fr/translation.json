@@ -132,7 +132,12 @@
       "libelle": "Trier",
       "top": "Les plus appréciés",
       "recent": "Récemment mis à jour",
-      "name": "A → Z"
+      "name": "A → Z",
+      "court": {
+        "top": "Populaires",
+        "recent": "Récents",
+        "name": "A → Z"
+      }
     },
     "filtrerWilaya": "Wilaya",
     "toutesWilayas": "Toutes les wilayas",
