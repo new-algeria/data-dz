@@ -888,7 +888,7 @@
   "drapeau": "Flag of Algeria",
   "telechargement": {
     "titre": "Download the data",
-    "description": "Pick a format: the data-dz API converts the file, then the download starts.",
+    "description": "Choose a file, then a format. The preview shows a sample without loading the full file.",
     "fichier": "File",
     "format": "Format",
     "original": "Original format",
@@ -896,6 +896,13 @@
     "preparation": "Preparing the file…",
     "indisponible": "This format isn't available for this file (not a table, or no coordinates). Pick another one.",
     "erreur": "The download failed. Please try again in a moment.",
+    "apercu": {
+      "titre": "File preview",
+      "description": "Sample of the first 5 rows.",
+      "chargement": "Loading preview…",
+      "erreur": "Preview is unavailable right now.",
+      "vide": "There are no rows to display."
+    },
     "formats": {
       "csv": {
         "nom": "CSV",

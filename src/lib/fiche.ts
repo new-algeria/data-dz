@@ -39,6 +39,9 @@ const ORDRE_MENU = ["csv", "json", "geojson"];
 const FORMATS_SOURCE_CONVERTIBLES = new Set(["csv", "json", "geojson"]);
 const FORMATS_SORTIE = new Set(["csv", "xlsx", "json", "geojson", "parquet"]);
 
+export const aSourceConvertible = (ressource: Ressource): boolean =>
+  ressource.fichiers.some((fichier) => FORMATS_SOURCE_CONVERTIBLES.has(fichier.format.toLowerCase()));
+
 /** Le fichier natif est servi en téléchargement joint, et non en affichage inline. */
 function urlEnTelechargement(url: string): string {
   const separateur = url.indexOf("?");
@@ -55,8 +58,7 @@ function urlEnTelechargement(url: string): string {
  * Pour les autres formats, ne garde que les fichiers d'origine.
  */
 export function telechargementsRessource(ressource: Ressource): OptionTelechargement[] {
-  const aSourceConvertible = ressource.fichiers.some((fichier) => FORMATS_SOURCE_CONVERTIBLES.has(fichier.format.toLowerCase()));
-  if (!aSourceConvertible) {
+  if (!aSourceConvertible(ressource)) {
     return ressource.fichiers.map((fichier) => ({
       format: fichier.format.toLowerCase(),
       natif: true,
@@ -78,14 +80,14 @@ export function formatsBouton(ressource: Ressource | undefined): FormatsBouton |
   if (telechargements.length === 0) return null;
   const parFormat = new Map(telechargements.map((element) => [element.format, element]));
   const principal = parFormat.get("xlsx") ?? parFormat.get("csv") ?? telechargements[0];
-  const aSourceConvertible = ressource.fichiers.some((fichier) => FORMATS_SOURCE_CONVERTIBLES.has(fichier.format.toLowerCase()));
+  const sourceConvertible = aSourceConvertible(ressource);
   const geojsonDOrigine = ressource.fichiers.some((fichier) => fichier.format.toLowerCase() === "geojson");
   const autresOrdonnes = ORDRE_MENU
     .filter((format) => format !== principal.format && (format !== "geojson" || geojsonDOrigine))
     .map((format) => parFormat.get(format))
     .filter((element): element is OptionTelechargement => Boolean(element));
   const autresSupplementaires = telechargements.filter((element) => element.format !== principal.format && !ORDRE_MENU.includes(element.format));
-  const autres = aSourceConvertible ? [...autresOrdonnes, ...autresSupplementaires] : telechargements.filter((element) => element.format !== principal.format);
+  const autres = sourceConvertible ? [...autresOrdonnes, ...autresSupplementaires] : telechargements.filter((element) => element.format !== principal.format);
   return { principal, autres };
 }
 

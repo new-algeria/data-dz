@@ -183,7 +183,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
             {!restreinte && fichiers.length > 0 && (
               <Section id="titre-fichiers" titre={t("fiche.fichiers")} icone={FileArchive}>
-                <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} />
+                <ListeFichiers fichiers={fichiers} ressources={donnee.ressources} slug={donnee.slug} />
               </Section>
             )}
             {!restreinte && <PourDeveloppeurs donnee={donnee} />}
