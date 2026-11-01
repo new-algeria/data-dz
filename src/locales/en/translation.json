@@ -1177,6 +1177,19 @@
     "avertissement": "Answers use the available dataset records and previews. Check the sources before reusing data.",
     "erreurConfiguration": "DjazAI is not configured yet. Please try again later.",
     "erreurLimite": "DjazAI is temporarily unavailable. Please try again shortly.",
-    "erreurGenerique": "DjazAI couldn’t answer. Please try again shortly."
+    "erreurGenerique": "DjazAI couldn’t answer. Please try again shortly.",
+    "connexionRequise": "Sign in to use DjazAI",
+    "connexionExplication": "DjazAI chat is for signed-in members. Each account gets 5 questions per day.",
+    "seConnecter": "Sign in",
+    "creerCompte": "Create an account",
+    "verificationConnexion": "Checking your sign-in…",
+    "verificationQuota": "Checking your daily quota…",
+    "quotaAdmin": "Administrator access · no daily quota",
+    "quotaRestante": "Questions left today: {{count}}",
+    "quotaAtteint": "You’ve used all 5 questions for today. Your quota resets at midnight Algiers time.",
+    "quotaIndisponible": "The DjazAI quota is temporarily unavailable.",
+    "quotaErreurAide": "Try again shortly. Questions stay disabled until the quota check succeeds.",
+    "reessayer": "Try again",
+    "sessionExpiree": "Your session expired. Sign in again to continue."
   }
 }
