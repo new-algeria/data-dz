@@ -22,7 +22,9 @@ export const routes = {
   moderationDatasets: "/moderation/datasets",
   favoris: "/favorites",
   adminMembres: "/admin/users",
+  adminRoles: "/admin/roles",
   adminDonnees: "/admin/datasets",
+  adminSynchros: "/admin/sync",
   api: "/api",
   thematiques: "/themes",
 } as const;
