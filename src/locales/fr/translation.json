@@ -1190,6 +1190,12 @@
     "quotaIndisponible": "Le quota DjazAI est temporairement indisponible.",
     "quotaErreurAide": "Réessaie dans un instant. Les questions ne seront pas envoyées tant que la vérification du quota n’aura pas abouti.",
     "reessayer": "Réessayer",
-    "sessionExpiree": "Ta session a expiré. Connecte-toi de nouveau pour continuer."
+    "sessionExpiree": "Ta session a expiré. Connecte-toi de nouveau pour continuer.",
+    "etapesChargement": [
+      "Je parcours le catalogue…",
+      "Je vérifie les fiches publiées…",
+      "Je prépare les réponses et les sources…"
+    ],
+    "apercuDataset": "Aperçu du jeu de données « {{titre}} »"
   }
 }

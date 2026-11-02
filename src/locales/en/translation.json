@@ -1190,6 +1190,12 @@
     "quotaIndisponible": "The DjazAI quota is temporarily unavailable.",
     "quotaErreurAide": "Try again shortly. Questions stay disabled until the quota check succeeds.",
     "reessayer": "Try again",
-    "sessionExpiree": "Your session expired. Sign in again to continue."
+    "sessionExpiree": "Your session expired. Sign in again to continue.",
+    "etapesChargement": [
+      "Searching the catalogue…",
+      "Checking the published datasets…",
+      "Preparing the answer and sources…"
+    ],
+    "apercuDataset": "Preview of the “{{titre}}” dataset"
   }
 }

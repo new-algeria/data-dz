@@ -46,12 +46,14 @@ export const BulleIA = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
+  const [etapeChargement, setEtapeChargement] = useState(0);
   const [quota, setQuota] = useState<QuotaDjazAI | null>(null);
   const [quotaEnCours, setQuotaEnCours] = useState(false);
   const [erreurQuota, setErreurQuota] = useState(false);
   const finMessagesRef = useRef<HTMLDivElement>(null);
   const utilisateurId = session?.user.id;
   const suggestions = t("ia.suggestions", { returnObjects: true }) as string[];
+  const etapesChargement = t("ia.etapesChargement", { returnObjects: true }) as string[];
 
   const rechargerQuota = useCallback(async () => {
     setQuotaEnCours(true);
@@ -87,6 +89,14 @@ export const BulleIA = () => {
     if (ouverte) finMessagesRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, envoiEnCours, ouverte]);
 
+  useEffect(() => {
+    if (!envoiEnCours) return;
+    const timer = window.setInterval(() => {
+      setEtapeChargement((courante) => (courante + 1) % Math.max(etapesChargement.length, 1));
+    }, 1800);
+    return () => window.clearInterval(timer);
+  }, [envoiEnCours, etapesChargement.length]);
+
   const texteErreur = (erreur: unknown) => {
     if (erreur instanceof ErreurApi) {
       if (erreur.code === "assistant_unconfigured") return t("ia.erreurConfiguration");
@@ -117,6 +127,7 @@ export const BulleIA = () => {
     )].slice(0, 4);
 
     setQuestion("");
+    setEtapeChargement(0);
     setEnvoiEnCours(true);
     setMessages((courants) => [...courants, { id: String(Date.now()) + "-user", role: "user", contenu: texte }]);
 
@@ -261,7 +272,7 @@ export const BulleIA = () => {
               </div>
             ) : (
               messages.map((message) => (
-                <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                <div key={message.id} className={(message.role === "user" ? "flex justify-end" : "flex justify-start") + " animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none"}>
                   <div className={message.role === "user" ? "max-w-[88%] rounded-2xl rounded-ee-md bg-emerald-700 px-4 py-3 text-white shadow-sm" : "max-w-[94%] space-y-3 sm:max-w-[88%]"}>
                     {message.role === "assistant" && (
                       <div className="flex items-start gap-2.5">
@@ -297,16 +308,44 @@ export const BulleIA = () => {
                         {message.sources.map((source) => {
                           const date = dateLisible(source.mis_a_jour_le, i18n.resolvedLanguage ?? "fr");
                           return (
-                            <article key={source.id} className="rounded-xl border border-border bg-card p-3 text-start shadow-sm">
+                            <article
+                              key={source.id}
+                              className="animate-in fade-in slide-in-from-bottom-1 rounded-xl border border-border bg-card p-3 text-start shadow-sm duration-300 motion-reduce:animate-none"
+                              style={{ animationDelay: `${Math.min(message.sources?.indexOf(source) ?? 0, 4) * 60}ms` }}
+                            >
                               <Link
                                 to={routes.donnee(source.id)}
                                 onClick={() => setOuverte(false)}
-                                className="flex items-start justify-between gap-2 text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
+                                className="group flex items-start gap-3 text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
                               >
-                                <span>{source.titre}</span>
+                                <span className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-emerald-50 dark:bg-emerald-950/60">
+                                  <Sparkles className="absolute inset-0 m-auto h-5 w-5 text-emerald-700/60 dark:text-emerald-300/60" aria-hidden />
+                                  {source.image_url && (
+                                    <img
+                                      src={source.image_url}
+                                      alt={t("ia.apercuDataset", { titre: source.titre })}
+                                      loading="lazy"
+                                      decoding="async"
+                                      onError={(event) => { event.currentTarget.style.visibility = "hidden"; }}
+                                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
+                                    />
+                                  )}
+                                </span>
+                                <span className="min-w-0 flex-1">
+                                  <span className="block leading-snug">{source.titre}</span>
+                                  {source.formats && source.formats.length > 0 && (
+                                    <span className="mt-1.5 flex flex-wrap gap-1">
+                                      {source.formats.slice(0, 4).map((format) => (
+                                        <span key={format} className="rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                                          {format}
+                                        </span>
+                                      ))}
+                                    </span>
+                                  )}
+                                </span>
                                 <ExternalLink className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                               </Link>
-                              {source.source_nom && <p className="mt-1 text-xs text-muted-foreground">{t("ia.source")}: {source.source_nom}</p>}
+                              {source.source_nom && <p className="mt-2 text-xs text-muted-foreground">{t("ia.source")}: {source.source_nom}</p>}
                               <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                                 {date && <span>{t("ia.misAJour")}: {date}</span>}
                                 {source.version && <span>{t("ia.version")}: {source.version}</span>}
@@ -340,10 +379,16 @@ export const BulleIA = () => {
             )}
             {session && quotaEnCours && messages.length > 0 && <p className="text-center text-xs text-muted-foreground">{t("ia.verificationQuota")}</p>}
             {envoiEnCours && (
-              <div className="flex justify-start">
-                <div className="flex items-center gap-2 rounded-2xl rounded-ss-md border border-border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm">
-                  <LoaderCircle className="h-4 w-4 animate-spin text-emerald-700 motion-reduce:animate-none" aria-hidden />
-                  {t("ia.chargement")}
+              <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
+                <div className="flex items-center gap-3 rounded-2xl rounded-ss-md border border-border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm" role="status">
+                  <span className="inline-flex items-center gap-1" aria-hidden>
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-emerald-700 [animation-delay:-0.24s] motion-reduce:animate-none" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-emerald-600 [animation-delay:-0.12s] motion-reduce:animate-none" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-teal-500 motion-reduce:animate-none" />
+                  </span>
+                  <span key={etapeChargement} className="animate-in fade-in duration-300">
+                    {etapesChargement[etapeChargement] ?? t("ia.chargement")}
+                  </span>
                 </div>
               </div>
             )}
