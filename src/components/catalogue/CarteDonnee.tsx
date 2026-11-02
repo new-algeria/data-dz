@@ -133,11 +133,11 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
               <span className="inline-flex items-center gap-1.5 tabular-nums">
                 <Eye className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                {formaterNombre(donnee.nb_vues ?? 0, langue)} {t("catalogue.carte.vues")}
+                {formaterNombre(donnee.nb_vues ?? 0, langue)} {t("catalogue.carte.vues", { count: donnee.nb_vues ?? 0 })}
               </span>
               <span className="inline-flex items-center gap-1.5 tabular-nums">
                 <Download className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                {formaterNombre(donnee.nb_telechargements ?? 0, langue)} {t("catalogue.carte.telechargements")}
+                {formaterNombre(donnee.nb_telechargements ?? 0, langue)} {t("catalogue.carte.telechargements", { count: donnee.nb_telechargements ?? 0 })}
               </span>
             </div>
             {periode && (!chiffre || chiffre.genre !== "serie" || chiffre.debut === null || chiffre.fin === null) && (
