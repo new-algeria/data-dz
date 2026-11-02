@@ -52,6 +52,13 @@ export type FormatTelechargement = "csv" | "xlsx" | "json" | "geojson" | "parque
 export interface Ressource {
   nom: string;
   principal: boolean;
+  /**
+   * Source du fichier : celle de la donnée, ou une autre (ex. OpenStreetMap dans une donnée GeoAlgeria).
+   * Absente avec une API antérieure à la migration 20261102000017.
+   */
+  source?: { slug: string; nom: string } | null;
+  /** Licence du fichier (celle de la donnée sauf mention contraire). */
+  licence_code?: string | null;
   fichiers: { format: string; taille_octets: number | null; url: string; type_mime?: string | null }[];
   telechargements: { format: FormatTelechargement; natif: boolean; url: string }[];
 }

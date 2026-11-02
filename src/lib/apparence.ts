@@ -27,6 +27,7 @@ import {
   ToggleLeft,
   Trophy,
   Type,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -51,6 +52,7 @@ const apparencesCategories: Record<string, Apparence> = {
   shield: { icone: Shield, couleurs: "bg-red-100 text-red-800 dark:bg-red-500/15 dark:text-red-300" },
   plant: { icone: Sprout, couleurs: "bg-green-100 text-green-800 dark:bg-green-500/15 dark:text-green-300" },
   leaf: { icone: Leaf, couleurs: "bg-teal-100 text-teal-800 dark:bg-teal-500/15 dark:text-teal-300" },
+  bolt: { icone: Zap, couleurs: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/15 dark:text-yellow-300" },
 };
 
 const apparenceParDefaut: Apparence = {

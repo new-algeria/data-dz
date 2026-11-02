@@ -1,4 +1,20 @@
-import type { Fichier } from "./types";
+import type { Fichier, Ressource } from "./types";
+
+/**
+ * Sources des fichiers d'une donnée, dans l'ordre : celle du fichier principal d'abord, puis par nom.
+ * Une seule source (cas habituel) : la fiche n'affiche pas de choix.
+ */
+export function sourcesDesFichiers(ressources: Ressource[]): { slug: string; nom: string }[] {
+  const sources = new Map<string, { slug: string; nom: string; principal: boolean }>();
+  for (const ressource of ressources) {
+    if (!ressource.source) continue;
+    const actuelle = sources.get(ressource.source.slug);
+    sources.set(ressource.source.slug, { ...ressource.source, principal: Boolean(actuelle?.principal || ressource.principal) });
+  }
+  return [...sources.values()]
+    .sort((a, b) => (a.principal !== b.principal ? (a.principal ? -1 : 1) : a.nom.localeCompare(b.nom)))
+    .map(({ slug, nom }) => ({ slug, nom }));
+}
 
 /** Locale utilisée pour les nombres (chiffres latins, y compris en arabe). */
 export function localeNombres(langue: string): string {
