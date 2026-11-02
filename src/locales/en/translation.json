@@ -109,7 +109,9 @@
       "touteAlgerie": "All Algeria",
       "wilayas": "Wilayas: {{liste}}",
       "formats": "Formats",
-      "periode": "Period: {{periode}}"
+      "periode": "Period: {{periode}}",
+      "vues": "views",
+      "telechargements": "downloads"
     },
     "titre": "Data catalogue",
     "recherche": "Search (e.g. pharmacies, wilayas, schools…)",
@@ -160,7 +162,9 @@
       "voirCalendrier": "View calendar",
       "partager": "Share",
       "lienCopie": "Link copied",
-      "evenements": "events"
+      "evenements": "events",
+      "vues": "views",
+      "telechargements": "downloads"
     },
     "developpeurs": {
       "titre": "For developers",
