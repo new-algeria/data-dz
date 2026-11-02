@@ -125,7 +125,9 @@
       "touteAlgerie": "كل الجزائر",
       "wilayas": "الولايات: {{liste}}",
       "formats": "الصيغ",
-      "periode": "الفترة: {{periode}}"
+      "periode": "الفترة: {{periode}}",
+      "vues": "مشاهدات",
+      "telechargements": "تنزيلات"
     },
     "titre": "فهرس البيانات",
     "recherche": "ابحث (مثلا: صيدليات، ولايات، مدارس…)",
@@ -191,7 +193,9 @@
       "voirCalendrier": "عرض التقويم",
       "partager": "مشاركة",
       "lienCopie": "تم نسخ الرابط",
-      "evenements": "أحداث"
+      "evenements": "أحداث",
+      "vues": "مشاهدات",
+      "telechargements": "تنزيلات"
     },
     "developpeurs": {
       "titre": "للمطوّرين",
