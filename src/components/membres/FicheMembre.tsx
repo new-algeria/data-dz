@@ -4,24 +4,34 @@ import { motion } from "framer-motion";
 import { CalendarDays, Globe, ShieldCheck } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { useLangue } from "@/hooks/use-langue";
+import { useRoles } from "@/hooks/use-roles";
 import { FORMAT_SITE_WEB, type Profil } from "@/lib/profils";
+import { CLASSES_COULEUR, codeRole, nomRole, trouverRole } from "@/lib/roles";
 import { localeNombres } from "@/lib/fichiers";
 import { cn } from "@/lib/utils";
 
-const BadgeRole = ({ role }: { role: Profil["role"] }) => {
+/** Badge public : modérateurs, administrateurs et rôles personnalisés (avec leur nom et leur couleur). */
+const BadgeRole = ({ membre }: { membre: Pick<Profil, "role" | "role_code"> }) => {
   const { t } = useTranslation();
-  if (role !== "moderateur" && role !== "admin") return null;
+  const langue = useLangue();
+  const { data: roles } = useRoles();
+  const code = codeRole(membre);
+  const role = trouverRole(roles, code);
+  const personnalise = role !== undefined && !role.systeme;
+  if (!personnalise && membre.role !== "moderateur" && membre.role !== "admin") return null;
   return (
     <span
       className={cn(
         "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold",
-        role === "admin"
-          ? "bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-300"
-          : "bg-sky-100 text-sky-800 dark:bg-sky-400/15 dark:text-sky-300"
+        personnalise
+          ? CLASSES_COULEUR[role.couleur]
+          : membre.role === "admin"
+            ? "bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-300"
+            : "bg-sky-100 text-sky-800 dark:bg-sky-400/15 dark:text-sky-300"
       )}
     >
       <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
-      {t(`membre.roles.${role}`)}
+      {personnalise ? nomRole(role, code, langue, (cle) => t(cle)) : t(`membre.roles.${membre.role}`)}
     </span>
   );
 };
@@ -49,7 +59,7 @@ export const EnTeteMembre = ({ membre, action }: { membre: Profil; action?: Reac
             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white" dir="auto">
               {nom}
             </h1>
-            <BadgeRole role={membre.role} />
+            <BadgeRole membre={membre} />
           </div>
           <p className="font-mono text-sm text-muted-foreground" dir="ltr">
             @{membre.pseudo}

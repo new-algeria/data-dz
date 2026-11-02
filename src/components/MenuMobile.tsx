@@ -6,12 +6,14 @@ import {
   Database,
   FilePlus2,
   Inbox,
+  KeyRound,
   Languages,
   LayoutGrid,
   LogIn,
   LogOut,
   Menu,
   Moon,
+  RefreshCw,
   ShieldCheck,
   Star,
   Sun,
@@ -26,6 +28,7 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from 
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
 import { useEstModerateur, useNbEnAttente } from "@/hooks/use-moderateur";
+import { usePermissions } from "@/hooks/use-roles";
 import { deconnecter } from "@/lib/auth";
 import { LANGUES } from "@/lib/langues";
 import { avecSuite, routes } from "@/lib/routes";
@@ -83,6 +86,7 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
   const { session, profil } = useAuth();
   const { data: moderateur } = useEstModerateur();
   const { data: enAttente = 0 } = useNbEnAttente(Boolean(moderateur));
+  const { admin, a, gestion } = usePermissions();
   const [ouvert, setOuvert] = useState(false);
 
   // Le panneau se referme dès qu'on change de page (ou d'ancre).
@@ -191,7 +195,7 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
             </>
           )}
 
-          {(moderateur || profil?.role === "admin") && (
+          {(moderateur || gestion) && (
             <>
               <Titre>{t("navbar.administration")}</Titre>
               {moderateur && (
@@ -209,15 +213,25 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
                   {t("navbar.moderation")}
                 </Lien>
               )}
-              {profil?.role === "admin" && (
-                <>
-                  <Lien vers={routes.adminMembres} icone={UsersRound}>
-                    {t("admin.titre")}
-                  </Lien>
-                  <Lien vers={routes.adminDonnees} icone={Database}>
-                    {t("adminDonnees.titre")}
-                  </Lien>
-                </>
+              {a("membres.gerer") && (
+                <Lien vers={routes.adminMembres} icone={UsersRound}>
+                  {t("admin.titre")}
+                </Lien>
+              )}
+              {admin && (
+                <Lien vers={routes.adminRoles} icone={KeyRound}>
+                  {t("roles.titre")}
+                </Lien>
+              )}
+              {a("donnees.gerer") && (
+                <Lien vers={routes.adminDonnees} icone={Database}>
+                  {t("adminDonnees.titre")}
+                </Lien>
+              )}
+              {a("synchro.gerer") && (
+                <Lien vers={routes.adminSynchros} icone={RefreshCw}>
+                  {t("synchros.titre")}
+                </Lien>
               )}
             </>
           )}

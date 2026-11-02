@@ -5,17 +5,20 @@ import { useTranslation } from "react-i18next";
 import { MiseEnPage } from "@/components/MiseEnPage";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexte/ContexteAuth";
+import { usePermissions } from "@/hooks/use-roles";
+import type { Permission } from "@/lib/roles";
 import { routes } from "@/lib/routes";
 
 /**
- * Réservé aux administrateurs (à placer dans une RouteProtegee), d'après le rôle du profil chargé.
- * Simple confort d'affichage : la fonction changer_role de la base refuse de toute façon les autres.
+ * Réservé aux administrateurs, ou aux membres dont le rôle porte `permission` (à placer dans une RouteProtegee).
+ * Simple confort d'affichage : la base (rpc, RLS) et l'API refusent de toute façon les autres.
  */
-export const RouteAdmin = ({ children }: { children: ReactNode }) => {
+export const RouteAdmin = ({ children, permission }: { children: ReactNode; permission?: Permission }) => {
   const { t } = useTranslation();
-  const { profil, chargementProfil } = useAuth();
+  const { chargementProfil } = useAuth();
+  const { admin, chargement, a } = usePermissions();
 
-  if (chargementProfil) {
+  if (chargementProfil || chargement) {
     return (
       <div className="flex min-h-screen items-center justify-center gap-2 text-muted-foreground" role="status">
         <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
@@ -24,7 +27,7 @@ export const RouteAdmin = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (profil?.role !== "admin") {
+  if (!admin && !(permission && a(permission))) {
     return (
       <MiseEnPage titre={t("moderation.accesReserveTitre")}>
         <div className="flex flex-col items-center gap-3 rounded-2xl border bg-white px-4 py-14 text-center dark:bg-gray-800">
