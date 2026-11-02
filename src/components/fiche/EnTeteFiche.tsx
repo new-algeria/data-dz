@@ -214,7 +214,7 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null, nombreV
                 </span>
                 <span className="min-w-0">
                   <span className="block text-base font-bold tabular-nums text-gray-900 dark:text-white">{formaterNombre(nombreVues ?? donnee.nb_vues ?? 0, langue)}</span>
-                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.vues")}</span>
+                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.vues", { count: nombreVues ?? donnee.nb_vues ?? 0 })}</span>
                 </span>
               </div>
               <div className="flex min-w-0 items-center gap-3 rounded-xl border border-emerald-900/10 bg-white/70 px-3.5 py-3 shadow-sm dark:border-white/10 dark:bg-white/5">
@@ -223,7 +223,7 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null, nombreV
                 </span>
                 <span className="min-w-0">
                   <span className="block text-base font-bold tabular-nums text-gray-900 dark:text-white">{formaterNombre(donnee.nb_telechargements ?? 0, langue)}</span>
-                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.telechargements")}</span>
+                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.telechargements", { count: donnee.nb_telechargements ?? 0 })}</span>
                 </span>
               </div>
             </div>
