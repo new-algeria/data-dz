@@ -26,13 +26,15 @@ Navigateur (data-dz, site statique React)
 ## Tables Supabase (lues par l'API pour le catalogue, par le site pour la communauté)
 | Table | Contenu |
 |---|---|
-| `profils` | 1 ligne par compte (`id` = `auth.users.id`) : `pseudo`, `nom_affiche`, `avatar_url`, `bio`, `site_web`, `role` (`membre`, `contributeur`, `moderateur`, `admin`), `reputation` |
+| `profils` | 1 ligne par compte (`id` = `auth.users.id`) : `pseudo`, `nom_affiche`, `avatar_url`, `bio`, `site_web`, `role` (niveau de base : `membre`, `contributeur`, `moderateur`, `admin`), `role_code` (rôle affiché, éventuellement personnalisé, → `roles.code`), `reputation` |
+| `roles` | `code`, `nom` / `description` (jsonb `{fr,en,ar}`), `role_base`, `permissions[]`, `couleur`, `systeme`, `ordre` (voir « Rôles et permissions ») |
+| `synchronisations`, `synchro_executions` | Sources renouvelées automatiquement (OpenStreetMap, GeoAlgeria) : réglages et historique (voir « Synchronisations ») |
 | `categories` | `slug`, `nom` (jsonb `{fr,en,ar}`), `icone`, `ordre` |
 | `licences` | `code` (ex. `ODbL-1.0`), `nom`, `url`, `usage_commercial`, `attribution_requise`, `partage_identique` |
 | `sources` | `slug`, `nom`, `url`, `type`, `verifiee` |
 | `datasets` | `slug`, `titre` et `description` (jsonb `{fr,en,ar}`, pas toujours complets), `readme` (Markdown), `categorie_slug`, `source_id`, `licence_code`, `licence_details`, `url_source`, `mots_cles[]`, `wilayas[]`, `statut` (`publie`…), `version_courante_id`, `infos_source` (jsonb), `illustration_url`, `recherche` (tsvector) |
 | `versions` | `dataset_id`, `numero`, `notes`, `nb_lignes`, `colonnes` (jsonb `[{nom, type}]`), `apercu` (jsonb, 3 lignes), `publie_le` |
-| `fichiers` | `version_id`, `format` (`json`, `geojson`, `csv`…), `cle_stockage`, `nom`, `principal`, `taille_octets` |
+| `fichiers` | `version_id`, `format` (`json`, `geojson`, `csv`…), `cle_stockage`, `nom`, `principal`, `taille_octets`, `source_id` et `licence_code` (null = ceux de la donnée ; renseignés pour un fichier d'une autre source, ex. OpenStreetMap dans une donnée GeoAlgeria) |
 
 Requête type :
 ```ts
@@ -74,8 +76,10 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/moderation` (`?status=`) | File des propositions | modérateur / admin |
 | `/moderation/submissions/:id` | Revue d'une proposition | modérateur / admin |
 | `/moderation/datasets` | Statut des datasets (publié / brouillon / archivé) | modérateur / admin |
-| `/admin/users` | Gestion des membres et de leurs rôles | admin |
-| `/admin/datasets` | Gestion des données (créer, modifier, masquer, supprimer, illustration, fichiers) | admin |
+| `/admin/users` | Gestion des membres et de leurs rôles | admin ou permission `membres.gerer` |
+| `/admin/roles` | Rôles : créer, modifier, supprimer, permissions | admin |
+| `/admin/datasets` | Gestion des données (créer, modifier, masquer, supprimer, illustration, fichiers) | admin ou permission `donnees.gerer` |
+| `/admin/sync` | Synchronisations (OpenStreetMap, GeoAlgeria) : active, intervalle, forcer, rapports | admin ou permission `synchro.gerer` |
 | `/themes` | Toutes les thématiques (catégories ayant des données), avec leurs données les plus récentes ; chaque carte mène au catalogue filtré | public |
 | `/api` | Page de l'API publique (thème violet) : adresse, exemples, routes, liste de toutes les données avec leur URL API | public |
 | `/privacy`, `/terms` | Pages légales | public |
@@ -149,11 +153,35 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
 
 ## Gestion des membres (admin)
-Migration `20261023000007_gestion_roles.sql` : fonction `changer_role(utilisateur_id, nouveau_role)` (security definer). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
+Migrations `20261023000007_gestion_roles.sql` puis `20261102000016_roles_personnalises.sql` : fonction `changer_role(utilisateur_id, nouveau_role text)` (security definer, le code d'un rôle de la table `roles`). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
 
-- La colonne `profils.role` n'est jamais écrite directement : seule `rpc("changer_role")` la change, et la base vérifie tout (réservé à `est_admin()`, rôle d'un admin non modifiable, rôle `admin` jamais donné depuis le site). Nommer ou retirer un administrateur reste manuel (SQL Editor).
-- `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle, confirmation avant chaque changement. `RouteAdmin` s'appuie sur `profil.role` (simple confort d'affichage).
+- `profils.role` et `profils.role_code` ne sont jamais écrits directement : seule `rpc("changer_role")` les change, et la base vérifie tout (un trigger refuse toute écriture d'un membre). Admin : tout rôle sauf `admin`. Permission `membres.gerer` : seulement des rôles sans permission, à des membres qui n'en ont pas, jamais à soi-même. Rôle d'un admin non modifiable ; nommer ou retirer un administrateur reste manuel (SQL Editor : `update profils set role = 'admin'`, `role_code` suit).
+- `/admin/users` : liste paginée (25 par page) de `profils`, recherche par pseudo ou nom (caractères spéciaux retirés avant le filtre `or=`), filtre par rôle (système ou personnalisé), confirmation avant chaque changement. Lecture de `role_code` par `avecRoleCode()` (`src/lib/profils.ts`) : sans la migration, relecture sans la colonne, le site garde son comportement d'avant.
 - Clé React Query : `["admin", "membres", …]`.
+
+## Rôles et permissions
+Migration `20261102000016_roles_personnalises.sql`. Code : `src/lib/roles.ts` (testé), `src/hooks/use-roles.ts` (`useRoles`, `usePermissions`), `src/pages/admin/GestionRoles.tsx`.
+
+- Un rôle = une ligne de `roles` : **niveau de base** (`role_base` : `membre`, `contributeur`, `moderateur` ; recopié dans `profils.role`, donc toute la RLS existante — `est_moderateur()`, `est_admin()` — reste valable) + **permissions** en plus. Les 4 rôles système ne se suppriment pas (seuls leur couleur et leurs permissions se modifient) ; `admin` ne se modifie pas.
+- Permissions (même liste dans la contrainte de la base, `src/lib/roles.ts` et `src/lib/permissions.ts` de l'API) : `donnees.gerer` (`/admin/datasets`, routes `/v1/admin` de l'API), `membres.gerer` (`/admin/users`), `synchro.gerer` (`/admin/sync`, `/v1/admin/sync`), `djazai.illimite` (pas de quota DjazAI). Un admin les a toutes. Base : `a_permission(permission)`.
+- `/admin/roles` (admin) : `rpc("enregistrer_role", { p_code, p_nom, p_description, p_role_base, p_permissions, p_couleur })` crée ou modifie, `rpc("supprimer_role", { p_code })` supprime (ses membres reviennent au rôle système de même niveau). Code tiré du nom, figé après création.
+- Affichage : nom traduit `admin.roles.*` pour un rôle système, noms fr / en / ar du rôle sinon (`nomRole()`) ; badge du menu du compte, badge public (`FicheMembre`) pour modérateurs, admins et rôles personnalisés.
+- `RouteAdmin permission="…"` et les menus (`MenuUtilisateur`, `MenuMobile`) suivent `usePermissions()` : simple confort d'affichage. Clé React Query : `["roles"]`.
+- Notification `role_attribue` : à chaque changement de `role_code` (sauf retour à `membre`), avec le nom du rôle lu dans `roles`.
+
+## Synchronisations (OpenStreetMap, GeoAlgeria…)
+Migration `20261102000017_sources_fichiers_synchronisations.sql`. Code : `src/lib/synchros.ts`, `src/pages/admin/GestionSynchros.tsx` ; le robot est dans le dépôt de l'API (`scripts/osm/`, `.github/workflows/osm-sync.yml`, voir son README).
+
+- `synchronisations` : une ligne par source renouvelable. Mode `interne` (OpenStreetMap : GitHub Action quotidienne de l'API qui ne travaille qu'à l'échéance = dernière exécution réussie + `intervalle_jours`, ou si `forcer`) ; mode `externe` (GeoAlgeria : script du partenaire, seulement suivi, avec ses dernières versions). `synchro_executions` : historique (60 dernières), avec le rapport par donnée.
+- `/admin/sync` passe par l'API (`GET` / `PATCH /v1/admin/sync`) : active, intervalle (1 à 365 jours), « Lancer au prochain passage », dernier rapport (ajoutés, mis à jour, absents d'OSM, rapprochés de GeoAlgeria), historique. Clé React Query : `["admin", "synchros"]`.
+- Les données OpenStreetMap **s'ajoutent** aux précédentes : rien n'est supprimé, un objet disparu d'OSM porte `osm_absent_depuis`. Les nouvelles données créées par la synchro (`town-halls`, `police-stations`… : liste dans `scripts/osm/categories.ts` de l'API) ont leur unité dans `UNITES_PAR_SLUG`.
+- **Fonction future, à rappeler à l'utilisateur dès que les synchros OpenStreetMap tournent en production** : un formulaire admin pour ajouter soi-même une « source de données renouvelable » (nom, lien ou endpoint d'API, format — JSON, GeoJSON, CSV, Overpass —, correspondance des champs, donnée cible, intervalle), qui crée une ligne de `synchronisations` (colonne `config` jsonb déjà prévue) et que le robot de l'API sait exécuter sans nouveau code. Google Maps n'y entrera pas tel quel : ses conditions interdisent l'extraction et la redistribution de ses données (Places API : pas de stockage durable, pas de republication) ; pour les données de niche, privilégier OSM, Overture Maps ou des sources officielles, et vérifier la licence avant tout ajout.
+
+## Fichiers par source
+Migration `20261102000017`. Une donnée peut porter des fichiers de plusieurs sources (ex. `sante` : fichier GeoAlgeria principal + `hospitals-osm` d'OpenStreetMap). Chaque `ressource` de l'API porte `source { slug, nom }` et `licence_code`.
+
+- Fiche (`ListeFichiers`, `sourcesDesFichiers()` dans `src/lib/fichiers.ts`) : avec plus d'une source, un sélecteur « Toutes les sources / GeoAlgeria / OpenStreetMap » puis une section par source avec sa mention (`MentionSource` : « © contributeurs OpenStreetMap — ODbL 1.0 » et lien obligatoires). Le dialogue de téléchargement indique la source de chaque fichier.
+- Base : un trigger (`conserver_fichiers_autres_sources`) recopie dans chaque nouvelle version les fichiers des autres sources ; la synchro GeoAlgeria hebdomadaire ne fait donc jamais disparaître les fichiers OpenStreetMap, quel que soit son chemin (API ou base).
 
 ## Gestion des données (admin)
 Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/components/admin/DialogueDonnee.tsx`. Tout passe par l'API (`/v1/admin`, session Supabase jointe) : le site n'écrit jamais dans `datasets` directement.
@@ -167,6 +195,7 @@ Code : `src/lib/admin-donnees.ts`, `src/pages/admin/GestionDonnees.tsx`, `src/co
 - **Migrations** : elles sont appliquées à la main dans le SQL Editor de Supabase. Toute nouvelle migration doit être appliquée en production **avant** de déployer le code qui s'en sert (sinon : erreur 42703 « colonne inconnue », vue côté navigateur comme un 502 de l'API).
 - **Idée à rappeler à chaque nouvelle migration (pas encore faite)** : passer à la CLI Supabase plutôt qu'au SQL Editor. `npx supabase link --project-ref <ref>` une fois, puis `npx supabase db push` applique seulement les migrations pas encore passées. Comme les migrations ont jusqu'ici été appliquées à la main, l'historique de Supabase est vide : avant le premier `db push`, marquer celles déjà en production avec `npx supabase migration repair --status applied <versions…>`, sinon il les rejoue toutes. Étape suivante possible : une GitHub Action qui lance `db push` à chaque push sur `main`, avec jeton et mot de passe de la base dans les secrets GitHub, jamais dans le dépôt. Plus d'oubli de migration, et cela couvre le point 4 de « Tests ». Pas d'ORM (Drizzle, Prisma) : RLS, fonctions `rpc` et triggers restent du SQL.
 - Clés React Query : `["admin", "donnees", …]` ; après une action, invalider aussi `catalogue`, `fiche`, `statistiques`, `moderation`.
+- **Migrations du 2 novembre 2026 à appliquer, dans l'ordre, avant de déployer l'API puis le site** : `20261102000016_roles_personnalises.sql`, puis `20261102000017_sources_fichiers_synchronisations.sql` (testées sur une base simulée, relançables sans erreur).
 
 ## Fiche d'une donnée : fichiers et carte
 - **En-tête** (`EnTeteFiche`, logique dans `src/lib/fiche.ts`, testée) : deux colonnes (une seule sur mobile, illustration en premier), le texte ne passe jamais sur l'illustration. À gauche : badges (catégorie, source vérifiée), titre, résumé (2 phrases, `deuxPhrases()`), « Source : <source> », 3 chiffres clés (nombre + unité, wilayas couvertes si colonne wilaya ou coordonnées : `wilayasCouvertes()`, fraîcheur « il y a X j »), bouton « Télécharger Excel ▾ » (`formatsBouton()` : Excel en un clic, CSV / JSON / GeoJSON d'origine dans le menu, « Les N fichiers… » ouvre `DialogueTelechargement` piloté par `ouvert` / `onOuvertChange`), « Voir la carte » / « Voir le graphique » (ancre `#visuel`), icônes Suivre et Partager (`navigator.share`, sinon copie du lien). À droite : l'illustration posée telle quelle, sans carte, bordure ni ombre (les images ont un fond blanc, souvent en vague) : format d'origine 5/3 sans rognage, `mix-blend-multiply` en clair pour fondre le blanc dans le dégradé, coins arrondis en sombre ; sur téléphone, toute la largeur de l'écran.
