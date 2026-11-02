@@ -35,6 +35,7 @@ import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
+import { telechargementsRessource } from "@/lib/fiche";
 
 const TOUTES_CATEGORIES = "toutes";
 const TOUTES_WILAYAS = "toutes";
@@ -188,10 +189,9 @@ const Catalogue = () => {
   const formatsDisponibles = useMemo(
     () =>
       [...new Set((requeteCatalogue.data ?? []).flatMap((donnee) =>
-        (donnee.ressources ?? []).flatMap((ressource) => [
-          ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
-          ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
-        ])
+        (donnee.ressources ?? []).flatMap((ressource) =>
+          telechargementsRessource(ressource).map((telechargement) => telechargement.format.toLowerCase())
+        )
       ))].sort(),
     [requeteCatalogue.data]
   );
@@ -199,10 +199,9 @@ const Catalogue = () => {
   const listeDonnees = useMemo(() => {
     const filtrees = (requeteCatalogue.data ?? []).filter((donnee) => {
       const wilayas = (donnee.wilayas ?? []).map((code) => String(code).padStart(2, "0"));
-      const formats = (donnee.ressources ?? []).flatMap((ressource) => [
-        ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
-        ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
-      ]);
+      const formats = (donnee.ressources ?? []).flatMap((ressource) =>
+        telechargementsRessource(ressource).map((telechargement) => telechargement.format.toLowerCase())
+      );
       return (!wilaya || wilayas.includes(wilaya)) && (!format || formats.includes(format));
     });
     return recentsEnPremier(trierDonnees(filtrees, tri, langue), seuil);
