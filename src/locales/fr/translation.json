@@ -150,6 +150,16 @@
     "tousFormats": "Tous les formats"
   },
   "fiche": {
+    "sources": {
+      "aide": "Ces données existent chez plusieurs sources : choisis celle à télécharger.",
+      "choisir": "Source des fichiers",
+      "toutes": "Toutes les sources",
+      "titre": "Données {{source}}",
+      "osmAvant": "Données",
+      "osmContributeurs": "contributeurs OpenStreetMap",
+      "osmApres": "Toute réutilisation doit citer OpenStreetMap et partager ses améliorations sous la même licence.",
+      "licence": "Données {{source}} — licence {{licence}}."
+    },
     "sourceNom": "Source : {{nom}}",
     "pageSource": "Page de la source",
     "entete": {
@@ -870,6 +880,122 @@
       "autre": "Nouvelle notification",
       "role_attribue": "Un rôle spécial vous a été attribué : {{role}}."
     }
+  },
+  "roles": {
+    "titre": "Rôles",
+    "sousTitre": "Créer des rôles et choisir leurs droits",
+    "aide": "Un rôle a un niveau de base (membre, contributeur ou modérateur : c'est lui qui donne la modération) et des permissions en plus. Les rôles système ne se suppriment pas ; le rôle administrateur ne se modifie pas.",
+    "gerer": "Gérer les rôles",
+    "reserveAdmin": "Seul un administrateur change ce rôle",
+    "nouveau": "Nouveau rôle",
+    "modifierTitre": "Modifier le rôle",
+    "modifier": "Modifier le rôle {{nom}}",
+    "supprimer": "Supprimer le rôle {{nom}}",
+    "aideDialogue": "Le code sert d'identifiant et ne change plus après la création.",
+    "aideSysteme": "Rôle système : seuls sa couleur et ses permissions se modifient.",
+    "aideCode": "Minuscules, chiffres et tirets (2 à 40 caractères), tiré du nom.",
+    "codePris": "Ce code est déjà pris.",
+    "niveau": "Niveau de base",
+    "champs": {
+      "nom": "Nom",
+      "code": "Code",
+      "description": "Description",
+      "couleur": "Couleur du badge",
+      "permissions": "Permissions en plus"
+    },
+    "couleurs": {
+      "gris": "Gris",
+      "bleu": "Bleu",
+      "vert": "Vert",
+      "ambre": "Ambre",
+      "rouge": "Rouge",
+      "violet": "Violet",
+      "rose": "Rose"
+    },
+    "permissions": {
+      "donnees": {
+        "gerer": {
+          "nom": "Gérer les données",
+          "description": "Créer, modifier, masquer et supprimer des jeux de données, envoyer leurs fichiers, mettre en ligne les propositions."
+        }
+      },
+      "membres": {
+        "gerer": {
+          "nom": "Gérer les membres",
+          "description": "Donner aux membres des rôles sans permission (jamais administrateur, jamais à soi-même)."
+        }
+      },
+      "synchro": {
+        "gerer": {
+          "nom": "Gérer les synchronisations",
+          "description": "Activer, régler et forcer les synchronisations (OpenStreetMap…), lire leurs rapports."
+        }
+      },
+      "djazai": {
+        "illimite": {
+          "nom": "DjazAI sans limite",
+          "description": "Pas de quota quotidien de questions à l'assistant."
+        }
+      }
+    },
+    "enregistrer": "Enregistrer",
+    "enregistre": "Rôle « {{nom}} » enregistré",
+    "supprime": "Rôle supprimé",
+    "erreur": "Le rôle n'a pas pu être enregistré",
+    "confirmerSuppression": "Supprimer le rôle « {{nom}} » ?",
+    "texteSuppression": "Ses membres reviendront au rôle « {{niveau}} ». Cette action est définitive.",
+    "supprimerBouton": "Supprimer"
+  },
+  "synchros": {
+    "titre": "Synchronisations",
+    "sousTitre": "Données renouvelées automatiquement : OpenStreetMap, GeoAlgeria…",
+    "aide": "OpenStreetMap est mis à jour par data-dz à l'intervalle choisi ici : les nouveaux objets s'ajoutent, ceux qui disparaissent restent et sont signalés. GeoAlgeria est synchronisé par son propre script : on en suit les dernières versions.",
+    "jamais": "Jamais lancée",
+    "statuts": {
+      "reussie": "Réussie",
+      "partielle": "Partielle",
+      "echec": "Échec",
+      "essai": "Essai"
+    },
+    "modes": {
+      "interne": "Pilotée par data-dz",
+      "externe": "Script externe"
+    },
+    "active": "Active",
+    "inactive": "Désactivée",
+    "intervalle": "Tous les (jours)",
+    "enregistrer": "Enregistrer",
+    "enregistre": "Réglage enregistré",
+    "erreur": "Le réglage n'a pas pu être enregistré",
+    "forcer": "Lancer au prochain passage",
+    "annulerForcer": "Ne plus forcer",
+    "forceeAide": "La synchronisation partira au prochain passage quotidien (vers 6 h, heure d'Alger), sans attendre l'échéance.",
+    "aideReglages": "Le robot passe chaque jour et ne travaille qu'à l'échéance (dernière synchronisation réussie + intervalle).",
+    "derniere": "Dernière synchronisation",
+    "prochaine": "Prochaine",
+    "prochainPassage": "Au prochain passage",
+    "extraitDu": "Données OpenStreetMap du",
+    "dernierRapport": "Dernier rapport : {{donnees}} données, {{publiees}} publiées, {{objets}} objets (+{{ajoutes}} nouveaux, {{absents}} absents d'OSM)",
+    "problemes": "{{count}} à vérifier",
+    "colonnes": {
+      "donnee": "Donnée",
+      "fichiers": "Fichiers",
+      "resultat": "Résultat"
+    },
+    "nouvelleDonnee": "Nouvelle donnée",
+    "complement": "Complément OpenStreetMap",
+    "donneeSource": "Donnée OpenStreetMap",
+    "publiee": "Publiée (version {{version}})",
+    "inchangee": "Inchangée",
+    "legende": "Total (+ ajoutés, ~ mis à jour, − absents d'OpenStreetMap mais gardés). « GeoAlgeria » : objets rapprochés d'un objet GeoAlgeria.",
+    "historique": "Dernières exécutions",
+    "declencheurs": {
+      "planifie": "planifiée",
+      "manuel": "lancée à la main",
+      "forcer": "forcée"
+    },
+    "dernieresVersions": "Dernières versions publiées",
+    "aucuneVersion": "Aucune version pour l'instant."
   },
   "admin": {
     "titre": "Gestion des membres",
