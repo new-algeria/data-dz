@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarDays, Check, ChartLine, Download, Map as IconeCarte, MapPin, Package, Sparkles } from "lucide-react";
+import { CalendarDays, Check, ChartLine, Download, Eye, Map as IconeCarte, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,9 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { DialogueTelechargement } from "@/components/fiche/DialogueTelechargement";
 import { chargerLicencesApi } from "@/lib/admin-donnees";
-import { chargerWilayas } from "@/lib/referentiels";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
+import { telechargementsRessource } from "@/lib/fiche";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
@@ -36,21 +36,14 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const titre = texteTraduit(donnee.titre, langue);
   const description = texteTraduit(donnee.description, langue);
   const { data: licences = [] } = useQuery({ queryKey: ["licences-api"], queryFn: chargerLicencesApi, staleTime: 60 * 60 * 1000 });
-  const { data: wilayasCatalogue = [] } = useQuery({ queryKey: ["wilayas"], queryFn: chargerWilayas, staleTime: 24 * 60 * 60 * 1000 });
   const libre = estLibre(licences.find((licence) => licence.code === donnee.licence_code));
   const chiffre = chiffreCarte(donnee, titre, langue === "ar" || langue === "en" ? langue : "fr");
   const action = actionVisuelle(donnee);
   const ressources = donnee.ressources ?? [];
   const principal = (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom;
-  const formats = [...new Set(ressources.flatMap((ressource) => [
-    ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
-    ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
-  ]))].sort();
-  const codesWilayas = donnee.wilayas ?? [];
-  const nomsWilayas = codesWilayas.map((code) => {
-    const wilaya = wilayasCatalogue.find((item) => item.code === String(code).padStart(2, "0"));
-    return (wilaya ? texteTraduit(wilaya.nom, langue) : "") || String(code);
-  });
+  const formats = [...new Set(ressources.flatMap((ressource) =>
+    telechargementsRessource(ressource).map((telechargement) => telechargement.format.toLowerCase())
+  ))].sort();
   const infos = donnee.infos_source ?? {};
   const periodeBrute = typeof infos.periode === "string" ? infos.periode.trim() : "";
   const anneeDebut = infos.premiere_annee_observee;
@@ -135,19 +128,18 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             </p>
           )}
 
-          {/* 4. Couverture, formats, licence, source et fraîcheur */}
-          {/* Couverture géographique et formats du fichier, visibles sans ouvrir la fiche. */}
-          <div className="space-y-1.5 text-xs text-muted-foreground">
-            <p className="flex items-start gap-1.5">
-              <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
-              <span className="line-clamp-1">
-                {codesWilayas.length === 0
-                  ? t("catalogue.carte.couvertureNonPrecisee")
-                  : codesWilayas.length >= 69
-                    ? t("catalogue.carte.touteAlgerie")
-                    : t("catalogue.carte.wilayas", { liste: nomsWilayas.slice(0, 2).join(", ") + (codesWilayas.length > 2 ? ` +${codesWilayas.length - 2}` : "") })}
+          {/* 4. Compteurs, période et formats disponibles */}
+          <div className="space-y-2 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <span className="inline-flex items-center gap-1.5 tabular-nums">
+                <Eye className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                {formaterNombre(donnee.nb_vues ?? 0, langue)} {t("catalogue.carte.vues", { count: donnee.nb_vues ?? 0 })}
               </span>
-            </p>
+              <span className="inline-flex items-center gap-1.5 tabular-nums">
+                <Download className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                {formaterNombre(donnee.nb_telechargements ?? 0, langue)} {t("catalogue.carte.telechargements", { count: donnee.nb_telechargements ?? 0 })}
+              </span>
+            </div>
             {periode && (!chiffre || chiffre.genre !== "serie" || chiffre.debut === null || chiffre.fin === null) && (
               <p className="flex items-start gap-1.5">
                 <CalendarDays className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />

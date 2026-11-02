@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useState, type ReactNode } from "react";
+import { Suspense, useCallback, useEffect, useState, type ReactNode } from "react";
 import { lazyAvecRechargement } from "@/lib/rechargement";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ import { DonneesUtiles } from "@/components/fiche/DonneesUtiles";
 import { SectionCommentaires } from "@/components/communaute/SectionCommentaires";
 import { VisuelDonnee } from "@/components/fiche/visuel/VisuelDonnee";
 import { choisirFichierCarte } from "@/lib/detecterVisuel";
-import { chargerFicheDonnee } from "@/lib/catalogue";
+import { chargerFicheDonnee, enregistrerVueDonnee } from "@/lib/catalogue";
 import { texteTraduit } from "@/lib/traduction";
 import { localeNombres, trierFichiers } from "@/lib/fichiers";
 import { useLangue } from "@/hooks/use-langue";
@@ -92,6 +92,26 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const [nombreEvenementsCalendrier, setNombreEvenementsCalendrier] = useState<number | null>(null);
   const publierNombreEvenements = useCallback((nombre: number | null) => setNombreEvenementsCalendrier(nombre), []);
 
+  const [vuesEnregistrees, setVuesEnregistrees] = useState<{ slug: string; nombre: number } | null>(null);
+  useEffect(() => {
+    const slug = donnee.slug;
+    const cle = `data-dz-vue:${slug}`;
+    try {
+      if (window.sessionStorage.getItem(cle)) return;
+      window.sessionStorage.setItem(cle, "1");
+    } catch {
+      // Le suivi est facultatif si le navigateur bloque le stockage de session.
+    }
+    void enregistrerVueDonnee(slug)
+      .then(({ nb_vues }) => setVuesEnregistrees({ slug, nombre: nb_vues }))
+      .catch(() => {
+        try { window.sessionStorage.removeItem(cle); } catch { /* stockage indisponible */ }
+      });
+  }, [donnee.slug]);
+  const nombreVues = vuesEnregistrees?.slug === donnee.slug
+    ? Math.max(vuesEnregistrees.nombre, donnee.nb_vues ?? 0)
+    : donnee.nb_vues ?? 0;
+
   const titre = texteTraduit(donnee.titre, langue);
   const description = texteTraduit(donnee.description, langue);
   const version = donnee.versions;
@@ -122,7 +142,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
         image={urlApercu(donnee.slug, langue, donnee.mis_a_jour_le)}
       />
 
-      <EnTeteFiche donnee={donnee} nombreEvenementsCalendrier={nombreEvenementsCalendrier} />
+      <EnTeteFiche donnee={donnee} nombreEvenementsCalendrier={nombreEvenementsCalendrier} nombreVues={nombreVues} />
 
       <div className="container mx-auto px-4 pb-12">
         {/* Ancre des boutons « Voir la carte » / « Voir le graphique » de l'en-tête */}

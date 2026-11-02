@@ -227,7 +227,7 @@ Une erreur dans une donnée GeoAlgeria (adresse, coordonnées…) se signale à 
 - [ ] **Versionner le schéma** de la base dans `supabase/migrations/`. Les migrations ont été appliquées à la main dans le SQL Editor et ne sont pas dans ce dépôt.
 - [ ] **Pagination côté serveur** (`.range()`) quand le catalogue dépassera quelques centaines de données. Aujourd'hui tout est chargé en une fois.
 - [ ] **Aperçus de partage par fiche** : les balises `<meta>` d'une fiche sont posées par JavaScript, donc les robots de partage voient seulement celles de l'accueil. Il faudrait un pré-rendu, ou une fonction Vercel qui sert les bonnes balises.
-- [ ] Filtre par **wilaya** (la colonne `datasets.wilayas` existe déjà) et compteurs de vues et de téléchargements (`nb_vues`, `nb_telechargements`).
+- [ ] Filtre par **wilaya** (la colonne `datasets.wilayas` existe déjà).
 
 ## Crédits et licences des données
 

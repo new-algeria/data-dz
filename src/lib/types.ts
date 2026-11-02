@@ -74,6 +74,8 @@ export interface CompteursDonnee {
   nb_votes_contre: number;
   nb_favoris: number;
   nb_commentaires: number;
+  nb_vues?: number;
+  nb_telechargements?: number;
 }
 
 /** Ligne du catalogue (page d'accueil). */
