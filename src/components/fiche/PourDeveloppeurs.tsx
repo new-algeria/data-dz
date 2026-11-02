@@ -2,6 +2,7 @@ import { ChevronDown, Code2, ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { URL_API } from "@/lib/api";
 import { localeNombres } from "@/lib/fichiers";
+import { telechargementsRessource } from "@/lib/fiche";
 import { useLangue } from "@/hooks/use-langue";
 import type { Donnee } from "@/lib/types";
 import { BoutonApi } from "./BoutonApi";
@@ -19,7 +20,7 @@ export const PourDeveloppeurs = ({ donnee }: { donnee: Donnee }) => {
   const langue = useLangue();
   const version = donnee.versions;
   const colonnes = Array.isArray(version?.colonnes) ? version.colonnes : [];
-  const formats = [...new Set(donnee.ressources.flatMap((ressource) => ressource.telechargements.map((element) => element.format)))];
+  const formats = [...new Set(donnee.ressources.flatMap((ressource) => telechargementsRessource(ressource).map((element) => element.format)))];
   const datePublication = version?.publie_le
     ? new Intl.DateTimeFormat(localeNombres(langue), { dateStyle: "long" }).format(new Date(version.publie_le))
     : null;
