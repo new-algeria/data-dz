@@ -110,8 +110,10 @@
       "wilayas": "Wilayas : {{liste}}",
       "formats": "Formats",
       "periode": "Période : {{periode}}",
-      "vues": "vues",
-      "telechargements": "téléchargements"
+      "vues_one": "vue",
+      "vues_other": "vues",
+      "telechargements_one": "téléchargement",
+      "telechargements_other": "téléchargements"
     },
     "titre": "Catalogue des données",
     "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
@@ -163,8 +165,10 @@
       "partager": "Partager",
       "lienCopie": "Lien copié",
       "evenements": "événements",
-      "vues": "vues",
-      "telechargements": "téléchargements"
+      "vues_one": "vue",
+      "vues_other": "vues",
+      "telechargements_one": "téléchargement",
+      "telechargements_other": "téléchargements"
     },
     "developpeurs": {
       "titre": "Pour les développeurs",
