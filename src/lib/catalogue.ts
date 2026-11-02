@@ -92,6 +92,11 @@ export async function chargerStatistiques(): Promise<StatistiquesCatalogue> {
   };
 }
 
+/** Enregistre une vue de fiche; l'API applique la limite de débit et renvoie le total à jour. */
+export async function enregistrerVueDonnee(slug: string): Promise<{ nb_vues: number }> {
+  return appelerApi<{ nb_vues: number }>(`/v1/datasets/${encodeURIComponent(slug)}/view`, { method: "POST" });
+}
+
 /** Fiche complète d'une donnée publiée, ou `null` si elle n'existe pas (ou n'est pas visible). */
 export async function chargerFicheDonnee(slug: string): Promise<Donnee | null> {
   try {
