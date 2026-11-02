@@ -12,6 +12,7 @@ import { chargerLicencesApi } from "@/lib/admin-donnees";
 import { chargerWilayas } from "@/lib/referentiels";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
+import { telechargementsRessource } from "@/lib/fiche";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { formaterNombre } from "@/lib/fichiers";
@@ -42,10 +43,9 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const action = actionVisuelle(donnee);
   const ressources = donnee.ressources ?? [];
   const principal = (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom;
-  const formats = [...new Set(ressources.flatMap((ressource) => [
-    ...ressource.fichiers.map((fichier) => fichier.format.toLowerCase()),
-    ...ressource.telechargements.map((telechargement) => telechargement.format.toLowerCase()),
-  ]))].sort();
+  const formats = [...new Set(ressources.flatMap((ressource) =>
+    telechargementsRessource(ressource).map((telechargement) => telechargement.format.toLowerCase())
+  ))].sort();
   const codesWilayas = donnee.wilayas ?? [];
   const nomsWilayas = codesWilayas.map((code) => {
     const wilaya = wilayasCatalogue.find((item) => item.code === String(code).padStart(2, "0"));
