@@ -109,7 +109,9 @@
       "touteAlgerie": "Toute l’Algérie",
       "wilayas": "Wilayas : {{liste}}",
       "formats": "Formats",
-      "periode": "Période : {{periode}}"
+      "periode": "Période : {{periode}}",
+      "vues": "vues",
+      "telechargements": "téléchargements"
     },
     "titre": "Catalogue des données",
     "recherche": "Rechercher (ex. pharmacies, wilayas, écoles…)",
@@ -160,7 +162,9 @@
       "voirCalendrier": "Voir le calendrier",
       "partager": "Partager",
       "lienCopie": "Lien copié",
-      "evenements": "événements"
+      "evenements": "événements",
+      "vues": "vues",
+      "telechargements": "téléchargements"
     },
     "developpeurs": {
       "titre": "Pour les développeurs",
