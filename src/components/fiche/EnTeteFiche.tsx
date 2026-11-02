@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Map as IconeCarte, Share2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Eye, Map as IconeCarte, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -110,7 +110,7 @@ const BoutonPartager = ({ titre }: { titre: string }) => {
  * résumé, source, trois chiffres clés et actions ; à droite l'illustration, posée sans carte ni bordure.
  * Le texte ne passe jamais sur l'illustration.
  */
-export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null }: { donnee: Donnee; nombreEvenementsCalendrier?: number | null }) => {
+export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null, nombreVues }: { donnee: Donnee; nombreEvenementsCalendrier?: number | null; nombreVues?: number }) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const titre = texteTraduit(donnee.titre, langue);
@@ -205,6 +205,27 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null }: { don
               )}
               {wilayas !== null && <ChiffreCle valeur={formaterNombre(wilayas, langue)} libelle={t("fiche.entete.wilayas", { count: wilayas })} />}
               {fraicheur && <ChiffreCle valeur={fraicheur} libelle={t("fiche.entete.miseAJour")} />}
+            </div>
+
+            <div className="mt-4 grid max-w-xl grid-cols-2 gap-3">
+              <div className="flex min-w-0 items-center gap-3 rounded-xl border border-emerald-900/10 bg-white/70 px-3.5 py-3 shadow-sm dark:border-white/10 dark:bg-white/5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                  <Eye className="h-4 w-4" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-base font-bold tabular-nums text-gray-900 dark:text-white">{formaterNombre(nombreVues ?? donnee.nb_vues ?? 0, langue)}</span>
+                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.vues")}</span>
+                </span>
+              </div>
+              <div className="flex min-w-0 items-center gap-3 rounded-xl border border-emerald-900/10 bg-white/70 px-3.5 py-3 shadow-sm dark:border-white/10 dark:bg-white/5">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                  <Download className="h-4 w-4" aria-hidden />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-base font-bold tabular-nums text-gray-900 dark:text-white">{formaterNombre(donnee.nb_telechargements ?? 0, langue)}</span>
+                  <span className="block text-xs text-muted-foreground">{t("fiche.entete.telechargements")}</span>
+                </span>
+              </div>
             </div>
 
             {/* Actions */}
