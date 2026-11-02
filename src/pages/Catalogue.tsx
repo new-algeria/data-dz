@@ -243,11 +243,17 @@ const Catalogue = () => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 text-4xl md:text-5xl xl:text-[3.5rem] font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.1] [@media(min-width:768px)_and_(max-height:820px)]:text-[2.6rem]"
             >
+              {/* « Toute l'Algérie 🇩🇿 en chiffres et en cartes » : drapeau en SVG (l'émoji s'affiche « DZ » sous Windows). */}
               {t("accueil.titre")}{" "}
+              <DrapeauAlgerie
+                className="inline-block h-[0.62em] w-[0.93em] -translate-y-[0.06em] rounded-[0.08em] align-middle shadow-sm"
+                titre={t("drapeau")}
+              />{" "}
+              {t("accueil.titreLiaison") && <>{t("accueil.titreLiaison")} </>}
               <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-300 dark:to-teal-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] [--bg-size:200%] underline decoration-wavy decoration-emerald-400/60 decoration-2 underline-offset-[0.2em] [text-decoration-skip-ink:none]">
                 {t("accueil.titreSurligne")}
-              </span>{" "}
-              {t("accueil.titreFin")}
+              </span>
+              {t("accueil.titreFin") && <> {t("accueil.titreFin")}</>}
             </motion.h1>
 
             <motion.p
@@ -274,7 +280,7 @@ const Catalogue = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <Button type="button" size="lg" onClick={defilerAuCatalogue} className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group">
+              <Button type="button" size="lg" onClick={defilerAuCatalogue} className="bg-emerald-700 hover:bg-emerald-800 text-white shadow-lg shadow-emerald-700/25 group h-auto min-h-11 max-w-full whitespace-normal py-2.5 max-sm:px-4">
                 <Compass />
                 {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
                 <ArrowDown className="transition-transform group-hover:translate-y-0.5" />

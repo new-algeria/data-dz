@@ -44,19 +44,19 @@
     "corps": "Hello,\n\n"
   },
   "accueil": {
-    "titre": "Algeria's public data,",
-    "titreSurligne": "finally simple",
-    "sousTitre": "Pharmacies, schools, stations, wilayas… Find a dataset, see it on a map and download it in one click, with its source and licence.",
+    "titre": "All of Algeria",
+    "titreSurligne": "numbers and maps",
+    "sousTitre": "Pharmacies, schools, beaches, climate… find info about your wilaya in one click, for free ❤️.",
     "metaTitre": "data-dz - Open data about Algeria",
     "metaDescription": "Open source data portal about Algeria: catalogue, previews, maps and downloads, with source and licence.",
-    "badge": "Open data · Algeria",
+    "badge": "Free · DZ · Verified",
     "explorer": "Explore the catalogue",
     "globe": "Globe centred on Algeria",
-    "titreFin": "to explore.",
+    "titreFin": "",
     "explorerNombre_one": "Explore the dataset",
     "explorerNombre_other": "Explore the {{count}} datasets",
     "recherche": {
-      "placeholder": "Search datasets…",
+      "placeholder": "What are you looking for?",
       "bouton": "Search",
       "exemples": "Examples:",
       "exemple": {
@@ -65,9 +65,9 @@
         "ecoles": "Schools",
         "emploi": "Employment"
       },
-      "placeholderLong": "Search for a pharmacy, a school, a station…",
+      "placeholderLong": "What are you looking for?",
       "autresExemples": "More examples",
-      "placeholderCourt": "Search…"
+      "placeholderCourt": "Looking for…?"
     },
     "sources": {
       "titre": "Data sourced from",
@@ -81,7 +81,8 @@
         "journalOfficiel": "Official Journal",
         "geoalgeria": "GeoAlgeria"
       }
-    }
+    },
+    "titreLiaison": "in"
   },
   "statistiques": {
     "donnees": "Datasets",

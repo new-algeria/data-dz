@@ -75,7 +75,8 @@ describe("cartes du catalogue", () => {
   it("dit depuis quand la donnée a été mise à jour", () => {
     expect(ilYA(ilYaJours(2), "fr", maintenant)).toBe("avant-hier");
     expect(ilYA(ilYaJours(5), "fr", maintenant)).toBe("il y a 5 jours");
-    expect(ilYA(ilYaJours(0.2), "en", maintenant)).toBe("today");
+    // Moins d'un jour : en heures (depuis 959b9f9).
+    expect(ilYA(ilYaJours(0.2), "en", maintenant)).toBe("4 hours ago");
     expect(ilYA(ilYaJours(70), "en", maintenant)).toBe("2 months ago");
     expect(ilYA("pas une date", "fr", maintenant)).toBeNull();
   });

@@ -48,15 +48,15 @@
     "corps": "مرحبا،\n\n"
   },
   "accueil": {
-    "titre": "البيانات العامة للجزائر،",
-    "titreSurligne": "أخيرًا سهلة",
-    "sousTitre": "صيدليات، مدارس، محطات، ولايات… ابحث عن البيانات، شاهدها على الخريطة وحمّلها بنقرة واحدة، مع مصدرها ورخصتها.",
+    "titre": "الجزائر كلها",
+    "titreSurligne": "بالأرقام والخرائط",
+    "sousTitre": "صيدليات، مدارس، شواطئ، مناخ… اعثر على معلومات ولايتك بنقرة واحدة ومجانًا ❤️.",
     "metaTitre": "data-dz - البيانات المفتوحة حول الجزائر",
     "metaDescription": "بوابة مفتوحة المصدر للبيانات حول الجزائر: فهرس، معاينة، خرائط وتحميلات، مع المصدر والرخصة.",
-    "badge": "بيانات مفتوحة · الجزائر",
+    "badge": "مجاني · DZ · موثّق",
     "explorer": "استكشف الفهرس",
     "globe": "كرة أرضية متمركزة على الجزائر",
-    "titreFin": "الاستكشاف.",
+    "titreFin": "",
     "explorerNombre_zero": "استكشف الفهرس",
     "explorerNombre_one": "استكشف مجموعة البيانات",
     "explorerNombre_two": "استكشف مجموعتي البيانات",
@@ -64,7 +64,7 @@
     "explorerNombre_many": "استكشف {{count}} مجموعة بيانات",
     "explorerNombre_other": "استكشف {{count}} مجموعة بيانات",
     "recherche": {
-      "placeholder": "ابحث عن بيانات…",
+      "placeholder": "عمّ تبحث؟",
       "bouton": "بحث",
       "exemples": "أمثلة:",
       "exemple": {
@@ -73,9 +73,9 @@
         "ecoles": "مدارس",
         "emploi": "التشغيل"
       },
-      "placeholderLong": "ابحث عن صيدلية، مدرسة، محطة…",
+      "placeholderLong": "عمّ تبحث؟",
       "autresExemples": "أمثلة أخرى",
-      "placeholderCourt": "بحث…"
+      "placeholderCourt": "عمّ تبحث؟"
     },
     "sources": {
       "titre": "البيانات مصدرها",
@@ -89,7 +89,8 @@
         "journalOfficiel": "الجريدة الرسمية",
         "geoalgeria": "GeoAlgeria"
       }
-    }
+    },
+    "titreLiaison": ""
   },
   "statistiques": {
     "donnees": "مجموعات البيانات",
