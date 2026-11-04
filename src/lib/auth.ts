@@ -70,9 +70,14 @@ export async function envoyerLienMagique(email: string, suite: string) {
   if (error) throw error;
 }
 
-export async function connecterAvecGoogle(suite: string) {
+/** Fournisseurs de connexion proposés, dans l'ordre d'affichage (les plus utilisés en Algérie d'abord). */
+export const FOURNISSEURS_SOCIAUX = ["google", "facebook", "github"] as const;
+export type FournisseurSocial = (typeof FOURNISSEURS_SOCIAUX)[number];
+
+/** Connexion (ou création de compte) par Google, Facebook ou GitHub : même retour que les liens email. */
+export async function connecterAvecFournisseur(fournisseur: FournisseurSocial, suite: string) {
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
+    provider: fournisseur,
     options: { redirectTo: urlRetour(suite) },
   });
   if (error) throw error;

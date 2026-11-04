@@ -354,8 +354,6 @@
     "motDePasseOublieLien": "نسيت كلمة المرور؟",
     "recevoirLien": "أرسل لي رابط تسجيل الدخول بالبريد",
     "lienEnvoye": "أُرسل الرابط إلى {{email}}. افتحه في هذا المتصفح لتسجيل الدخول.",
-    "continuerGoogle": "المتابعة باستخدام Google",
-    "googleBientot": "سيتوفر تسجيل الدخول عبر Google قريبا.",
     "ou": "أو",
     "pasDeCompte": "ليس لديك حساب؟",
     "creerCompte": "إنشاء حسابي",
@@ -382,7 +380,12 @@
     "redemanderLien": "طلب رابط جديد",
     "retourTitre": "جارٍ تسجيل الدخول",
     "retourEnCours": "جارٍ إتمام تسجيل الدخول…",
-    "retourEchecTitre": "تعذّر تسجيل الدخول"
+    "retourEchecTitre": "تعذّر تسجيل الدخول",
+    "continuerAvec": {
+      "google": "المتابعة باستخدام Google",
+      "facebook": "المتابعة باستخدام Facebook",
+      "github": "المتابعة باستخدام GitHub"
+    }
   },
   "profil": {
     "titre": "ملفي الشخصي",

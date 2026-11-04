@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { CadreAuth } from "@/components/auth/CadreAuth";
 import { ChampMotDePasse } from "@/components/auth/ChampMotDePasse";
 import { MessageAuth } from "@/components/auth/MessageAuth";
-import { BoutonGoogle } from "@/components/auth/BoutonGoogle";
+import { BoutonsConnexionSociale } from "@/components/auth/BoutonsConnexionSociale";
 import { AccordConditions } from "@/components/legal/AccordConditions";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useSuite } from "@/hooks/use-suite";
@@ -122,13 +122,7 @@ const Inscription = () => {
           </MessageAuth>
         )}
 
-        <BoutonGoogle suite={suite} surErreur={setErreur} />
-
-        <div className="flex items-center gap-3 text-xs uppercase text-muted-foreground">
-          <span className="h-px flex-1 bg-border" />
-          {t("auth.ou")}
-          <span className="h-px flex-1 bg-border" />
-        </div>
+        <BoutonsConnexionSociale suite={suite} surErreur={setErreur} />
 
         <form onSubmit={valider} className="space-y-4" noValidate>
           <div className="space-y-1.5">
