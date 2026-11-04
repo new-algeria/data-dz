@@ -91,7 +91,7 @@ Les liens des emails et de Google reviennent avec un `?code=` que supabase-js é
 
 | Route | Rôle |
 |---|---|
-| `/login` | Email + mot de passe, lien magique (`signInWithOtp`, sans création de compte), « Continuer avec Google » (désactivé tant que Google n'est pas activé dans Supabase, lu via `/auth/v1/settings`) |
+| `/login` | Email + mot de passe, lien magique (`signInWithOtp`, sans création de compte), « Continuer avec Google / Facebook / GitHub », dans cet ordre (`BoutonsConnexionSociale`, `FOURNISSEURS_SOCIAUX` et `connecterAvecFournisseur()` dans `src/lib/auth.ts`, aussi sur `/signup`) : seuls les fournisseurs activés dans Supabase (Authentication → Providers, lus via `/auth/v1/settings`) sont affichés, en activer un suffit |
 | `/signup` | Email + mot de passe (8 caractères minimum, confirmation), puis « vérifiez votre boîte mail » |
 | `/forgot-password` | Envoie le lien de réinitialisation (`resetPasswordForEmail`) |
 | `/reset-password` | Arrivée du lien : événement `PASSWORD_RECOVERY`, puis `updateUser({ password })` ; accessible aussi à un membre connecté |
