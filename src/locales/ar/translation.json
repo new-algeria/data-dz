@@ -25,7 +25,8 @@
     "rechercheDescription": "اكتب كلمة: تظهر البيانات المطابقة في الأسفل.",
     "rechercheChargement": "جارٍ تحميل البيانات…",
     "aucunResultat": "لا توجد بيانات مطابقة.",
-    "voirTousResultats": "عرض كل النتائج لـ «{{terme}}»"
+    "voirTousResultats": "عرض كل النتائج لـ «{{terme}}»",
+    "avantagesCompte": "أنشئ حسابك المجاني لمتابعة البيانات والتعليق واقتراح بياناتك وطرح أسئلتك على DjazAI."
   },
   "langue": {
     "choisir": "اختر اللغة"

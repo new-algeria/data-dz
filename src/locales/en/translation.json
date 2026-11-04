@@ -21,7 +21,8 @@
     "rechercheDescription": "Type a word: matching datasets appear below.",
     "rechercheChargement": "Loading datasets…",
     "aucunResultat": "No dataset matches.",
-    "voirTousResultats": "See all results for “{{terme}}”"
+    "voirTousResultats": "See all results for “{{terme}}”",
+    "avantagesCompte": "Create your free account to follow datasets, comment, submit data and ask DjazAI your questions."
   },
   "langue": {
     "choisir": "Choose language"
