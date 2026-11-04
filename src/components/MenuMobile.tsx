@@ -140,15 +140,30 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
             </Link>
           ) : (
             !session && (
-              <Button asChild variant="outline" className="mt-4 h-11 w-full gap-2 text-base">
-                <Link to={avecSuite(routes.connexion, suite)}>
-                  <LogIn className="h-4 w-4" />
-                  {t("auth.seConnecter")}
-                </Link>
-              </Button>
+              // Visiteur : « Se connecter » est l'action principale du menu (bouton vert), avec ce qu'un compte apporte.
+              <div className="mt-4 rounded-2xl border border-emerald-600/25 bg-emerald-50/80 p-4 dark:border-emerald-400/20 dark:bg-emerald-500/10">
+                <p className="text-sm leading-snug text-emerald-950 dark:text-emerald-100">{t("navbar.avantagesCompte")}</p>
+                <Button asChild className="mt-3 h-12 w-full gap-2 bg-emerald-700 text-base font-semibold text-white shadow-md shadow-emerald-700/20 hover:bg-emerald-800">
+                  <Link to={avecSuite(routes.connexion, suite)}>
+                    <LogIn className="h-5 w-5 rtl:-scale-x-100" />
+                    {t("auth.seConnecter")}
+                  </Link>
+                </Button>
+                <p className="mt-2.5 text-center text-sm text-muted-foreground">
+                  {t("auth.pasDeCompte")}{" "}
+                  <Link to={avecSuite(routes.inscription, suite)} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">
+                    {t("auth.creerCompte")}
+                  </Link>
+                </p>
+              </div>
             )
           )}
-          <Button asChild className="mt-3 h-11 w-full gap-2 bg-emerald-700 text-base text-white hover:bg-emerald-800">
+          {/* Membre : « Proposer » reste l'action principale ; visiteur : bouton secondaire, sous la connexion. */}
+          <Button
+            asChild
+            variant={session ? "default" : "outline"}
+            className={session ? "mt-3 h-11 w-full gap-2 bg-emerald-700 text-base text-white hover:bg-emerald-800" : "mt-3 h-11 w-full gap-2 text-base dark:bg-transparent"}
+          >
             <Link to={routes.proposer}>
               <FilePlus2 className="h-4 w-4" />
               {t("navbar.proposer")}

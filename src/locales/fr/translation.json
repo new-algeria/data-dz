@@ -21,7 +21,8 @@
     "rechercheDescription": "Tapez un mot : les données correspondantes s'affichent en dessous.",
     "rechercheChargement": "Chargement des données…",
     "aucunResultat": "Aucune donnée ne correspond.",
-    "voirTousResultats": "Voir tous les résultats pour « {{terme}} »"
+    "voirTousResultats": "Voir tous les résultats pour « {{terme}} »",
+    "avantagesCompte": "Crée ton compte gratuit pour suivre des données, commenter, proposer tes données et poser tes questions à DjazAI."
   },
   "langue": {
     "choisir": "Choisir la langue"

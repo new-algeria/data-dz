@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Moon, Search, Sun } from "lucide-react";
+import { LogIn, Moon, Search, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexte/ContexteAuth";
-import { routes } from "@/lib/routes";
+import { avecSuite, routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { LanguageSelector } from "./LanguageSelector";
 import { MenuUtilisateur } from "./auth/MenuUtilisateur";
@@ -18,8 +18,9 @@ import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
-  const { session } = useAuth();
-  const { pathname } = useLocation();
+  const { session, chargement } = useAuth();
+  const visiteur = !session && !chargement;
+  const { pathname, search } = useLocation();
   const surPageApi = pathname === routes.api;
   const [defile, setDefile] = useState(false);
   const [rechercheOuverte, setRechercheOuverte] = useState(false);
@@ -75,13 +76,22 @@ export const Navbar = () => {
           <div className="hidden md:block">
             <LanguageSelector />
           </div>
-          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")}>
+          {/* Visiteur sur téléphone : le thème passe dans le menu pour laisser la place à « Se connecter ». */}
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={t("theme.basculer")} className={visiteur ? "max-md:hidden" : undefined}>
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           {session && <ClocheNotifications />}
           <div className="ms-1 hidden md:block">
             <MenuUtilisateur />
           </div>
+          {visiteur && (
+            <Button asChild size="sm" className="h-9 gap-1.5 rounded-full bg-emerald-700 px-3.5 font-semibold text-white shadow-sm hover:bg-emerald-800 md:hidden max-[359px]:w-9 max-[359px]:px-0">
+              <Link to={avecSuite(routes.connexion, `${pathname}${search}`)} aria-label={t("auth.seConnecter")}>
+                <LogIn className="h-4 w-4 rtl:-scale-x-100" aria-hidden />
+                <span className="max-[359px]:sr-only">{t("auth.seConnecter")}</span>
+              </Link>
+            </Button>
+          )}
           <MenuMobile theme={theme} basculerTheme={toggleTheme} />
         </div>
       </nav>
