@@ -303,8 +303,6 @@
     "motDePasseOublieLien": "Mot de passe oublié ?",
     "recevoirLien": "Recevoir un lien de connexion par email",
     "lienEnvoye": "Lien envoyé à {{email}}. Ouvrez-le dans ce navigateur pour vous connecter.",
-    "continuerGoogle": "Continuer avec Google",
-    "googleBientot": "La connexion avec Google sera bientôt disponible.",
     "ou": "ou",
     "pasDeCompte": "Pas encore de compte ?",
     "creerCompte": "Créer mon compte",
@@ -331,7 +329,12 @@
     "redemanderLien": "Demander un nouveau lien",
     "retourTitre": "Connexion en cours",
     "retourEnCours": "Finalisation de la connexion…",
-    "retourEchecTitre": "Connexion impossible"
+    "retourEchecTitre": "Connexion impossible",
+    "continuerAvec": {
+      "google": "Continuer avec Google",
+      "facebook": "Continuer avec Facebook",
+      "github": "Continuer avec GitHub"
+    }
   },
   "profil": {
     "titre": "Mon profil",

@@ -303,8 +303,6 @@
     "motDePasseOublieLien": "Forgot your password?",
     "recevoirLien": "Email me a sign-in link",
     "lienEnvoye": "Link sent to {{email}}. Open it in this browser to sign in.",
-    "continuerGoogle": "Continue with Google",
-    "googleBientot": "Google sign-in will be available soon.",
     "ou": "or",
     "pasDeCompte": "No account yet?",
     "creerCompte": "Create my account",
@@ -331,7 +329,12 @@
     "redemanderLien": "Request a new link",
     "retourTitre": "Signing you in",
     "retourEnCours": "Finishing sign-in…",
-    "retourEchecTitre": "Unable to sign in"
+    "retourEchecTitre": "Unable to sign in",
+    "continuerAvec": {
+      "google": "Continue with Google",
+      "facebook": "Continue with Facebook",
+      "github": "Continue with GitHub"
+    }
   },
   "profil": {
     "titre": "My profile",
