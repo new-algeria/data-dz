@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ExternalLink, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, Sparkles, UserPlus } from "lucide-react";
+import { ExternalLink, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, Sparkles, UserPlus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -51,6 +52,7 @@ export const BulleIA = () => {
   const [quotaEnCours, setQuotaEnCours] = useState(false);
   const [erreurQuota, setErreurQuota] = useState(false);
   const finMessagesRef = useRef<HTMLDivElement>(null);
+  const champRef = useRef<HTMLTextAreaElement>(null);
   const utilisateurId = session?.user.id;
   const suggestions = t("ia.suggestions", { returnObjects: true }) as string[];
   const etapesChargement = t("ia.etapesChargement", { returnObjects: true }) as string[];
@@ -155,6 +157,22 @@ export const BulleIA = () => {
     }
   };
 
+  // Sur ordinateur, le curseur va dans le champ dès que la conversation est prête (quota vérifié).
+  const pret = ouverte && Boolean(session) && Boolean(quota) && !quotaEnCours && !erreurQuota;
+  useEffect(() => {
+    if (!pret || !window.matchMedia("(min-width: 640px)").matches) return;
+    const minuteur = window.setTimeout(() => champRef.current?.focus(), 50);
+    return () => window.clearTimeout(minuteur);
+  }, [pret]);
+
+  // Le champ grandit avec le texte (jusqu'à 8 rem, puis il défile) et revient à une ligne après l'envoi.
+  useEffect(() => {
+    const champ = champRef.current;
+    if (!champ) return;
+    champ.style.height = "auto";
+    champ.style.height = `${Math.min(champ.scrollHeight, 128)}px`;
+  }, [question]);
+
   const soumettre = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     void envoyerQuestion(question);
@@ -168,7 +186,7 @@ export const BulleIA = () => {
   };
 
   return (
-    <div className="fixed bottom-4 end-4 z-40 sm:bottom-6 sm:end-6">
+    <div className={`fixed bottom-4 end-4 z-40 sm:bottom-6 sm:end-6 ${ouverte ? "pointer-events-none opacity-0" : ""}`}>
       <Dialog open={ouverte} onOpenChange={setOuverte}>
         <DialogTrigger asChild>
           <button
@@ -181,21 +199,51 @@ export const BulleIA = () => {
           </button>
         </DialogTrigger>
 
+        {/* Téléphone : plein écran, comme une appli de messagerie. À partir de « sm » : fenêtre centrée.
+            La croix par défaut du Dialog est masquée : la nôtre est dans l'en-tête (bien placée aussi en arabe). */}
         <DialogContent
           dir={i18n.dir()}
-          className="flex h-[calc(100dvh-1rem)] w-[calc(100vw-1rem)] max-w-[860px] flex-col gap-0 overflow-hidden rounded-3xl border-border bg-background p-0 shadow-2xl sm:h-[min(760px,calc(100dvh-3rem))] sm:w-[min(860px,calc(100vw-3rem))]"
+          onOpenAutoFocus={(event) => {
+            // Pas de focus automatique sur la croix ; sur téléphone, pas de clavier qui cacherait les suggestions (voir `pret`).
+            event.preventDefault();
+          }}
+          className="flex h-[100dvh] w-screen max-w-none flex-col gap-0 overflow-hidden rounded-none border-0 bg-background p-0 shadow-2xl data-[state=closed]:slide-out-to-top-0 data-[state=open]:slide-in-from-top-0 sm:h-[min(760px,calc(100dvh-3rem))] sm:w-[min(860px,calc(100vw-3rem))] sm:max-w-[860px] sm:rounded-3xl sm:border sm:border-border [&>button:last-child]:hidden"
         >
-          <DialogHeader className="shrink-0 bg-gradient-to-br from-emerald-700 to-teal-600 px-5 pb-4 pt-5 text-start text-white sm:px-7">
-            <div className="flex items-center gap-3 pe-8">
-              <DrapeauAlgerie className="h-8 w-12 shrink-0 rounded-sm shadow-sm" titre={t("drapeau")} />
-              <div className="min-w-0">
-                <DialogTitle className="text-start text-xl font-bold text-white">{t("ia.titre")}</DialogTitle>
-                <DialogDescription className="mt-1 text-start text-emerald-50">{t("ia.descriptionChat")}</DialogDescription>
+          {/* En-tête compact : une seule ligne sur téléphone (≈ 56 px), titre complet et description à partir de « sm ». */}
+          <DialogHeader className="shrink-0 space-y-0 bg-gradient-to-br from-emerald-700 to-teal-600 px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] text-start text-white sm:px-6 sm:py-4">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <DrapeauAlgerie className="h-5 w-[1.875rem] shrink-0 rounded-[3px] shadow-sm sm:h-7 sm:w-[2.625rem]" titre={t("drapeau")} />
+              <div className="min-w-0 flex-1">
+                <DialogTitle className="flex items-center gap-2 text-start text-base font-bold leading-tight text-white sm:text-xl">
+                  <span className="truncate sm:hidden">{t("ia.libelle")}</span>
+                  <span className="hidden truncate sm:inline">{t("ia.titre")}</span>
+                </DialogTitle>
+                <DialogDescription className="flex items-center gap-1.5 text-start text-xs text-emerald-50 sm:mt-0.5 sm:text-sm">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-lime-300" aria-hidden />
+                  <span className="truncate sm:hidden">{t("ia.enDeveloppement")}</span>
+                  <span className="hidden truncate sm:inline">{t("ia.descriptionChat")}</span>
+                </DialogDescription>
               </div>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-emerald-50">
-              <span className="h-2 w-2 rounded-full bg-lime-300" aria-hidden />
-              {t("ia.enDeveloppement")}
+              {/* Actions de l'en-tête : nouvelle conversation (dès qu'il y a des messages) et fermer. */}
+              {messages.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => { setMessages([]); setQuestion(""); }}
+                  disabled={envoiEnCours}
+                  aria-label={t("ia.nouvelle")}
+                  title={t("ia.nouvelle")}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-lg sm:px-2.5 sm:py-1.5 sm:text-xs sm:font-medium"
+                >
+                  <RotateCcw className="h-4 w-4 sm:h-3.5 sm:w-3.5" aria-hidden />
+                  <span className="hidden sm:inline">{t("ia.nouvelle")}</span>
+                </button>
+              )}
+              <DialogClose
+                aria-label={t("ia.fermer")}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              >
+                <X className="h-5 w-5" aria-hidden />
+              </DialogClose>
             </div>
           </DialogHeader>
 
@@ -203,7 +251,7 @@ export const BulleIA = () => {
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
-            className="min-h-0 flex-1 space-y-5 overflow-y-auto bg-muted/30 px-4 py-5 sm:px-7"
+            className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain bg-muted/30 px-3 py-4 sm:space-y-5 sm:px-7 sm:py-5"
           >
             {chargementAuth ? (
               <div className="flex min-h-full items-center justify-center gap-2 text-sm text-muted-foreground" role="status">
@@ -283,7 +331,7 @@ export const BulleIA = () => {
                           {message.erreur ? (
                             <p>{message.contenu}</p>
                           ) : (
-                            <div className="prose prose-sm max-w-none break-words dark:prose-invert prose-p:my-2 prose-a:text-emerald-800 prose-a:underline prose-a:underline-offset-2 dark:prose-a:text-emerald-300 prose-li:my-0">
+                            <div dir="auto" className="prose prose-sm max-w-none break-words dark:prose-invert prose-p:my-2 prose-a:text-emerald-800 prose-a:underline prose-a:underline-offset-2 dark:prose-a:text-emerald-300 prose-li:my-0">
                               <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
@@ -300,7 +348,7 @@ export const BulleIA = () => {
                       </div>
                     )}
 
-                    {message.role === "user" && <p className="whitespace-pre-wrap text-sm leading-relaxed">{message.contenu}</p>}
+                    {message.role === "user" && <p dir="auto" className="whitespace-pre-wrap text-sm leading-relaxed">{message.contenu}</p>}
 
                     {message.sources && message.sources.length > 0 && (
                       <div className="ms-9 space-y-2">
@@ -318,7 +366,7 @@ export const BulleIA = () => {
                                 onClick={() => setOuverte(false)}
                                 className="group flex items-start gap-3 text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
                               >
-                                <span className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-emerald-50 dark:bg-emerald-950/60">
+                                <span className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-24 bg-emerald-50 dark:bg-emerald-950/60">
                                   <Sparkles className="absolute inset-0 m-auto h-5 w-5 text-emerald-700/60 dark:text-emerald-300/60" aria-hidden />
                                   {source.image_url && (
                                     <img
@@ -396,18 +444,7 @@ export const BulleIA = () => {
           </div>
 
           {session && (
-          <div className="shrink-0 border-t border-border bg-background px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 sm:px-5">
-            {messages.length > 0 && (
-              <button
-                type="button"
-                onClick={() => { setMessages([]); setQuestion(""); }}
-                disabled={envoiEnCours}
-                className="mb-2 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
-              >
-                <RotateCcw className="h-3.5 w-3.5" aria-hidden />
-                {t("ia.nouvelle")}
-              </button>
-            )}
+          <div className="shrink-0 border-t border-border bg-background px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2.5 sm:px-5 sm:pb-3 sm:pt-3">
             {!quotaEnCours && erreurQuota && (
               <p role="alert" className="mb-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
                 {t("ia.quotaIndisponible")}
@@ -420,15 +457,16 @@ export const BulleIA = () => {
             )}
             <form onSubmit={soumettre} className="flex items-end gap-2">
               <Textarea
+                ref={champRef}
                 value={question}
                 onChange={(event) => setQuestion(event.target.value)}
                 onKeyDown={toucheQuestion}
                 placeholder={t("ia.question")}
                 aria-label={t("ia.question")}
                 maxLength={1200}
-                rows={2}
+                rows={1}
                 disabled={envoiEnCours || chargementAuth || quotaEnCours || erreurQuota || !quota || (!quota.is_admin && (quota.remaining ?? 0) === 0)}
-                className="min-h-[44px] max-h-32 resize-none rounded-2xl border-border bg-card px-4 py-3 text-base shadow-sm focus-visible:ring-emerald-600"
+                className="min-h-[44px] max-h-32 resize-none overflow-y-auto rounded-3xl border-border bg-card px-4 py-2.5 text-base leading-6 shadow-sm focus-visible:ring-emerald-600"
               />
               <button
                 type="submit"
@@ -439,7 +477,7 @@ export const BulleIA = () => {
                 {envoiEnCours ? <LoaderCircle className="h-5 w-5 animate-spin" aria-hidden /> : <Send className="h-5 w-5" aria-hidden />}
               </button>
             </form>
-            <p className="mt-2 px-1 text-center text-[11px] leading-relaxed text-muted-foreground">{t("ia.avertissement")}</p>
+            <p className="mt-1.5 px-1 text-center text-[10px] leading-snug text-muted-foreground sm:mt-2 sm:text-[11px]">{t("ia.avertissement")}</p>
           </div>
           )}
         </DialogContent>
