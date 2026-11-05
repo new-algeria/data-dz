@@ -8,8 +8,8 @@ import { EtatErreur } from "@/components/EtatErreur";
 import { BadgeStatut } from "@/components/propositions/BadgeStatut";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
+import { usePermissions } from "@/hooks/use-roles";
 import { cleErreur } from "@/lib/erreurs";
 import { localeNombres } from "@/lib/fichiers";
 import { routes } from "@/lib/routes";
@@ -22,7 +22,7 @@ const estStatut = (valeur: string | null): valeur is StatutSoumission => STATUTS
 const FileModeration = () => {
   const { t } = useTranslation();
   const langue = useLangue();
-  const { profil } = useAuth();
+  const { a } = usePermissions();
   const [parametres, setParametres] = useSearchParams();
   const brut = parametres.get("status");
   const statut: StatutSoumission = estStatut(brut) ? brut : "en_attente";
@@ -48,7 +48,7 @@ const FileModeration = () => {
               {t("moderation.datasets.lien")}
             </Link>
           </Button>
-          {profil?.role === "admin" && (
+          {a("membres.gerer") && (
             <Button asChild variant="outline" className="gap-2">
               <Link to={routes.adminMembres}>
                 <UsersRound className="h-4 w-4" />

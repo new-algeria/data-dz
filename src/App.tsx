@@ -32,7 +32,9 @@ const RevueProposition = lazyAvecRechargement(() => import("./pages/moderation/R
 const ModerationDatasets = lazyAvecRechargement(() => import("./pages/moderation/ModerationDatasets"));
 const Favoris = lazyAvecRechargement(() => import("./pages/communaute/Favoris"));
 const GestionMembres = lazyAvecRechargement(() => import("./pages/admin/GestionMembres"));
+const GestionRoles = lazyAvecRechargement(() => import("./pages/admin/GestionRoles"));
 const GestionDonnees = lazyAvecRechargement(() => import("./pages/admin/GestionDonnees"));
+const GestionSynchros = lazyAvecRechargement(() => import("./pages/admin/GestionSynchros"));
 const PageApi = lazyAvecRechargement(() => import("./pages/PageApi"));
 const PageThematiques = lazyAvecRechargement(() => import("./pages/PageThematiques"));
 
@@ -98,8 +100,18 @@ function App() {
               path={routes.adminMembres}
               element={
                 <RouteProtegee>
-                  <RouteAdmin>
+                  <RouteAdmin permission="membres.gerer">
                     <GestionMembres />
+                  </RouteAdmin>
+                </RouteProtegee>
+              }
+            />
+            <Route
+              path={routes.adminRoles}
+              element={
+                <RouteProtegee>
+                  <RouteAdmin>
+                    <GestionRoles />
                   </RouteAdmin>
                 </RouteProtegee>
               }
@@ -108,8 +120,18 @@ function App() {
               path={routes.adminDonnees}
               element={
                 <RouteProtegee>
-                  <RouteAdmin>
+                  <RouteAdmin permission="donnees.gerer">
                     <GestionDonnees />
+                  </RouteAdmin>
+                </RouteProtegee>
+              }
+            />
+            <Route
+              path={routes.adminSynchros}
+              element={
+                <RouteProtegee>
+                  <RouteAdmin permission="synchro.gerer">
+                    <GestionSynchros />
                   </RouteAdmin>
                 </RouteProtegee>
               }

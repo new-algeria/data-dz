@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, Database, FilePlus2, Inbox, LogOut, ShieldCheck, Star, UserRound, UsersRound, type LucideIcon } from "lucide-react";
+import { ChevronDown, Database, FilePlus2, Inbox, KeyRound, LogOut, RefreshCw, ShieldCheck, Star, UserRound, UsersRound, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useEstModerateur, useNbEnAttente } from "@/hooks/use-moderateur";
+import { useLangue } from "@/hooks/use-langue";
+import { usePermissions, useRoles } from "@/hooks/use-roles";
+import { codeRole, nomRole, trouverRole } from "@/lib/roles";
 import { deconnecter } from "@/lib/auth";
 import { avecSuite, routes } from "@/lib/routes";
 
@@ -35,6 +38,9 @@ export const MenuUtilisateur = () => {
   const { session, utilisateur, profil, chargement } = useAuth();
   const { data: moderateur } = useEstModerateur();
   const { data: enAttente = 0 } = useNbEnAttente(Boolean(moderateur));
+  const { admin, a, gestion } = usePermissions();
+  const { data: roles } = useRoles();
+  const langue = useLangue();
   const emplacement = useLocation();
   const naviguer = useNavigate();
 
@@ -87,7 +93,7 @@ export const MenuUtilisateur = () => {
                   </span>
                 )}
                 <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">
-                  {t(`admin.roles.${profil.role}`)}
+                  {nomRole(trouverRole(roles, codeRole(profil)), codeRole(profil), langue, (cle) => t(cle))}
                 </span>
               </span>
             </DropdownMenuLabel>
@@ -106,7 +112,7 @@ export const MenuUtilisateur = () => {
         <Element vers={routes.proposer} icone={FilePlus2}>
           {t("navbar.proposer")}
         </Element>
-        {(moderateur || profil?.role === "admin") && <DropdownMenuSeparator />}
+        {(moderateur || gestion) && <DropdownMenuSeparator />}
         {moderateur && (
           <Element
             vers={routes.moderation}
@@ -120,15 +126,25 @@ export const MenuUtilisateur = () => {
             {t("navbar.moderation")}
           </Element>
         )}
-        {profil?.role === "admin" && (
-          <>
-            <Element vers={routes.adminMembres} icone={UsersRound}>
-              {t("admin.titre")}
-            </Element>
-            <Element vers={routes.adminDonnees} icone={Database}>
-              {t("adminDonnees.titre")}
-            </Element>
-          </>
+        {a("membres.gerer") && (
+          <Element vers={routes.adminMembres} icone={UsersRound}>
+            {t("admin.titre")}
+          </Element>
+        )}
+        {admin && (
+          <Element vers={routes.adminRoles} icone={KeyRound}>
+            {t("roles.titre")}
+          </Element>
+        )}
+        {a("donnees.gerer") && (
+          <Element vers={routes.adminDonnees} icone={Database}>
+            {t("adminDonnees.titre")}
+          </Element>
+        )}
+        {a("synchro.gerer") && (
+          <Element vers={routes.adminSynchros} icone={RefreshCw}>
+            {t("synchros.titre")}
+          </Element>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={quitter} className="cursor-pointer gap-2.5 py-2 text-red-600 focus:text-red-600 dark:text-red-400">

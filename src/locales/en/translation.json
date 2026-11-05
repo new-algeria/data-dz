@@ -151,6 +151,16 @@
     "tousFormats": "All formats"
   },
   "fiche": {
+    "sources": {
+      "aide": "This data is available from several sources: pick the one to download.",
+      "choisir": "File source",
+      "toutes": "All sources",
+      "titre": "{{source}} data",
+      "osmAvant": "Data",
+      "osmContributeurs": "OpenStreetMap contributors",
+      "osmApres": "Any reuse must credit OpenStreetMap and share improvements under the same licence.",
+      "licence": "{{source}} data — {{licence}} licence."
+    },
     "sourceNom": "Source: {{nom}}",
     "pageSource": "Source page",
     "entete": {
@@ -874,6 +884,122 @@
       "autre": "New notification",
       "role_attribue": "A special role has been assigned to you: {{role}}."
     }
+  },
+  "roles": {
+    "titre": "Roles",
+    "sousTitre": "Create roles and choose their rights",
+    "aide": "A role has a base level (member, contributor or moderator: it grants moderation) plus extra permissions. System roles cannot be deleted; the administrator role cannot be edited.",
+    "gerer": "Manage roles",
+    "reserveAdmin": "Only an administrator can change this role",
+    "nouveau": "New role",
+    "modifierTitre": "Edit role",
+    "modifier": "Edit role {{nom}}",
+    "supprimer": "Delete role {{nom}}",
+    "aideDialogue": "The code is the role's identifier and cannot change after creation.",
+    "aideSysteme": "System role: only its colour and permissions can be changed.",
+    "aideCode": "Lowercase letters, digits and hyphens (2 to 40 characters), taken from the name.",
+    "codePris": "This code is already taken.",
+    "niveau": "Base level",
+    "champs": {
+      "nom": "Name",
+      "code": "Code",
+      "description": "Description",
+      "couleur": "Badge colour",
+      "permissions": "Extra permissions"
+    },
+    "couleurs": {
+      "gris": "Grey",
+      "bleu": "Blue",
+      "vert": "Green",
+      "ambre": "Amber",
+      "rouge": "Red",
+      "violet": "Purple",
+      "rose": "Pink"
+    },
+    "permissions": {
+      "donnees": {
+        "gerer": {
+          "nom": "Manage datasets",
+          "description": "Create, edit, hide and delete datasets, upload their files, publish accepted submissions."
+        }
+      },
+      "membres": {
+        "gerer": {
+          "nom": "Manage members",
+          "description": "Give members roles without permissions (never administrator, never to oneself)."
+        }
+      },
+      "synchro": {
+        "gerer": {
+          "nom": "Manage synchronisations",
+          "description": "Enable, schedule and force synchronisations (OpenStreetMap…), read their reports."
+        }
+      },
+      "djazai": {
+        "illimite": {
+          "nom": "Unlimited DjazAI",
+          "description": "No daily question quota for the assistant."
+        }
+      }
+    },
+    "enregistrer": "Save",
+    "enregistre": "Role “{{nom}}” saved",
+    "supprime": "Role deleted",
+    "erreur": "The role could not be saved",
+    "confirmerSuppression": "Delete the role “{{nom}}”?",
+    "texteSuppression": "Its members will go back to the “{{niveau}}” role. This cannot be undone.",
+    "supprimerBouton": "Delete"
+  },
+  "synchros": {
+    "titre": "Synchronisations",
+    "sousTitre": "Automatically refreshed data: OpenStreetMap, GeoAlgeria…",
+    "aide": "OpenStreetMap is refreshed by data-dz at the interval set here: new objects are added, those that disappear are kept and flagged. GeoAlgeria is synchronised by its own script: its latest versions are listed.",
+    "jamais": "Never run",
+    "statuts": {
+      "reussie": "Succeeded",
+      "partielle": "Partial",
+      "echec": "Failed",
+      "essai": "Dry run"
+    },
+    "modes": {
+      "interne": "Run by data-dz",
+      "externe": "External script"
+    },
+    "active": "Enabled",
+    "inactive": "Disabled",
+    "intervalle": "Every (days)",
+    "enregistrer": "Save",
+    "enregistre": "Setting saved",
+    "erreur": "The setting could not be saved",
+    "forcer": "Run on next pass",
+    "annulerForcer": "Stop forcing",
+    "forceeAide": "The synchronisation will run on the next daily pass (around 6 am Algiers time), without waiting for its due date.",
+    "aideReglages": "The robot checks every day and only works when due (last successful run + interval).",
+    "derniere": "Last synchronisation",
+    "prochaine": "Next",
+    "prochainPassage": "On next pass",
+    "extraitDu": "OpenStreetMap data from",
+    "dernierRapport": "Last report: {{donnees}} datasets, {{publiees}} published, {{objets}} objects (+{{ajoutes}} new, {{absents}} gone from OSM)",
+    "problemes": "{{count}} to check",
+    "colonnes": {
+      "donnee": "Dataset",
+      "fichiers": "Files",
+      "resultat": "Result"
+    },
+    "nouvelleDonnee": "New dataset",
+    "complement": "OpenStreetMap complement",
+    "donneeSource": "OpenStreetMap dataset",
+    "publiee": "Published (version {{version}})",
+    "inchangee": "Unchanged",
+    "legende": "Total (+ added, ~ updated, − gone from OpenStreetMap but kept). “GeoAlgeria”: objects matched with a GeoAlgeria object.",
+    "historique": "Latest runs",
+    "declencheurs": {
+      "planifie": "scheduled",
+      "manuel": "run manually",
+      "forcer": "forced"
+    },
+    "dernieresVersions": "Latest published versions",
+    "aucuneVersion": "No version yet."
   },
   "admin": {
     "titre": "Member management",

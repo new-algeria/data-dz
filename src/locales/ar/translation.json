@@ -182,6 +182,16 @@
     "tousFormats": "كل الصيغ"
   },
   "fiche": {
+    "sources": {
+      "aide": "هذه البيانات متوفرة من عدة مصادر: اختر المصدر الذي تريد تحميله.",
+      "choisir": "مصدر الملفات",
+      "toutes": "كل المصادر",
+      "titre": "بيانات {{source}}",
+      "osmAvant": "البيانات",
+      "osmContributeurs": "مساهمو OpenStreetMap",
+      "osmApres": "يجب ذكر OpenStreetMap عند أي إعادة استخدام ومشاركة التحسينات بنفس الرخصة.",
+      "licence": "بيانات {{source}} — رخصة {{licence}}."
+    },
     "sourceNom": "المصدر: {{nom}}",
     "pageSource": "صفحة المصدر",
     "entete": {
@@ -965,6 +975,122 @@
       "autre": "إشعار جديد",
       "role_attribue": "تم منحك صلاحية خاصة: {{role}}."
     }
+  },
+  "roles": {
+    "titre": "الأدوار",
+    "sousTitre": "إنشاء الأدوار واختيار صلاحياتها",
+    "aide": "لكل دور مستوى أساسي (عضو أو مساهم أو مشرف: هو الذي يمنح الإشراف) وصلاحيات إضافية. أدوار النظام لا تُحذف، ودور المدير لا يُعدَّل.",
+    "gerer": "إدارة الأدوار",
+    "reserveAdmin": "وحده المدير يمكنه تغيير هذا الدور",
+    "nouveau": "دور جديد",
+    "modifierTitre": "تعديل الدور",
+    "modifier": "تعديل الدور {{nom}}",
+    "supprimer": "حذف الدور {{nom}}",
+    "aideDialogue": "الرمز هو معرّف الدور ولا يتغير بعد الإنشاء.",
+    "aideSysteme": "دور نظام: يمكن تعديل لونه وصلاحياته فقط.",
+    "aideCode": "أحرف لاتينية صغيرة وأرقام وشرطات (من 2 إلى 40 حرفًا)، مأخوذ من الاسم.",
+    "codePris": "هذا الرمز مستخدم.",
+    "niveau": "المستوى الأساسي",
+    "champs": {
+      "nom": "الاسم",
+      "code": "الرمز",
+      "description": "الوصف",
+      "couleur": "لون الشارة",
+      "permissions": "صلاحيات إضافية"
+    },
+    "couleurs": {
+      "gris": "رمادي",
+      "bleu": "أزرق",
+      "vert": "أخضر",
+      "ambre": "كهرماني",
+      "rouge": "أحمر",
+      "violet": "بنفسجي",
+      "rose": "وردي"
+    },
+    "permissions": {
+      "donnees": {
+        "gerer": {
+          "nom": "إدارة البيانات",
+          "description": "إنشاء مجموعات البيانات وتعديلها وإخفاؤها وحذفها، ورفع ملفاتها، ونشر الاقتراحات المقبولة."
+        }
+      },
+      "membres": {
+        "gerer": {
+          "nom": "إدارة الأعضاء",
+          "description": "منح الأعضاء أدوارًا بلا صلاحيات (ليس دور المدير أبدًا، ولا للنفس)."
+        }
+      },
+      "synchro": {
+        "gerer": {
+          "nom": "إدارة المزامنات",
+          "description": "تفعيل المزامنات (OpenStreetMap…) وضبطها وفرضها، وقراءة تقاريرها."
+        }
+      },
+      "djazai": {
+        "illimite": {
+          "nom": "DjazAI بلا حدود",
+          "description": "بلا حصة يومية للأسئلة الموجهة إلى المساعد."
+        }
+      }
+    },
+    "enregistrer": "حفظ",
+    "enregistre": "تم حفظ الدور «{{nom}}»",
+    "supprime": "تم حذف الدور",
+    "erreur": "تعذر حفظ الدور",
+    "confirmerSuppression": "حذف الدور «{{nom}}»؟",
+    "texteSuppression": "سيعود أعضاؤه إلى دور «{{niveau}}». لا يمكن التراجع عن هذا الإجراء.",
+    "supprimerBouton": "حذف"
+  },
+  "synchros": {
+    "titre": "المزامنات",
+    "sousTitre": "بيانات تتجدد تلقائيًا: OpenStreetMap وGeoAlgeria…",
+    "aide": "تُحدَّث بيانات OpenStreetMap من طرف data-dz بالفاصل الزمني المحدد هنا: تُضاف العناصر الجديدة، وتبقى العناصر التي تختفي مع الإشارة إليها. أما GeoAlgeria فتتم مزامنتها بسكريبتها الخاص: نتابع آخر إصداراتها.",
+    "jamais": "لم تُشغَّل بعد",
+    "statuts": {
+      "reussie": "ناجحة",
+      "partielle": "جزئية",
+      "echec": "فاشلة",
+      "essai": "تجربة"
+    },
+    "modes": {
+      "interne": "تديرها data-dz",
+      "externe": "سكريبت خارجي"
+    },
+    "active": "مفعّلة",
+    "inactive": "معطّلة",
+    "intervalle": "كل (أيام)",
+    "enregistrer": "حفظ",
+    "enregistre": "تم حفظ الإعداد",
+    "erreur": "تعذر حفظ الإعداد",
+    "forcer": "تشغيل في المرور القادم",
+    "annulerForcer": "إلغاء الفرض",
+    "forceeAide": "ستنطلق المزامنة في المرور اليومي القادم (حوالي السادسة صباحًا بتوقيت الجزائر) دون انتظار موعدها.",
+    "aideReglages": "يمر الروبوت كل يوم ولا يعمل إلا عند حلول الموعد (آخر مزامنة ناجحة + الفاصل).",
+    "derniere": "آخر مزامنة",
+    "prochaine": "القادمة",
+    "prochainPassage": "في المرور القادم",
+    "extraitDu": "بيانات OpenStreetMap بتاريخ",
+    "dernierRapport": "آخر تقرير: {{donnees}} مجموعة بيانات، {{publiees}} منشورة، {{objets}} عنصرًا (+{{ajoutes}} جديدة، {{absents}} غائبة عن OSM)",
+    "problemes": "{{count}} للتحقق",
+    "colonnes": {
+      "donnee": "البيانات",
+      "fichiers": "الملفات",
+      "resultat": "النتيجة"
+    },
+    "nouvelleDonnee": "بيانات جديدة",
+    "complement": "مكمّل OpenStreetMap",
+    "donneeSource": "بيانات OpenStreetMap",
+    "publiee": "منشورة (الإصدار {{version}})",
+    "inchangee": "دون تغيير",
+    "legende": "المجموع (+ مضافة، ~ محدّثة، − غائبة عن OpenStreetMap لكنها محفوظة). «GeoAlgeria»: عناصر مطابقة لعنصر من GeoAlgeria.",
+    "historique": "آخر التشغيلات",
+    "declencheurs": {
+      "planifie": "مجدولة",
+      "manuel": "يدويًا",
+      "forcer": "مفروضة"
+    },
+    "dernieresVersions": "آخر الإصدارات المنشورة",
+    "aucuneVersion": "لا يوجد إصدار حتى الآن."
   },
   "admin": {
     "titre": "إدارة الأعضاء",

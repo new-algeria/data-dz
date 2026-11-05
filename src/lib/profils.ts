@@ -9,7 +9,10 @@ export interface Profil {
   avatar_url: string | null;
   bio: string | null;
   site_web: string | null;
+  /** Niveau de base (RLS, modération). */
   role: RoleUtilisateur;
+  /** Rôle affiché, éventuellement personnalisé (table `roles`, migration 20261102000016) ; absent avant la migration. */
+  role_code?: string | null;
   cree_le: string;
 }
 
@@ -17,6 +20,23 @@ export interface Profil {
 export type ChampsModifiables = Pick<Profil, "pseudo" | "nom_affiche" | "bio" | "site_web">;
 
 const COLONNES_PROFIL = "id, pseudo, nom_affiche, avatar_url, bio, site_web, role, cree_le";
+let roleCodeAbsent = false;
+
+/**
+ * Lit des profils avec `role_code` ; tant que la migration des rôles n'est pas appliquée (42703 : colonne inconnue),
+ * relit sans, pour que la connexion et les pages de membres continuent de marcher.
+ */
+export async function avecRoleCode<T>(colonnes: string, lire: (select: string) => PromiseLike<{ data: T; error: { code?: string } | null }>): Promise<T> {
+  if (!roleCodeAbsent) {
+    const resultat = await lire(`${colonnes}, role_code`);
+    if (!resultat.error) return resultat.data;
+    if (resultat.error.code !== "42703") throw resultat.error;
+    roleCodeAbsent = true;
+  }
+  const resultat = await lire(colonnes);
+  if (resultat.error) throw resultat.error;
+  return resultat.data;
+}
 
 // Mêmes règles que les contraintes de la table profils.
 export const FORMAT_PSEUDO = /^[a-z0-9_-]{3,30}$/;
@@ -34,19 +54,15 @@ const EXTENSIONS_AVATAR: Record<string, string> = {
 };
 
 export async function chargerProfil(id: string): Promise<Profil | null> {
-  const { data, error } = await supabase.from("profils").select(COLONNES_PROFIL).eq("id", id).maybeSingle();
-  if (error) throw error;
-  return data as Profil | null;
+  const data = await avecRoleCode(COLONNES_PROFIL, (select) => supabase.from("profils").select(select).eq("id", id).maybeSingle());
+  return data as unknown as Profil | null;
 }
 
 export async function chargerMembre(pseudo: string): Promise<Profil | null> {
-  const { data, error } = await supabase
-    .from("profils")
-    .select(COLONNES_PROFIL)
-    .eq("pseudo", pseudo.toLowerCase())
-    .maybeSingle();
-  if (error) throw error;
-  return data as Profil | null;
+  const data = await avecRoleCode(COLONNES_PROFIL, (select) =>
+    supabase.from("profils").select(select).eq("pseudo", pseudo.toLowerCase()).maybeSingle()
+  );
+  return data as unknown as Profil | null;
 }
 
 export const normaliserPseudo = (pseudo: string) => pseudo.trim().toLowerCase();

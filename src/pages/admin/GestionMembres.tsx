@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { ChevronLeft, ChevronRight, Loader2, Lock, Search, UsersRound } from "lucide-react";
+import { ChevronLeft, ChevronRight, KeyRound, Loader2, Lock, Search, UsersRound } from "lucide-react";
 import { MiseEnPage } from "@/components/MiseEnPage";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { EtatErreur } from "@/components/EtatErreur";
@@ -22,36 +22,35 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useLangue } from "@/hooks/use-langue";
+import { usePermissions, useRoles } from "@/hooks/use-roles";
 import { useValeurDifferee } from "@/hooks/use-valeur-differee";
-import { changerRole, chargerMembres, MEMBRES_PAR_PAGE, ROLES, ROLES_ATTRIBUABLES, type MembreAdmin } from "@/lib/admin";
+import { changerRole, chargerMembres, MEMBRES_PAR_PAGE, type MembreAdmin } from "@/lib/admin";
 import { cleErreur } from "@/lib/erreurs";
 import { formaterNombre, localeNombres } from "@/lib/fichiers";
-import type { RoleUtilisateur } from "@/lib/profils";
+import { CLASSES_COULEUR, codeRole, descriptionRole, nomRole, trouverRole, type Role } from "@/lib/roles";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 const TOUS = "tous";
 
-const couleursRole: Record<RoleUtilisateur, string> = {
-  membre: "bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300",
-  contributeur: "bg-sky-100 text-sky-800 dark:bg-sky-400/15 dark:text-sky-300",
-  moderateur: "bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-300",
-  admin: "bg-violet-100 text-violet-800 dark:bg-violet-400/15 dark:text-violet-300",
-};
-
 interface ChangementRole {
   membre: MembreAdmin;
-  nouveau: RoleUtilisateur;
+  nouveau: string;
 }
 
-/** /admin/users : liste des membres et changement de rôle (sauf pour les administrateurs). */
+/**
+ * /admin/users : liste des membres et changement de rôle (sauf pour les administrateurs).
+ * Rôles système et personnalisés (table `roles`) ; un gestionnaire non admin ne donne que des rôles sans permission.
+ */
 const GestionMembres = () => {
   const { t } = useTranslation();
   const langue = useLangue();
   const clientRequetes = useQueryClient();
+  const { admin } = usePermissions();
+  const { data: roles = [] } = useRoles();
   const [saisie, setSaisie] = useState("");
   const terme = useValeurDifferee(saisie.trim(), 300);
-  const [filtreRole, setFiltreRole] = useState<RoleUtilisateur | typeof TOUS>(TOUS);
+  const [filtreRole, setFiltreRole] = useState<string>(TOUS);
   const [page, setPage] = useState(0);
   const [changement, setChangement] = useState<ChangementRole | null>(null);
   const [enCours, setEnCours] = useState<string | null>(null);
@@ -67,6 +66,12 @@ const GestionMembres = () => {
   const nbPages = Math.max(1, Math.ceil(total / MEMBRES_PAR_PAGE));
   const formatDate = new Intl.DateTimeFormat(localeNombres(langue), { dateStyle: "medium" });
   const nom = (m: MembreAdmin) => m.nom_affiche || m.pseudo;
+  const libelle = (code: string) => nomRole(trouverRole(roles, code), code, langue, t);
+  const couleur = (code: string) => CLASSES_COULEUR[trouverRole(roles, code)?.couleur ?? "gris"];
+  // Rôles qu'on peut donner : jamais « admin » ; sans être admin, seulement les rôles sans permission.
+  const attribuables = (roles as Role[]).filter((role) => role.role_base !== "admin" && (admin || role.permissions.length === 0));
+  const modifiable = (membre: MembreAdmin) =>
+    membre.role !== "admin" && (admin || (trouverRole(roles, codeRole(membre))?.permissions.length ?? 0) === 0);
 
   const confirmer = async () => {
     if (!changement) return;
@@ -78,7 +83,7 @@ const GestionMembres = () => {
       await clientRequetes.invalidateQueries({ queryKey: ["admin", "membres"] });
       // Le rôle change aussi l'affichage de sa page publique et ses droits de modération.
       clientRequetes.invalidateQueries({ queryKey: ["membre"] });
-      toast.success(t("admin.roleChange", { nom: nom(membre), role: t(`admin.roles.${nouveau}`) }));
+      toast.success(t("admin.roleChange", { nom: nom(membre), role: libelle(nouveau) }));
     } catch (e) {
       toast.error(t("admin.erreurRole"), { description: t(cleErreur(e)) });
     } finally {
@@ -100,19 +105,27 @@ const GestionMembres = () => {
             className="ps-9 bg-white dark:bg-gray-900"
           />
         </div>
-        <Select value={filtreRole} onValueChange={(valeur) => setFiltreRole(valeur as RoleUtilisateur | typeof TOUS)}>
+        <Select value={filtreRole} onValueChange={setFiltreRole}>
           <SelectTrigger className="w-52 bg-white dark:bg-gray-900" aria-label={t("admin.filtrerRole")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={TOUS}>{t("admin.tousRoles")}</SelectItem>
-            {ROLES.map((role) => (
-              <SelectItem key={role} value={role}>
-                {t(`admin.roles.${role}`)}
+            {roles.map((role) => (
+              <SelectItem key={role.code} value={role.code}>
+                {libelle(role.code)}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
+        {admin && (
+          <Button asChild variant="outline" className="gap-2">
+            <Link to={routes.adminRoles}>
+              <KeyRound className="h-4 w-4" aria-hidden />
+              {t("roles.gerer")}
+            </Link>
+          </Button>
+        )}
       </div>
 
       <p className="mb-4 rounded-xl bg-violet-50 p-3 text-sm text-violet-900 dark:bg-violet-500/10 dark:text-violet-100">{t("admin.aide")}</p>
@@ -147,62 +160,65 @@ const GestionMembres = () => {
                     </td>
                   </tr>
                 ) : (
-                  requete.data.membres.map((membre) => (
-                    <tr key={membre.id} className="align-middle">
-                      <td className="px-4 py-3">
-                        <Link to={routes.membre(membre.pseudo)} className="flex min-w-0 items-center gap-3 hover:underline">
-                          <AvatarMembre profil={membre} className="h-9 w-9 text-xs" />
-                          <span className="min-w-0">
-                            <span className="block truncate font-medium" dir="auto">
-                              {nom(membre)}
+                  requete.data.membres.map((membre) => {
+                    const code = codeRole(membre);
+                    return (
+                      <tr key={membre.id} className="align-middle">
+                        <td className="px-4 py-3">
+                          <Link to={routes.membre(membre.pseudo)} className="flex min-w-0 items-center gap-3 hover:underline">
+                            <AvatarMembre profil={membre} className="h-9 w-9 text-xs" />
+                            <span className="min-w-0">
+                              <span className="block truncate font-medium" dir="auto">
+                                {nom(membre)}
+                              </span>
+                              <span className="block truncate text-xs text-muted-foreground" dir="ltr">
+                                @{membre.pseudo}
+                              </span>
                             </span>
-                            <span className="block truncate text-xs text-muted-foreground" dir="ltr">
-                              @{membre.pseudo}
-                            </span>
-                          </span>
-                        </Link>
-                      </td>
-                      <td className="hidden px-4 py-3 text-end tabular-nums sm:table-cell">{formaterNombre(membre.reputation ?? 0, langue)}</td>
-                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">
-                        <time dateTime={membre.cree_le}>{formatDate.format(new Date(membre.cree_le))}</time>
-                      </td>
-                      <td className="px-4 py-3">
-                        {membre.role === "admin" ? (
-                          <span
-                            className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", couleursRole.admin)}
-                            title={t("admin.adminProtege")}
-                          >
-                            <Lock className="h-3.5 w-3.5" aria-hidden />
-                            {t("admin.roles.admin")}
-                            <span className="sr-only">({t("admin.adminProtege")})</span>
-                          </span>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <Select
-                              value={membre.role}
-                              onValueChange={(valeur) => valeur !== membre.role && setChangement({ membre, nouveau: valeur as RoleUtilisateur })}
-                              disabled={enCours !== null}
+                          </Link>
+                        </td>
+                        <td className="hidden px-4 py-3 text-end tabular-nums sm:table-cell">{formaterNombre(membre.reputation ?? 0, langue)}</td>
+                        <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">
+                          <time dateTime={membre.cree_le}>{formatDate.format(new Date(membre.cree_le))}</time>
+                        </td>
+                        <td className="px-4 py-3">
+                          {!modifiable(membre) ? (
+                            <span
+                              className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold", couleur(code))}
+                              title={membre.role === "admin" ? t("admin.adminProtege") : t("roles.reserveAdmin")}
                             >
-                              <SelectTrigger
-                                className={cn("h-8 w-40 rounded-full border-0 text-xs font-semibold", couleursRole[membre.role])}
-                                aria-label={t("admin.changerRole", { nom: nom(membre) })}
+                              <Lock className="h-3.5 w-3.5" aria-hidden />
+                              {libelle(code)}
+                              <span className="sr-only">({membre.role === "admin" ? t("admin.adminProtege") : t("roles.reserveAdmin")})</span>
+                            </span>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <Select
+                                value={code}
+                                onValueChange={(valeur) => valeur !== code && setChangement({ membre, nouveau: valeur })}
+                                disabled={enCours !== null}
                               >
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {ROLES_ATTRIBUABLES.map((role) => (
-                                  <SelectItem key={role} value={role}>
-                                    {t(`admin.roles.${role}`)}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            {enCours === membre.id && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" aria-hidden />}
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))
+                                <SelectTrigger
+                                  className={cn("h-8 w-44 rounded-full border-0 text-xs font-semibold", couleur(code))}
+                                  aria-label={t("admin.changerRole", { nom: nom(membre) })}
+                                >
+                                  <SelectValue>{libelle(code)}</SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {attribuables.map((role) => (
+                                    <SelectItem key={role.code} value={role.code}>
+                                      {libelle(role.code)}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              {enCours === membre.id && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" aria-hidden />}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
@@ -233,12 +249,14 @@ const GestionMembres = () => {
               {changement &&
                 t("admin.confirmerTexte", {
                   nom: nom(changement.membre),
-                  ancien: t(`admin.roles.${changement.membre.role}`),
-                  nouveau: t(`admin.roles.${changement.nouveau}`),
+                  ancien: libelle(codeRole(changement.membre)),
+                  nouveau: libelle(changement.nouveau),
                 })}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          {changement && <p className="text-sm text-muted-foreground">{t(`admin.descriptions.${changement.nouveau}`)}</p>}
+          {changement && (
+            <p className="text-sm text-muted-foreground">{descriptionRole(trouverRole(roles, changement.nouveau), changement.nouveau, langue, t)}</p>
+          )}
           <AlertDialogFooter>
             <AlertDialogCancel>{t("propositions.detail.annuler")}</AlertDialogCancel>
             <AlertDialogAction onClick={confirmer} className="bg-emerald-700 text-white hover:bg-emerald-800">

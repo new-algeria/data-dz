@@ -7,12 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { appelerApi, ErreurApi } from "@/lib/api";
 import { verifierLien } from "@/lib/telechargement";
-import { formaterTaille } from "@/lib/fichiers";
+import { formaterTaille, sourcesDesFichiers } from "@/lib/fichiers";
 import { aSourceConvertible, telechargementsRessource } from "@/lib/fiche";
 import { useLangue } from "@/hooks/use-langue";
 import type { Ressource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { IconeFormat } from "./BadgeFormat";
+import { MentionSource } from "./MentionSource";
 
 const ORDRE = ["csv", "xlsx", "json", "geojson", "parquet", "ics", "pdf", "xml", "zip"];
 // Formats connus dans l'ordre ci-dessus, formats inconnus à la fin.
@@ -98,6 +99,7 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
   }, [apercuPossible, ouvert, ressource, slug]);
 
   if (!ressource) return null;
+  const plusieursSources = sourcesDesFichiers(ressources).length > 1;
   const telechargements = [...telechargementsRessource(ressource)].sort((a, b) => rang(a.format) - rang(b.format));
   if (telechargements.length === 0) return null;
   // Sous le bouton : uniquement les conversions possibles et les formats natifs réellement fournis.
@@ -170,10 +172,12 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
                       <SelectItem key={element.nom} value={element.nom}>
                         <span dir="ltr">{element.nom}</span>
                         {element.principal && <span className="ms-2 text-xs text-muted-foreground">{t("fiche.principal")}</span>}
+                        {plusieursSources && element.source && <span className="ms-2 text-xs font-medium text-emerald-700 dark:text-emerald-300">{element.source.nom}</span>}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                {plusieursSources && ressource.source && <MentionSource source={ressource.source} licence={ressource.licence_code} />}
               </div>
             )}
 
