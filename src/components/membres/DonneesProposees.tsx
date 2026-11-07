@@ -43,12 +43,13 @@ export const DonneesProposees = ({ pseudo, soi = false }: { pseudo: string; soi?
       </h2>
 
       {chargement ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2" aria-busy="true">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
+          <CarteDonneeSquelette />
           <CarteDonneeSquelette />
           <CarteDonneeSquelette />
         </div>
       ) : donnees.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {donnees.map((donnee) => (
             <CarteDonnee key={donnee.slug} donnee={donnee} categorie={donnee.categorie_slug ? parCategorie.get(donnee.categorie_slug) : undefined} />
           ))}
