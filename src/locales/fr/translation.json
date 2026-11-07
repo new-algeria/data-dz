@@ -22,7 +22,9 @@
     "rechercheChargement": "Chargement des données…",
     "aucunResultat": "Aucune donnée ne correspond.",
     "voirTousResultats": "Voir tous les résultats pour « {{terme}} »",
-    "avantagesCompte": "Crée ton compte gratuit pour suivre des données, commenter, proposer tes données et poser tes questions à DjazAI."
+    "avantagesCompte": "Crée ton compte gratuit pour suivre des données, commenter, proposer tes données et poser tes questions à DjazAI.",
+    "groupeDonnees": "Données",
+    "groupeMembres": "Membres"
   },
   "langue": {
     "choisir": "Choisir la langue"

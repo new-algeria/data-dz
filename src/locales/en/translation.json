@@ -22,7 +22,9 @@
     "rechercheChargement": "Loading datasets…",
     "aucunResultat": "No dataset matches.",
     "voirTousResultats": "See all results for “{{terme}}”",
-    "avantagesCompte": "Create your free account to follow datasets, comment, submit data and ask DjazAI your questions."
+    "avantagesCompte": "Create your free account to follow datasets, comment, submit data and ask DjazAI your questions.",
+    "groupeDonnees": "Datasets",
+    "groupeMembres": "Members"
   },
   "langue": {
     "choisir": "Choose language"

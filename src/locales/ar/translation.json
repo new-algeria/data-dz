@@ -26,7 +26,9 @@
     "rechercheChargement": "جارٍ تحميل البيانات…",
     "aucunResultat": "لا توجد بيانات مطابقة.",
     "voirTousResultats": "عرض كل النتائج لـ «{{terme}}»",
-    "avantagesCompte": "أنشئ حسابك المجاني لمتابعة البيانات والتعليق واقتراح بياناتك وطرح أسئلتك على DjazAI."
+    "avantagesCompte": "أنشئ حسابك المجاني لمتابعة البيانات والتعليق واقتراح بياناتك وطرح أسئلتك على DjazAI.",
+    "groupeDonnees": "البيانات",
+    "groupeMembres": "الأعضاء"
   },
   "langue": {
     "choisir": "اختر اللغة"
