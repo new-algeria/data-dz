@@ -316,7 +316,10 @@
     },
     "donneesSimilaires": {
       "titre": "بيانات أخرى حول هذا الموضوع"
-    }
+    },
+    "proposePar": "اقترحها",
+    "modifier": "تعديل",
+    "modifierErreur": "تعذّر فتح التعديل. حاول بعد قليل."
   },
   "attribution": {
     "titre": "الإسناد",
@@ -435,7 +438,9 @@
     "roles": {
       "moderateur": "مشرف",
       "admin": "مدير"
-    }
+    },
+    "donneesProposees": "البيانات المقترحة",
+    "aucuneDonneeProposee": "لم تُنشر أي من اقتراحاتك بعد. شارك بيانات مفيدة: ستظهر هنا بمجرد نشرها."
   },
   "introuvable": {
     "retourAccueil": "العودة إلى الصفحة الرئيسية"

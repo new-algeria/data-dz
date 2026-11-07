@@ -16,6 +16,8 @@ import type { Donnee, Ressource } from "@/lib/types";
 import { catalogueParCategorie, routes } from "@/lib/routes";
 import { DialogueTelechargement } from "./DialogueTelechargement";
 import { ObtenirPaquet } from "./ObtenirPaquet";
+import { ProposePar } from "./ProposePar";
+import { BoutonModifierDonnee } from "./BoutonModifierDonnee";
 
 /** « il y a 2 j » : forme courte, pour le chiffre clé de fraîcheur. */
 function ilYACourt(date: string | undefined, langue: string): string | null {
@@ -194,6 +196,7 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null, nombreV
             <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-5xl">{titre}</h1>
             {resume && <p className="mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">{resume}</p>}
             {donnee.sources && <p className="mt-3 text-sm text-muted-foreground">{t("fiche.sourceNom", { nom: donnee.sources.nom })}</p>}
+            <ProposePar datasetId={donnee.id} />
 
             {/* Trois chiffres clés */}
             <div className="mt-6 grid max-w-xl grid-cols-3 gap-4 border-y border-gray-200/80 py-4 dark:border-white/10">
@@ -243,6 +246,7 @@ export const EnTeteFiche = ({ donnee, nombreEvenementsCalendrier = null, nombreV
                   </a>
                 </Button>
               )}
+              <BoutonModifierDonnee slug={donnee.slug} />
               <div className="flex items-center gap-2">
                 <BoutonFavori donnee={donnee} taille="icone" className="border-gray-200 dark:border-white/10" />
                 <BoutonPartager titre={titre} />

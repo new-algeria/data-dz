@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
 import { CarteBio, EnTeteMembre } from "@/components/membres/FicheMembre";
+import { DonneesProposees } from "@/components/membres/DonneesProposees";
 import { EtatErreur } from "@/components/EtatErreur";
 import { PageIntrouvable } from "@/components/PageIntrouvable";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,8 +20,9 @@ const FicheMembre = ({ membre }: { membre: Profil }) => {
     <>
       <CustomMetaTags title={`${nom} (@${membre.pseudo}) - data-dz`} description={membre.bio || t("membre.description", { nom })} path={routes.membre(membre.pseudo)} />
       <EnTeteMembre membre={membre} />
-      <div className="container mx-auto max-w-3xl px-4 py-8">
+      <div className="container mx-auto max-w-3xl space-y-8 px-4 py-8">
         <CarteBio membre={membre} />
+        <DonneesProposees pseudo={membre.pseudo} />
       </div>
     </>
   );
