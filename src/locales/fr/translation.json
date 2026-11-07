@@ -1006,7 +1006,53 @@
       "forcer": "forcée"
     },
     "dernieresVersions": "Dernières versions publiées",
-    "aucuneVersion": "Aucune version pour l'instant."
+    "aucuneVersion": "Aucune version pour l'instant.",
+    "osm": {
+      "fluxTitre_one": "Tags récupérés ({{count}})",
+      "fluxTitre_other": "Tags récupérés ({{count}})",
+      "fluxAide": "Chaque ligne : un tag OpenStreetMap, la donnée qui le reçoit et son fichier. Le robot extrait les tags actifs au prochain passage. Retirer un tag laisse le fichier déjà publié en ligne.",
+      "ajouterTag": "Ajouter un tag",
+      "tag": "Tag OSM",
+      "donnee": "Donnée cible",
+      "fichier": "Nom du fichier",
+      "objets": "Objets",
+      "actions": "Actions",
+      "tester": "Tester",
+      "ajouter": "Ajouter",
+      "ajoute": "Tag ajouté : il sera récupéré au prochain passage",
+      "ajoutErreur": "Le tag n'a pas pu être ajouté",
+      "testErreur": "Le test n'a pas abouti",
+      "testResultat": "{{nb}} objets en Algérie ({{source}}).",
+      "testVide": "Aucun objet en Algérie avec ce tag ({{source}}) : vérifiez l'orthographe sur le wiki OpenStreetMap.",
+      "sources": {
+        "inventaire": "inventaire du dernier passage",
+        "overpass": "comptage Overpass en direct"
+      },
+      "aideAjout": "Format clé=valeur, plusieurs valeurs séparées par des virgules (ex. tourism=hotel,motel). La donnée doit déjà exister ; dans une donnée GeoAlgeria, le fichier s'ajoute en complément OpenStreetMap. Un tag qui ne trouve rien est simplement ignoré.",
+      "tagInvalide": "Format attendu : cle=valeur (lettres minuscules pour la clé).",
+      "supprime": "Tag retiré",
+      "retirer": "Retirer ce tag",
+      "confirmer": "Confirmer",
+      "inventaireTitre_one": "Inventaire des tags de l'Algérie ({{count}})",
+      "inventaireTitre_other": "Inventaire des tags de l'Algérie ({{count}})",
+      "nouveaux_one": "{{count}} nouveau",
+      "nouveaux_other": "{{count}} nouveaux",
+      "inventaireAide": "Tous les tags d'au moins 30 objets, recomptés à chaque passage. Un tag apparu depuis le passage précédent arrive dans « Nouveaux » : récupérez-le, gardez-le pour plus tard ou écartez-le.",
+      "onglets": {
+        "nouveau": "Nouveaux",
+        "a_etudier": "À étudier",
+        "ecarte": "Écartés",
+        "pris": "Récupérés"
+      },
+      "filtrer": "Filtrer (ex. shop=)",
+      "aucunTag": "Aucun tag ici.",
+      "prisPar": "Récupéré ({{flux}})",
+      "recuperer": "Récupérer",
+      "aEtudier": "À étudier",
+      "ecarter": "Écarter",
+      "voirPlus_one": "Voir {{count}} de plus",
+      "voirPlus_other": "Voir {{count}} de plus"
+    }
   },
   "admin": {
     "titre": "Gestion des membres",
