@@ -20,8 +20,11 @@ const FicheMembre = ({ membre }: { membre: Profil }) => {
     <>
       <CustomMetaTags title={`${nom} (@${membre.pseudo}) - data-dz`} description={membre.bio || t("membre.description", { nom })} path={routes.membre(membre.pseudo)} />
       <EnTeteMembre membre={membre} />
-      <div className="container mx-auto max-w-3xl space-y-8 px-4 py-8">
+      <div className="container mx-auto max-w-3xl px-4 pt-8">
         <CarteBio membre={membre} />
+      </div>
+      {/* Plus large que la bio : jusqu'à 3 cartes par ligne sur grand écran, comme le catalogue. */}
+      <div className="container mx-auto max-w-6xl px-4 py-8">
         <DonneesProposees pseudo={membre.pseudo} />
       </div>
     </>

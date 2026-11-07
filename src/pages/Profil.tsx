@@ -370,7 +370,7 @@ const Profil = () => {
         ) : (
           <>
             <EnTeteMembre membre={profil} action={<BoutonLienPublic pseudo={profil.pseudo} />} />
-            <div className="container mx-auto max-w-3xl space-y-6 px-4 pb-16 pt-6">
+            <div className="container mx-auto max-w-3xl space-y-6 px-4 pb-8 pt-6">
               <p className="text-sm text-muted-foreground">{t("profil.sousTitre")}</p>
               {modeEdition ? (
                 <>
@@ -400,7 +400,6 @@ const Profil = () => {
                   </div>
                 </Carte>
               )}
-              <DonneesProposees pseudo={profil.pseudo} soi />
               <Carte titre={t("profil.compte")}>
                 <dl className="space-y-1 text-sm">
                   <dt className="text-muted-foreground">{t("auth.email")}</dt>
@@ -415,6 +414,10 @@ const Profil = () => {
                   </Link>
                 </Button>
               </Carte>
+            </div>
+            {/* Plus large que le formulaire : jusqu'à 3 cartes par ligne sur grand écran, comme le catalogue. */}
+            <div className="container mx-auto max-w-6xl px-4 pb-16">
+              <DonneesProposees pseudo={profil.pseudo} soi />
             </div>
           </>
         )}
