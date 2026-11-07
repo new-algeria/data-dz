@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { avecRoleCode, type RoleUtilisateur } from "./profils";
+import { avecRoleCode, nettoyerRechercheMembre, type RoleUtilisateur } from "./profils";
 
 // Gestion des membres (rpc changer_role — migrations 20261023000007 puis 20261102000016 pour les rôles personnalisés).
 // La liste vient de la table profils (lisible par tous) ; seul le changement de rôle est réservé, et vérifié par la base :
@@ -25,11 +25,9 @@ export interface FiltresMembres {
   page: number;
 }
 
-/** Garde lettres, chiffres, espace, « - », « _ » et « . » : la recherche est injectée dans un filtre PostgREST `or=(…)`. */
-const nettoyerRecherche = (terme: string) => terme.replace(/[^\p{L}\p{N} _.-]/gu, "").trim().slice(0, 60);
 
 export async function chargerMembres({ terme, role, page }: FiltresMembres): Promise<{ membres: MembreAdmin[]; total: number }> {
-  const recherche = nettoyerRecherche(terme);
+  const recherche = nettoyerRechercheMembre(terme);
   const debut = page * MEMBRES_PAR_PAGE;
   return avecRoleCode("id, pseudo, nom_affiche, avatar_url, role, reputation, cree_le", async (select) => {
     let requete = supabase.from("profils").select(select, { count: "exact" });

@@ -65,6 +65,31 @@ export async function chargerMembre(pseudo: string): Promise<Profil | null> {
   return data as unknown as Profil | null;
 }
 
+/**
+ * Garde lettres, chiffres, espace, « - », « _ » et « . » : la recherche est injectée dans un filtre PostgREST `or=(…)`,
+ * où virgules, parenthèses et points-virgules changeraient le sens du filtre.
+ */
+export const nettoyerRechercheMembre = (terme: string) => terme.replace(/[^\p{L}\p{N} _.-]/gu, "").trim().slice(0, 60);
+
+/** Recherche minimale avant d'interroger la base (une lettre renverrait presque tout le monde). */
+export const LONGUEUR_MIN_RECHERCHE_MEMBRE = 2;
+
+export type MembreTrouve = Pick<Profil, "pseudo" | "nom_affiche" | "avatar_url">;
+
+/** Membres dont le pseudo ou le nom affiché contient le terme (recherche de l'en-tête), les plus actifs d'abord. */
+export async function rechercherMembres(terme: string, limite = 4): Promise<MembreTrouve[]> {
+  const recherche = nettoyerRechercheMembre(terme);
+  if (recherche.length < LONGUEUR_MIN_RECHERCHE_MEMBRE) return [];
+  const { data, error } = await supabase
+    .from("profils")
+    .select("pseudo, nom_affiche, avatar_url")
+    .or(`pseudo.ilike.*${recherche}*,nom_affiche.ilike.*${recherche}*`)
+    .order("reputation", { ascending: false })
+    .limit(limite);
+  if (error) throw error;
+  return (data ?? []) as MembreTrouve[];
+}
+
 export const normaliserPseudo = (pseudo: string) => pseudo.trim().toLowerCase();
 
 export type EtatPseudo = "valide" | "format" | "reserve" | "pris";
