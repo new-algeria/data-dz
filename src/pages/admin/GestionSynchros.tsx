@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,9 @@ import { routes } from "@/lib/routes";
 import { chargerSynchros, modifierSynchro, totauxRapport, type StatutExecution, type Synchro } from "@/lib/synchros";
 import { texteTraduit } from "@/lib/traduction";
 import { cn } from "@/lib/utils";
+import { lazyAvecRechargement } from "@/lib/rechargement";
+
+const TagsOsm = lazyAvecRechargement(() => import("./TagsOsm"));
 
 const APPARENCE_STATUT: Record<StatutExecution, { icone: LucideIcon; classes: string }> = {
   reussie: { icone: CheckCircle2, classes: "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-300" },
@@ -167,6 +170,12 @@ const GestionSynchros = () => {
                 </dl>
 
                 {synchro.mode === "interne" && <Reglages synchro={synchro} />}
+
+                {synchro.code === "openstreetmap" && (
+                  <Suspense fallback={<Skeleton className="h-48 rounded-xl" />}>
+                    <TagsOsm />
+                  </Suspense>
+                )}
 
                 {donnees.length > 0 && (
                   <details className="group rounded-xl border">

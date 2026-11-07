@@ -1006,7 +1006,53 @@
       "forcer": "forced"
     },
     "dernieresVersions": "Latest published versions",
-    "aucuneVersion": "No version yet."
+    "aucuneVersion": "No version yet.",
+    "osm": {
+      "fluxTitre_one": "Collected tags ({{count}})",
+      "fluxTitre_other": "Collected tags ({{count}})",
+      "fluxAide": "Each row: an OpenStreetMap tag, the dataset that receives it and its file. The robot extracts active tags on its next run. Removing a tag keeps the already published file online.",
+      "ajouterTag": "Add a tag",
+      "tag": "OSM tag",
+      "donnee": "Target dataset",
+      "fichier": "File name",
+      "objets": "Objects",
+      "actions": "Actions",
+      "tester": "Test",
+      "ajouter": "Add",
+      "ajoute": "Tag added: it will be collected on the next run",
+      "ajoutErreur": "The tag could not be added",
+      "testErreur": "The test failed",
+      "testResultat": "{{nb}} objects in Algeria ({{source}}).",
+      "testVide": "No object in Algeria with this tag ({{source}}): check the spelling on the OpenStreetMap wiki.",
+      "sources": {
+        "inventaire": "last run's inventory",
+        "overpass": "live Overpass count"
+      },
+      "aideAjout": "Format key=value, several values separated by commas (e.g. tourism=hotel,motel). The dataset must already exist; in a GeoAlgeria dataset the file is added as an OpenStreetMap complement. A tag that finds nothing is simply skipped.",
+      "tagInvalide": "Expected format: key=value (lowercase key).",
+      "supprime": "Tag removed",
+      "retirer": "Remove this tag",
+      "confirmer": "Confirm",
+      "inventaireTitre_one": "Algeria tag inventory ({{count}})",
+      "inventaireTitre_other": "Algeria tag inventory ({{count}})",
+      "nouveaux_one": "{{count}} new",
+      "nouveaux_other": "{{count}} new",
+      "inventaireAide": "Every tag with at least 30 objects, recounted on each run. A tag that appeared since the previous run lands in “New”: collect it, keep it for later or discard it.",
+      "onglets": {
+        "nouveau": "New",
+        "a_etudier": "To review",
+        "ecarte": "Discarded",
+        "pris": "Collected"
+      },
+      "filtrer": "Filter (e.g. shop=)",
+      "aucunTag": "No tag here.",
+      "prisPar": "Collected ({{flux}})",
+      "recuperer": "Collect",
+      "aEtudier": "To review",
+      "ecarter": "Discard",
+      "voirPlus_one": "Show {{count}} more",
+      "voirPlus_other": "Show {{count}} more"
+    }
   },
   "admin": {
     "titre": "Member management",
