@@ -265,7 +265,10 @@
     },
     "donneesSimilaires": {
       "titre": "Données du même thème"
-    }
+    },
+    "proposePar": "Proposée par",
+    "modifier": "Modifier",
+    "modifierErreur": "Impossible d'ouvrir la modification. Réessaie dans un instant."
   },
   "attribution": {
     "titre": "Attribution",
@@ -384,7 +387,9 @@
     "roles": {
       "moderateur": "Modérateur",
       "admin": "Administrateur"
-    }
+    },
+    "donneesProposees": "Données proposées",
+    "aucuneDonneeProposee": "Aucune de tes propositions n'est encore publiée. Partage une donnée utile : elle apparaîtra ici une fois en ligne."
   },
   "introuvable": {
     "retourAccueil": "Retour à l'accueil"

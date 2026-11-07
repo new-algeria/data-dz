@@ -9,6 +9,7 @@ import { CustomMetaTags } from "@/components/MetaTags";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { EnTeteMembre } from "@/components/membres/FicheMembre";
+import { DonneesProposees } from "@/components/membres/DonneesProposees";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -399,6 +400,7 @@ const Profil = () => {
                   </div>
                 </Carte>
               )}
+              <DonneesProposees pseudo={profil.pseudo} soi />
               <Carte titre={t("profil.compte")}>
                 <dl className="space-y-1 text-sm">
                   <dt className="text-muted-foreground">{t("auth.email")}</dt>

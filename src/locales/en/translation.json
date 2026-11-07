@@ -265,7 +265,10 @@
     },
     "donneesSimilaires": {
       "titre": "More data on this topic"
-    }
+    },
+    "proposePar": "Submitted by",
+    "modifier": "Edit",
+    "modifierErreur": "Couldn't open the editor. Try again in a moment."
   },
   "attribution": {
     "titre": "Attribution",
@@ -384,7 +387,9 @@
     "roles": {
       "moderateur": "Moderator",
       "admin": "Administrator"
-    }
+    },
+    "donneesProposees": "Submitted datasets",
+    "aucuneDonneeProposee": "None of your submissions is published yet. Share a useful dataset: it will show up here once it's online."
   },
   "introuvable": {
     "retourAccueil": "Back to home"
