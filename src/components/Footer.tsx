@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { faGithub, faLinkedin, faXTwitter, type IconDefinition } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSection } from "@/hooks/use-section";
 import { routes } from "@/lib/routes";
 import { DrapeauAlgerie } from "./DrapeauAlgerie";
 
@@ -32,6 +33,7 @@ const LienInterne = ({ vers, children }: { vers: string; children: ReactNode }) 
  */
 const Footer = () => {
   const { t } = useTranslation();
+  const section = useSection();
   const annee = new Date().getFullYear();
   const lienContact = `mailto:admin@newalgeria.org?subject=${encodeURIComponent(t("contact.sujet"))}&body=${encodeURIComponent(t("contact.corps"))}`;
 
@@ -46,7 +48,7 @@ const Footer = () => {
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 pb-8 pt-12 sm:px-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
         <div className="col-span-2 max-w-sm md:col-span-1">
           <Link to={routes.accueil} className="inline-flex items-center gap-2">
-            <img src="/data_dz_logo_icon.png" alt="" className="h-9 w-9" />
+            <img src={section.logo} alt="" className="h-9 w-9" />
             <span className="text-xl font-bold tracking-tight text-foreground">
               data<span className="text-emerald-600">-dz</span>
             </span>

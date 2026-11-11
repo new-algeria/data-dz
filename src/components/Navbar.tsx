@@ -13,7 +13,28 @@ import { MenuUtilisateur } from "./auth/MenuUtilisateur";
 import { ClocheNotifications } from "./communaute/ClocheNotifications";
 import { MenuMobile } from "./MenuMobile";
 import { RechercheNavbar } from "./RechercheNavbar";
-import ICONE_DATA_DZ from "@/assets/img/data_dz_logo_icon.png";
+import { useSection } from "@/hooks/use-section";
+import { VERT_DATA_DZ, type Section } from "@/lib/sections";
+
+/** Nom à côté du logo : « data-dz » (vert), « data-dz/api » (API, violet) ou « DjazAI » (bleu). */
+const NomSection = ({ section }: { section: Section }) => {
+  const classe = "whitespace-nowrap text-xl font-bold tracking-tight text-gray-900 dark:text-white";
+  if (section.cle === "djazai") {
+    return <span className={classe}>Djaz<span style={{ color: section.couleur }}>AI</span></span>;
+  }
+  if (section.cle === "api") {
+    return (
+      <span className={classe}>
+        data<span style={{ color: VERT_DATA_DZ }}>-dz</span><span style={{ color: section.couleur }}>/api</span>
+      </span>
+    );
+  }
+  return (
+    <span className={classe}>
+      data<span className="text-emerald-600 dark:text-emerald-400">-dz</span>
+    </span>
+  );
+};
 
 export const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -21,7 +42,7 @@ export const Navbar = () => {
   const { session, chargement } = useAuth();
   const visiteur = !session && !chargement;
   const { pathname, search } = useLocation();
-  const surPageApi = pathname === routes.api;
+  const section = useSection();
   const [defile, setDefile] = useState(false);
   const [rechercheOuverte, setRechercheOuverte] = useState(false);
 
@@ -45,20 +66,12 @@ export const Navbar = () => {
         <div className="flex shrink-0 items-center gap-2" dir="ltr">
           <Link to={routes.accueil} className="group flex shrink-0 items-center gap-2.5" aria-label="data-dz">
             <img
-              src={ICONE_DATA_DZ}
+              src={section.logo}
               alt=""
               className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[20deg]"
             />
-            <span className="whitespace-nowrap text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-              data<span className="text-emerald-600 dark:text-emerald-400">-dz</span>
-            </span>
+            <NomSection section={section} />
           </Link>
-          {/* Sur la page API : « data-dz / API », en violet comme tout ce qui touche à l'API. */}
-          {surPageApi && (
-            <Link to={routes.api} className="whitespace-nowrap text-xl font-bold tracking-tight text-violet-600 dark:text-violet-400">
-              <span className="font-light text-gray-400 dark:text-gray-500">/</span> API
-            </Link>
-          )}
         </div>
 
         {/* Grands écrans : grande recherche (résultats en dessous) au centre. */}
