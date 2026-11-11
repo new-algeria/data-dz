@@ -27,6 +27,7 @@ export const routes = {
   adminSynchros: "/admin/sync",
   api: "/api",
   thematiques: "/themes",
+  djazai: "/djazai",
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

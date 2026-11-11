@@ -1388,6 +1388,42 @@
       "Checking the published datasets…",
       "Preparing the answer and sources…"
     ],
-    "apercuDataset": "Preview of the “{{titre}}” dataset"
+    "apercuDataset": "Preview of the “{{titre}}” dataset",
+    "pleinePage": "Open DjazAI full page"
+  },
+  "pageDjazai": {
+    "metaTitre": "DjazAI · the assistant for Algerian data | data-dz",
+    "metaDescription": "Ask questions about Algeria’s open data: DjazAI answers from the data-dz catalogue, with sources.",
+    "surTitre": "DjazAI by data-dz",
+    "badge": "Free · Sourced · fr / en / ar",
+    "intro": "Ask, and DjazAI searches the data-dz catalogue for you: wilayas, health, education, climate, transport… Every answer cites the datasets and official sources it comes from.",
+    "commencer": "Ask my question",
+    "rejouer": "Replay the animation",
+    "questionReprise": "Your question is waiting in the box, just send it ✨",
+    "sources": {
+      "titre": "Answers that come from somewhere",
+      "texte": "DjazAI only answers from the data-dz catalogue. Its data comes from these sources, cited in every answer.",
+      "catalogue": "the catalogue"
+    },
+    "conversation": {
+      "titre": "Chat with the data",
+      "texte": "Your conversations stay in this browser. 5 questions a day for each member.",
+      "accueilVisiteur": "Go ahead, ask your question. To read the answer, just sign in (it’s free).",
+      "reserve": "Answers for signed-in members · 5 questions a day"
+    },
+    "verrou": {
+      "titre": "Your answer is ready",
+      "texte": "Sign in to see it with its sources. 5 free questions every day.",
+      "seConnecter": "Sign in to see the answer"
+    },
+    "historique": {
+      "titre": "Conversations",
+      "bouton": "Conversations ({{count}})",
+      "vide": "Your conversations will appear here.",
+      "supprimer": "Delete the conversation “{{titre}}”",
+      "toutEffacer": "Clear all history",
+      "confirmerEffacer": "Delete all your conversations from this browser?",
+      "local": "Saved only in this browser, never on our servers."
+    }
   }
 }
