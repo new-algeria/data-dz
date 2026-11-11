@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { Expand, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, Sparkles, UserPlus, X } from "lucide-react";
+import { Expand, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, UserPlus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
-import { IndicateurReflexion, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
+import { AvatarDjazAI, IndicateurReflexion, NomDjazAI, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
 import {
   Dialog,
   DialogClose,
@@ -166,10 +165,10 @@ export const BulleIA = () => {
           <button
             type="button"
             aria-label={t("ia.bouton")}
-            className="group relative flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-700 to-teal-600 p-3 text-sm font-semibold text-white shadow-lg shadow-emerald-900/25 ring-1 ring-white/20 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 motion-reduce:transition-none sm:py-2.5 sm:pe-4 sm:ps-3"
+            className="group relative flex items-center gap-2 rounded-full border border-[#2f80ed]/25 bg-card p-1.5 text-base font-bold tracking-tight text-foreground shadow-lg shadow-blue-900/15 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f80ed] motion-reduce:transition-none sm:pe-4"
           >
-            <Sparkles className="h-5 w-5" aria-hidden />
-            <span className="hidden sm:inline">{t("ia.libelle")}</span>
+            <AvatarDjazAI className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[20deg] motion-reduce:transition-none" />
+            <NomDjazAI className="hidden sm:inline" />
           </button>
         </DialogTrigger>
 
@@ -184,16 +183,15 @@ export const BulleIA = () => {
           className="flex h-[100dvh] w-screen max-w-none flex-col gap-0 overflow-hidden rounded-none border-0 bg-background p-0 shadow-2xl data-[state=closed]:slide-out-to-top-0 data-[state=open]:slide-in-from-top-0 sm:h-[min(760px,calc(100dvh-3rem))] sm:w-[min(860px,calc(100vw-3rem))] sm:max-w-[860px] sm:rounded-3xl sm:border sm:border-border [&>button:last-child]:hidden"
         >
           {/* En-tête compact : une seule ligne sur téléphone (≈ 56 px), titre complet et description à partir de « sm ». */}
-          <DialogHeader className="shrink-0 space-y-0 bg-gradient-to-br from-emerald-700 to-teal-600 px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] text-start text-white sm:px-6 sm:py-4">
+          <DialogHeader className="shrink-0 space-y-0 border-b border-border bg-background px-3 pb-2.5 pt-[calc(0.625rem+env(safe-area-inset-top))] text-start text-foreground sm:px-6 sm:py-4">
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <DrapeauAlgerie className="h-5 w-[1.875rem] shrink-0 rounded-[3px] shadow-sm sm:h-7 sm:w-[2.625rem]" titre={t("drapeau")} />
+              <AvatarDjazAI className="h-8 w-8 sm:h-10 sm:w-10" />
               <div className="min-w-0 flex-1">
-                <DialogTitle className="flex items-center gap-2 text-start text-base font-bold leading-tight text-white sm:text-xl">
-                  <span className="truncate sm:hidden">{t("ia.libelle")}</span>
-                  <span className="hidden truncate sm:inline">{t("ia.titre")}</span>
+                <DialogTitle className="flex items-center gap-2 text-start text-base font-bold leading-tight tracking-tight text-foreground sm:text-xl">
+                  <NomDjazAI className="truncate" />
                 </DialogTitle>
-                <DialogDescription className="flex items-center gap-1.5 text-start text-xs text-emerald-50 sm:mt-0.5 sm:text-sm">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-lime-300" aria-hidden />
+                <DialogDescription className="flex items-center gap-1.5 text-start text-xs text-muted-foreground sm:mt-0.5 sm:text-sm">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#2f80ed]" aria-hidden />
                   <span className="truncate sm:hidden">{t("ia.enDeveloppement")}</span>
                   <span className="hidden truncate sm:inline">{t("ia.descriptionChat")}</span>
                 </DialogDescription>
@@ -206,7 +204,7 @@ export const BulleIA = () => {
                   disabled={envoiEnCours}
                   aria-label={t("ia.nouvelle")}
                   title={t("ia.nouvelle")}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:opacity-50 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-lg sm:px-2.5 sm:py-1.5 sm:text-xs sm:font-medium"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f80ed] disabled:opacity-50 sm:h-auto sm:w-auto sm:gap-1.5 sm:rounded-lg sm:px-2.5 sm:py-1.5 sm:text-xs sm:font-medium"
                 >
                   <RotateCcw className="h-4 w-4 sm:h-3.5 sm:w-3.5" aria-hidden />
                   <span className="hidden sm:inline">{t("ia.nouvelle")}</span>
@@ -217,13 +215,13 @@ export const BulleIA = () => {
                 onClick={() => setOuverte(false)}
                 aria-label={t("ia.pleinePage")}
                 title={t("ia.pleinePage")}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f80ed]"
               >
                 <Expand className="h-4 w-4" aria-hidden />
               </Link>
               <DialogClose
                 aria-label={t("ia.fermer")}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2f80ed]"
               >
                 <X className="h-5 w-5" aria-hidden />
               </DialogClose>
@@ -282,9 +280,7 @@ export const BulleIA = () => {
               </div>
             ) : messages.length === 0 ? (
               <div className="mx-auto flex min-h-full max-w-xl flex-col items-center justify-center py-6 text-center">
-                <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
-                  <Sparkles className="h-7 w-7" aria-hidden />
-                </span>
+                <AvatarDjazAI className="mb-4 h-16 w-16" />
                 <h2 className="text-lg font-semibold text-foreground">{t("ia.bienvenue")}</h2>
                 <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">{t("ia.premiere")}</p>
                 <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -307,9 +303,7 @@ export const BulleIA = () => {
                   <div className={message.role === "user" ? "max-w-[88%] rounded-2xl rounded-ee-md bg-emerald-700 px-4 py-3 text-white shadow-sm" : "max-w-[94%] space-y-3 sm:max-w-[88%]"}>
                     {message.role === "assistant" && (
                       <div className="flex items-start gap-2.5">
-                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-700 to-teal-600 text-white">
-                          <Sparkles className="h-4 w-4" aria-hidden />
-                        </span>
+                        <AvatarDjazAI className="mt-0.5 h-7 w-7" />
                         <div className={message.erreur ? "rounded-2xl rounded-ss-md border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100" : "min-w-0 rounded-2xl rounded-ss-md border border-border bg-card px-4 py-3 text-sm leading-relaxed text-card-foreground shadow-sm"}>
                           {message.erreur ? (
                             <p>{message.contenu}</p>

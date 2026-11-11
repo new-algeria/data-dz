@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { ArrowDown, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
+import { BLEU_DJAZAI } from "@/lib/sections";
 import { ScenePilule } from "./ScenePilule";
 
 /** Durée de l'ouverture de la pilule, comme dans la maquette d'origine. */
@@ -151,7 +152,7 @@ export const HeroDjazAI = ({ versConversation }: { versConversation: () => void 
             <ScenePilule />
             <span ref={voileRef} className="absolute inset-0 bg-neutral-400 opacity-0 dark:bg-neutral-700" />
           </span>
-          <span aria-hidden className="text-emerald-700 dark:text-emerald-400">AI</span>
+          <span aria-hidden style={{ color: BLEU_DJAZAI }}>AI</span>
         </h1>
       </div>
 

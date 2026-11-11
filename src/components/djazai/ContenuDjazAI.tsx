@@ -5,6 +5,8 @@ import remarkGfm from "remark-gfm";
 import { Link } from "react-router-dom";
 import type { SourceDjazAI } from "@/lib/djazai";
 import { routes } from "@/lib/routes";
+import { BLEU_DJAZAI, LOGO_DJAZAI } from "@/lib/sections";
+import { cn } from "@/lib/utils";
 
 function dateLisible(dateTexte: string | null, langue: string): string | null {
   if (!dateTexte) return null;
@@ -109,4 +111,21 @@ export const IndicateurReflexion = ({ etape }: { etape: string }) => (
     </span>
     <span key={etape} className="animate-in fade-in duration-300">{etape}</span>
   </div>
+);
+
+/** Logo bleu de DjazAI, utilisé comme avatar de l'assistant (bulle, page, indicateur). */
+export const AvatarDjazAI = ({ className, anime = false }: { className?: string; anime?: boolean }) => (
+  <img
+    src={LOGO_DJAZAI}
+    alt=""
+    aria-hidden
+    className={cn("shrink-0 select-none object-contain", anime && "animate-pulse motion-reduce:animate-none", className ?? "h-8 w-8")}
+  />
+);
+
+/** « DjazAI », avec « AI » dans le bleu de la section. */
+export const NomDjazAI = ({ className }: { className?: string }) => (
+  <span className={className} dir="ltr">
+    Djaz<span style={{ color: BLEU_DJAZAI }}>AI</span>
+  </span>
 );
