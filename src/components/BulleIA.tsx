@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ExternalLink, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, Sparkles, UserPlus, X } from "lucide-react";
+import { Expand, LoaderCircle, LogIn, RotateCcw, Send, ShieldCheck, Sparkles, UserPlus, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Link, useLocation } from "react-router-dom";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
+import { IndicateurReflexion, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
 import {
   Dialog,
   DialogClose,
@@ -17,7 +16,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ErreurApi } from "@/lib/api";
 import { useAuth } from "@/contexte/ContexteAuth";
-import { chargerQuotaDjazAI, interrogerDjazAI, type MessageDjazAI, type QuotaDjazAI, type SourceDjazAI } from "@/lib/djazai";
+import { historiquePourApi, slugsRecents } from "@/lib/conversations-djazai";
+import { chargerQuotaDjazAI, cleErreurDjazAI, interrogerDjazAI, quotaApresLimite, type QuotaDjazAI, type SourceDjazAI } from "@/lib/djazai";
 import { avecSuite, routes } from "@/lib/routes";
 
 type Message = {
@@ -27,13 +27,6 @@ type Message = {
   sources?: SourceDjazAI[];
   erreur?: boolean;
 };
-
-function dateLisible(dateTexte: string | null, langue: string): string | null {
-  if (!dateTexte) return null;
-  const date = new Date(dateTexte);
-  if (Number.isNaN(date.getTime())) return dateTexte;
-  return date.toLocaleDateString(langue, { day: "numeric", month: "short", year: "numeric" });
-}
 
 /**
  * Assistant DjazAI disponible depuis toutes les pages : le bouton flottant ouvre une conversation
@@ -99,34 +92,15 @@ export const BulleIA = () => {
     return () => window.clearInterval(timer);
   }, [envoiEnCours, etapesChargement.length]);
 
-  const texteErreur = (erreur: unknown) => {
-    if (erreur instanceof ErreurApi) {
-      if (erreur.code === "assistant_unconfigured") return t("ia.erreurConfiguration");
-      if (erreur.code === "assistant_daily_limit") return t("ia.quotaAtteint");
-      if (erreur.code === "assistant_quota_unavailable") return t("ia.quotaIndisponible");
-      if (erreur.code === "authentication_required") return t("ia.sessionExpiree");
-      if (erreur.code === "assistant_capacity" || erreur.code === "rate_limited" || erreur.statut === 429 || erreur.statut === 503) {
-        return t("ia.erreurLimite");
-      }
-    }
-    return t("ia.erreurGenerique");
-  };
+  const texteErreur = (erreur: unknown) => t(cleErreurDjazAI(erreur));
 
   const envoyerQuestion = async (valeur: string) => {
     const texte = valeur.trim();
     if (!texte || envoiEnCours || !session || chargementAuth || quotaEnCours || erreurQuota || !quota) return;
     if (!quota.is_admin && (quota.remaining ?? 0) < 1) return;
 
-    const historique: MessageDjazAI[] = messages
-      .filter((message) => !message.erreur)
-      .map((message) => ({ role: message.role, content: message.contenu }))
-      .slice(-8);
-    const slugsPrecedents = [...new Set(
-      messages
-        .slice()
-        .reverse()
-        .flatMap((message) => message.role === "assistant" ? (message.sources ?? []).map((source) => source.id) : [])
-    )].slice(0, 4);
+    const historique = historiquePourApi(messages);
+    const slugsPrecedents = slugsRecents(messages);
 
     setQuestion("");
     setEtapeChargement(0);
@@ -142,10 +116,7 @@ export const BulleIA = () => {
       ]);
     } catch (erreur) {
       if (erreur instanceof ErreurApi && erreur.code === "assistant_daily_limit") {
-        const details = erreur.details as { remaining?: number; resets_at?: string } | undefined;
-        setQuota((courant) => courant ? { ...courant, remaining: details?.remaining ?? 0, resets_at: details?.resets_at ?? courant.resets_at } : {
-          is_admin: false, daily_limit: 5, remaining: 0, resets_at: details?.resets_at ?? null,
-        });
+        setQuota((courant) => quotaApresLimite(courant, erreur));
       }
       if (erreur instanceof ErreurApi && erreur.code === "assistant_quota_unavailable") setErreurQuota(true);
       setMessages((courants) => [
@@ -184,6 +155,9 @@ export const BulleIA = () => {
       void envoyerQuestion(question);
     }
   };
+
+  // La page DjazAI a sa propre conversation en grand : pas de bulle par-dessus.
+  if (emplacement.pathname === routes.djazai) return null;
 
   return (
     <div className={`fixed bottom-4 end-4 z-40 sm:bottom-6 sm:end-6 ${ouverte ? "pointer-events-none opacity-0" : ""}`}>
@@ -238,6 +212,15 @@ export const BulleIA = () => {
                   <span className="hidden sm:inline">{t("ia.nouvelle")}</span>
                 </button>
               )}
+              <Link
+                to={routes.djazai}
+                onClick={() => setOuverte(false)}
+                aria-label={t("ia.pleinePage")}
+                title={t("ia.pleinePage")}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              >
+                <Expand className="h-4 w-4" aria-hidden />
+              </Link>
               <DialogClose
                 aria-label={t("ia.fermer")}
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
@@ -331,18 +314,7 @@ export const BulleIA = () => {
                           {message.erreur ? (
                             <p>{message.contenu}</p>
                           ) : (
-                            <div dir="auto" className="prose prose-sm max-w-none break-words dark:prose-invert prose-p:my-2 prose-a:text-emerald-800 prose-a:underline prose-a:underline-offset-2 dark:prose-a:text-emerald-300 prose-li:my-0">
-                              <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                components={{
-                                  a: ({ href, children }) => href
-                                    ? <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>
-                                    : <>{children}</>,
-                                }}
-                              >
-                                {message.contenu}
-                              </ReactMarkdown>
-                            </div>
+                            <ReponseMarkdown contenu={message.contenu} />
                           )}
                         </div>
                       </div>
@@ -351,67 +323,8 @@ export const BulleIA = () => {
                     {message.role === "user" && <p dir="auto" className="whitespace-pre-wrap text-sm leading-relaxed">{message.contenu}</p>}
 
                     {message.sources && message.sources.length > 0 && (
-                      <div className="ms-9 space-y-2">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("ia.sources")}</p>
-                        {message.sources.map((source) => {
-                          const date = dateLisible(source.mis_a_jour_le, i18n.resolvedLanguage ?? "fr");
-                          return (
-                            <article
-                              key={source.id}
-                              className="animate-in fade-in slide-in-from-bottom-1 rounded-xl border border-border bg-card p-3 text-start shadow-sm duration-300 motion-reduce:animate-none"
-                              style={{ animationDelay: `${Math.min(message.sources?.indexOf(source) ?? 0, 4) * 60}ms` }}
-                            >
-                              <Link
-                                to={routes.donnee(source.id)}
-                                onClick={() => setOuverte(false)}
-                                className="group flex items-start gap-3 text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300"
-                              >
-                                <span className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg sm:h-16 sm:w-24 bg-emerald-50 dark:bg-emerald-950/60">
-                                  <Sparkles className="absolute inset-0 m-auto h-5 w-5 text-emerald-700/60 dark:text-emerald-300/60" aria-hidden />
-                                  {source.image_url && (
-                                    <img
-                                      src={source.image_url}
-                                      alt={t("ia.apercuDataset", { titre: source.titre })}
-                                      loading="lazy"
-                                      decoding="async"
-                                      onError={(event) => { event.currentTarget.style.visibility = "hidden"; }}
-                                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
-                                    />
-                                  )}
-                                </span>
-                                <span className="min-w-0 flex-1">
-                                  <span className="block leading-snug">{source.titre}</span>
-                                  {source.formats && source.formats.length > 0 && (
-                                    <span className="mt-1.5 flex flex-wrap gap-1">
-                                      {source.formats.slice(0, 4).map((format) => (
-                                        <span key={format} className="rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                                          {format}
-                                        </span>
-                                      ))}
-                                    </span>
-                                  )}
-                                </span>
-                                <ExternalLink className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                              </Link>
-                              {source.source_nom && <p className="mt-2 text-xs text-muted-foreground">{t("ia.source")}: {source.source_nom}</p>}
-                              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                                {date && <span>{t("ia.misAJour")}: {date}</span>}
-                                {source.version && <span>{t("ia.version")}: {source.version}</span>}
-                                {source.licence_code && (
-                                  source.licence_url
-                                    ? <a href={source.licence_url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{t("ia.licence")}: {source.licence_code}</a>
-                                    : <span>{t("ia.licence")}: {source.licence_code}</span>
-                                )}
-                              </div>
-                              {source.source_url && (
-                                <a href={source.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground">
-                                  {t("ia.sourceOfficielle")}
-                                  <ExternalLink className="h-3 w-3" aria-hidden />
-                                </a>
-                              )}
-                            </article>
-                          );
-                        })}
+                      <div className="ms-9">
+                        <SourcesDjazAI sources={message.sources} onOuvrir={() => setOuverte(false)} />
                       </div>
                     )}
                   </div>
@@ -428,16 +341,7 @@ export const BulleIA = () => {
             {session && quotaEnCours && messages.length > 0 && <p className="text-center text-xs text-muted-foreground">{t("ia.verificationQuota")}</p>}
             {envoiEnCours && (
               <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
-                <div className="flex items-center gap-3 rounded-2xl rounded-ss-md border border-border bg-card px-4 py-3 text-sm text-muted-foreground shadow-sm" role="status">
-                  <span className="inline-flex items-center gap-1" aria-hidden>
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-emerald-700 [animation-delay:-0.24s] motion-reduce:animate-none" />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-emerald-600 [animation-delay:-0.12s] motion-reduce:animate-none" />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-teal-500 motion-reduce:animate-none" />
-                  </span>
-                  <span key={etapeChargement} className="animate-in fade-in duration-300">
-                    {etapesChargement[etapeChargement] ?? t("ia.chargement")}
-                  </span>
-                </div>
+                <IndicateurReflexion etape={etapesChargement[etapeChargement] ?? t("ia.chargement")} />
               </div>
             )}
             <div ref={finMessagesRef} />
