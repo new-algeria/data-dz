@@ -40,7 +40,10 @@
     "projet": "Un projet open source porté par",
     "codeSource": "Code source",
     "copyright": "New Algeria. Données sous la licence de leur source.",
-    "contact": "Nous contacter"
+    "contact": "Nous contacter",
+    "tagline": "Les données ouvertes de l’Algérie, en chiffres et en cartes. Gratuites, sourcées, en français, anglais et arabe.",
+    "contribuer": "Contribuer",
+    "legal": "Pages légales"
   },
   "contact": {
     "sujet": "Contact - data-dz",
@@ -1388,6 +1391,42 @@
       "Je vérifie les fiches publiées…",
       "Je prépare les réponses et les sources…"
     ],
-    "apercuDataset": "Aperçu du jeu de données « {{titre}} »"
+    "apercuDataset": "Aperçu du jeu de données « {{titre}} »",
+    "pleinePage": "Ouvrir DjazAI en grand"
+  },
+  "pageDjazai": {
+    "metaTitre": "DjazAI · l’assistant des données algériennes | data-dz",
+    "metaDescription": "Pose tes questions sur les données ouvertes de l’Algérie : DjazAI répond à partir du catalogue data-dz, sources à l’appui.",
+    "surTitre": "DjazAI par data-dz",
+    "badge": "Gratuit · Sourcé · fr / en / ar",
+    "intro": "Demande, DjazAI cherche pour toi dans le catalogue data-dz : wilayas, santé, éducation, climat, transports… Chaque réponse cite les fiches et les sources officielles d’où elle vient.",
+    "commencer": "Poser ma question",
+    "rejouer": "Rejouer l’animation",
+    "questionReprise": "Ta question t’attend dans le champ, il ne reste qu’à l’envoyer ✨",
+    "sources": {
+      "titre": "Des réponses qui viennent de quelque part",
+      "texte": "DjazAI ne répond qu’à partir du catalogue data-dz. Ses données viennent de ces sources, citées à chaque réponse.",
+      "catalogue": "le catalogue"
+    },
+    "conversation": {
+      "titre": "Discute avec les données",
+      "texte": "Tes conversations restent dans ce navigateur. 5 questions par jour pour chaque membre.",
+      "accueilVisiteur": "Essaie : pose ta question. Pour lire la réponse, il suffit d’être connecté (c’est gratuit).",
+      "reserve": "Réponses réservées aux membres connectés · 5 questions par jour"
+    },
+    "verrou": {
+      "titre": "Ta réponse est prête",
+      "texte": "Connecte-toi pour la découvrir avec ses sources. 5 questions offertes chaque jour.",
+      "seConnecter": "Se connecter pour voir la réponse"
+    },
+    "historique": {
+      "titre": "Conversations",
+      "bouton": "Conversations ({{count}})",
+      "vide": "Tes conversations apparaîtront ici.",
+      "supprimer": "Supprimer la conversation « {{titre}} »",
+      "toutEffacer": "Effacer tout l’historique",
+      "confirmerEffacer": "Effacer toutes tes conversations de ce navigateur ?",
+      "local": "Enregistrées seulement dans ce navigateur, jamais sur nos serveurs."
+    }
   }
 }

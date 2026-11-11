@@ -15,6 +15,7 @@ import {
   Moon,
   RefreshCw,
   ShieldCheck,
+  Sparkles,
   Star,
   Sun,
   SunMoon,
@@ -182,6 +183,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           </Lien>
           <Lien vers={routes.thematiques} icone={LayoutGrid}>
             {t("thematiques.titre")}
+          </Lien>
+          <Lien vers={routes.djazai} icone={Sparkles}>
+            DjazAI
           </Lien>
           <Lien vers={routes.api} icone={Braces}>
             {t("navbar.apiLong")}

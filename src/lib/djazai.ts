@@ -1,4 +1,4 @@
-import { appelerApi } from "@/lib/api";
+import { appelerApi, ErreurApi } from "@/lib/api";
 
 export type RoleMessageDjazAI = "user" | "assistant";
 
@@ -54,3 +54,28 @@ export async function interrogerDjazAI(
     }),
   });
 }
+
+/** Clé i18n du message à afficher pour une erreur de DjazAI (même texte dans la bulle et sur la page). */
+export function cleErreurDjazAI(erreur: unknown): string {
+  if (erreur instanceof ErreurApi) {
+    if (erreur.code === "assistant_unconfigured") return "ia.erreurConfiguration";
+    if (erreur.code === "assistant_daily_limit") return "ia.quotaAtteint";
+    if (erreur.code === "assistant_quota_unavailable") return "ia.quotaIndisponible";
+    if (erreur.code === "authentication_required") return "ia.sessionExpiree";
+    if (erreur.code === "assistant_capacity" || erreur.code === "rate_limited" || erreur.statut === 429 || erreur.statut === 503) {
+      return "ia.erreurLimite";
+    }
+  }
+  return "ia.erreurGenerique";
+}
+
+/** Quota après un refus « limite atteinte » de l'API (elle renvoie `remaining` et `resets_at` dans `details`). */
+export function quotaApresLimite(courant: QuotaDjazAI | null, erreur: ErreurApi): QuotaDjazAI {
+  const details = erreur.details as { remaining?: number; resets_at?: string } | undefined;
+  return courant
+    ? { ...courant, remaining: details?.remaining ?? 0, resets_at: details?.resets_at ?? courant.resets_at }
+    : { is_admin: false, daily_limit: 5, remaining: 0, resets_at: details?.resets_at ?? null };
+}
+
+/** Il reste au moins une question aujourd'hui (toujours vrai pour un admin). */
+export const peutPoser = (quota: QuotaDjazAI | null) => Boolean(quota && (quota.is_admin || (quota.remaining ?? 0) > 0));

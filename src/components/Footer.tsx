@@ -1,86 +1,113 @@
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import { faGithub, faLinkedin, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin, faXTwitter, type IconDefinition } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { routes } from "@/lib/routes";
 import { DrapeauAlgerie } from "./DrapeauAlgerie";
 
+const URL_DEPOT = "https://github.com/new-algeria/data-dz";
+
+const RESEAUX: { nom: string; url: string; icone: IconDefinition }[] = [
+  { nom: "GitHub", url: URL_DEPOT, icone: faGithub },
+  { nom: "X", url: "https://x.com/newalgeria_org", icone: faXTwitter },
+  { nom: "LinkedIn", url: "https://www.linkedin.com/company/106182021/", icone: faLinkedin },
+];
+
+const TitreColonne = ({ children }: { children: ReactNode }) => (
+  <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">{children}</h2>
+);
+
+const classeLien = "text-sm text-muted-foreground transition-colors hover:text-emerald-700 dark:hover:text-emerald-400";
+
+const LienInterne = ({ vers, children }: { vers: string; children: ReactNode }) => (
+  <li>
+    <Link to={vers} className={classeLien}>{children}</Link>
+  </li>
+);
+
+/**
+ * Pied de page : liseré aux couleurs du drapeau, présentation du projet et réseaux, colonnes de liens
+ * (Explorer, Contribuer), puis copyright et pages légales.
+ */
 const Footer = () => {
   const { t } = useTranslation();
   const annee = new Date().getFullYear();
+  const lienContact = `mailto:admin@newalgeria.org?subject=${encodeURIComponent(t("contact.sujet"))}&body=${encodeURIComponent(t("contact.corps"))}`;
 
   return (
-    <footer className="mt-auto w-full pb-16 pt-10 text-gray-500 flex flex-col items-center text-center gap-6 bg-accent/90 dark:bg-black/25">
-      <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-        <DrapeauAlgerie className="h-5 w-[1.875rem]" titre={t("drapeau")} />
-        {t("footer.projet")}
-        <a
-          href="https://newalgeria.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold text-foreground hover:underline"
-        >
-          New Algeria
-        </a>
-      </p>
-
-      <div className="flex items-center gap-5">
-        <a
-          href="https://github.com/new-algeria/data-dz"
-          className="hover:text-foreground"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={t("footer.codeSource")}
-        >
-          <FontAwesomeIcon icon={faGithub} className="text-2xl" />
-        </a>
-        <a
-          href="https://x.com/newalgeria_org"
-          className="hover:text-foreground"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="X"
-        >
-          <FontAwesomeIcon icon={faXTwitter} className="text-2xl" />
-        </a>
-        <a
-          href="https://www.linkedin.com/company/106182021/"
-          className="hover:text-foreground"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn"
-        >
-          <FontAwesomeIcon icon={faLinkedin} className="text-2xl" />
-        </a>
+    <footer className="mt-auto w-full border-t border-border bg-muted/40 dark:bg-black/25">
+      <div className="flex h-1" aria-hidden>
+        <span className="flex-1 bg-[#006233]" />
+        <span className="flex-1 bg-white dark:bg-neutral-200" />
+        <span className="w-16 bg-[#d21034]" />
       </div>
 
-      <a
-        href={`mailto:admin@newalgeria.org?subject=${encodeURIComponent(t("contact.sujet"))}&body=${encodeURIComponent(t("contact.corps"))}`}
-        className="inline-flex items-center gap-2 text-sm hover:text-foreground"
-      >
-        <Mail className="h-4 w-4" aria-hidden />
-        {t("footer.contact")}
-      </a>
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 pb-8 pt-12 sm:px-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="col-span-2 max-w-sm md:col-span-1">
+          <Link to={routes.accueil} className="inline-flex items-center gap-2">
+            <img src="/data_dz_logo_icon.png" alt="" className="h-9 w-9" />
+            <span className="text-xl font-bold tracking-tight text-foreground">
+              data<span className="text-emerald-600">-dz</span>
+            </span>
+          </Link>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t("footer.tagline")}</p>
+          <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+            <DrapeauAlgerie className="h-4 w-6" titre={t("drapeau")} />
+            {t("footer.projet")}
+            <a href="https://newalgeria.org" target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground hover:underline">
+              New Algeria
+            </a>
+          </p>
+          <ul className="mt-5 flex items-center gap-2">
+            {RESEAUX.map((reseau) => (
+              <li key={reseau.nom}>
+                <a
+                  href={reseau.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={reseau.nom === "GitHub" ? t("footer.codeSource") : reseau.nom}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:border-emerald-600/50 hover:text-emerald-700 dark:hover:text-emerald-400"
+                >
+                  <FontAwesomeIcon icon={reseau.icone} className="text-lg" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <nav aria-label={t("legal.lienConditions")} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
-        <Link to={routes.api} className="hover:text-foreground hover:underline">
-          {t("navbar.apiLong")}
-        </Link>
-        <span aria-hidden>·</span>
-        <Link to={routes.confidentialite} className="hover:text-foreground hover:underline">
-          {t("legal.lienConfidentialite")}
-        </Link>
-        <span aria-hidden>·</span>
-        <Link to={routes.conditions} className="hover:text-foreground hover:underline">
-          {t("legal.lienConditions")}
-        </Link>
-      </nav>
+        <nav aria-labelledby="pied-explorer" className="space-y-3">
+          <TitreColonne><span id="pied-explorer">{t("navbar.explorer")}</span></TitreColonne>
+          <ul className="space-y-2">
+            <LienInterne vers={routes.catalogue}>{t("navbar.catalogue")}</LienInterne>
+            <LienInterne vers={routes.thematiques}>{t("thematiques.titre")}</LienInterne>
+            <LienInterne vers={routes.djazai}>DjazAI</LienInterne>
+            <LienInterne vers={routes.api}>{t("navbar.apiLong")}</LienInterne>
+          </ul>
+        </nav>
 
-      <hr className="w-1/4 border-primary/10 dark:border-primary-foreground/10" />
+        <nav aria-labelledby="pied-contribuer" className="space-y-3">
+          <TitreColonne><span id="pied-contribuer">{t("footer.contribuer")}</span></TitreColonne>
+          <ul className="space-y-2">
+            <LienInterne vers={routes.proposer}>{t("navbar.proposer")}</LienInterne>
+            <li>
+              <a href={URL_DEPOT} target="_blank" rel="noopener noreferrer" className={classeLien}>{t("footer.codeSource")}</a>
+            </li>
+            <li>
+              <a href={lienContact} className={classeLien}>{t("footer.contact")}</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
-      <div className="text-muted-foreground">
-        ©{annee} {t("footer.copyright")}
+      <div className="border-t border-border">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 pb-20 pt-5 text-xs text-muted-foreground sm:flex-row sm:justify-between sm:px-8">
+          <p>©{annee} {t("footer.copyright")}</p>
+          <nav aria-label={t("footer.legal")} className="flex items-center gap-4">
+            <Link to={routes.confidentialite} className="hover:text-foreground hover:underline">{t("legal.lienConfidentialite")}</Link>
+            <Link to={routes.conditions} className="hover:text-foreground hover:underline">{t("legal.lienConditions")}</Link>
+          </nav>
+        </div>
       </div>
     </footer>
   );

@@ -37,6 +37,7 @@ const GestionDonnees = lazyAvecRechargement(() => import("./pages/admin/GestionD
 const GestionSynchros = lazyAvecRechargement(() => import("./pages/admin/GestionSynchros"));
 const PageApi = lazyAvecRechargement(() => import("./pages/PageApi"));
 const PageThematiques = lazyAvecRechargement(() => import("./pages/PageThematiques"));
+const PageDjazAI = lazyAvecRechargement(() => import("./pages/PageDjazAI"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -139,6 +140,7 @@ function App() {
 
             <Route path={routes.api} element={<PageApi />} />
             <Route path={routes.thematiques} element={<PageThematiques />} />
+            <Route path={routes.djazai} element={<PageDjazAI />} />
             <Route path={routes.confidentialite} element={<Confidentialite />} />
             <Route path={routes.conditions} element={<Conditions />} />
 
