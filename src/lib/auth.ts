@@ -73,6 +73,8 @@ export async function envoyerLienMagique(email: string, suite: string) {
 /** Fournisseurs de connexion proposés, dans l'ordre d'affichage (les plus utilisés en Algérie d'abord). */
 export const FOURNISSEURS_SOCIAUX = ["google", "facebook", "github"] as const;
 export type FournisseurSocial = (typeof FOURNISSEURS_SOCIAUX)[number];
+/** Noms de marque (identiques dans les trois langues), pour les boutons compacts. */
+export const NOMS_FOURNISSEURS: Record<FournisseurSocial, string> = { google: "Google", facebook: "Facebook", github: "GitHub" };
 
 /** Connexion (ou création de compte) par Google, Facebook ou GitHub : même retour que les liens email. */
 export async function connecterAvecFournisseur(fournisseur: FournisseurSocial, suite: string) {

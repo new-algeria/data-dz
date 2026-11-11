@@ -353,7 +353,8 @@
       "google": "Continue with Google",
       "facebook": "Continue with Facebook",
       "github": "Continue with GitHub"
-    }
+    },
+    "continuerAvecEmail": "Continue with email"
   },
   "profil": {
     "titre": "My profile",
