@@ -40,7 +40,10 @@
     "projet": "Un projet open source porté par",
     "codeSource": "Code source",
     "copyright": "New Algeria. Données sous la licence de leur source.",
-    "contact": "Nous contacter"
+    "contact": "Nous contacter",
+    "tagline": "Les données ouvertes de l’Algérie, en chiffres et en cartes. Gratuites, sourcées, en français, anglais et arabe.",
+    "contribuer": "Contribuer",
+    "legal": "Pages légales"
   },
   "contact": {
     "sujet": "Contact - data-dz",
