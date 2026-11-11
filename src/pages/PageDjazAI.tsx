@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
-  Database,
   History,
   LoaderCircle,
   Lock,
@@ -19,7 +18,7 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
 import { Textarea } from "@/components/ui/textarea";
-import { SOURCES_ACCUEIL } from "@/components/accueil/sources-accueil";
+import { SOURCES_ACCUEIL, type SourceBandeau } from "@/components/accueil/sources-accueil";
 import { HeroDjazAI } from "@/components/djazai/HeroDjazAI";
 import { IndicateurReflexion, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
 import { useAuth } from "@/contexte/ContexteAuth";
@@ -132,46 +131,75 @@ const BulleMessage = ({ message, suite }: { message: MessageConversation; suite:
   );
 };
 
-/** Sources sur lesquelles DjazAI s'appuie : le catalogue data-dz, puis les sources du bandeau de l'accueil. */
+/** Une tuile du marquee : logo officiel s'il existe (public/sources/), sinon l'icône dans une pastille. */
+const TuileSource = ({ source, copie }: { source: SourceBandeau; copie: boolean }) => {
+  const { t } = useTranslation();
+  const Icone = source.icone;
+  return (
+    <li className="shrink-0">
+      <a
+        href={source.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        tabIndex={copie ? -1 : undefined}
+        className="group/tuile flex h-20 items-center gap-3 rounded-2xl border border-border bg-card px-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-600/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+      >
+        {source.logo ? (
+          <img src={source.logo} alt="" className="h-10 w-10 object-contain" loading="lazy" />
+        ) : (
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+            <Icone className="h-5 w-5" aria-hidden />
+          </span>
+        )}
+        <span className="whitespace-nowrap text-base font-semibold text-foreground">{t(`accueil.sources.noms.${source.cle}`)}</span>
+      </a>
+    </li>
+  );
+};
+
+/**
+ * Sources sur lesquelles DjazAI s'appuie : le catalogue data-dz en tête, puis les sources du bandeau de l'accueil,
+ * en tuiles qui défilent (deux copies, la seconde masquée ; sens inversé en arabe ; pause au survol ;
+ * grille fixe avec « réduire les animations »).
+ */
 const SectionSources = () => {
   const { t } = useTranslation();
   return (
-    <section aria-labelledby="titre-sources-djazai" className="border-y border-border bg-background">
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:items-center">
-        <div>
-          <h2 id="titre-sources-djazai" className="text-2xl font-extrabold tracking-tight text-foreground">
-            {t("pageDjazai.sources.titre")}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t("pageDjazai.sources.texte")}</p>
-        </div>
-        <ul className="flex flex-wrap gap-2">
-          <li>
-            <Link
-              to={routes.catalogue}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-800"
-            >
-              <Database className="h-4 w-4" aria-hidden />
-              data-dz
-              <span className="rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-semibold">{t("pageDjazai.sources.catalogue")}</span>
-            </Link>
-          </li>
-          {SOURCES_ACCUEIL.map((source) => {
-            const Icone = source.icone;
-            return (
-              <li key={source.cle}>
-                <a
-                  href={source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-emerald-600/50 hover:text-emerald-700 dark:hover:text-emerald-400"
-                >
-                  <Icone className="h-4 w-4" aria-hidden />
-                  {t(`accueil.sources.noms.${source.cle}`)}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+    <section aria-labelledby="titre-sources-djazai" className="overflow-hidden border-y border-border bg-background py-12">
+      <div className="mx-auto max-w-3xl px-4 text-center sm:px-8">
+        <h2 id="titre-sources-djazai" className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+          {t("pageDjazai.sources.titre")}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">{t("pageDjazai.sources.texte")}</p>
+      </div>
+      <div className="group mt-8 flex gap-[var(--gap)] [--duration:40s] [--gap:1rem] [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:[mask-image:none]">
+        {[false, true].map((copie) => (
+          <ul
+            key={String(copie)}
+            aria-hidden={copie || undefined}
+            className={cn(
+              "flex shrink-0 items-center gap-[var(--gap)] py-2 animate-marquee rtl:animate-marquee-rtl group-hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:shrink motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:px-4",
+              copie && "motion-reduce:hidden",
+            )}
+          >
+            <li className="shrink-0">
+              <Link
+                to={routes.catalogue}
+                tabIndex={copie ? -1 : undefined}
+                className="flex h-20 items-center gap-3 rounded-2xl bg-emerald-700 px-5 text-white shadow-md shadow-emerald-900/20 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+              >
+                <img src="/data_dz_logo_icon.png" alt="" className="h-10 w-10 rounded-xl bg-white/95 object-contain p-1" />
+                <span className="flex flex-col leading-tight">
+                  <span className="text-base font-extrabold">data-dz</span>
+                  <span className="text-xs font-medium text-emerald-50/90">{t("pageDjazai.sources.catalogue")}</span>
+                </span>
+              </Link>
+            </li>
+            {SOURCES_ACCUEIL.map((source) => (
+              <TuileSource key={source.cle} source={source} copie={copie} />
+            ))}
+          </ul>
+        ))}
       </div>
     </section>
   );

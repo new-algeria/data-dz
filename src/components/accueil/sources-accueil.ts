@@ -5,7 +5,7 @@ export interface SourceBandeau {
   cle: string;
   url: string;
   icone: LucideIcon;
-  /** Logo à venir : chemin dans public/, ex. « /sources/banque-mondiale.svg ». Remplace l'icône s'il est donné. */
+  /** Logo officiel dans public/sources/ (ex. « /sources/openstreetmap.svg », tirés de simple-icons, CC0). Remplace l'icône s'il est donné. */
   logo?: string;
 }
 
@@ -15,8 +15,8 @@ export const SOURCES_ACCUEIL: SourceBandeau[] = [
   { cle: "banqueMondiale", url: "https://data.worldbank.org", icone: Globe },
   { cle: "ecmwf", url: "https://www.ecmwf.int", icone: Waves },
   { cle: "openMeteo", url: "https://open-meteo.com", icone: CloudSun },
-  { cle: "openStreetMap", url: "https://www.openstreetmap.org", icone: Search },
-  { cle: "wikidata", url: "https://www.wikidata.org", icone: Barcode },
+  { cle: "openStreetMap", url: "https://www.openstreetmap.org", icone: Search, logo: "/sources/openstreetmap.svg" },
+  { cle: "wikidata", url: "https://www.wikidata.org", icone: Barcode, logo: "/sources/wikidata.svg" },
   { cle: "asal", url: "https://asal.dz", icone: Rocket },
   { cle: "journalOfficiel", url: "https://www.joradp.dz", icone: ScrollText },
 ];
