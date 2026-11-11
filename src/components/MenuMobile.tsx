@@ -1,9 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import {
-  Loader2,
   Braces,
   Database,
   FilePlus2,
@@ -26,15 +24,13 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
-import { LogoFournisseur } from "@/components/auth/LogoFournisseur";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/contexte/ContexteAuth";
-import { useConnexionSociale } from "@/hooks/use-connexion-sociale";
 import { useLangue } from "@/hooks/use-langue";
 import { useEstModerateur, useNbEnAttente } from "@/hooks/use-moderateur";
 import { usePermissions } from "@/hooks/use-roles";
-import { deconnecter, NOMS_FOURNISSEURS } from "@/lib/auth";
+import { deconnecter } from "@/lib/auth";
 import { LANGUES } from "@/lib/langues";
 import { avecSuite, routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -98,8 +94,6 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
   useEffect(() => setOuvert(false), [emplacement.pathname, emplacement.search, emplacement.hash]);
 
   const suite = `${emplacement.pathname}${emplacement.search}`;
-  const { fournisseurs, redirection, continuer } = useConnexionSociale(suite, (cle) => toast.error(t(cle)), !session);
-  const google = !session && fournisseurs.includes("google");
   const quitter = async () => {
     setOuvert(false);
     try {
@@ -154,28 +148,12 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
               // Visiteur : « Se connecter » est l'action principale du menu (bouton vert), avec ce qu'un compte apporte.
               <div className="mt-4 rounded-2xl border border-emerald-600/25 bg-emerald-50/80 p-4 dark:border-emerald-400/20 dark:bg-emerald-500/10">
                 <p className="text-sm leading-snug text-emerald-950 dark:text-emerald-100">{t("navbar.avantagesCompte")}</p>
-                {/* Google (le plus utilisé) en un clic, à côté de « Se connecter » (email et autres fournisseurs). */}
-                <div className={cn("mt-3 grid gap-2", google && "grid-cols-2")}>
-                  {google && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-12 gap-2 bg-white px-2 text-base font-semibold text-gray-900 shadow-sm max-[359px]:text-sm hover:bg-gray-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
-                      onClick={() => void continuer("google")}
-                      disabled={redirection !== null}
-                      aria-label={t("auth.continuerAvec.google")}
-                    >
-                      {redirection === "google" ? <Loader2 className="h-5 w-5 animate-spin" /> : <span className="[&>svg]:h-5 [&>svg]:w-5"><LogoFournisseur fournisseur="google" /></span>}
-                      {NOMS_FOURNISSEURS.google}
-                    </Button>
-                  )}
-                  <Button asChild className="h-12 gap-2 bg-emerald-700 px-2 text-base font-semibold text-white shadow-md shadow-emerald-700/20 hover:bg-emerald-800 max-[359px]:text-sm">
-                    <Link to={avecSuite(routes.connexion, suite)}>
-                      <LogIn className={cn("h-5 w-5 shrink-0 rtl:-scale-x-100", google && "max-[359px]:hidden")} />
-                      <span className="truncate">{t("auth.seConnecter")}</span>
-                    </Link>
-                  </Button>
-                </div>
+                <Button asChild className="mt-3 h-12 w-full gap-2 bg-emerald-700 text-base font-semibold text-white shadow-md shadow-emerald-700/20 hover:bg-emerald-800">
+                  <Link to={avecSuite(routes.connexion, suite)}>
+                    <LogIn className="h-5 w-5 rtl:-scale-x-100" />
+                    {t("auth.seConnecter")}
+                  </Link>
+                </Button>
                 <p className="mt-2.5 text-center text-sm text-muted-foreground">
                   {t("auth.pasDeCompte")}{" "}
                   <Link to={avecSuite(routes.inscription, suite)} className="font-semibold text-emerald-700 hover:underline dark:text-emerald-400">

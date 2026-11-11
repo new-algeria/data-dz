@@ -1,13 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  geoContains,
-  geoDistance,
-  geoGraticule10,
-  geoInterpolate,
-  geoOrthographic,
-  geoPath,
-  type GeoPermissibleObjects,
-} from "d3-geo";
+import { geoGraticule10, geoOrthographic, geoPath, type GeoPermissibleObjects } from "d3-geo";
 import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Feature, FeatureCollection } from "geojson";
@@ -15,61 +7,27 @@ import { useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useModeSombre } from "@/hooks/use-mode-sombre";
 
-type Point = [number, number];
-
-// Quelques grandes villes (décor, pas des données du catalogue) : les nœuds du réseau algérien.
-const VILLES = {
-  alger: [3.06, 36.75],
-  oran: [-0.63, 35.7],
-  constantine: [6.61, 36.36],
-  annaba: [7.77, 36.9],
-  ghardaia: [3.67, 32.49],
-  ouargla: [5.33, 31.95],
-  bechar: [-2.22, 31.62],
-  adrar: [-0.29, 27.87],
-  illizi: [8.47, 26.48],
-  tamanrasset: [5.53, 22.79],
-} satisfies Record<string, Point>;
-
-type Ville = keyof typeof VILLES;
-
-/** Liaisons du réseau entre villes : tout le pays relié par ses données. */
-const RESEAU: [Ville, Ville][] = [
-  ["alger", "oran"],
-  ["alger", "constantine"],
-  ["constantine", "annaba"],
-  ["alger", "ghardaia"],
-  ["ghardaia", "ouargla"],
-  ["oran", "bechar"],
-  ["bechar", "adrar"],
-  ["ghardaia", "adrar"],
-  ["adrar", "tamanrasset"],
-  ["ouargla", "illizi"],
-  ["illizi", "tamanrasset"],
-  ["constantine", "ouargla"],
-];
-
-/**
- * Arcs vers le reste du monde : la lumière part toujours de l'Algérie (données partagées, accessibles de partout).
- * Destinations sans nom, de simples directions.
- */
-const ARCS_SORTANTS: { depart: Ville; arrivee: Point }[] = [
-  { depart: "alger", arrivee: [10, 51] },
-  { depart: "oran", arrivee: [-40, 18] },
-  { depart: "tamanrasset", arrivee: [-12, 9] },
-  { depart: "constantine", arrivee: [36, 31] },
-  { depart: "tamanrasset", arrivee: [24, -8] },
-  { depart: "alger", arrivee: [-60, 42] },
+// Quelques chefs-lieux de wilaya, pour situer le pays sur le globe (décor, pas des données du catalogue).
+const villes: [number, number][] = [
+  [3.06, 36.75], // Alger
+  [-0.63, 35.7], // Oran
+  [6.61, 36.36], // Constantine
+  [7.77, 36.9], // Annaba
+  [-1.32, 34.88], // Tlemcen
+  [3.67, 32.49], // Ghardaïa
+  [5.33, 31.95], // Ouargla
+  [-2.22, 31.62], // Béchar
+  [-0.29, 27.87], // Adrar
+  [8.47, 26.48], // Illizi
+  [5.53, 22.79], // Tamanrasset
 ];
 
 const ID_ALGERIE = "012";
-const CENTRE: Point = [3, 28];
+const CENTRE: [number, number] = [3, 28];
 
 interface Monde {
   terres: FeatureCollection;
   algerie: Feature | undefined;
-  /** Grille de points à l'intérieur de l'Algérie (« données »), calculée une fois. */
-  points: Point[];
 }
 
 /** Fond de carte mondial (Natural Earth 1:110m), chargé à part pour ne pas alourdir le premier affichage. */
@@ -78,18 +36,7 @@ async function chargerMonde(): Promise<Monde> {
     countries: GeometryCollection;
   }>;
   const terres = feature(topologie, topologie.objects.countries) as FeatureCollection;
-  const algerie = terres.features.find((pays) => String(pays.id) === ID_ALGERIE);
-  const points: Point[] = [];
-  if (algerie) {
-    for (let lat = 19.2; lat <= 37.2; lat += 1.1) {
-      for (let lon = -8.6; lon <= 12; lon += 1.1) {
-        // Une ligne sur deux décalée : grille en quinconce.
-        const point: Point = [lon + (Math.round(lat / 1.1) % 2 ? 0.55 : 0), lat];
-        if (geoContains(algerie, point)) points.push(point);
-      }
-    }
-  }
-  return { terres, algerie, points };
+  return { terres, algerie: terres.features.find((pays) => String(pays.id) === ID_ALGERIE) };
 }
 
 const palettes = {
@@ -99,49 +46,19 @@ const palettes = {
     graticule: "rgba(4, 120, 87, 0.12)",
     terre: "#cbd5e1",
     algerie: "#059669",
-    algerieClair: "#34d399",
-    contourAlgerie: "#ecfdf5",
-    pointAlgerie: "rgba(236, 253, 245, 0.85)",
+    contourAlgerie: "#065f46",
     halo: "rgba(16, 185, 129, 0.35)",
-    // Réseau intérieur (sur le vert de l'Algérie) et arcs sortants (sur le gris des terres et l'océan).
-    reseau: "236, 253, 245",
-    lumiere: "5, 150, 105",
   },
   sombre: {
     oceanCentre: "#0b2e24",
     oceanBord: "#03140f",
     graticule: "rgba(110, 231, 183, 0.10)",
     terre: "#1f3b33",
-    algerie: "#047857",
-    algerieClair: "#34d399",
-    contourAlgerie: "#a7f3d0",
-    pointAlgerie: "rgba(209, 250, 229, 0.9)",
+    algerie: "#10b981",
+    contourAlgerie: "#6ee7b7",
     halo: "rgba(16, 185, 129, 0.30)",
-    reseau: "209, 250, 229",
-    lumiere: "52, 211, 153",
   },
 };
-
-/** Un arc précalculé : interpolation sur la sphère et hauteur au-dessus du sol (en part du rayon). */
-interface Arc {
-  interpoler: (t: number) => Point;
-  hauteur: number;
-  /** Décalage de l'animation, pour que les lumières ne partent pas toutes ensemble. */
-  phase: number;
-}
-
-// Une liaison sur deux est parcourue dans l'autre sens : les lumières circulent dans les deux sens.
-const arcsReseau: Arc[] = RESEAU.map(([a, b], indice) => ({
-  interpoler: (indice % 2 ? geoInterpolate(VILLES[b], VILLES[a]) : geoInterpolate(VILLES[a], VILLES[b])) as (t: number) => Point,
-  hauteur: 0.025,
-  phase: (indice * 0.37) % 1,
-}));
-
-const arcsSortants: Arc[] = ARCS_SORTANTS.map(({ depart, arrivee }, indice) => ({
-  interpoler: geoInterpolate(VILLES[depart], arrivee) as (t: number) => Point,
-  hauteur: 0.16,
-  phase: indice / ARCS_SORTANTS.length,
-}));
 
 export const GlobeAccueil = () => {
   const { t } = useTranslation();
@@ -190,54 +107,7 @@ export const GlobeAccueil = () => {
 
       const rayon = projection.scale();
       const centre = taille / 2;
-      // Centre de la face visible : un point plus loin que 90° est de l'autre côté du globe.
-      const vue: Point = [-projection.rotate()[0], -projection.rotate()[1]];
       contexte.clearRect(0, 0, taille, taille);
-
-      /** Position à l'écran d'un point d'arc, soulevé au-dessus du sol ; `null` s'il est caché derrière le globe. */
-      const pointArc = (arc: Arc, avance: number): Point | null => {
-        const point = arc.interpoler(avance);
-        if (geoDistance(point, vue) > Math.PI / 2) return null;
-        const position = projection(point);
-        if (!position) return null;
-        const elevation = 1 + arc.hauteur * Math.sin(Math.PI * avance);
-        return [centre + (position[0] - centre) * elevation, centre + (position[1] - centre) * elevation];
-      };
-
-      /** Trace la portion [de, a] d'un arc (coupée là où il passe derrière le globe). */
-      const tracerArc = (arc: Arc, de: number, a: number) => {
-        contexte.beginPath();
-        let enCours = false;
-        const pas = Math.max((a - de) / 24, 0.004);
-        for (let avance = de; avance <= a + 1e-6; avance += pas) {
-          const position = pointArc(arc, Math.min(avance, a));
-          if (position) {
-            if (enCours) contexte.lineTo(position[0], position[1]);
-            else contexte.moveTo(position[0], position[1]);
-          }
-          enCours = position !== null;
-        }
-        contexte.stroke();
-      };
-
-      /** Lumière qui file le long d'un arc : traînée dégradée et tête brillante. */
-      const lumiere = (arc: Arc, tete: number, longueur: number, rgb: string, epaisseur: number, opacite = 1) => {
-        const queue = Math.max(0, tete - longueur);
-        const debut = pointArc(arc, queue);
-        const fin = pointArc(arc, tete);
-        if (!debut || !fin) return;
-        const degrade = contexte.createLinearGradient(debut[0], debut[1], fin[0], fin[1]);
-        degrade.addColorStop(0, `rgba(${rgb}, 0)`);
-        degrade.addColorStop(1, `rgba(${rgb}, ${opacite})`);
-        contexte.strokeStyle = degrade;
-        contexte.lineWidth = epaisseur;
-        contexte.lineCap = "round";
-        tracerArc(arc, queue, tete);
-        contexte.beginPath();
-        contexte.arc(fin[0], fin[1], epaisseur * 0.9, 0, Math.PI * 2);
-        contexte.fillStyle = `rgba(${rgb}, ${opacite})`;
-        contexte.fill();
-      };
 
       // Atmosphère autour du globe.
       const halo = contexte.createRadialGradient(centre, centre, rayon * 0.95, centre, centre, rayon * 1.18);
@@ -269,95 +139,36 @@ export const GlobeAccueil = () => {
       contexte.fill();
 
       if (monde.algerie) {
-        // Algérie : dégradé émeraude lumineux, halo, grille de points qui scintillent, contour clair qui défile.
-        const [[x0, y0], [x1, y1]] = chemin.bounds(monde.algerie);
-        const degrade = contexte.createLinearGradient(x0, y0, x1, y1);
-        degrade.addColorStop(0, couleurs.algerieClair);
-        degrade.addColorStop(1, couleurs.algerie);
         contexte.save();
-        contexte.shadowColor = couleurs.algerieClair;
-        contexte.shadowBlur = 24;
+        contexte.shadowColor = couleurs.algerie;
+        contexte.shadowBlur = 18;
         contexte.beginPath();
         chemin(monde.algerie);
-        contexte.fillStyle = degrade;
+        contexte.fillStyle = couleurs.algerie;
         contexte.fill();
         contexte.restore();
-
-        monde.points.forEach((point, indice) => {
-          if (geoDistance(point, vue) > Math.PI / 2) return;
-          const position = projection(point);
-          if (!position) return;
-          const eclat = mouvementReduit ? 0.6 : 0.35 + 0.65 * Math.max(0, Math.sin(temps / 700 + indice * 1.7));
-          contexte.globalAlpha = eclat;
-          contexte.beginPath();
-          contexte.arc(position[0], position[1], 1.1, 0, Math.PI * 2);
-          contexte.fillStyle = couleurs.pointAlgerie;
-          contexte.fill();
-        });
-        contexte.globalAlpha = 1;
-
-        contexte.save();
         contexte.beginPath();
         chemin(monde.algerie);
         contexte.strokeStyle = couleurs.contourAlgerie;
-        contexte.lineWidth = 1.4;
-        contexte.setLineDash([6, 4]);
-        contexte.lineDashOffset = mouvementReduit ? 0 : -temps / 60;
+        contexte.lineWidth = 1;
         contexte.stroke();
-        contexte.restore();
       }
 
-      contexte.save();
-
-      // Arcs sortants : trace fine, puis une lumière qui part de l'Algérie et une onde à l'arrivée.
-      arcsSortants.forEach((arc) => {
-        contexte.strokeStyle = `rgba(${couleurs.lumiere}, 0.22)`;
-        contexte.lineWidth = 1;
-        contexte.setLineDash([2, 4]);
-        tracerArc(arc, 0, 1);
-        contexte.setLineDash([]);
-        if (mouvementReduit) return;
-        // Cycle : le trajet occupe 60 % du temps, puis une pause avant le suivant.
-        const cycle = (temps / 5200 + arc.phase) % 1;
-        const tete = Math.min(cycle / 0.6, 1);
-        if (cycle < 0.6) lumiere(arc, tete, 0.22, couleurs.lumiere, 2);
-        else {
-          const onde = (cycle - 0.6) / 0.4;
-          const arrivee = pointArc(arc, 1);
-          if (arrivee) {
-            contexte.beginPath();
-            contexte.arc(arrivee[0], arrivee[1], 2 + onde * 10, 0, Math.PI * 2);
-            contexte.strokeStyle = `rgba(${couleurs.lumiere}, ${0.55 * (1 - onde)})`;
-            contexte.lineWidth = 1.2;
-            contexte.stroke();
-          }
-        }
-      });
-
-      // Réseau entre villes : liaisons fines et lumières qui circulent dans les deux sens.
-      arcsReseau.forEach((arc) => {
-        contexte.strokeStyle = `rgba(${couleurs.reseau}, 0.45)`;
-        contexte.lineWidth = 0.9;
-        tracerArc(arc, 0, 1);
-        if (mouvementReduit) return;
-        const avance = (temps / 2600 + arc.phase) % 1;
-        lumiere(arc, avance, 0.25, couleurs.reseau, 1.6, 0.95);
-      });
-
-      contexte.restore();
-
-      // Villes : petit point blanc cerclé de vert (nœud du réseau).
-      Object.values(VILLES).forEach((ville) => {
-        if (geoDistance(ville, vue) > Math.PI / 2) return;
+      // Villes : points rouges qui pulsent légèrement.
+      const pulsation = mouvementReduit ? 0 : (Math.sin(temps / 500) + 1) / 2;
+      villes.forEach((ville, indice) => {
         const position = projection(ville);
         if (!position) return;
+        const [x, y] = position;
+        const decalage = (pulsation + indice / villes.length) % 1;
         contexte.beginPath();
-        contexte.arc(position[0], position[1], 2.4, 0, Math.PI * 2);
-        contexte.fillStyle = "#ffffff";
+        contexte.arc(x, y, 2 + decalage * 5, 0, Math.PI * 2);
+        contexte.fillStyle = `rgba(220, 38, 38, ${0.35 * (1 - decalage)})`;
         contexte.fill();
-        contexte.lineWidth = 1.2;
-        contexte.strokeStyle = couleurs.algerie;
-        contexte.stroke();
+        contexte.beginPath();
+        contexte.arc(x, y, 2.2, 0, Math.PI * 2);
+        contexte.fillStyle = "#dc2626";
+        contexte.fill();
       });
     };
 
