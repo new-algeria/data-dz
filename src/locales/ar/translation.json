@@ -404,7 +404,8 @@
       "google": "المتابعة باستخدام Google",
       "facebook": "المتابعة باستخدام Facebook",
       "github": "المتابعة باستخدام GitHub"
-    }
+    },
+    "continuerAvecEmail": "المتابعة بالبريد الإلكتروني"
   },
   "profil": {
     "titre": "ملفي الشخصي",

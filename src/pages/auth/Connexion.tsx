@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Loader2, Mail } from "lucide-react";
+import { ChevronDown, Loader2, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,8 @@ const Connexion = () => {
   const [envoi, setEnvoi] = useState<Envoi>(null);
   const [erreur, setErreur] = useState<string | null>(null);
   const [information, setInformation] = useState<string | null>(null);
+  /** Le formulaire email reste replié sous les boutons rapides (Google…) tant qu'on ne le demande pas. */
+  const [emailOuvert, setEmailOuvert] = useState(false);
 
   if (!chargement && session) return <Navigate to={suite} replace />;
 
@@ -96,46 +98,63 @@ const Connexion = () => {
 
         <BoutonsConnexionSociale suite={suite} surErreur={setErreur} />
 
-        <form onSubmit={connecter} className="space-y-4" noValidate>
-          <div className="space-y-1.5">
-            <Label htmlFor="email">{t("auth.email")}</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              inputMode="email"
-              dir="ltr"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("auth.emailExemple")}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="mot-de-passe">{t("auth.motDePasse")}</Label>
-              <Link to={routes.motDePasseOublie} className="text-xs font-medium text-emerald-700 hover:underline dark:text-emerald-400">
-                {t("auth.motDePasseOublieLien")}
-              </Link>
-            </div>
-            <ChampMotDePasse
-              id="mot-de-passe"
-              autoComplete="current-password"
-              required
-              value={motDePasse}
-              onChange={(e) => setMotDePasse(e.target.value)}
-            />
-          </div>
-          <Button type="submit" className="w-full bg-emerald-700 text-white hover:bg-emerald-800" disabled={envoi !== null || !email || !motDePasse}>
-            {envoi === "motDePasse" && <Loader2 className="h-4 w-4 animate-spin" />}
-            {t("auth.seConnecter")}
-          </Button>
-        </form>
+        {/* Sous le « ou » : l'email prend moins de place que la connexion rapide, replié jusqu'au clic. */}
+        {emailOuvert ? (
+          <div className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200 motion-reduce:animate-none">
+            <form onSubmit={connecter} className="space-y-3" noValidate>
+              <div className="space-y-1">
+                <Label htmlFor="email" className="text-xs">{t("auth.email")}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  autoFocus
+                  autoComplete="email"
+                  inputMode="email"
+                  dir="ltr"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t("auth.emailExemple")}
+                />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="mot-de-passe" className="text-xs">{t("auth.motDePasse")}</Label>
+                  <Link to={routes.motDePasseOublie} className="text-xs font-medium text-emerald-700 hover:underline dark:text-emerald-400">
+                    {t("auth.motDePasseOublieLien")}
+                  </Link>
+                </div>
+                <ChampMotDePasse
+                  id="mot-de-passe"
+                  autoComplete="current-password"
+                  required
+                  value={motDePasse}
+                  onChange={(e) => setMotDePasse(e.target.value)}
+                />
+              </div>
+              <Button type="submit" className="h-10 w-full bg-emerald-700 text-white hover:bg-emerald-800" disabled={envoi !== null || !email || !motDePasse}>
+                {envoi === "motDePasse" && <Loader2 className="h-4 w-4 animate-spin" />}
+                {t("auth.seConnecter")}
+              </Button>
+            </form>
 
-        <Button type="button" variant="ghost" className="w-full gap-2" onClick={demanderLien} disabled={envoi !== null}>
-          {envoi === "lien" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
-          {t("auth.recevoirLien")}
-        </Button>
+            <Button type="button" variant="ghost" size="sm" className="h-9 w-full gap-2 text-muted-foreground" onClick={demanderLien} disabled={envoi !== null}>
+              {envoi === "lien" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail className="h-4 w-4" />}
+              {t("auth.recevoirLien")}
+            </Button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setEmailOuvert(true)}
+            aria-expanded={false}
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Mail className="h-4 w-4" aria-hidden />
+            {t("auth.continuerAvecEmail")}
+            <ChevronDown className="h-4 w-4" aria-hidden />
+          </button>
+        )}
         <AccordConditions />
       </div>
     </CadreAuth>

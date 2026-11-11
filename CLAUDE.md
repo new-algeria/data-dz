@@ -96,7 +96,7 @@ Les liens des emails et de Google reviennent avec un `?code=` que supabase-js é
 
 | Route | Rôle |
 |---|---|
-| `/login` | Email + mot de passe, lien magique (`signInWithOtp`, sans création de compte), « Continuer avec Google / Facebook / GitHub », dans cet ordre (`BoutonsConnexionSociale`, `FOURNISSEURS_SOCIAUX` et `connecterAvecFournisseur()` dans `src/lib/auth.ts`, aussi sur `/signup`) : seuls les fournisseurs activés dans Supabase (Authentication → Providers, lus via `/auth/v1/settings`) sont affichés, en activer un suffit |
+| `/login` | En tête, connexion rapide (`BoutonsConnexionSociale`, aussi sur `/signup`) : le premier fournisseur activé (Google) en grand bouton, Facebook et GitHub en boutons compacts côte à côte (`FOURNISSEURS_SOCIAUX`, `NOMS_FOURNISSEURS`, `connecterAvecFournisseur()` dans `src/lib/auth.ts` ; hook `useConnexionSociale()` ; logos dans `LogoFournisseur.tsx`) ; seuls les fournisseurs activés dans Supabase (Authentication → Providers, lus via `/auth/v1/settings`) sont affichés, en activer un suffit. Sous le « ou », un seul bouton discret « Continuer avec un email » déplie email + mot de passe et le lien magique (`signInWithOtp`, sans création de compte) |
 | `/signup` | Email + mot de passe (8 caractères minimum, confirmation), puis « vérifiez votre boîte mail » |
 | `/forgot-password` | Envoie le lien de réinitialisation (`resetPasswordForEmail`) |
 | `/reset-password` | Arrivée du lien : événement `PASSWORD_RECOVERY`, puis `updateUser({ password })` ; accessible aussi à un membre connecté |
