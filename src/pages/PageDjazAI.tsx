@@ -10,7 +10,6 @@ import {
   MessageSquarePlus,
   Send,
   ShieldCheck,
-  Sparkles,
   Trash2,
   UserPlus,
 } from "lucide-react";
@@ -20,7 +19,7 @@ import { CustomMetaTags } from "@/components/MetaTags";
 import { Textarea } from "@/components/ui/textarea";
 import { SOURCES_ACCUEIL, type SourceBandeau } from "@/components/accueil/sources-accueil";
 import { HeroDjazAI } from "@/components/djazai/HeroDjazAI";
-import { IndicateurReflexion, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
+import { AvatarDjazAI, IndicateurReflexion, ReponseMarkdown, SourcesDjazAI } from "@/components/djazai/ContenuDjazAI";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { useLangue } from "@/hooks/use-langue";
 import { ErreurApi } from "@/lib/api";
@@ -109,9 +108,7 @@ const BulleMessage = ({ message, suite }: { message: MessageConversation; suite:
   return (
     <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
       <div className="flex w-full max-w-[94%] items-start gap-2.5 sm:max-w-[88%]">
-        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-700 to-teal-600 text-white shadow-sm">
-          <Sparkles className="h-4 w-4" aria-hidden />
-        </span>
+        <AvatarDjazAI className="mt-0.5 h-8 w-8" />
         <div className="min-w-0 flex-1 space-y-3">
           {message.verrouille ? (
             <ReponseVerrouillee suite={suite} />
@@ -510,9 +507,7 @@ export default function PageDjazAI() {
                     </div>
                   ) : messages.length === 0 ? (
                     <div className="mx-auto flex h-full max-w-xl flex-col items-center justify-center text-center">
-                      <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-700 to-teal-600 text-white shadow-lg shadow-emerald-900/20">
-                        <Sparkles className="h-7 w-7" aria-hidden />
-                      </span>
+                      <AvatarDjazAI className="mb-4 h-16 w-16" />
                       <p className="text-lg font-bold text-foreground">{t("ia.bienvenue")}</p>
                       <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
                         {visiteur ? t("pageDjazai.conversation.accueilVisiteur") : t("ia.premiere")}
@@ -542,9 +537,7 @@ export default function PageDjazAI() {
                   )}
                   {envoiEnCours && (
                     <div className="flex justify-start gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-300 motion-reduce:animate-none">
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-700 to-teal-600 text-white">
-                        <Sparkles className="h-4 w-4 animate-pulse motion-reduce:animate-none" aria-hidden />
-                      </span>
+                      <AvatarDjazAI className="mt-0.5 h-8 w-8" anime />
                       <IndicateurReflexion etape={etapes[etape] ?? t("ia.chargement")} />
                     </div>
                   )}
