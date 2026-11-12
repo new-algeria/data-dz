@@ -1,0 +1,766 @@
+/*
+ * Hero de la page /api : globe vidéo en boucle, barre de navigation propre à la page, titre, sous-titre et boutons.
+ * Toutes les mesures du bureau sont des multiples d'une seule unité (--u), calculée sur un rendu de référence
+ * 1280 × 800 : la composition s'agrandit ou rétrécit d'un bloc, sans se réorganiser au-dessus de 1160 px.
+ * Classes préfixées « ha- » (hero API) pour ne rien toucher au reste du site.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;800&display=block");
+
+.ha {
+  --u: min(calc(100vw / 1280), calc(100dvh / 760));
+
+  --ha-ink: #ffffff;
+  --ha-ink-muted: #ededed;
+  --ha-panel: #181818;
+  --ha-white-btn: #fdfdfd;
+  --ha-btn-ink: #050505;
+  --ha-glass-fill: rgba(0, 0, 0, 0.78);
+  --ha-glass-line: rgba(255, 255, 255, 0.09);
+
+  --dx: 8.5; /* décalage optique du bloc, réglé sur le rendu de référence */
+  --dy: 13.1;
+
+  --e-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-soft: cubic-bezier(0.25, 0.8, 0.3, 1);
+
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  color: var(--ha-ink);
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+@supports not (height: 100dvh) {
+  .ha {
+    --u: min(calc(100vw / 1280), calc(100vh / 760));
+    height: 100vh;
+  }
+}
+.ha *,
+.ha *::before,
+.ha *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Vidéo de fond : boîte 1280:800 qui couvre toujours l'écran ---------- */
+.ha-bg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100vw, calc(100dvh * 1.6));
+  height: max(62.5vw, 100dvh);
+  background-color: #000;
+}
+@supports not (height: 100dvh) {
+  .ha-bg {
+    width: max(100vw, calc(100vh * 1.6));
+    height: max(62.5vw, 100vh);
+  }
+}
+.ha-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 51% 8%;
+  display: block;
+  background-color: #000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s linear;
+}
+.ha-video.is-active {
+  opacity: 1;
+}
+
+/* ---------- Barre de navigation (bureau) ---------- */
+.ha-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(67 * var(--u));
+  display: flex;
+  align-items: center;
+  padding-inline-start: calc(24.5 * var(--u));
+  padding-inline-end: calc(50.7 * var(--u));
+  z-index: 3;
+}
+.ha-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  font-weight: 800;
+  font-size: calc(26 * var(--u));
+  letter-spacing: calc(0.45 * var(--u));
+  transform: translateY(calc(-2.4 * var(--u)));
+  line-height: 1;
+  color: var(--ha-ink);
+  text-decoration: none;
+  white-space: nowrap;
+  direction: ltr;
+}
+.ha-logo img {
+  width: calc(30 * var(--u));
+  height: calc(30 * var(--u));
+}
+.ha-logo-api {
+  color: #a78bfa;
+}
+.ha-links {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateX(calc(-23 * var(--u)));
+  display: flex;
+  align-items: center;
+  gap: calc(24.3 * var(--u));
+  white-space: nowrap;
+}
+.ha-links a {
+  color: var(--ha-ink-muted);
+  text-decoration: none;
+  font-size: calc(11.5 * var(--u));
+  font-weight: 500;
+  letter-spacing: calc(-0.15 * var(--u));
+  line-height: 1;
+  transition: color 0.18s ease;
+}
+.ha-links a:hover {
+  color: #fff;
+}
+.ha-actions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: calc(6.8 * var(--u));
+}
+
+.ha-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 0;
+  cursor: pointer;
+}
+.ha-btn-login {
+  height: calc(28 * var(--u));
+  padding: 0 calc(12.9 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: var(--ha-panel);
+  color: #e8e8e8;
+  font-size: calc(11.5 * var(--u));
+  font-weight: 500;
+  letter-spacing: calc(-0.15 * var(--u));
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.ha-btn-login:hover {
+  background: #232323;
+  color: #fff;
+}
+.ha-btn-start {
+  height: calc(28 * var(--u));
+  padding-inline-start: calc(13.5 * var(--u));
+  padding-inline-end: calc(14.5 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: var(--ha-white-btn);
+  color: var(--ha-btn-ink);
+  font-size: calc(11.1 * var(--u));
+  font-weight: 500;
+  gap: calc(7 * var(--u));
+  transition: background 0.18s ease;
+}
+.ha-btn-start:hover {
+  background: #fff;
+}
+.ha-btn-start .ha-arw {
+  width: calc(11.5 * var(--u));
+  height: calc(9.6 * var(--u));
+}
+
+.ha-burger {
+  display: none;
+  margin-inline-start: auto;
+  width: calc(40 * var(--u));
+  height: calc(28 * var(--u));
+  align-items: center;
+  justify-content: center;
+  background: var(--ha-panel);
+  border-radius: calc(14 * var(--u));
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+.ha-burger span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: #ededed;
+  border-radius: 2px;
+  position: relative;
+}
+.ha-burger span::before,
+.ha-burger span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 16px;
+  height: 1.5px;
+  background: #ededed;
+  border-radius: 2px;
+}
+.ha-burger span::before {
+  top: -5px;
+}
+.ha-burger span::after {
+  top: 5px;
+}
+
+.ha-arw {
+  flex: 0 0 auto;
+  display: block;
+}
+[dir="rtl"] .ha-arw {
+  transform: scaleX(-1);
+}
+
+/* ---------- Contenu du hero ---------- */
+.ha-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translate(calc(var(--dx) * var(--u)), calc(var(--dy) * var(--u)));
+  width: max-content;
+  text-align: center;
+  z-index: 2;
+}
+.ha h1 {
+  margin: 0;
+  font-weight: 500;
+  font-size: calc(89 * var(--u));
+  line-height: calc(90 * var(--u));
+  letter-spacing: calc(-1 * var(--u));
+  color: var(--ha-ink);
+}
+.ha-ln,
+.ha-ln-i {
+  display: block;
+}
+.ha-sub {
+  margin: calc(16.1 * var(--u)) 0 0;
+  font-weight: 300;
+  font-size: calc(17.4 * var(--u));
+  line-height: calc(27 * var(--u));
+  letter-spacing: calc(-0.3 * var(--u));
+  color: #f6f6f6;
+}
+.ha-ctas {
+  margin-top: calc(21.8 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(calc(-0.75 * var(--u)));
+  gap: calc(7 * var(--u));
+}
+.ha-btn-lg {
+  height: calc(39 * var(--u));
+  border-radius: calc(19.5 * var(--u));
+  font-size: calc(13.3 * var(--u));
+  font-weight: 500;
+  letter-spacing: calc(-0.3 * var(--u));
+  gap: calc(9 * var(--u));
+}
+.ha-btn-primary {
+  background: var(--ha-white-btn);
+  color: var(--ha-btn-ink);
+  padding-inline-start: calc(18.2 * var(--u));
+  padding-inline-end: calc(19.2 * var(--u));
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.ha-btn-primary:hover {
+  background: #fff;
+}
+.ha-btn-ghost {
+  background: var(--ha-glass-fill);
+  color: #d9d9d9;
+  padding: 0 calc(17.4 * var(--u));
+  border: 1px solid var(--ha-glass-line);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+.ha-btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.66);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.ha-btn-lg .ha-arw {
+  width: calc(13 * var(--u));
+  height: calc(10.8 * var(--u));
+}
+
+.ha a:focus-visible,
+.ha button:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 3px;
+  border-radius: 99px;
+}
+
+/* ---------- Menu mobile ---------- */
+.ha-menu {
+  display: none;
+}
+@keyframes ha-menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Tablette : la barre se replie dans le bouton menu ---------- */
+@media (max-width: 1160px) {
+  .ha {
+    /* 740 = largeur de la ligne de titre la plus longue (« Toute l'Algérie ») en unités de référence */
+    --u: min(max(0.9px, min(calc(100vw / 1280), calc(100dvh / 760))), calc((100vw - 72px) / 740), calc(100dvh / 620));
+  }
+  .ha-nav {
+    height: max(58px, calc(67 * var(--u)));
+    padding-inline-start: max(24px, calc(28 * var(--u)));
+    padding-inline-end: max(24px, calc(28 * var(--u)));
+  }
+  .ha-logo {
+    font-size: max(20px, calc(26 * var(--u)));
+  }
+  .ha-logo img {
+    width: max(24px, calc(30 * var(--u)));
+    height: max(24px, calc(30 * var(--u)));
+  }
+  .ha-links,
+  .ha-actions {
+    display: none;
+  }
+  .ha-burger {
+    display: flex;
+    width: max(46px, calc(48 * var(--u)));
+    height: max(38px, calc(34 * var(--u)));
+    border-radius: 999px;
+  }
+  .ha-inner {
+    max-width: calc(100vw - 48px);
+  }
+  .ha-sub {
+    font-size: max(16px, calc(17.4 * var(--u)));
+    line-height: max(25px, calc(27 * var(--u)));
+  }
+  .ha-ctas {
+    margin-top: max(26px, calc(21.8 * var(--u)));
+    gap: max(10px, calc(7 * var(--u)));
+  }
+  .ha-btn-lg {
+    height: max(44px, calc(39 * var(--u)));
+    border-radius: max(22px, calc(19.5 * var(--u)));
+    font-size: max(15px, calc(13.3 * var(--u)));
+    gap: max(10px, calc(9 * var(--u)));
+  }
+  .ha-btn-primary {
+    padding-inline-start: max(21px, calc(18.2 * var(--u)));
+    padding-inline-end: max(22px, calc(19.2 * var(--u)));
+  }
+  .ha-btn-ghost {
+    padding-inline-start: max(20px, calc(17.4 * var(--u)));
+    padding-inline-end: max(21px, calc(18.4 * var(--u)));
+  }
+  .ha-btn-lg .ha-arw {
+    width: max(14px, calc(13 * var(--u)));
+    height: max(11.6px, calc(10.8 * var(--u)));
+  }
+  .ha-menu {
+    position: absolute;
+    top: calc(max(58px, calc(67 * var(--u))) - 6px);
+    inset-inline-end: max(24px, calc(28 * var(--u)));
+    width: min(320px, calc(100vw - 48px));
+    background: rgba(10, 10, 12, 0.86);
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 20px;
+    padding: 10px 8px 12px;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    transform-origin: top right;
+    z-index: 5;
+  }
+  [dir="rtl"] .ha-menu {
+    transform-origin: top left;
+  }
+  .ha-menu.open {
+    display: flex;
+    animation: ha-menuIn 0.18s ease both;
+  }
+  .ha-menu a,
+  .ha-menu .ha-menu-langue {
+    color: var(--ha-ink-muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: calc(-0.15 * var(--u));
+    padding: 12px 14px;
+    border-radius: 12px;
+    transition: background 0.18s ease, color 0.18s ease;
+  }
+  .ha-menu a:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+  .ha-menu .ha-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 8px 14px;
+  }
+  .ha-menu .ha-menu-langue {
+    display: flex;
+    gap: 6px;
+    padding: 4px 8px;
+  }
+  .ha-menu .ha-menu-langue button {
+    flex: 1;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ha-ink-muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .ha-menu .ha-menu-langue button[aria-pressed="true"] {
+    background: rgba(167, 139, 250, 0.25);
+    color: #fff;
+  }
+  .ha-menu .ha-m-start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background: var(--ha-white-btn);
+    color: var(--ha-btn-ink);
+    margin: 6px 8px 0;
+    padding: 13px 16px;
+    border-radius: 14px;
+    font-weight: 600;
+  }
+  .ha-menu .ha-m-start:hover {
+    background: #fff;
+    color: var(--ha-btn-ink);
+  }
+  .ha-menu .ha-m-start .ha-arw {
+    width: 13px;
+    height: 11px;
+  }
+}
+
+/* ---------- Téléphone : sous-titre en mesure fluide, titre calé sur la largeur ---------- */
+@media (max-width: 552px) {
+  .ha {
+    --u: 1px;
+  }
+  .ha-nav {
+    height: 56px;
+    padding: 0 20px;
+  }
+  .ha-logo {
+    font-size: 22px;
+    letter-spacing: -0.4px;
+  }
+  .ha-logo img {
+    width: 26px;
+    height: 26px;
+  }
+  .ha-burger {
+    width: 42px;
+    height: 36px;
+  }
+  .ha-inner {
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    padding: 0 20px;
+    transform: translateY(-47%);
+  }
+  /* « Toute l'Algérie » mesure environ 8,2 fois la taille du texte : 8,6 laisse de la marge à toutes les largeurs */
+  .ha h1 {
+    font-size: min(74px, calc((100vw - 44px) / 8.6));
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  .ha-sub {
+    margin-top: 16px;
+    font-size: clamp(15.5px, 4vw, 16.5px);
+    line-height: 1.6;
+    letter-spacing: 0;
+    max-width: 42ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ha-sub br {
+    display: none;
+  }
+  .ha-ctas {
+    margin-top: 24px;
+    gap: 10px;
+    transform: none;
+    flex-wrap: wrap;
+  }
+  .ha-btn-lg {
+    height: 46px;
+    border-radius: 23px;
+    font-size: 15px;
+    gap: 9px;
+  }
+  .ha-btn-primary {
+    padding-inline-start: 20px;
+    padding-inline-end: 21px;
+  }
+  .ha-btn-ghost {
+    padding-inline-start: 19px;
+    padding-inline-end: 20px;
+  }
+  .ha-btn-lg .ha-arw {
+    width: 13px;
+    height: 11px;
+  }
+  .ha-menu {
+    top: 50px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+  }
+  .ha-menu a {
+    font-size: 15.5px;
+    padding: 13px 14px;
+  }
+  .ha-menu .ha-m-start {
+    padding: 14px 16px;
+  }
+}
+
+/* Téléphones étroits : les deux boutons passent l'un sous l'autre */
+@media (max-width: 353px) {
+  .ha-ctas {
+    flex-direction: column;
+    align-items: center;
+  }
+  .ha-btn-lg {
+    width: min(100%, 272px);
+  }
+}
+
+/* Téléphone à l'horizontale */
+@media (max-width: 552px) and (max-height: 460px) {
+  .ha h1 {
+    font-size: min(44px, calc((100vw - 44px) / 8.6));
+  }
+  .ha-sub {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .ha-ctas {
+    margin-top: 18px;
+  }
+  .ha-inner {
+    transform: translateY(-44%);
+  }
+}
+
+/* ---------- Entrée : une seule fois, puis les classes sont retirées ---------- */
+.ha.anim .ha-ln {
+  overflow: hidden;
+  padding-top: 0.26em;
+  margin-top: -0.26em;
+}
+.ha.anim .ha-ln-i {
+  transform: translateY(100%);
+}
+.ha.anim .ha-logo,
+.ha.anim .ha-links a,
+.ha.anim .ha-actions .ha-btn,
+.ha.anim .ha-burger,
+.ha.anim .ha-sub,
+.ha.anim .ha-ctas .ha-btn {
+  opacity: 0;
+}
+.ha.anim .ha-ln-i,
+.ha.anim .ha-logo,
+.ha.anim .ha-links a,
+.ha.anim .ha-actions .ha-btn,
+.ha.anim .ha-sub,
+.ha.anim .ha-ctas .ha-btn {
+  will-change: transform, opacity;
+}
+
+@keyframes ha-lineRise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes ha-subIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(14 * var(--u)));
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+@keyframes ha-subInFlat {
+  from {
+    opacity: 0;
+    transform: translateY(calc(12 * var(--u)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ha-pillIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(8 * var(--u))) scale(0.972);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ha-liftIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(9 * var(--u)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* le logo porte un décalage optique de -2,4u : les images clés le gardent, l'état final est identique */
+@keyframes ha-logoIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-2.4 * var(--u))) translateY(calc(9 * var(--u)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(calc(-2.4 * var(--u)));
+  }
+}
+
+.ha.anim.go .ha-ln-i {
+  animation: ha-lineRise 1.05s var(--e-reveal) both;
+}
+.ha.anim.go .ha-ln:nth-child(1) .ha-ln-i {
+  animation-delay: 0.12s;
+}
+.ha.anim.go .ha-ln:nth-child(2) .ha-ln-i {
+  animation-delay: 0.22s;
+}
+.ha.anim.go .ha-logo {
+  animation: ha-logoIn 0.62s var(--e-soft) 0.46s both;
+}
+.ha.anim.go .ha-links a {
+  animation: ha-liftIn 0.55s var(--e-soft) both;
+}
+.ha.anim.go .ha-links a:nth-child(1) {
+  animation-delay: 0.54s;
+}
+.ha.anim.go .ha-links a:nth-child(2) {
+  animation-delay: 0.585s;
+}
+.ha.anim.go .ha-links a:nth-child(3) {
+  animation-delay: 0.63s;
+}
+.ha.anim.go .ha-links a:nth-child(4) {
+  animation-delay: 0.675s;
+}
+.ha.anim.go .ha-links a:nth-child(5) {
+  animation-delay: 0.72s;
+}
+.ha.anim.go .ha-sub {
+  animation: ha-subIn 0.85s var(--e-reveal) 0.58s both;
+}
+.ha.anim.go .ha-btn-login {
+  animation: ha-pillIn 0.55s var(--e-soft) 0.68s both;
+}
+.ha.anim.go .ha-burger {
+  animation: ha-pillIn 0.55s var(--e-soft) 0.68s both;
+}
+.ha.anim.go .ha-btn-start {
+  animation: ha-pillIn 0.55s var(--e-soft) 0.73s both;
+}
+.ha.anim.go .ha-ctas .ha-btn-primary {
+  animation: ha-pillIn 0.7s var(--e-reveal) 0.9s both;
+}
+.ha.anim.go .ha-ctas .ha-btn-ghost {
+  animation: ha-pillIn 0.7s var(--e-reveal) 0.97s both;
+}
+
+@media (max-width: 552px) {
+  .ha.anim.go .ha-sub {
+    animation-name: ha-subInFlat;
+  }
+  .ha.anim.go .ha-ln-i {
+    animation-duration: 0.92s;
+  }
+  .ha.anim.go .ha-ctas .ha-btn-primary {
+    animation-delay: 0.84s;
+  }
+  .ha.anim.go .ha-ctas .ha-btn-ghost {
+    animation-delay: 0.9s;
+  }
+}
+
+/* « Réduire les animations » : le dessin final, sans entrée ni transition */
+@media (prefers-reduced-motion: reduce) {
+  .ha.anim .ha-ln {
+    overflow: visible;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .ha.anim .ha-ln-i {
+    transform: none;
+  }
+  .ha.anim .ha-logo,
+  .ha.anim .ha-links a,
+  .ha.anim .ha-actions .ha-btn,
+  .ha.anim .ha-burger,
+  .ha.anim .ha-sub,
+  .ha.anim .ha-ctas .ha-btn {
+    opacity: 1;
+  }
+  .ha *,
+  .ha *::before,
+  .ha *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -1331,7 +1331,28 @@
     "voirFiche": "Page",
     "copie": "Copied to clipboard",
     "licence": "Each dataset keeps its source's licence: please credit it (shown on its page and in the API response).",
-    "nonRedistribuable": "Not redistributable by data-dz"
+    "nonRedistribuable": "Not redistributable by data-dz",
+    "hero": {
+      "titre1": "All of Algeria",
+      "titre2": "in one API",
+      "sous1": "Open data about Algeria, free and with no key:",
+      "sous2": "catalogue, records and files in JSON, CSV, Excel",
+      "sous3": "or GeoJSON, ready to plug into your apps.",
+      "commencer": "Get started",
+      "documentation": "Documentation",
+      "nav": {
+        "libelle": "API navigation",
+        "accueil": "data-dz, back to home",
+        "demarrer": "Get started",
+        "routes": "Routes",
+        "donnees": "Datasets",
+        "docs": "Documentation",
+        "catalogue": "Catalogue",
+        "ouvrirMenu": "Open menu",
+        "fermerMenu": "Close menu",
+        "langue": "Language"
+      }
+    }
   },
   "thematiques": {
     "titre": "Themes",
