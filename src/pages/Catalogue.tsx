@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -57,6 +57,8 @@ const Catalogue = () => {
   const [saisie, setSaisie] = useState(parametres.get("q") ?? "");
   const terme = useValeurDifferee(saisie.trim());
   const [nbVisibles, setNbVisibles] = useState(TAILLE_PAGE);
+  /** Repère sous la grille : quand il approche de l'écran, la page suivante s'affiche toute seule. */
+  const sentinelle = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setParametres(
@@ -207,6 +209,23 @@ const Catalogue = () => {
     return recentsEnPremier(trierDonnees(filtrees, tri, langue), seuil);
   }, [requeteCatalogue.data, wilaya, format, tri, langue, seuil]);
   const filtresActifs = Boolean(saisie.trim() || categorie || wilaya || format);
+
+  // Défilement infini : dès que le bas de la grille approche (600 px avant), on affiche la page suivante.
+  // L'observateur est recréé après chaque ajout : si le repère est encore visible, la suite se charge aussi.
+  // Le bouton « Afficher plus » reste en secours (clavier, navigateur sans IntersectionObserver).
+  const resteAAfficher = nbVisibles < listeDonnees.length;
+  useEffect(() => {
+    const element = sentinelle.current;
+    if (!element || !resteAAfficher || typeof IntersectionObserver === "undefined") return;
+    const observateur = new IntersectionObserver(
+      (entrees) => {
+        if (entrees.some((entree) => entree.isIntersecting)) setNbVisibles((nombre) => nombre + TAILLE_PAGE);
+      },
+      { rootMargin: "0px 0px 600px 0px" }
+    );
+    observateur.observe(element);
+    return () => observateur.disconnect();
+  }, [resteAAfficher, nbVisibles]);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-[#020817]">
@@ -480,8 +499,8 @@ const Catalogue = () => {
                 </div>
               )}
 
-              {nbVisibles < listeDonnees.length && (
-                <div className="flex justify-center mt-8">
+              {resteAAfficher && (
+                <div ref={sentinelle} className="flex justify-center mt-8">
                   <Button onClick={() => setNbVisibles((nombre) => nombre + TAILLE_PAGE)}>
                     {t("catalogue.afficherPlus")}
                   </Button>

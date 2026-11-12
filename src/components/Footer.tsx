@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSection } from "@/hooks/use-section";
 import { routes } from "@/lib/routes";
 import { DrapeauAlgerie } from "./DrapeauAlgerie";
+import { MascottePied } from "./MascottePied";
 
 const URL_DEPOT = "https://github.com/new-algeria/data-dz";
 
@@ -28,7 +29,7 @@ const LienInterne = ({ vers, children }: { vers: string; children: ReactNode }) 
 );
 
 /**
- * Pied de page : liseré aux couleurs du drapeau, présentation du projet et réseaux, colonnes de liens
+ * Pied de page : le fennec assis sur la bordure haute (MascottePied), présentation du projet et réseaux, colonnes de liens
  * (Explorer, Contribuer), puis copyright et pages légales.
  */
 const Footer = () => {
@@ -39,11 +40,7 @@ const Footer = () => {
 
   return (
     <footer className="mt-auto w-full border-t border-border bg-muted/40 dark:bg-black/25">
-      <div className="flex h-1" aria-hidden>
-        <span className="flex-1 bg-[#006233]" />
-        <span className="flex-1 bg-white dark:bg-neutral-200" />
-        <span className="w-16 bg-[#d21034]" />
-      </div>
+      <MascottePied />
 
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 pb-8 pt-12 sm:px-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
         <div className="col-span-2 max-w-sm md:col-span-1">
