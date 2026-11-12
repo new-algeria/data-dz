@@ -2,10 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { BookOpen, Braces, Check, Copy, ExternalLink, FileJson, Gauge, KeyRound, Package, Search, SearchX, Terminal, Zap } from "lucide-react";
 import { toast } from "sonner";
-import { Navbar } from "@/components/Navbar";
+import { HeroApi } from "@/components/api/HeroApi";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
 import { EtatErreur } from "@/components/EtatErreur";
@@ -107,30 +106,20 @@ const PageApi = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
       <CustomMetaTags title={`${t("pageApi.titre")} - data-dz`} description={t("pageApi.sousTitre")} path={routes.api} />
-      <Navbar />
-
       <main className="flex-1">
-        {/* En-tête violet, couleur de l'API sur tout le site */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-violet-100 via-violet-50 to-gray-50 pt-16 dark:from-violet-950/60 dark:via-gray-900 dark:to-gray-900">
-          <div className="pointer-events-none absolute inset-0" aria-hidden>
-            <div className="absolute -top-24 end-[-6rem] h-80 w-80 rounded-full bg-violet-300/40 blur-3xl animate-flotter dark:bg-violet-600/20" />
-            <div className="absolute bottom-[-6rem] start-[-4rem] h-64 w-64 rounded-full bg-fuchsia-200/40 blur-3xl animate-flotter-lent dark:bg-fuchsia-600/10" />
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="relative container mx-auto max-w-5xl px-4 py-12 md:py-16"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-white/70 px-3 py-1 text-sm font-medium text-violet-800 backdrop-blur dark:bg-white/5 dark:text-violet-200">
+        <HeroApi urlDocs={URL_DOCS} />
+
+        <div className="container mx-auto max-w-5xl space-y-8 px-4 py-10">
+          {/* Démarrer : adresse de base, documentation et points clés */}
+          <section id="demarrer" aria-labelledby="titre-adresse" className="scroll-mt-6 rounded-2xl border border-violet-500/20 bg-gradient-to-b from-violet-50 to-white p-5 shadow-sm md:p-6 dark:from-violet-950/40 dark:to-gray-800">
+            <span className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-white/70 px-3 py-1 text-sm font-medium text-violet-800 dark:bg-white/5 dark:text-violet-200">
               <Braces className="h-4 w-4" aria-hidden />
               {t("pageApi.badge")}
             </span>
-            <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 md:text-5xl dark:text-white">{t("pageApi.titre")}</h1>
-            <p className="mt-3 max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t("pageApi.sousTitre")}</p>
+            <h2 id="titre-adresse" className="mt-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{t("pageApi.titre")}</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">{t("pageApi.sousTitre")}</p>
 
-            {/* Adresse de base */}
-            <div className="mt-6 flex max-w-xl items-center gap-2 rounded-xl border border-violet-500/30 bg-white/80 p-2 ps-3 shadow-sm backdrop-blur dark:bg-gray-900/60">
+            <div className="mt-5 flex max-w-xl items-center gap-2 rounded-xl border border-violet-500/30 bg-white/80 p-2 ps-3 shadow-sm dark:bg-gray-900/60">
               <span className="text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">{t("pageApi.base")}</span>
               <code className="min-w-0 flex-1 truncate font-mono text-sm text-gray-900 dark:text-gray-100" dir="ltr">
                 {URL_API}/v1
@@ -154,14 +143,13 @@ const PageApi = () => {
               </Button>
             </div>
 
-            {/* Trois points clés */}
-            <ul className="mt-8 grid gap-3 sm:grid-cols-3">
+            <ul className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
                 { icone: KeyRound, cle: "sansCle" },
                 { icone: Zap, cle: "formats" },
                 { icone: Gauge, cle: "limites" },
               ].map(({ icone: Icone, cle }) => (
-                <li key={cle} className="flex items-start gap-3 rounded-xl border border-violet-500/15 bg-white/70 p-3 text-sm backdrop-blur dark:bg-white/5">
+                <li key={cle} className="flex items-start gap-3 rounded-xl border border-violet-500/15 bg-white/70 p-3 text-sm dark:bg-white/5">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">
                     <Icone className="h-4 w-4" aria-hidden />
                   </span>
@@ -172,12 +160,10 @@ const PageApi = () => {
                 </li>
               ))}
             </ul>
-          </motion.div>
-        </section>
+          </section>
 
-        <div className="container mx-auto max-w-5xl space-y-8 px-4 py-10">
           {/* Démarrer */}
-          <section aria-labelledby="titre-demarrer" className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <section id="routes" aria-labelledby="titre-demarrer" className="scroll-mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="min-w-0 rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm md:p-6 dark:border-white/10 dark:bg-gray-800">
               <h2 id="titre-demarrer" className="flex items-center gap-2 text-lg font-semibold">
                 <Terminal className="h-5 w-5 text-violet-600 dark:text-violet-400" aria-hidden />
@@ -233,7 +219,7 @@ const PageApi = () => {
           </section>
 
           {/* Toutes les données */}
-          <section aria-labelledby="titre-donnees" className="rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm md:p-6 dark:border-white/10 dark:bg-gray-800">
+          <section id="donnees" aria-labelledby="titre-donnees" className="scroll-mt-6 rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm md:p-6 dark:border-white/10 dark:bg-gray-800">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h2 id="titre-donnees" className="text-lg font-semibold">

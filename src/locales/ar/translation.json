@@ -1450,7 +1450,28 @@
     "voirFiche": "البطاقة",
     "copie": "تم النسخ",
     "licence": "تبقى كل مجموعة بيانات تحت رخصة مصدرها: يُرجى ذكره (مبيّن في بطاقتها وفي استجابة الواجهة).",
-    "nonRedistribuable": "لا يعيد data-dz نشرها"
+    "nonRedistribuable": "لا يعيد data-dz نشرها",
+    "hero": {
+      "titre1": "كل الجزائر",
+      "titre2": "في واجهة برمجية",
+      "sous1": "بيانات مفتوحة عن الجزائر، مجانية وبدون مفتاح:",
+      "sous2": "الفهرس والسجلات والملفات بصيغ JSON وCSV وExcel",
+      "sous3": "أو GeoJSON، جاهزة للربط بتطبيقاتك.",
+      "commencer": "ابدأ",
+      "documentation": "التوثيق",
+      "nav": {
+        "libelle": "تنقل الواجهة البرمجية",
+        "accueil": "data-dz، العودة إلى الرئيسية",
+        "demarrer": "ابدأ",
+        "routes": "المسارات",
+        "donnees": "البيانات",
+        "docs": "التوثيق",
+        "catalogue": "الفهرس",
+        "ouvrirMenu": "فتح القائمة",
+        "fermerMenu": "إغلاق القائمة",
+        "langue": "اللغة"
+      }
+    }
   },
   "thematiques": {
     "titre": "المواضيع",

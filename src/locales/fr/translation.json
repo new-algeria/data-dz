@@ -1331,7 +1331,28 @@
     "voirFiche": "Fiche",
     "copie": "Copié dans le presse-papiers",
     "licence": "Chaque donnée reste sous la licence de sa source : pensez à la citer (indiquée sur sa fiche et dans la réponse de l'API).",
-    "nonRedistribuable": "Non redistribuable par data-dz"
+    "nonRedistribuable": "Non redistribuable par data-dz",
+    "hero": {
+      "titre1": "Toute l'Algérie",
+      "titre2": "dans une API",
+      "sous1": "Des données ouvertes sur l'Algérie, gratuites et sans clé :",
+      "sous2": "catalogue, enregistrements et fichiers en JSON, CSV, Excel",
+      "sous3": "ou GeoJSON, prêts à brancher dans vos applications.",
+      "commencer": "Commencer",
+      "documentation": "Documentation",
+      "nav": {
+        "libelle": "Navigation de l'API",
+        "accueil": "data-dz, retour à l'accueil",
+        "demarrer": "Démarrer",
+        "routes": "Routes",
+        "donnees": "Données",
+        "docs": "Documentation",
+        "catalogue": "Catalogue",
+        "ouvrirMenu": "Ouvrir le menu",
+        "fermerMenu": "Fermer le menu",
+        "langue": "Langue"
+      }
+    }
   },
   "thematiques": {
     "titre": "Thématiques",
