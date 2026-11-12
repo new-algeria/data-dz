@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Session } from "@supabase/supabase-js";
 import { estEnRecuperationMotDePasse, supabase, terminerRecuperationMotDePasse } from "@/lib/supabase";
 import { chargerProfil } from "@/lib/profils";
+import { signalerInscription } from "@/lib/inscription";
 import { ContexteAuth, type ValeurAuth } from "./ContexteAuth";
 
 export const FournisseurAuth = ({ children }: { children: ReactNode }) => {
@@ -37,6 +38,11 @@ export const FournisseurAuth = ({ children }: { children: ReactNode }) => {
       data.subscription.unsubscribe();
     };
   }, [clientRequetes]);
+
+  // Nouveau membre : l'équipe est prévenue par email (hors du rappel onAuthStateChange, voir plus haut).
+  useEffect(() => {
+    if (session) void signalerInscription(session);
+  }, [session?.user.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const utilisateur = session?.user ?? null;
   const requeteProfil = useQuery({
