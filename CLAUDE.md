@@ -155,6 +155,12 @@ Code : `src/lib/communaute.ts`, `src/lib/commentaires.ts`, `src/lib/notification
 - **Clés React Query** : `["mes-votes", uid]`, `["mes-favoris", uid]`, `["favoris", uid]`, `["commentaires", datasetId]`, `["notifications", uid]`.
 - **Messages éphémères** : `toast` de `sonner` (le `<Toaster />` est dans `App.tsx`).
 
+## Boîte à idées (New Algeria)
+Migration `20261113000020_boite_idees.sql` (**à appliquer avant de déployer New Algeria** ; testée sur une base simulée, relançable). Utilisée par le site New Algeria (`/ideas`, même projet Supabase), pas par data-dz.
+- `idees` : `titre` (5 à 120), `description` (≤ 1000), `categorie` (`sante`, `education`, `transport`, `economie`, `environnement`, `administration`, `culture`, `numerique`, `autre`), `statut` (`nouvelle` → `en_etude` → `retenue` → `en_cours` → `realisee`, ou `ecartee`), `reponse_equipe`, `masquee`, `nb_votes` (recalculé par trigger). Un membre n'écrit que titre, description et catégorie (trigger `controler_idee` : auteur, statut et compteur forcés, 5 idées par 24 h) ; il modifie ou retire son idée tant qu'elle est `nouvelle`.
+- `idees_votes` : un vote « pour » par membre et par idée (insert / delete), seulement sur une idée visible.
+- Équipe (`est_moderateur()`) : `rpc("changer_statut_idee", { p_idee_id, p_statut, p_reponse })`, `rpc("masquer_idee", { p_idee_id, p_masquer })`, suppression. Une idée masquée reste visible de son auteur et de l'équipe.
+
 ## Gestion des membres (admin)
 Migrations `20261023000007_gestion_roles.sql` puis `20261102000016_roles_personnalises.sql` : fonction `changer_role(utilisateur_id, nouveau_role text)` (security definer, le code d'un rôle de la table `roles`). Code : `src/lib/admin.ts`, `src/components/admin/RouteAdmin.tsx`, `src/pages/admin/GestionMembres.tsx`.
 
