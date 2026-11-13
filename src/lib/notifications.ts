@@ -33,15 +33,19 @@ export interface BoiteNotifications {
   nonLues: number;
 }
 
-/** Les 20 dernières notifications et le nombre total de non lues (la RLS ne montre que les siennes). */
+/** Notifications de la boîte à idées de New Algeria (migration 20261113000021) : leur lien mène à New Algeria, pas ici. */
+export const PREFIXE_IDEES = "idee_";
+
+/** Les 20 dernières notifications et le nombre total de non lues (la RLS ne montre que les siennes), sans celles de New Algeria. */
 export async function chargerNotifications(): Promise<BoiteNotifications> {
   const [liste, compte] = await Promise.all([
     supabase
       .from("notifications")
       .select("id, type, donnees, lien, lue, cree_le")
+      .not("type", "like", `${PREFIXE_IDEES}%`)
       .order("cree_le", { ascending: false })
       .limit(NB_NOTIFICATIONS_AFFICHEES),
-    supabase.from("notifications").select("id", { count: "exact", head: true }).eq("lue", false),
+    supabase.from("notifications").select("id", { count: "exact", head: true }).eq("lue", false).not("type", "like", `${PREFIXE_IDEES}%`),
   ]);
   if (liste.error) throw liste.error;
   if (compte.error) throw compte.error;
@@ -54,7 +58,7 @@ export async function marquerLue(id: string): Promise<void> {
 }
 
 export async function toutMarquerLu(): Promise<void> {
-  const { error } = await supabase.from("notifications").update({ lue: true }).eq("lue", false);
+  const { error } = await supabase.from("notifications").update({ lue: true }).eq("lue", false).not("type", "like", `${PREFIXE_IDEES}%`);
   if (error) throw error;
 }
 

@@ -6,12 +6,13 @@
 //   RESEND_API_KEY    clé de l'API Resend (https://resend.com, offre gratuite)
 //   EMAIL_EXPEDITEUR  ex. « data-dz <notifications@data-dz.com> » (domaine vérifié chez Resend)
 //   URL_SITE          ex. « https://data-dz.com »
+//   URL_NEW_ALGERIA   facultatif, « https://www.newalgeria.org » par défaut (emails de la boîte à idées)
 // SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY sont fournis automatiquement par Supabase.
 //
 // Déploiement : supabase functions deploy envoyer-email --no-verify-jwt
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { construireEmail, type NotificationEmail } from "./contenu.ts";
+import { construireEmail, estNotificationIdee, expediteur, type NotificationEmail } from "./contenu.ts";
 
 const env = (nom: string) => Deno.env.get(nom) ?? "";
 
@@ -50,7 +51,11 @@ Deno.serve(async (requete) => {
   if (error) return reponse(500, { erreur: error.message });
   if (!notification) return reponse(404, { erreur: "notification introuvable" });
 
-  const email = construireEmail(notification as NotificationEmail, env("URL_SITE") || "https://data-dz.com");
+  const email = construireEmail(
+    notification as NotificationEmail,
+    env("URL_SITE") || "https://data-dz.com",
+    env("URL_NEW_ALGERIA") || "https://www.newalgeria.org"
+  );
   if (!email) return reponse(200, { envoye: false, raison: "type sans email" });
 
   const { data: compte, error: erreurCompte } = await admin.auth.admin.getUserById(notification.utilisateur_id);
@@ -62,7 +67,8 @@ Deno.serve(async (requete) => {
     method: "POST",
     headers: { Authorization: `Bearer ${env("RESEND_API_KEY")}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: env("EMAIL_EXPEDITEUR") || "data-dz <onboarding@resend.dev>",
+      // Même adresse d'envoi (domaine vérifié chez Resend) ; seul le nom affiché change pour la boîte à idées.
+      from: expediteur(env("EMAIL_EXPEDITEUR") || "data-dz <onboarding@resend.dev>", estNotificationIdee(notification.type)),
       to: [destinataire],
       subject: email.sujet,
       html: email.html,
