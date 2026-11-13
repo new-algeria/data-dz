@@ -7,6 +7,11 @@ Envoie par email les notifications importantes :
 | `nouvelle_soumission` | tous les modérateurs et admins (sauf l'auteur) | « Nouvelle proposition à relire : … » |
 | `revue` | l'auteur de la proposition | acceptée, refusée, modifications demandées, commentaire, complétée par la modération |
 | `publiee` | l'auteur de la proposition | « Votre donnée est en ligne : … » |
+| `role_attribue` | le membre | « Un rôle a été attribué à votre compte » |
+| `idee_statut` | l'auteur d'une idée de la boîte à idées de New Algeria | « Votre idée a été retenue : … », ou message de l'équipe |
+| `idee_commentaire` | l'auteur de l'idée commentée | « Nouveau commentaire sur votre idée : … » (un email par idée et par heure au plus tant que les précédents ne sont pas lus) |
+
+Les emails `idee_*` (migration `20261113000021_idees_commentaires_notifications.sql`) sont aux couleurs de **New Algeria** : logo (`public/newalgeria_logo.png`, servi par data-dz.com), nom d'expéditeur « New Algeria » (même adresse), liens vers `URL_NEW_ALGERIA` (facultatif, `https://www.newalgeria.org` par défaut). `idee_reponse` (réponse à un commentaire) reste une notification sans email.
 
 ```
 notification insérée ──trigger──▶ pg_net (asynchrone) ──POST + secret──▶ envoyer-email ──▶ Resend ──▶ boîte mail

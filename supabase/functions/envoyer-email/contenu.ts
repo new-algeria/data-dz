@@ -11,6 +11,12 @@ export interface NotificationEmail {
     decision?: string;
     commentaire?: string | null;
     role?: TexteMultilingue;
+    /** Boîte à idées de New Algeria (types idee_*). */
+    statut?: string;
+    ancien_statut?: string;
+    reponse?: string | null;
+    auteur?: string | null;
+    extrait?: string | null;
   };
 }
 
@@ -34,6 +40,49 @@ interface Message {
 
 /** Logo servi par le site (public/), en adresse absolue : les clients mail ne suivent pas les chemins relatifs. */
 const LOGO = "https://www.data-dz.com/data_dz_logo_icon.png";
+
+/** Site d'où vient la notification : data-dz, ou New Algeria pour la boîte à idées (types idee_*). */
+interface Marque {
+  logo: string;
+  nomHtml: string;
+  nomTexte: string;
+  accroche: string;
+  pied: string;
+  liens: (racine: string) => string;
+}
+
+const MARQUE_DATA_DZ: Marque = {
+  logo: LOGO,
+  nomHtml: 'data-<span style="color:#34d399">dz</span>',
+  nomTexte: "data-dz",
+  accroche: "Open data on Algeria",
+  pied: "You are receiving this email because you have an account on data-dz.",
+  liens: (racine) =>
+    `<a href="${echapper(racine)}" style="color:#047857;text-decoration:none;font-weight:600">data-dz.com</a>
+          &nbsp;·&nbsp; <a href="${echapper(`${racine}/api`)}" style="color:#047857;text-decoration:none">Public API</a>
+          &nbsp;·&nbsp; An open source project by <a href="https://newalgeria.org" style="color:#047857;text-decoration:none">New Algeria</a>`,
+};
+
+const MARQUE_NEW_ALGERIA: Marque = {
+  logo: "https://www.data-dz.com/newalgeria_logo.png",
+  nomHtml: 'New <span style="color:#34d399">Algeria</span>',
+  nomTexte: "New Algeria",
+  accroche: "Algeria's digital future, built by and for Algerians",
+  pied: "You are receiving this email because you have a New Algeria account (the same account as data-dz).",
+  liens: (racine) =>
+    `<a href="${echapper(racine)}" style="color:#047857;text-decoration:none;font-weight:600">newalgeria.org</a>
+          &nbsp;·&nbsp; <a href="${echapper(`${racine}/ideas`)}" style="color:#047857;text-decoration:none">Idea box</a>
+          &nbsp;·&nbsp; <a href="https://www.data-dz.com" style="color:#047857;text-decoration:none">data-dz</a>`,
+};
+
+export const estNotificationIdee = (type: string) => type.startsWith("idee_");
+
+/** « data-dz <notifications@data-dz.com> » devient « New Algeria <notifications@data-dz.com> » pour la boîte à idées. */
+export const expediteur = (adresse: string, idee: boolean) => {
+  if (!idee) return adresse;
+  const email = adresse.match(/<([^>]+)>/)?.[1] ?? adresse.trim();
+  return `New Algeria <${email}>`;
+};
 
 const TONS: Record<Ton, { fond: string; texte: string }> = {
   vert: { fond: "#d1fae5", texte: "#065f46" },
@@ -115,6 +164,75 @@ function message(n: NotificationEmail, titre: string): Message | null {
         phrase: "Thank you! Your submission is now published on data-dz, free for everyone to explore, map and download.",
         bouton: "View the dataset",
       };
+    case "idee_statut": {
+      const changement = n.donnees.statut !== n.donnees.ancien_statut;
+      if (!changement) {
+        return {
+          sujet: `The team replied to your idea: ${titre}`,
+          statut: "New message",
+          ton: "bleu",
+          titre: "The team replied to your idea",
+          phrase: "The New Algeria team left a message on your idea.",
+          bouton: "View my idea",
+        };
+      }
+      const statuts: Record<string, Omit<Message, "bouton">> = {
+        en_etude: {
+          sujet: `Your idea is under review: ${titre}`,
+          statut: "Under review",
+          ton: "bleu",
+          titre: "The team is looking at your idea",
+          phrase: "Good news: the New Algeria team is studying your idea to see how to make it happen.",
+        },
+        retenue: {
+          sujet: `Your idea was selected: ${titre}`,
+          statut: "Planned",
+          ton: "violet",
+          titre: "Great news, your idea was selected!",
+          phrase: "The New Algeria team decided to build your idea. Thank you for helping Algeria move forward!",
+        },
+        en_cours: {
+          sujet: `Your idea is being built: ${titre}`,
+          statut: "In progress",
+          ton: "ambre",
+          titre: "Your idea is being built",
+          phrase: "Work has started on your idea. We will let you know as soon as it is live.",
+        },
+        realisee: {
+          sujet: `Your idea is live: ${titre}`,
+          statut: "Done",
+          ton: "vert",
+          titre: "Your idea is live!",
+          phrase: "It happened: your idea is now a reality. Thank you for proposing it to the community!",
+        },
+        ecartee: {
+          sujet: `Update on your idea: ${titre}`,
+          statut: "Not for now",
+          ton: "rouge",
+          titre: "Your idea was not selected for now",
+          phrase: "The team reviewed your idea and is not able to take it on for now. Thank you for sharing it: keep the ideas coming!",
+        },
+        nouvelle: {
+          sujet: `Update on your idea: ${titre}`,
+          statut: "New",
+          ton: "bleu",
+          titre: "Your idea was updated",
+          phrase: "The New Algeria team updated the status of your idea.",
+        },
+      };
+      return { ...(statuts[n.donnees.statut ?? ""] ?? statuts.nouvelle), bouton: "View my idea" };
+    }
+    case "idee_commentaire": {
+      const auteur = n.donnees.auteur?.trim() || "Someone";
+      return {
+        sujet: `New comment on your idea: ${titre}`,
+        statut: "New comment",
+        ton: "bleu",
+        titre: "New comment on your idea",
+        phrase: `${auteur} commented on your idea in the New Algeria idea box.`,
+        bouton: "Read and reply",
+      };
+    }
     case "role_attribue": {
       const role = n.donnees.role?.en || n.donnees.role?.fr || "data-dz member";
       return {
@@ -132,17 +250,27 @@ function message(n: NotificationEmail, titre: string): Message | null {
 }
 
 /** Construit l'email d'une notification, ou null si ce type n'est pas envoyé par email. */
-export function construireEmail(n: NotificationEmail, urlSite: string): Email | null {
+export function construireEmail(n: NotificationEmail, urlSite: string, urlNewAlgeria = "https://www.newalgeria.org"): Email | null {
   const titre = n.type === "role_attribue"
     ? n.donnees.role?.en || n.donnees.role?.fr || n.donnees.role?.ar || "—"
     : titreDans(n.donnees.titre);
   const m = message(n, titre);
   if (!m) return null;
 
-  const racine = urlSite.replace(/\/+$/, "");
+  const idee = estNotificationIdee(n.type);
+  const marque = idee ? MARQUE_NEW_ALGERIA : MARQUE_DATA_DZ;
+  const racine = (idee ? urlNewAlgeria : urlSite).replace(/\/+$/, "");
   const url = racine + cheminSur(n.lien);
-  const commentaire = n.type === "revue" ? n.donnees.commentaire?.trim() || null : null;
-  const contexteLibelle = n.type === "role_attribue" ? "Account role" : "Dataset";
+  // Encadré sous la carte : commentaire de la modération, message de l'équipe ou extrait du commentaire.
+  const citation =
+    n.type === "revue" && n.donnees.commentaire?.trim()
+      ? { libelle: "Comment from the moderation team", texte: n.donnees.commentaire.trim() }
+      : n.type === "idee_statut" && n.donnees.reponse?.trim()
+        ? { libelle: "Message from the team", texte: n.donnees.reponse.trim() }
+        : n.type === "idee_commentaire" && n.donnees.extrait?.trim()
+          ? { libelle: `${n.donnees.auteur?.trim() || "Comment"} wrote`, texte: n.donnees.extrait.trim() }
+          : null;
+  const contexteLibelle = n.type === "role_attribue" ? "Account role" : idee ? "Your idea" : "Dataset";
   const contexteValeur = n.type === "role_attribue"
     ? n.donnees.role?.en || n.donnees.role?.fr || "data-dz member"
     : titre;
@@ -164,10 +292,10 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0f172a">
     <tr><td bgcolor="#064e3b" style="background:#064e3b;background-image:linear-gradient(135deg,#03140d 0%,#064e3b 60%,#0a5c3d 100%);padding:28px 32px">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td style="vertical-align:middle"><img src="${LOGO}" width="40" height="40" alt="" style="display:block;border:0"></td>
-        <td style="vertical-align:middle;padding-left:12px;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">data-<span style="color:#34d399">dz</span></td>
+        <td style="vertical-align:middle"><img src="${marque.logo}" width="40" height="40" alt="" style="display:block;border:0"></td>
+        <td style="vertical-align:middle;padding-left:12px;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">${marque.nomHtml}</td>
       </tr></table>
-      <p style="margin:14px 0 0;font-size:13px;color:#a7f3d0">Open data on Algeria</p>
+      <p style="margin:14px 0 0;font-size:13px;color:#a7f3d0">${echapper(marque.accroche)}</p>
     </td></tr>
     <tr><td style="padding:0;font-size:0;line-height:0">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -189,13 +317,13 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
         </td></tr>
       </table>
     </td></tr>${
-      commentaire
+      citation
         ? `
     <tr><td style="padding:16px 32px 0">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-left:4px solid #10b981;background:#ecfdf5;border-radius:0 12px 12px 0">
         <tr><td style="padding:14px 18px">
-          <p style="margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#047857">Comment from the moderation team</p>
-          <p dir="auto" style="margin:0;font-size:15px;line-height:1.6;color:#1e293b;white-space:pre-line">${echapper(commentaire)}</p>
+          <p style="margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#047857">${echapper(citation.libelle)}</p>
+          <p dir="auto" style="margin:0;font-size:15px;line-height:1.6;color:#1e293b;white-space:pre-line">${echapper(citation.texte)}</p>
         </td></tr>
       </table>
     </td></tr>`
@@ -212,10 +340,8 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
     <tr><td style="padding:28px 32px 32px">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e2e8f0">
         <tr><td style="padding-top:20px;font-size:12px;line-height:1.6;color:#64748b">
-          You are receiving this email because you have an account on data-dz.<br>
-          <a href="${echapper(racine)}" style="color:#047857;text-decoration:none;font-weight:600">data-dz.com</a>
-          &nbsp;·&nbsp; <a href="${echapper(`${racine}/api`)}" style="color:#047857;text-decoration:none">Public API</a>
-          &nbsp;·&nbsp; An open source project by <a href="https://newalgeria.org" style="color:#047857;text-decoration:none">New Algeria</a>
+          ${echapper(marque.pied)}<br>
+          ${marque.liens(racine)}
         </td></tr>
       </table>
     </td></tr>
@@ -226,19 +352,19 @@ export function construireEmail(n: NotificationEmail, urlSite: string): Email | 
 </html>`;
 
   const texte = [
-    `data-dz · ${m.statut}`,
+    `${marque.nomTexte} · ${m.statut}`,
     "",
     m.titre,
     "",
     m.phrase,
     "",
     `${contexteLibelle}: ${contexteValeur}`,
-    ...(commentaire ? ["", "Comment from the moderation team:", commentaire] : []),
+    ...(citation ? ["", `${citation.libelle}:`, citation.texte] : []),
     "",
     `${m.bouton}: ${url}`,
     "",
     "—",
-    "You are receiving this email because you have an account on data-dz.",
+    marque.pied,
     racine,
   ].join("\n");
 
