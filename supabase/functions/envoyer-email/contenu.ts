@@ -40,6 +40,8 @@ interface Message {
 
 /** Logo servi par le site (public/), en adresse absolue : les clients mail ne suivent pas les chemins relatifs. */
 const LOGO = "https://www.data-dz.com/data_dz_logo_icon.png";
+/** Le fennec, mascotte de New Algeria, assis dans l'en-tête (PNG : Outlook ne lit pas le WebP). */
+const FENNEC = "https://www.data-dz.com/mascotte/fennec.png";
 
 /** Site d'où vient la notification : data-dz, ou New Algeria pour la boîte à idées (types idee_*). */
 interface Marque {
@@ -53,7 +55,7 @@ interface Marque {
 
 const MARQUE_DATA_DZ: Marque = {
   logo: LOGO,
-  nomHtml: 'data-<span style="color:#34d399">dz</span>',
+  nomHtml: 'data-<span style="color:#bbf7d0">dz</span>',
   nomTexte: "data-dz",
   accroche: "Open data on Algeria",
   pied: "You are receiving this email because you have an account on data-dz.",
@@ -65,7 +67,7 @@ const MARQUE_DATA_DZ: Marque = {
 
 const MARQUE_NEW_ALGERIA: Marque = {
   logo: "https://www.data-dz.com/newalgeria_logo.png",
-  nomHtml: 'New <span style="color:#34d399">Algeria</span>',
+  nomHtml: 'New <span style="color:#bbf7d0">Algeria</span>',
   nomTexte: "New Algeria",
   accroche: "Algeria's digital future, built by and for Algerians",
   pied: "You are receiving this email because you have a New Algeria account (the same account as data-dz).",
@@ -285,23 +287,23 @@ export function construireEmail(n: NotificationEmail, urlSite: string, urlNewAlg
 <meta name="color-scheme" content="light">
 <title>${echapper(m.sujet)}</title>
 </head>
-<body style="margin:0;padding:0;background:#f1f5f9;-webkit-text-size-adjust:100%">
+<body bgcolor="#f4f6ef" style="margin:0;padding:0;background-color:#f4f6ef;-webkit-text-size-adjust:100%">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">${echapper(`${m.titre} · ${titre}`)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f1f5f9">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f6ef" style="background-color:#f4f6ef">
 <tr><td align="center" style="padding:32px 16px">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0f172a">
-    <tr><td bgcolor="#064e3b" style="background:#064e3b;background-image:linear-gradient(135deg,#03140d 0%,#064e3b 60%,#0a5c3d 100%);padding:28px 32px">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td style="vertical-align:middle"><img src="${marque.logo}" width="40" height="40" alt="" style="display:block;border:0"></td>
-        <td style="vertical-align:middle;padding-left:12px;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">${marque.nomHtml}</td>
-      </tr></table>
-      <p style="margin:14px 0 0;font-size:13px;color:#a7f3d0">${echapper(marque.accroche)}</p>
-    </td></tr>
-    <tr><td style="padding:0;font-size:0;line-height:0">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;background-color:#ffffff;border:1px solid #e6ebe2;border-radius:20px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0f172a">
+    <tr><td bgcolor="#0d8a59" style="background-color:#0d8a59;background-image:linear-gradient(135deg,#0b6b46 0%,#0d8a59 55%,#14a36b 100%);padding:0 0 0 32px">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td width="50%" height="4" bgcolor="#006233" style="background:#006233"></td>
-        <td width="25%" height="4" bgcolor="#e2e8f0" style="background:#e2e8f0"></td>
-        <td width="25%" height="4" bgcolor="#d21034" style="background:#d21034"></td>
+        <td valign="middle" style="padding:26px 0">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td style="vertical-align:middle"><img src="${marque.logo}" width="40" height="40" alt="" style="display:block;border:0;border-radius:12px;background-color:#ffffff"></td>
+            <td style="vertical-align:middle;padding-left:12px;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">${marque.nomHtml}</td>
+          </tr></table>
+          <p style="margin:12px 0 0;font-size:13px;line-height:1.5;color:#d1fae5">${echapper(marque.accroche)}</p>
+        </td>
+        <td valign="bottom" align="right" width="96" style="padding:14px 24px 0 8px;line-height:0;font-size:0">
+          <img src="${FENNEC}" width="72" height="99" alt="" style="display:block;border:0;width:72px;height:99px">
+        </td>
       </tr></table>
     </td></tr>
     <tr><td style="padding:36px 32px 8px">
@@ -331,8 +333,8 @@ export function construireEmail(n: NotificationEmail, urlSite: string, urlNewAlg
     }
     <tr><td style="padding:28px 32px 8px">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td bgcolor="#047857" style="border-radius:10px;background:#047857">
-          <a href="${u}" style="display:inline-block;padding:14px 26px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">${echapper(m.bouton)} &rarr;</a>
+        <td bgcolor="#0d8a59" style="border-radius:999px;background-color:#0d8a59">
+          <a href="${u}" style="display:inline-block;padding:14px 26px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:999px">${echapper(m.bouton)} &rarr;</a>
         </td>
       </tr></table>
       <p style="margin:16px 0 0;font-size:12px;line-height:1.5;color:#94a3b8">Button not working? Copy this link into your browser:<br><a href="${u}" style="color:#047857;word-break:break-all">${u}</a></p>
