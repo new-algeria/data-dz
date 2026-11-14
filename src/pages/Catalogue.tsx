@@ -267,9 +267,12 @@ const Catalogue = () => {
                 className="inline-block h-[0.62em] w-[0.93em] -translate-y-[0.06em] rounded-[0.08em] align-middle shadow-sm"
                 titre={t("drapeau")}
               />{" "}
-              {t("accueil.titreLiaison") && <>{t("accueil.titreLiaison")} </>}
-              <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-300 dark:to-teal-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] [--bg-size:200%] underline decoration-wavy decoration-emerald-400/60 decoration-2 underline-offset-[0.2em] [text-decoration-skip-ink:none]">
-                {t("accueil.titreSurligne")}
+              {/* À partir de « md », la fin du titre passe entière sur sa propre ligne : la partie soulignée n'est jamais coupée en deux. */}
+              <span className="md:block">
+                {t("accueil.titreLiaison") && <>{t("accueil.titreLiaison")} </>}
+                <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-300 dark:to-teal-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] [--bg-size:200%] underline decoration-wavy decoration-emerald-400/60 decoration-2 underline-offset-[0.2em] [text-decoration-skip-ink:none]">
+                  {t("accueil.titreSurligne")}
+                </span>
               </span>
               {t("accueil.titreFin") && <> {t("accueil.titreFin")}</>}
             </motion.h1>
