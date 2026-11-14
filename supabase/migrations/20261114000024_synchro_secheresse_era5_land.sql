@@ -27,12 +27,13 @@ values (
 on conflict (slug) do nothing;
 
 -- Source climatique.
-insert into public.sources (slug, nom, url, description)
+insert into public.sources (slug, nom, url, type, description)
 values (
   'copernicus-era5-land',
   'Copernicus Climate Change Service (ERA5-Land)',
   'https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means',
-  'Réanalyse mensuelle ERA5-Land du Copernicus Climate Change Service (C3S), grille régulière 0,1° (~9 km), DOI 10.24381/cds.68d2bb30, licence CC BY 4.0. Les moyennes mensuelles définitives sont publiées avec un retard de 2 à 3 mois. Une correction dédiée est appliquée aux précipitations de septembre 2022 à février 2024 selon la documentation ECMWF.'
+  'synchronisee',
+  'Réanalyse mensuelle ERA5-Land du Copernicus Climate Change Service (C3S), grille régulière 0,1° (~9 km), DOI 10.24381/cds.68d2bb30, licence CC BY 4.0. Actualisée chaque mois ; le pipeline retient le dernier mois civil complet disponible. Les précipitations de septembre 2022 à février 2024 sont corrigées à partir du produit mensuel par heure de la journée à 00:00, conformément à la documentation ECMWF.'
 )
 on conflict (slug) do nothing;
 
@@ -43,7 +44,7 @@ values (
   (select id from public.sources where slug = 'copernicus-era5-land'),
   'interne',
   30,
-  'Indicateurs mensuels ERA5-Land depuis janvier 1981 : précipitations, normales et anomalies, SPI-3/SPI-12, humidité du sol (0–7, 7–28, 28–100 et 100–289 cm), percentile saisonnier d’humidité et température moyenne. Moyennes pondérées par surface sur les 69 wilayas GeoAlgeria. Référence 1991–2020. Les précipitations de 09/2022 à 02/2024 proviennent du produit ERA5-Land monthly_averaged_reanalysis_by_hour_of_day à 00:00 afin d’éviter le défaut documenté du produit mensuel standard. Réanalyse modélisée, pas mesures de station.'
+  'Indicateurs mensuels ERA5-Land depuis janvier 1981 : précipitations, normales et anomalies, SPI-3/SPI-12, humidité du sol (0–7, 7–28, 28–100 et 100–289 cm), percentile saisonnier d’humidité et température moyenne. Moyennes pondérées par surface sur les 69 wilayas GeoAlgeria. Référence 1991–2020. Le pipeline reprend les précipitations de 09/2022 à 02/2024 du produit ERA5-Land monthly_averaged_reanalysis_by_hour_of_day à 00:00 afin d’éviter le défaut documenté du produit mensuel standard. Réanalyse modélisée, pas mesures de station ; période limitée au dernier mois complet disponible.'
 )
 on conflict (code) do nothing;
 
