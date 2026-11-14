@@ -79,6 +79,17 @@ export function chiffreCarte(
   langue: LangueUnite
 ): Chiffre | null {
   const infos = donnee.infos_source ?? {};
+  if (aDesWilayas(donnee)) {
+    const nombre = entier(infos.nb_indicateurs);
+    if (nombre !== null) {
+      return {
+        genre: "serie",
+        nombre,
+        debut: entier(infos.premiere_annee_observee),
+        fin: entier(infos.derniere_annee_observee),
+      };
+    }
+  }
   if (estSerieTemporelle(donnee.versions?.colonnes)) {
     const nombre = entier(infos.nb_indicateurs) ?? entier(infos.nb_series);
     if (nombre !== null) {
