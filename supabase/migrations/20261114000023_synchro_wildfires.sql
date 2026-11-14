@@ -19,10 +19,10 @@ on conflict (code) do nothing;
 select
   synchro.code,
   synchro.nom,
-  source.slug as source_slug,
+  src.slug as source_slug,
   synchro.mode,
   synchro.intervalle_jours,
   synchro.description
 from public.synchronisations as synchro
-left join public.sources as source on source.id = synchro.source_id
+left join public.sources as src on src.id = synchro.source_id
 where synchro.code = 'wildfires';
