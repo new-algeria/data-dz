@@ -13,7 +13,7 @@ const urlSite = URL_SITE_PUBLIC;
 
 export const CustomMetaTags = ({ title, description, path = "", image }: MetaTagsProps) => {
   const urlComplete = `${urlSite}${path}`;
-  const urlImage = image ?? `${urlSite}/og-data-dz.jpg`;
+  const urlImage = image ?? `${urlSite}/og-data-dz-v2.jpg`;
 
   return (
     <Helmet>

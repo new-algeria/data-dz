@@ -105,7 +105,7 @@ const PageApi = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
-      <CustomMetaTags title={`${t("pageApi.titre")} - data-dz`} description={t("pageApi.sousTitre")} path={routes.api} image={`${URL_SITE_PUBLIC}/og-api.jpg`} />
+      <CustomMetaTags title={`${t("pageApi.titre")} - data-dz`} description={t("pageApi.sousTitre")} path={routes.api} image={`${URL_SITE_PUBLIC}/og-api-v2.jpg`} />
       <main className="flex-1">
         <HeroApi urlDocs={URL_DOCS} />
 

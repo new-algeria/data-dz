@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { CustomMetaTags } from "@/components/MetaTags";
+import { CustomMetaTags, URL_SITE_PUBLIC } from "@/components/MetaTags";
 import { Textarea } from "@/components/ui/textarea";
 import { SOURCES_ACCUEIL, type SourceBandeau } from "@/components/accueil/sources-accueil";
 import { HeroDjazAI } from "@/components/djazai/HeroDjazAI";
@@ -445,7 +445,7 @@ export default function PageDjazAI() {
 
   return (
     <>
-      <CustomMetaTags title={t("pageDjazai.metaTitre")} description={t("pageDjazai.metaDescription")} path={routes.djazai} />
+      <CustomMetaTags title={t("pageDjazai.metaTitre")} description={t("pageDjazai.metaDescription")} path={routes.djazai} image={`${URL_SITE_PUBLIC}/og-djazai.jpg`} />
       <Navbar />
       <main>
         <HeroDjazAI versConversation={versConversation} />
