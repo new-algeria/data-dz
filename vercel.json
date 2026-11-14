@@ -28,6 +28,11 @@
       "dest": "/partage/api.html"
     },
     {
+      "src": "/djazai/?",
+      "has": [{ "type": "header", "key": "user-agent", "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|TelegramBot|SkypeUriPreview|MicrosoftPreview|Pinterest|redditbot|Embedly|vkShare|Mastodon|Bluesky|Iframely|Snapchat|Viber).*" }],
+      "dest": "/partage/djazai.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
