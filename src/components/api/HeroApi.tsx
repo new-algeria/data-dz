@@ -284,6 +284,18 @@ export const HeroApi = ({ urlDocs }: Props) => {
           </a>
         </div>
       </div>
+
+      {/* Le fennec de New Algeria en version codeur, assis devant le globe (décoratif) */}
+      <img
+        className="ha-fennec"
+        src="/mascotte/fennec-codeur.webp"
+        width={544}
+        height={520}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        draggable={false}
+      />
     </section>
   );
 };
