@@ -1279,7 +1279,14 @@
     "unite": "Unité : {{unite}}",
     "aucuneValeur": "Aucune valeur à afficher pour ce choix.",
     "sansValeur": "pas de donnée",
-    "titreBarres": "{{mesure}} : les {{nombre}} premiers"
+    "titreBarres": "{{mesure}} : les {{nombre}} premiers",
+    "modeCarte": "Mode d’affichage de la carte",
+    "concentration": "Concentration",
+    "detections": "Détections",
+    "legendeConcentration": "Concentration relative des détections",
+    "faible": "Faible",
+    "elevee": "Élevée",
+    "noteConcentration": "La couleur indique le nombre de détections, pas une température mesurée."
   },
   "pageApi": {
     "badge": "API publique et gratuite",
