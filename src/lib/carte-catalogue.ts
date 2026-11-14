@@ -32,6 +32,17 @@ export function aDesCoordonnees(donnee: Pick<ResumeDonnee, "ressources" | "versi
   return geojson || (["lat", "latitude"].some((cle) => cles.has(cle)) && ["lon", "lng", "long", "longitude"].some((cle) => cles.has(cle)));
 }
 
+/** Carte choroplèthe à partir d'un tableau mensuel comportant wilaya + code + une mesure numérique. */
+export function aDesWilayas(donnee: Pick<ResumeDonnee, "versions">): boolean {
+  const colonnes = donnee.versions?.colonnes ?? [];
+  const cles = new Set(colonnes.map((colonne) => normaliserCle(colonne.nom)));
+  const aCode = ["code_wilaya", "wilaya_code", "code_w"].some((cle) => cles.has(cle));
+  const aNom = ["wilaya", "nom_wilaya", "wilaya_nom", "wilaya_name"].some((cle) => cles.has(cle));
+  const aTemps = ["date", "mois", "month", "annee", "year"].some((cle) => cles.has(cle));
+  const aMesure = colonnes.some((colonne) => ["int", "float", "number", "numeric", "decimal", "double"].includes((colonne.type ?? "").toLowerCase()));
+  return aCode && aNom && aTemps && aMesure;
+}
+
 /** Bouton d'action de la carte, à côté de « Télécharger ». */
 /** Fichiers non redistribuables par data-dz (`diffusion_restreinte`) : ni téléchargement, ni API, ni visuel. */
 export const estRestreinte = (donnee: { diffusion_restreinte?: boolean }) => donnee.diffusion_restreinte === true;
@@ -44,6 +55,7 @@ export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versio
     ["text/calendar", "application/ics", "application/icalendar+xml"].includes(fichier.type_mime?.toLowerCase().split(";")[0].trim() ?? "")
   ))) return "calendrier";
   if (aDesCoordonnees(donnee)) return "carte";
+  if (aDesWilayas(donnee)) return "carte";
   if (estSerieTemporelle(donnee.versions?.colonnes)) return "graphique";
   return null;
 }
