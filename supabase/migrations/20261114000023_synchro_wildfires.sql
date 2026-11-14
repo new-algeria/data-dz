@@ -14,3 +14,15 @@ insert into public.synchronisations (code, nom, source_id, mode, intervalle_jour
     'Détections thermiques NRT MODIS et VIIRS de NASA FIRMS sur une fenêtre glissante de 7 jours UTC, affectées aux 69 wilayas par les contours GeoAlgeria. Ce sont des anomalies thermiques, pas des incendies confirmés ni des périmètres ou surfaces brûlées. Fichiers NASA CC0-1.0 ; fichiers enrichis GeoAlgeria ODbL-1.0.'
   )
 on conflict (code) do nothing;
+
+-- Vérification après insertion : doit renvoyer une ligne, source nasa-firms, intervalle 1 jour.
+select
+  synchro.code,
+  synchro.nom,
+  source.slug as source_slug,
+  synchro.mode,
+  synchro.intervalle_jours,
+  synchro.description
+from public.synchronisations as synchro
+left join public.sources as source on source.id = synchro.source_id
+where synchro.code = 'wildfires';
