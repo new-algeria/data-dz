@@ -1394,7 +1394,14 @@
     "unite": "الوحدة: {{unite}}",
     "aucuneValeur": "لا توجد قيم لعرضها لهذا الاختيار.",
     "sansValeur": "لا توجد بيانات",
-    "titreBarres": "{{mesure}}: أعلى {{nombre}}"
+    "titreBarres": "{{mesure}}: أعلى {{nombre}}",
+    "modeCarte": "طريقة عرض الخريطة",
+    "concentration": "الكثافة",
+    "detections": "الرصدات",
+    "legendeConcentration": "الكثافة النسبية للرصدات",
+    "faible": "منخفض",
+    "elevee": "مرتفع",
+    "noteConcentration": "يمثل اللون عدد الرصدات، وليس درجة حرارة مقاسة."
   },
   "pageApi": {
     "badge": "واجهة API عامة ومجانية",
