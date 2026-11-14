@@ -87,7 +87,7 @@ export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers, onNombr
     else if (vue === "carte" && detection.carte?.genre === "points" && detection.carte.origine === "geojson") {
       // Tous les GeoJSON du jeu restent proposés dans le sélecteur de la carte.
       const geojsons = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
-      contenu = <GlobeDonnees fichiers={geojsons} initial={detection.carte.fichierId} hauteur={HAUTEUR_VISUEL} projection="mercator" />;
+      contenu = <GlobeDonnees fichiers={geojsons} initial={detection.carte.fichierId} hauteur={HAUTEUR_VISUEL} projection="mercator" heatmapInitiale={slug === "wildfires"} />;
     } else if (lignes && vue === "carte" && detection.carte && !(detection.carte.genre === "points" && detection.carte.origine === "geojson")) {
       contenu = <CarteDepuisLignes visuel={detection.carte} lignes={lignes} hauteur={HAUTEUR_VISUEL} />;
     } else if (lignes && vue === "graphique" && detection.graphique) {

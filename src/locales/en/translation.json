@@ -1279,7 +1279,14 @@
     "unite": "Unit: {{unite}}",
     "aucuneValeur": "No value to show for this selection.",
     "sansValeur": "no data",
-    "titreBarres": "{{mesure}}: top {{nombre}}"
+    "titreBarres": "{{mesure}}: top {{nombre}}",
+    "modeCarte": "Map display mode",
+    "concentration": "Concentration",
+    "detections": "Detections",
+    "legendeConcentration": "Relative detection concentration",
+    "faible": "Low",
+    "elevee": "High",
+    "noteConcentration": "Color represents the number of detections, not a measured temperature."
   },
   "pageApi": {
     "badge": "Free public API",
