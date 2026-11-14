@@ -23,6 +23,11 @@
       "dest": "https://api.data-dz.com/v1/datasets/$1/share"
     },
     {
+      "src": "/api/?",
+      "has": [{ "type": "header", "key": "user-agent", "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|TelegramBot|SkypeUriPreview|MicrosoftPreview|Pinterest|redditbot|Embedly|vkShare|Mastodon|Bluesky|Iframely|Snapchat|Viber).*" }],
+      "dest": "/partage/api.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }

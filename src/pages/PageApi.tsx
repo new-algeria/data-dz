@@ -6,7 +6,7 @@ import { BookOpen, Braces, Check, Copy, ExternalLink, FileJson, Gauge, KeyRound,
 import { toast } from "sonner";
 import { HeroApi } from "@/components/api/HeroApi";
 import Footer from "@/components/Footer";
-import { CustomMetaTags } from "@/components/MetaTags";
+import { CustomMetaTags, URL_SITE_PUBLIC } from "@/components/MetaTags";
 import { EtatErreur } from "@/components/EtatErreur";
 import { BadgeCategorie } from "@/components/BadgeCategorie";
 import { Button } from "@/components/ui/button";
@@ -105,7 +105,7 @@ const PageApi = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
-      <CustomMetaTags title={`${t("pageApi.titre")} - data-dz`} description={t("pageApi.sousTitre")} path={routes.api} />
+      <CustomMetaTags title={`${t("pageApi.titre")} - data-dz`} description={t("pageApi.sousTitre")} path={routes.api} image={`${URL_SITE_PUBLIC}/og-api.jpg`} />
       <main className="flex-1">
         <HeroApi urlDocs={URL_DOCS} />
 
