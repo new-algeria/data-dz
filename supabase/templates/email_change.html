@@ -1,0 +1,73 @@
+<!doctype html>
+<!-- Modèle d'email Supabase Auth « email_change » (data-dz / New Algeria).
+     À coller dans Supabase → Authentication → Emails → Templates ; utilisé aussi en local (supabase/config.toml).
+     Variables Supabase : {{ .ConfirmationURL }}, {{ .Email }}, {{ .NewEmail }}. Images servies par data-dz.com (PNG pour Outlook). -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Confirme ta nouvelle adresse email</title>
+</head>
+<body bgcolor="#f4f6ef" style="margin:0;padding:0;background-color:#f4f6ef;-webkit-text-size-adjust:100%">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent">Tu as demandé à changer l'adresse email de ton compte. Confirme ce changement en cliquant sur le bouton.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f6ef" style="background-color:#f4f6ef">
+<tr><td align="center" style="padding:32px 16px">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;background-color:#ffffff;border:1px solid #e6ebe2;border-radius:20px;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0f172a">
+    <tr><td bgcolor="#0d8a59" style="background-color:#0d8a59;background-image:linear-gradient(135deg,#0b6b46 0%,#0d8a59 55%,#14a36b 100%);padding:0 0 0 32px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td valign="middle" style="padding:26px 0">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td style="vertical-align:middle"><img src="https://www.data-dz.com/data_dz_logo_icon.png" width="40" height="40" alt="" style="display:block;border:0;border-radius:12px;background-color:#ffffff"></td>
+            <td style="vertical-align:middle;padding-left:12px;font-size:24px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">data-<span style="color:#bbf7d0">dz</span></td>
+          </tr></table>
+          <p style="margin:12px 0 0;font-size:13px;line-height:1.5;color:#d1fae5">Un projet New Algeria · par et pour les Algériens</p>
+        </td>
+        <td valign="bottom" align="right" width="96" style="padding:14px 24px 0 8px;line-height:0;font-size:0">
+          <img src="https://www.data-dz.com/mascotte/fennec.png" width="72" height="99" alt="" style="display:block;border:0;width:72px;height:99px">
+        </td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="padding:36px 32px 8px">
+      <span style="display:inline-block;padding:5px 12px;border-radius:999px;background-color:#d1fae5;color:#065f46;font-size:12px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase">Adresse email</span>
+      <h1 style="margin:16px 0 12px;font-size:24px;line-height:1.3;font-weight:700;color:#0f172a">Confirme ta nouvelle adresse email</h1>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:#334155">Tu as demandé à changer l'adresse email de ton compte. Confirme ce changement en cliquant sur le bouton.</p>
+    </td></tr>
+    <tr><td style="padding:24px 32px 0">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="background-color:#f8fafc;border:1px solid #e2e8f0;border-radius:12px">
+        <tr><td style="padding:14px 20px">
+          <p style="margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#64748b">Nouvelle adresse</p>
+          <p style="margin:0;font-size:16px;font-weight:700;color:#0f172a">{{ .NewEmail }}</p>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:28px 32px 8px">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td bgcolor="#0d8a59" style="border-radius:999px;background-color:#0d8a59">
+          <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 26px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:999px">Confirmer le changement &rarr;</a>
+        </td>
+      </tr></table>
+      <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#64748b">💡 Ouvre ce lien dans le même navigateur que celui où tu as fait la demande.</p>
+      <p style="margin:12px 0 0;font-size:12px;line-height:1.5;color:#94a3b8">Le bouton ne marche pas ? Copie ce lien dans ton navigateur :<br><a href="{{ .ConfirmationURL }}" style="color:#047857;word-break:break-all">{{ .ConfirmationURL }}</a></p>
+    </td></tr>
+    <tr><td style="padding:20px 32px 0">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e2e8f0">
+        <tr><td style="padding-top:16px;font-size:13px;line-height:1.6;color:#64748b">
+          <strong style="color:#334155">In English:</strong> Confirm the change of the email address of your account. <a href="{{ .ConfirmationURL }}" style="color:#047857;font-weight:600">Confirm the change</a>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:24px 32px 32px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e2e8f0">
+        <tr><td style="padding-top:20px;font-size:12px;line-height:1.6;color:#64748b">
+          Un seul compte pour data-dz et New Algeria. Si tu n'es pas à l'origine de cette demande, ignore simplement cet email.<br>
+          <a href="https://www.data-dz.com" style="color:#047857;text-decoration:none;font-weight:600">data-dz.com</a>
+          &nbsp;·&nbsp; <a href="https://www.newalgeria.org" style="color:#047857;text-decoration:none">newalgeria.org</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>
