@@ -8,6 +8,7 @@ describe("unité des données connues (table par identifiant)", () => {
     ["seismes-algerie", "séismes", "earthquakes", "زلازل"],
     ["electricite-algerie", "observations", "observations", "رصدات"],
     ["biodiversite-algerie", "observations", "observations", "رصدات"],
+    ["faune-algerie", "espèces", "species", "أنواع"],
     ["pollution-atmospherique-algerie", "mesures", "measurements", "قياسات"],
     ["poste", "bureaux et GAB", "offices and ATMs", "مكاتب وصرافات"],
     ["divisions-administratives", "communes", "municipalities", "بلديات"],
@@ -19,7 +20,7 @@ describe("unité des données connues (table par identifiant)", () => {
   });
 
   it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique et biodiversité", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(48);
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(49);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }
