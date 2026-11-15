@@ -59,6 +59,7 @@ export const UNITES_PAR_SLUG: Record<string, Unites> = {
   djezzy: { fr: "boutiques", en: "stores", ar: "متاجر" },
   agriculture: { fr: "institutions", en: "institutions", ar: "مؤسسات" },
   "seismes-algerie": { fr: "séismes", en: "earthquakes", ar: "زلازل" },
+  "electricite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
 };
 
 const ARABE = /[؀-ۿ]/;
