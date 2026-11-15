@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
+import { aDesWilayas, actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
 import type { Ressource } from "./types";
 
 const maintenant = Date.parse("2026-10-30T12:00:00Z");
@@ -32,6 +32,39 @@ describe("cartes du catalogue", () => {
     expect(estSerieTemporelle(colonnes("year", "value"))).toBe(true);
     expect(estSerieTemporelle(colonnes("annee", "nom"))).toBe(false);
     expect(estSerieTemporelle(null)).toBe(false);
+  });
+
+  it("résume une carte climatique par wilaya en indicateurs et années", () => {
+    const donnees = {
+      slug: "secheresse",
+      versions: { numero: "1", nb_lignes: 4140, publie_le: null, colonnes: [
+        { nom: "code_wilaya", type: "str" },
+        { nom: "wilaya", type: "str" },
+        { nom: "date", type: "str" },
+        { nom: "spi_3", type: "float" },
+      ] },
+      infos_source: { nb_indicateurs: 13, premiere_annee_observee: 1981, derniere_annee_observee: 2026 },
+    };
+    expect(chiffreCarte(donnees, "Sécheresse", "fr")).toEqual({ genre: "serie", nombre: 13, debut: 1981, fin: 2026 });
+  });
+
+  it("propose une carte choroplèthe pour une série mensuelle par wilaya", () => {
+    const donneesClimatiques = {
+      ressources: [ressource("json")],
+      versions: {
+        numero: "1.0.0", nb_lignes: 4140, publie_le: null,
+        colonnes: [
+          { nom: "code_wilaya", type: "str" },
+          { nom: "wilaya", type: "str" },
+          { nom: "date", type: "str" },
+          { nom: "spi_3", type: "float" },
+        ],
+      },
+    };
+    expect(actionVisuelle(donneesClimatiques)).toBe("carte");
+    expect(aDesWilayas(donneesClimatiques)).toBe(true);
+    expect(aDesWilayas({ versions: { colonnes: colonnes("code_wilaya", "wilaya", "date") } })).toBe(false);
+    expect(aDesWilayas({ versions: { colonnes: colonnes("code_wilaya", "wilaya", "precipitation_mm") } })).toBe(false);
   });
 
   it("propose la carte (GeoJSON ou lat/lon), sinon le graphique (série), sinon rien", () => {

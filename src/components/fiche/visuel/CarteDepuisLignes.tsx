@@ -31,6 +31,29 @@ const SLUG_DIVISIONS = "divisions-administratives";
 const FICHIER_CONTOURS = "wilaya-boundaries";
 const VERT = "#059669";
 
+const COULEURS_SPI = ["#8c2d04", "#d73027", "#fc8d59", "#ffffbf", "#91cf60", "#1a9850", "#006837"];
+const COULEURS_DEFICIT = ["#b91c1c", "#f97316", "#facc15", "#a3e635", "#15803d"];
+const COULEURS_PLUIE = ["#b91c1c", "#f97316", "#facc15", "#65a30d", "#0369a1"];
+const COULEURS_TEMPERATURE = ["#1d4ed8", "#38bdf8", "#fef08a", "#f97316", "#b91c1c"];
+
+interface EchelleCarte {
+  min: number;
+  max: number;
+  couleurs: string[];
+}
+
+/** Échelles interprétables : déficit rouge, normal jaune, surplus vert/bleu. */
+function echellePourMesure(mesure: string, min: number, max: number): EchelleCarte {
+  if (mesure === "spi_3" || mesure === "spi_12") return { min: -3, max: 3, couleurs: COULEURS_SPI };
+  if (mesure === "anomalie_precipitation_pct") return { min: -100, max: 100, couleurs: COULEURS_DEFICIT };
+  if (mesure === "percentile_humidite_sol") return { min: 0, max: 100, couleurs: COULEURS_DEFICIT };
+  if (mesure.startsWith("humidite_sol_") || mesure === "precipitation_mm" || mesure === "precipitation_normale_mm") {
+    return { min, max, couleurs: COULEURS_PLUIE };
+  }
+  if (mesure === "temperature_moyenne_c") return { min, max, couleurs: COULEURS_TEMPERATURE };
+  return { min, max, couleurs: DEGRADE_VERT };
+}
+
 interface CarteDepuisLignesProps {
   visuel: Exclude<VisuelCarte, { origine: "geojson" }>;
   lignes: Ligne[];
@@ -78,8 +101,9 @@ const CarteWilayas = ({ visuel, lignes, hauteur }: { visuel: Extract<VisuelCarte
   }, [visuel, lignes, wilayas, langue]);
 
   const valeurs = useMemo(() => valeursWilayas(lignes, visuel, { mesure, temps: periode }), [lignes, visuel, mesure, periode]);
-  const min = Math.min(...valeurs.values());
-  const max = Math.max(...valeurs.values());
+  const min = valeurs.size ? Math.min(...valeurs.values()) : 0;
+  const max = valeurs.size ? Math.max(...valeurs.values()) : 1;
+  const echelle = echellePourMesure(mesure, min, max);
 
   const couches = useMemo<Couche[]>(() => {
     if (!contours) return [];
@@ -100,8 +124,8 @@ const CarteWilayas = ({ visuel, lignes, hauteur }: { visuel: Extract<VisuelCarte
         };
       }),
     };
-    return [{ id: "wilayas", nom: libelleColonne(mesure), couleur: VERT, donnees, choroplethe: { min, max } }];
-  }, [contours, valeurs, noms, format, unite, mesure, min, max, t]);
+    return [{ id: "wilayas", nom: libelleColonne(mesure), couleur: VERT, donnees, choroplethe: echelle }];
+  }, [contours, valeurs, noms, format, unite, mesure, echelle.min, echelle.max, echelle.couleurs, t]);
 
   if (erreur) return <EtatErreur message={t("fiche.carteErreur")} />;
   if (!contours) {
@@ -119,10 +143,10 @@ const CarteWilayas = ({ visuel, lignes, hauteur }: { visuel: Extract<VisuelCarte
         {libelleColonne(mesure)}
         {periode ? ` · ${periode}` : ""}
       </p>
-      <div className="h-2.5 rounded-full" style={{ background: `linear-gradient(to right, ${DEGRADE_VERT.join(", ")})` }} aria-hidden />
+      <div className="h-2.5 rounded-full" style={{ background: `linear-gradient(to right, ${echelle.couleurs.join(", ")})` }} aria-hidden />
       <div className="mt-1 flex justify-between font-mono tabular-nums" dir="ltr">
-        <span>{valeurs.size ? format.format(min) : "–"}</span>
-        <span>{valeurs.size ? format.format(max) : "–"}</span>
+        <span>{valeurs.size ? format.format(echelle.min) : "–"}</span>
+        <span>{valeurs.size ? format.format(echelle.max) : "–"}</span>
       </div>
     </div>
   );

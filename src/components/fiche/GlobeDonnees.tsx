@@ -83,7 +83,7 @@ export interface Couche {
   couleur: string;
   donnees: GeoJsonObject;
   /** Carte des wilayas : surfaces colorées selon la propriété `valeur`, info-bulle `infobulle` au survol. */
-  choroplethe?: { min: number; max: number };
+  choroplethe?: { min: number; max: number; couleurs?: string[] };
   /** Densité de points chauds : heatmap MapLibre au lieu des points/clusters. */
   heatmap?: boolean;
 }
@@ -254,14 +254,15 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
 
       if (couche.choroplethe) {
         const { min, max } = couche.choroplethe;
-        const pas = (max - min) / (DEGRADE_VERT.length - 1) || 1;
+        const couleurs = couche.choroplethe.couleurs ?? DEGRADE_VERT;
+        const pas = (max - min) / (couleurs.length - 1) || 1;
         ajouter({
           id: `${source}-surfaces`, type: "fill", source, filter: polygones,
           paint: {
             "fill-color": [
               "case",
               ["==", ["typeof", ["get", "valeur"]], "number"],
-              ["interpolate", ["linear"], ["get", "valeur"], ...DEGRADE_VERT.flatMap((couleur, rang) => [min + rang * pas, couleur])],
+              ["interpolate", ["linear"], ["get", "valeur"], ...couleurs.flatMap((couleur, rang) => [min + rang * pas, couleur])],
               COULEUR_SANS_VALEUR,
             ],
             "fill-opacity": 0.85,
