@@ -5,7 +5,7 @@ export interface SourceBandeau {
   cle: string;
   url: string;
   icone: LucideIcon;
-  /** Logo officiel dans public/sources/ (ex. « /sources/openstreetmap.svg », tirés de simple-icons, CC0). Remplace l'icône s'il est donné. */
+  /** Logo officiel dans public/sources/ (OpenStreetMap et Wikidata : simple-icons, CC0 ; NASA et ASAL : détourés, WebP). Remplace l'icône s'il est donné. */
   logo?: string;
 }
 
@@ -17,6 +17,7 @@ export const SOURCES_ACCUEIL: SourceBandeau[] = [
   { cle: "openMeteo", url: "https://open-meteo.com", icone: CloudSun },
   { cle: "openStreetMap", url: "https://www.openstreetmap.org", icone: Search, logo: "/sources/openstreetmap.svg" },
   { cle: "wikidata", url: "https://www.wikidata.org", icone: Barcode, logo: "/sources/wikidata.svg" },
-  { cle: "asal", url: "https://asal.dz", icone: Rocket },
+  { cle: "nasa", url: "https://firms.modaps.eosdis.nasa.gov", icone: Rocket, logo: "/sources/nasa.webp" },
+  { cle: "asal", url: "https://asal.dz", icone: Rocket, logo: "/sources/asal.webp" },
   { cle: "journalOfficiel", url: "https://www.joradp.dz", icone: ScrollText },
 ];

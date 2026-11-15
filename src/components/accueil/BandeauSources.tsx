@@ -16,7 +16,7 @@ const ElementSource = ({ source, copie }: { source: SourceBandeau; copie: boolea
         className="inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:hover:text-emerald-400"
       >
         {source.logo ? (
-          <img src={source.logo} alt="" className="h-5 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" loading="lazy" />
+          <img src={source.logo} alt="" className="h-6 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" loading="lazy" />
         ) : (
           <Icone className="h-4 w-4 shrink-0" aria-hidden />
         )}
