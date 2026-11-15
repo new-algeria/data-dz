@@ -5,18 +5,19 @@ export interface SourceBandeau {
   cle: string;
   url: string;
   icone: LucideIcon;
-  /** Logo officiel dans public/sources/ (ex. « /sources/openstreetmap.svg », tirés de simple-icons, CC0). Remplace l'icône s'il est donné. */
+  /** Logo officiel dans public/sources/ (OpenStreetMap et Wikidata : simple-icons, CC0 ; NASA et ASAL : détourés, WebP). Remplace l'icône s'il est donné. */
   logo?: string;
 }
 
-/** Sources affichées sur l'accueil, reprises par la page DjazAI. */
+/** Sources affichées sur l'accueil, reprises par la page DjazAI. GeoAlgeria d'abord, puis les sources à logo (NASA, ASAL) pour qu'elles se voient tout de suite. */
 export const SOURCES_ACCUEIL: SourceBandeau[] = [
   { cle: "geoalgeria", url: "https://geoalgeria.com", icone: MapPinned },
+  { cle: "nasa", url: "https://firms.modaps.eosdis.nasa.gov", icone: Rocket, logo: "/sources/nasa.webp" },
+  { cle: "asal", url: "https://asal.dz", icone: Rocket, logo: "/sources/asal.webp" },
   { cle: "banqueMondiale", url: "https://data.worldbank.org", icone: Globe },
   { cle: "ecmwf", url: "https://www.ecmwf.int", icone: Waves },
   { cle: "openMeteo", url: "https://open-meteo.com", icone: CloudSun },
   { cle: "openStreetMap", url: "https://www.openstreetmap.org", icone: Search, logo: "/sources/openstreetmap.svg" },
   { cle: "wikidata", url: "https://www.wikidata.org", icone: Barcode, logo: "/sources/wikidata.svg" },
-  { cle: "asal", url: "https://asal.dz", icone: Rocket },
   { cle: "journalOfficiel", url: "https://www.joradp.dz", icone: ScrollText },
 ];
