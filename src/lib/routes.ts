@@ -28,6 +28,9 @@ export const routes = {
   api: "/api",
   thematiques: "/themes",
   djazai: "/djazai",
+  wilayas: "/wilayas",
+  /** Page d'une wilaya : identifiant « 16-alger » (voir `identifiantWilaya()`). */
+  wilaya: (identifiant: string) => `/wilayas/${encodeURIComponent(identifiant)}`,
 } as const;
 
 /** Catalogue filtré sur une catégorie. */

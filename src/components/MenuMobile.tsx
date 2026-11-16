@@ -22,6 +22,7 @@ import {
   UserRoundPen,
   UsersRound,
   type LucideIcon,
+  MapPin,
 } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { Button } from "@/components/ui/button";
@@ -183,6 +184,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           </Lien>
           <Lien vers={routes.thematiques} icone={LayoutGrid}>
             {t("thematiques.titre")}
+          </Lien>
+          <Lien vers={routes.wilayas} icone={MapPin}>
+            {t("wilayas.menu")}
           </Lien>
           <Lien vers={routes.djazai} icone={Sparkles}>
             DjazAI

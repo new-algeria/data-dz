@@ -80,6 +80,7 @@ const Footer = () => {
           <ul className="space-y-2">
             <LienInterne vers={routes.catalogue}>{t("navbar.catalogue")}</LienInterne>
             <LienInterne vers={routes.thematiques}>{t("thematiques.titre")}</LienInterne>
+            <LienInterne vers={routes.wilayas}>{t("wilayas.menu")}</LienInterne>
             <LienInterne vers={routes.djazai}>DjazAI</LienInterne>
             <LienInterne vers={routes.api}>{t("navbar.apiLong")}</LienInterne>
           </ul>

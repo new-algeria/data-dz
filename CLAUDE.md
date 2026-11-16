@@ -82,6 +82,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/admin/sync` | Synchronisations (OpenStreetMap, GeoAlgeria) : active, intervalle, forcer, rapports | admin ou permission `synchro.gerer` |
 | `/themes` | Toutes les thématiques (catégories ayant des données), avec leurs données les plus récentes ; chaque carte mène au catalogue filtré | public |
 | `/djazai` (ancre `#chat`) | Page DjazAI : hero animé, sources, conversation en grand avec historique local (voir « Interface », DjazAI) | public (réponses : connecté) |
+| `/wilayas`, `/wilayas/:wilaya` (identifiant `16-alger`) | « Ma wilaya en chiffres » : carte cliquable et liste des 69 wilayas, puis page d'une wilaya (voir « Ma wilaya en chiffres ») | public |
 | `/api` | Page de l'API publique (thème violet) : adresse, exemples, routes, liste de toutes les données avec leur URL API | public |
 | `/privacy`, `/terms` | Pages légales | public |
 
@@ -238,6 +239,14 @@ Chaque fiche commence, juste sous l'en-tête, par un visuel détecté à partir 
 - Jamais tracés : identifiants, codes, latitude, longitude (`MOTIF_EXCLU`).
 - **Affichage** : hauteur fixe (`HAUTEUR_VISUEL` : 260 px, 380 px à partir de `md`) avec squelette, mention « Source : … », carte en projection plane (le bouton globe reste), axes inversés en arabe. MapLibre et Recharts sont chargés à la demande (`lazy`).
 - **Cache** : la détection est gardée en mémoire et dans `localStorage` (`data-dz:visuels:v1`, clé = slug + fichiers retenus et leur taille). À la visite suivante, une carte issue d'un GeoJSON s'affiche sans retélécharger le JSON.
+
+## Ma wilaya en chiffres (`/wilayas`)
+Code : `src/lib/wilayas.ts` (testé), `src/hooks/use-wilayas.ts`, `src/components/wilayas/` (`CarteWilayas`, `EncartMaWilaya`), `src/pages/PageWilayas.tsx`, `src/pages/PageWilaya.tsx`. Données : **une seule requête** `GET /v1/wilayas` de l'API (chiffres de toutes les données par wilaya, population ; clé React Query `["wilayas"]`, cache CDN 6 h), tout le reste est calculé dans le navigateur.
+- `/wilayas` : carte SVG des 69 wilayas (contours `wilaya-boundaries` de `divisions-administratives`, clé `["contours-wilayas"]`, lus une fois par visite) cliquable, et liste filtrable (`filtrerWilayas()` : numéro ou début d'un mot du nom, fr / ar, sans accents) avec la population.
+- `/wilayas/:wilaya` : identifiant `<code>-<nom>` (`identifiantWilaya()`), une URL courte ou ancienne (`/wilayas/16`) est remplacée par la bonne. En-tête (code, drapeau, nom fr + ar, population et rang, part du pays, « Partager ma wilaya », wilayas précédente / suivante, carte avec la wilaya en surbrillance et un repère pour les petites), « Les points forts » (`faitsMarquants()` : top 3, au moins 3 éléments et 10 wilayas couvertes), « L'essentiel » (`DONNEES_ESSENTIELLES`, ordre fixe : nombre, titre sans le pays `titreSansPays()`, rang sur 69, pour 100 000 habitants face à la moyenne nationale), « Toutes les données » par catégorie (barre relative à la wilaya la mieux fournie), puis méthode, mention des estimations et lien API `/v1/wilayas/{code}`.
+- **Estimations** : les données de source `openstreetmap` portent la mention « estimés » (`estimee()`).
+- Encart sur l'accueil sous les thématiques (`EncartMaWilaya`, sans requête), lien « Ma wilaya » dans le menu mobile et le pied de page. Les 69 pages sont dans `sitemap.xml` (noms lus dans l'API pendant la build, sinon URL courtes).
+- Une nouvelle donnée de lieux apparaît d'elle-même ; si son fichier principal n'est pas l'inventaire, l'ajouter à `FICHIERS_PAR_DONNEE` de l'API.
 
 ## Page API (`/api`)
 Code : `src/pages/PageApi.tsx`. Couleur de l'API sur tout le site : **violet** (comme `BoutonApi` sur la fiche).
