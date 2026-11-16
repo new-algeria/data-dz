@@ -1397,7 +1397,7 @@
     "partPopulation": "{{part}} % de la population du pays",
     "partager": "Partager ma wilaya",
     "lienCopie": "Lien copié : envoie-le à tes proches !",
-    "faitsMarquants": "Les points forts",
+    "faitsMarquants": "Statistiques remarquables",
     "fait_ordinal_one": "{{count}}re wilaya · {{titre}}",
     "fait_ordinal_other": "{{count}}e wilaya · {{titre}}",
     "faitDetail": "{{nombre}} sur la carte, soit {{part}} % du pays",
