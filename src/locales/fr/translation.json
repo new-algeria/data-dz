@@ -24,7 +24,9 @@
     "voirTousResultats": "Voir tous les résultats pour « {{terme}} »",
     "avantagesCompte": "Crée ton compte gratuit pour suivre des données, commenter, proposer tes données et poser tes questions à DjazAI.",
     "groupeDonnees": "Données",
-    "groupeMembres": "Membres"
+    "groupeMembres": "Membres",
+    "groupeWilayas": "Wilayas",
+    "voirWilaya": "Ma wilaya en chiffres"
   },
   "langue": {
     "choisir": "Choisir la langue"
@@ -1419,6 +1421,24 @@
       "voir": "Voir la photo de {{nom}} sur Wikimedia Commons (auteur et licence)",
       "alt": "Photo de la wilaya de {{nom}}",
       "commons": "Wikimedia Commons"
+    },
+    "carte": {
+      "sousTitre": "Clique sur une wilaya ou cherche-la : population, écoles, pharmacies, bibliothèques… et sa place parmi les 69.",
+      "population": "Population",
+      "uniteHabitants": "habitants",
+      "unitePour100k": "pour 100 000 habitants",
+      "colorerSelon": "Colorer la carte selon",
+      "mode": "Mode de calcul",
+      "nombre": "Nombre",
+      "pour100k": "Pour 100 000 hab.",
+      "moins": "moins",
+      "plus": "plus",
+      "classement": "Le classement",
+      "aide": "Clique sur une wilaya de la carte pour voir tous ses chiffres.",
+      "fermer": "Revenir au classement",
+      "voirPage": "Toute la page de {{nom}}",
+      "toutes": "Les 69 wilayas",
+      "note": "* estimés : données OpenStreetMap, peut-être incomplètes. Population : estimation WorldPop. Limites des wilayas : GeoAlgeria, © contributeurs OpenStreetMap (ODbL)."
     }
   },
   "ia": {

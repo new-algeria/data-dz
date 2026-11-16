@@ -24,7 +24,9 @@
     "voirTousResultats": "See all results for “{{terme}}”",
     "avantagesCompte": "Create your free account to follow datasets, comment, submit data and ask DjazAI your questions.",
     "groupeDonnees": "Datasets",
-    "groupeMembres": "Members"
+    "groupeMembres": "Members",
+    "groupeWilayas": "Wilayas",
+    "voirWilaya": "Wilaya in numbers"
   },
   "langue": {
     "choisir": "Choose language"
@@ -1425,6 +1427,24 @@
       "voir": "View this photo of {{nom}} on Wikimedia Commons (author and licence)",
       "alt": "Photo of the wilaya of {{nom}}",
       "commons": "Wikimedia Commons"
+    },
+    "carte": {
+      "sousTitre": "Click a wilaya or search for it: population, schools, pharmacies, libraries… and how it ranks among the 69.",
+      "population": "Population",
+      "uniteHabitants": "inhabitants",
+      "unitePour100k": "per 100,000 people",
+      "colorerSelon": "Colour the map by",
+      "mode": "Calculation",
+      "nombre": "Count",
+      "pour100k": "Per 100,000 people",
+      "moins": "less",
+      "plus": "more",
+      "classement": "Ranking",
+      "aide": "Click a wilaya on the map to see all its numbers.",
+      "fermer": "Back to the ranking",
+      "voirPage": "Full page for {{nom}}",
+      "toutes": "All 69 wilayas",
+      "note": "* estimated: OpenStreetMap data, possibly incomplete. Population: WorldPop estimate. Wilaya boundaries: GeoAlgeria, © OpenStreetMap contributors (ODbL)."
     }
   },
   "ia": {

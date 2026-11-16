@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   chiffresDeLaWilaya,
+  classeDeValeur,
+  classementMesure,
+  MESURE_POPULATION,
+  seuilsQuantiles,
+  valeurMesure,
+  valeursMesure,
   chiffresEssentiels,
   codeDepuisIdentifiant,
   estimee,
@@ -147,5 +153,37 @@ describe("Ma wilaya en chiffres", () => {
   it("marque les données OpenStreetMap comme des estimations", () => {
     expect(estimee(donnee("plages", {}, "openstreetmap"))).toBe(true);
     expect(estimee(donnee("ecoles", {}))).toBe(false);
+  });
+});
+
+describe("carte colorée des wilayas", () => {
+  it("calcule la valeur d'une mesure, au total ou pour 100 000 habitants", () => {
+    expect(valeurMesure(chiffres, "16", MESURE_POPULATION, "total")).toBe(4_000_000);
+    expect(valeurMesure(chiffres, "16", "pharmacies", "total")).toBe(400);
+    expect(valeurMesure(chiffres, "16", "pharmacies", "habitants")).toBe(10);
+    expect(valeurMesure(chiffres, "01", "plages", "total")).toBe(0);
+    expect(valeurMesure(chiffres, "01", "inconnue", "total")).toBe(0);
+    const sansPopulation = { ...chiffres, wilayas: [wilaya("16", "Alger", null, null)] };
+    expect(valeurMesure(sansPopulation, "16", "pharmacies", "habitants")).toBe(0);
+    expect(valeursMesure(chiffres, "ecoles", "total")).toEqual({ "01": 50, "16": 900, "34": 100 });
+  });
+
+  it("répartit les valeurs en classes par quantiles, les zéros à part", () => {
+    const seuils = seuilsQuantiles([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(seuils).toEqual([3, 5, 7, 9]);
+    expect(classeDeValeur(0, seuils)).toBe(-1);
+    expect(classeDeValeur(1, seuils)).toBe(0);
+    expect(classeDeValeur(4, seuils)).toBe(1);
+    expect(classeDeValeur(10, seuils)).toBe(4);
+    expect(seuilsQuantiles([0, 0])).toEqual([]);
+    expect(classeDeValeur(5, [])).toBe(0);
+  });
+
+  it("classe les wilayas pour une mesure", () => {
+    expect(classementMesure(chiffres, "pharmacies", "total", 2).map((l) => [l.wilaya.code, l.valeur])).toEqual([
+      ["16", 400],
+      ["34", 40],
+    ]);
+    expect(classementMesure(chiffres, "plages", "total").map((l) => l.wilaya.code)).toEqual(["16"]);
   });
 });

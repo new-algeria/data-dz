@@ -1,13 +1,15 @@
 import { useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, MapPin, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { IconeCategorie } from "@/components/BadgeCategorie";
 import { chargerCatalogue, chargerCategories } from "@/lib/catalogue";
 import { LONGUEUR_MIN_RECHERCHE_MEMBRE, nettoyerRechercheMembre, rechercherMembres } from "@/lib/profils";
-import { rechercherDonnees } from "@/lib/recherche-rapide";
+import { rechercherDonnees, rechercherWilayas, type WilayaRecherche } from "@/lib/recherche-rapide";
+import { chargerWilayas } from "@/lib/referentiels";
+import { identifiantWilaya } from "@/lib/wilayas";
 import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
@@ -66,6 +68,9 @@ export const RechercheNavbar = ({
   });
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: chargerCategories, enabled: utilise, staleTime: 60 * 60 * 1000 });
   const icones = useMemo(() => new Map(categories.map((categorie) => [categorie.slug, categorie.icone])), [categories]);
+  // Noms des wilayas : même clé que l'accueil et les propositions (liste légère, lue une fois).
+  const { data: listeWilayas = [] } = useQuery({ queryKey: ["wilayas"], queryFn: chargerWilayas, enabled: utilise, staleTime: 24 * 60 * 60 * 1000 });
+  const wilayas = useMemo(() => rechercherWilayas(listeWilayas, saisie), [listeWilayas, saisie]);
   const resultats = useMemo(() => rechercherDonnees(catalogue, saisie, langue), [catalogue, saisie, langue]);
   const terme = saisie.trim();
   // Membres : interrogés dans la base, 300 ms après la dernière frappe et à partir de 2 caractères.
@@ -77,8 +82,10 @@ export const RechercheNavbar = ({
     staleTime: 60 * 1000,
   });
   const membresAffiches = termeMembres.length >= LONGUEUR_MIN_RECHERCHE_MEMBRE ? membres : [];
-  // Une seule liste pour le clavier : données, puis membres, puis « Voir tous les résultats ».
-  const nbOptions = resultats.length + membresAffiches.length;
+  // Une seule liste pour le clavier : wilayas, données, membres, puis « Voir tous les résultats ».
+  const debutDonnees = wilayas.length;
+  const debutMembres = debutDonnees + resultats.length;
+  const nbOptions = debutMembres + membresAffiches.length;
   const montrer = ouvert && terme.length > 0;
 
   const fermer = () => {
@@ -104,6 +111,13 @@ export const RechercheNavbar = ({
     fermer();
   };
 
+  const ouvrirWilaya = (wilaya: WilayaRecherche) => {
+    naviguer(routes.wilaya(identifiantWilaya({ code: wilaya.code, nom: { fr: wilaya.nom.fr ?? wilaya.code, ar: wilaya.nom.ar ?? null } })));
+    setSaisie("");
+    champ.current?.blur();
+    fermer();
+  };
+
   const ouvrirDonnee = (slug: string) => {
     naviguer(routes.donnee(slug));
     setSaisie("");
@@ -121,8 +135,9 @@ export const RechercheNavbar = ({
       setActif((indice) => Math.max(indice - 1, -1));
     } else if (evenement.key === "Enter") {
       evenement.preventDefault();
-      if (actif >= 0 && actif < resultats.length) ouvrirDonnee(resultats[actif].slug);
-      else if (actif >= resultats.length && actif < nbOptions) ouvrirMembre(membresAffiches[actif - resultats.length].pseudo);
+      if (actif >= 0 && actif < debutDonnees) ouvrirWilaya(wilayas[actif]);
+      else if (actif >= debutDonnees && actif < debutMembres) ouvrirDonnee(resultats[actif - debutDonnees].slug);
+      else if (actif >= debutMembres && actif < nbOptions) ouvrirMembre(membresAffiches[actif - debutMembres].pseudo);
       else allerAuCatalogue();
     } else if (evenement.key === "Escape") {
       fermer();
@@ -187,18 +202,47 @@ export const RechercheNavbar = ({
             <p className="px-4 py-3 text-sm text-muted-foreground">{catalogue.length === 0 ? t("navbar.rechercheChargement") : t("navbar.aucunResultat")}</p>
           ) : (
             <div className="max-h-96 overflow-y-auto py-1">
+              {wilayas.length > 0 && (
+                <>
+                  <TitreGroupe>{t("navbar.groupeWilayas")}</TitreGroupe>
+                  <ul>
+                    {wilayas.map((wilaya, indice) => (
+                      <li key={wilaya.code} id={`${idListe}-${indice}`} role="option" aria-selected={actif === indice}>
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => ouvrirWilaya(wilaya)}
+                          onMouseEnter={() => setActif(indice)}
+                          className={cn("flex w-full items-center gap-3 px-4 py-2.5 text-start", actif === indice && "bg-accent")}
+                        >
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-xs font-bold tabular-nums text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                            {wilaya.code}
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-medium">{(langue === "ar" && wilaya.nom.ar) || wilaya.nom.fr}</span>
+                            <span className="flex items-center gap-1 truncate text-xs text-muted-foreground">
+                              <MapPin className="h-3 w-3 shrink-0" aria-hidden />
+                              {t("navbar.voirWilaya")}
+                            </span>
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
               {resultats.length > 0 && (
                 <>
-                  {membresAffiches.length > 0 && <TitreGroupe>{t("navbar.groupeDonnees")}</TitreGroupe>}
+                  {(membresAffiches.length > 0 || wilayas.length > 0) && <TitreGroupe>{t("navbar.groupeDonnees")}</TitreGroupe>}
                   <ul>
-                    {resultats.map((donnee, indice) => (
-                      <li key={donnee.slug} id={`${idListe}-${indice}`} role="option" aria-selected={actif === indice}>
+                    {resultats.map((donnee, position) => (
+                      <li key={donnee.slug} id={`${idListe}-${debutDonnees + position}`} role="option" aria-selected={actif === debutDonnees + position}>
                         <button
                           type="button"
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => ouvrirDonnee(donnee.slug)}
-                          onMouseEnter={() => setActif(indice)}
-                          className={cn("flex w-full items-center gap-3 px-4 py-2.5 text-start", actif === indice && "bg-accent")}
+                          onMouseEnter={() => setActif(debutDonnees + position)}
+                          className={cn("flex w-full items-center gap-3 px-4 py-2.5 text-start", actif === debutDonnees + position && "bg-accent")}
                         >
                           <IconeCategorie icone={donnee.categorie_slug ? icones.get(donnee.categorie_slug) : null} />
                           <span className="min-w-0 flex-1">
@@ -216,7 +260,7 @@ export const RechercheNavbar = ({
                   <TitreGroupe>{t("navbar.groupeMembres")}</TitreGroupe>
                   <ul>
                     {membresAffiches.map((membre, position) => {
-                      const indice = resultats.length + position;
+                      const indice = debutMembres + position;
                       return (
                         <li key={membre.pseudo} id={`${idListe}-${indice}`} role="option" aria-selected={actif === indice}>
                           <button
