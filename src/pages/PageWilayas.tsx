@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Search, Trophy, Users, X } from "lucide-react";
+import { ArrowRight, Search, ChartNoAxesColumnIncreasing, Users, X } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -332,7 +332,7 @@ const Classement = ({
   return (
     <>
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        <Trophy className="h-4 w-4 text-amber-500" aria-hidden />
+        <ChartNoAxesColumnIncreasing className="h-4 w-4 text-muted-foreground" aria-hidden />
         {t("wilayas.carte.classement")}
       </p>
       <h2 className="mt-1 text-xl font-bold leading-tight">
