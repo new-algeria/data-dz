@@ -10,6 +10,7 @@ describe("unité des données connues (table par identifiant)", () => {
     ["biodiversite-algerie", "observations", "observations", "رصدات"],
     ["faune-algerie", "espèces", "species", "أنواع"],
     ["pollution-atmospherique-algerie", "mesures", "measurements", "قياسات"],
+    ["production-agricole-algerie", "observations", "observations", "بيانات"],
     ["poste", "bureaux et GAB", "offices and ATMs", "مكاتب وصرافات"],
     ["divisions-administratives", "communes", "municipalities", "بلديات"],
     ["mobilis", "points de vente", "outlets", "نقاط بيع"],
@@ -20,7 +21,7 @@ describe("unité des données connues (table par identifiant)", () => {
   });
 
   it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique et biodiversité", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(49);
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(50);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }
