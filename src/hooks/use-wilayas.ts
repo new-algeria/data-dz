@@ -2,9 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { urlTelechargement } from "@/lib/api";
 import { chargerChiffresWilayas } from "@/lib/wilayas";
 
+/**
+ * Clé du cache des chiffres par wilaya. Surtout pas `["wilayas"]` : cette clé porte déjà la liste des noms
+ * (`chargerWilayas()`, accueil, propositions, cartes des fiches), et partager la clé mélangerait les deux formats.
+ */
+export const CLE_CHIFFRES_WILAYAS = ["chiffres-wilayas"] as const;
+
 /** Chiffres de toutes les données par wilaya (une requête pour toutes les pages « Ma wilaya »). */
 export const useChiffresWilayas = () =>
-  useQuery({ queryKey: ["wilayas"], queryFn: chargerChiffresWilayas, staleTime: 30 * 60 * 1000, retry: 2 });
+  useQuery({ queryKey: CLE_CHIFFRES_WILAYAS, queryFn: chargerChiffresWilayas, staleTime: 30 * 60 * 1000, retry: 2 });
 
 export interface ContourWilaya {
   type: "Feature";
