@@ -38,3 +38,37 @@ export function rechercherDonnees(liste: ResumeDonnee[], terme: string, langue: 
     .slice(0, max)
     .map((resultat) => resultat.donnee);
 }
+
+/** Wilaya telle que la liste des noms la donne (`chargerWilayas()`). */
+export interface WilayaRecherche {
+  code: string;
+  nom: { fr?: string; en?: string; ar?: string };
+}
+
+/**
+ * Wilayas pour la recherche de l'en-tête : numéro (« 16 », « 9 ») ou début des mots du nom, dans toutes les langues,
+ * sans casse ni accents (« bordj bou », « bejaia », « وهران »). Les noms qui commencent par la recherche passent devant.
+ */
+export function rechercherWilayas(wilayas: WilayaRecherche[], terme: string, max = 3): WilayaRecherche[] {
+  const brut = terme.trim();
+  if (!brut) return [];
+  if (/^\d{1,2}$/.test(brut)) {
+    const code = brut.padStart(2, "0");
+    return wilayas.filter((wilaya) => wilaya.code === code && wilaya.nom.fr).slice(0, 1);
+  }
+  const recherche = motsDe(brut);
+  if (recherche.length === 0) return [];
+  const resultats: { wilaya: WilayaRecherche; rang: number }[] = [];
+  for (const wilaya of wilayas) {
+    if (!wilaya.nom.fr) continue;
+    const noms = Object.values(wilaya.nom).filter((nom): nom is string => Boolean(nom));
+    const mots = noms.flatMap(motsDe);
+    if (!recherche.every((mot) => mots.some((candidat) => candidat.startsWith(mot)))) continue;
+    const debut = noms.some((nom) => normaliser(nom).replace(/['’-]/g, " ").startsWith(recherche.join(" ")));
+    resultats.push({ wilaya, rang: debut ? 0 : 1 });
+  }
+  return resultats
+    .sort((a, b) => a.rang - b.rang || a.wilaya.code.localeCompare(b.wilaya.code))
+    .slice(0, max)
+    .map((resultat) => resultat.wilaya);
+}

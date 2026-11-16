@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { rechercherDonnees } from "./recherche-rapide";
+import { rechercherDonnees, rechercherWilayas } from "./recherche-rapide";
 import type { ResumeDonnee } from "./types";
 
 const donnee = (slug: string, titre: Record<string, string>, mots_cles: string[] = [], source = "GeoAlgeria") =>
@@ -32,5 +32,40 @@ describe("recherche de l'en-tête", () => {
     expect(rechercherDonnees(liste, "algérie", "fr", 2)).toHaveLength(2);
     expect(rechercherDonnees(liste, "   ", "fr")).toEqual([]);
     expect(rechercherDonnees(liste, "zzz", "fr")).toEqual([]);
+  });
+});
+
+describe("recherche des wilayas", () => {
+  const wilayas = [
+    { code: "06", nom: { fr: "Béjaïa", ar: "بجاية" } },
+    { code: "16", nom: { fr: "Alger", en: "Algiers", ar: "الجزائر" } },
+    { code: "31", nom: { fr: "Oran", ar: "وهران" } },
+    { code: "34", nom: { fr: "Bordj Bou Arréridj", ar: "برج بوعريريج" } },
+    { code: "50", nom: { fr: "Bordj Badji Mokhtar" } },
+    { code: "09", nom: {} },
+  ];
+
+  it("trouve une wilaya par son numéro", () => {
+    expect(rechercherWilayas(wilayas, "16").map((w) => w.code)).toEqual(["16"]);
+    expect(rechercherWilayas(wilayas, "70")).toEqual([]);
+    expect(rechercherWilayas(wilayas, "9")).toEqual([]);
+  });
+
+  it("trouve une wilaya par le début de son nom, sans accents, dans toutes les langues", () => {
+    expect(rechercherWilayas(wilayas, "bejaia").map((w) => w.code)).toEqual(["06"]);
+    expect(rechercherWilayas(wilayas, "Algiers").map((w) => w.code)).toEqual(["16"]);
+    expect(rechercherWilayas(wilayas, "وهران").map((w) => w.code)).toEqual(["31"]);
+    expect(rechercherWilayas(wilayas, "bordj b").map((w) => w.code)).toEqual(["34", "50"]);
+    expect(rechercherWilayas(wilayas, "arreridj").map((w) => w.code)).toEqual(["34"]);
+    expect(rechercherWilayas(wilayas, "pharmacie")).toEqual([]);
+    expect(rechercherWilayas(wilayas, "  ")).toEqual([]);
+  });
+
+  it("met devant les noms qui commencent par la recherche", () => {
+    const liste = [
+      { code: "01", nom: { fr: "Sidi Oran" } },
+      { code: "31", nom: { fr: "Oran" } },
+    ];
+    expect(rechercherWilayas(liste, "oran").map((w) => w.code)).toEqual(["31", "01"]);
   });
 });

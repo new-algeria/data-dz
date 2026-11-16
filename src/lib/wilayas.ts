@@ -199,3 +199,60 @@ export function filtrerWilayas(wilayas: WilayaChiffres[], terme: string): Wilaya
     return (recherche && (slugTexte(wilaya.nom.fr).startsWith(recherche) || mots.some((mot) => mot.startsWith(recherche)))) || (wilaya.nom.ar ?? "").includes(brut);
   });
 }
+
+// ---------------------------------------------------------------- Carte colorée (/wilayas)
+
+/** Mesures proposées pour colorer la carte, dans cet ordre (après la population). */
+export const MESURES_CARTE = [
+  "ecoles",
+  "pharmacies",
+  "cliniques",
+  "bibliotheques",
+  "mosquees",
+  "gas-stations",
+  "enseignement-superieur",
+  "seismes-algerie",
+  "tourisme",
+  "banques",
+] as const;
+
+export const MESURE_POPULATION = "population";
+export type ModeCarte = "total" | "habitants";
+
+/** Valeur d'une wilaya pour une mesure : population, nombre d'éléments, ou nombre pour 100 000 habitants. */
+export function valeurMesure(chiffres: ChiffresWilayas, code: string, mesure: string, mode: ModeCarte): number {
+  const wilaya = chiffres.wilayas.find((w) => w.code === code);
+  const population = wilaya?.population?.valeur ?? 0;
+  if (mesure === MESURE_POPULATION) return population;
+  const nombre = chiffres.donnees.find((donnee) => donnee.slug === mesure)?.comptes[code] ?? 0;
+  if (mode === "habitants") return population > 0 ? (nombre / population) * 100_000 : 0;
+  return nombre;
+}
+
+/** Valeurs de toutes les wilayas pour une mesure (code → valeur). */
+export const valeursMesure = (chiffres: ChiffresWilayas, mesure: string, mode: ModeCarte): Record<string, number> =>
+  Object.fromEntries(chiffres.wilayas.map((w) => [w.code, valeurMesure(chiffres, w.code, mesure, mode)]));
+
+/** Seuils de classes par quantiles (les zéros à part) : chaque teinte regroupe à peu près autant de wilayas. */
+export function seuilsQuantiles(valeurs: number[], classes = 5): number[] {
+  const positives = valeurs.filter((v) => v > 0).sort((a, b) => a - b);
+  if (positives.length === 0) return [];
+  return Array.from({ length: classes - 1 }, (_, i) => positives[Math.min(positives.length - 1, Math.floor(((i + 1) / classes) * positives.length))]);
+}
+
+/** Classe d'une valeur (0 = la plus claire), ou -1 pour zéro (aucune donnée). */
+export function classeDeValeur(valeur: number, seuils: number[]): number {
+  if (!(valeur > 0)) return -1;
+  let classe = 0;
+  while (classe < seuils.length && valeur > seuils[classe]) classe++;
+  return classe;
+}
+
+/** Les wilayas les mieux placées pour une mesure (ordre décroissant, ex æquo par code). */
+export function classementMesure(chiffres: ChiffresWilayas, mesure: string, mode: ModeCarte, nombre = 10): { wilaya: WilayaChiffres; valeur: number }[] {
+  return chiffres.wilayas
+    .map((wilaya) => ({ wilaya, valeur: valeurMesure(chiffres, wilaya.code, mesure, mode) }))
+    .filter((ligne) => ligne.valeur > 0)
+    .sort((a, b) => b.valeur - a.valeur || a.wilaya.code.localeCompare(b.wilaya.code))
+    .slice(0, nombre);
+}

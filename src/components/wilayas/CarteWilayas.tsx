@@ -2,52 +2,9 @@ import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useContoursWilayas, type ContourWilaya } from "@/hooks/use-wilayas";
+import { useContoursWilayas } from "@/hooks/use-wilayas";
+import { LARGEUR_CARTE, tracerWilayas } from "@/lib/trace-wilayas";
 import { cn } from "@/lib/utils";
-
-const LARGEUR = 600;
-/** Projection plane corrigée de la latitude moyenne de l'Algérie (les distances est-ouest restent justes). */
-const COS_LATITUDE = Math.cos((28 * Math.PI) / 180);
-
-type Anneau = number[][];
-
-const codeDe = (contour: ContourWilaya) => String(contour.properties.code ?? contour.properties.wilaya_code ?? "").padStart(2, "0");
-const polygonesDe = (contour: ContourWilaya): Anneau[][] =>
-  contour.geometry.type === "Polygon" ? [contour.geometry.coordinates as Anneau[]] : (contour.geometry.coordinates as Anneau[][]);
-
-/** Chemins SVG de chaque wilaya, calculés une fois pour toutes les cartes de la visite. */
-function tracer(contours: ContourWilaya[]) {
-  let ouest = Infinity;
-  let est = -Infinity;
-  let sud = Infinity;
-  let nord = -Infinity;
-  for (const contour of contours)
-    for (const polygone of polygonesDe(contour))
-      for (const [x, y] of polygone[0]) {
-        ouest = Math.min(ouest, x);
-        est = Math.max(est, x);
-        sud = Math.min(sud, y);
-        nord = Math.max(nord, y);
-      }
-  const echelle = LARGEUR / ((est - ouest) * COS_LATITUDE);
-  const hauteur = (nord - sud) * echelle;
-  const projeter = ([x, y]: number[]) => [(x - ouest) * COS_LATITUDE * echelle, (nord - y) * echelle];
-  const point = (position: number[]) => projeter(position).map((v) => v.toFixed(1)).join(",");
-  const chemins = contours.map((contour) => {
-    const polygones = polygonesDe(contour);
-    const sommets = polygones.flatMap((polygone) => polygone[0].map(projeter));
-    const xs = sommets.map(([x]) => x);
-    const ys = sommets.map(([, y]) => y);
-    return {
-      code: codeDe(contour),
-      d: polygones.flatMap((polygone) => polygone.map((anneau) => `M${anneau.map(point).join("L")}Z`)).join(""),
-      // Centre et taille de l'emprise : repère visible pour les petites wilayas (Alger, Blida…).
-      centre: [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2] as [number, number],
-      taille: Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)),
-    };
-  });
-  return { chemins, hauteur };
-}
 
 interface CarteWilayasProps {
   /** Wilaya mise en avant (les autres restent grises). */
@@ -64,14 +21,14 @@ export const CarteWilayas = memo(({ surbrillance, lien, nom, className }: CarteW
   const { t } = useTranslation();
   const naviguer = useNavigate();
   const { data: contours, isError } = useContoursWilayas();
-  const trace = useMemo(() => (contours ? tracer(contours) : null), [contours]);
+  const trace = useMemo(() => (contours ? tracerWilayas(contours) : null), [contours]);
 
   if (isError) return null;
   if (!trace) return <Skeleton className={cn("aspect-square w-full rounded-2xl", className)} />;
 
   return (
     <svg
-      viewBox={`0 0 ${LARGEUR} ${trace.hauteur.toFixed(0)}`}
+      viewBox={`0 0 ${LARGEUR_CARTE} ${trace.hauteur.toFixed(0)}`}
       className={cn("h-auto w-full", className)}
       role={lien ? "group" : "img"}
       aria-label={t("wilayas.carteLibelle")}
