@@ -1412,7 +1412,14 @@
     "api": "Ces chiffres sont aussi disponibles gratuitement dans l'API :",
     "encartTitre": "Ta wilaya en chiffres",
     "encartTexte": "Écoles, pharmacies, bibliothèques, stations… découvre ce que les données disent de ta wilaya, et sa place parmi les 69.",
-    "encartBouton": "Découvrir ma wilaya"
+    "encartBouton": "Découvrir ma wilaya",
+    "photos": {
+      "titre": "{{nom}} en images",
+      "source": "Photos : Wikimedia Commons, via Wikidata. Clique sur une photo pour voir son auteur et sa licence.",
+      "voir": "Voir la photo de {{nom}} sur Wikimedia Commons (auteur et licence)",
+      "alt": "Photo de la wilaya de {{nom}}",
+      "commons": "Wikimedia Commons"
+    }
   },
   "ia": {
     "libelle": "DjazAI",

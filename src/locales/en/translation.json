@@ -1418,7 +1418,14 @@
     "api": "These numbers are also available for free in the API:",
     "encartTitre": "Your wilaya in numbers",
     "encartTexte": "Schools, pharmacies, libraries, fuel stations… see what the data says about your wilaya, and how it ranks among the 69.",
-    "encartBouton": "Explore my wilaya"
+    "encartBouton": "Explore my wilaya",
+    "photos": {
+      "titre": "{{nom}} in pictures",
+      "source": "Photos: Wikimedia Commons, via Wikidata. Click a photo to see its author and licence.",
+      "voir": "View this photo of {{nom}} on Wikimedia Commons (author and licence)",
+      "alt": "Photo of the wilaya of {{nom}}",
+      "commons": "Wikimedia Commons"
+    }
   },
   "ia": {
     "libelle": "DjazAI",

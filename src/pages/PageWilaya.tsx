@@ -11,6 +11,7 @@ import { EtatErreur } from "@/components/EtatErreur";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CarteWilayas } from "@/components/wilayas/CarteWilayas";
+import { GaleriePhotosWilaya } from "@/components/wilayas/GaleriePhotosWilaya";
 import { useChiffresWilayas } from "@/hooks/use-wilayas";
 import { useLangue } from "@/hooks/use-langue";
 import { URL_API } from "@/lib/api";
@@ -168,6 +169,7 @@ const PageWilaya = () => {
         </section>
 
         <div className="container mx-auto max-w-6xl px-4">
+          <GaleriePhotosWilaya code={code} nom={nom} />
           {isError ? (
             <div className="mt-10">
               <EtatErreur message={t("wilayas.erreur")} onReessayer={() => void refetch()} />
