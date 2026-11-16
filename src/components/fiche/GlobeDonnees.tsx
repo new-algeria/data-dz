@@ -7,6 +7,7 @@ import { Globe2, Layers, Loader2 } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Progress } from "@/components/ui/progress";
 import { EtatErreur } from "@/components/EtatErreur";
 import { useChargementJSON } from "@/hooks/use-chargement-fichier";
@@ -82,7 +83,9 @@ export interface Couche {
   couleur: string;
   donnees: GeoJsonObject;
   /** Carte des wilayas : surfaces colorées selon la propriété `valeur`, info-bulle `infobulle` au survol. */
-  choroplethe?: { min: number; max: number };
+  choroplethe?: { min: number; max: number; couleurs?: string[] };
+  /** Densité de points chauds : heatmap MapLibre au lieu des points/clusters. */
+  heatmap?: boolean;
 }
 
 // Au-delà, les points sont regroupés (clusters) pour rester lisibles et fluides.
@@ -236,7 +239,7 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
     const parCalque = new Map<string, Couche>();
     couches.forEach((couche, indice) => {
       const source = `donnees-${indice}`;
-      const regrouper = !couche.choroplethe && nbPoints(couche.donnees) > SEUIL_REGROUPEMENT;
+      const regrouper = !couche.choroplethe && !couche.heatmap && nbPoints(couche.donnees) > SEUIL_REGROUPEMENT;
       carte.addSource(source, {
         type: "geojson",
         data: couche.donnees as GeoJSON.GeoJSON,
@@ -251,14 +254,15 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
 
       if (couche.choroplethe) {
         const { min, max } = couche.choroplethe;
-        const pas = (max - min) / (DEGRADE_VERT.length - 1) || 1;
+        const couleurs = couche.choroplethe.couleurs ?? DEGRADE_VERT;
+        const pas = (max - min) / (couleurs.length - 1) || 1;
         ajouter({
           id: `${source}-surfaces`, type: "fill", source, filter: polygones,
           paint: {
             "fill-color": [
               "case",
               ["==", ["typeof", ["get", "valeur"]], "number"],
-              ["interpolate", ["linear"], ["get", "valeur"], ...DEGRADE_VERT.flatMap((couleur, rang) => [min + rang * pas, couleur])],
+              ["interpolate", ["linear"], ["get", "valeur"], ...couleurs.flatMap((couleur, rang) => [min + rang * pas, couleur])],
               COULEUR_SANS_VALEUR,
             ],
             "fill-opacity": 0.85,
@@ -277,6 +281,38 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
         filter: ["in", ["geometry-type"], ["literal", ["Polygon", "MultiPolygon", "LineString", "MultiLineString"]]],
         paint: { "line-color": couche.couleur, "line-width": 1.2 },
       });
+      if (couche.heatmap) {
+        ajouter(
+          {
+            id: `${source}-chaleur`,
+            type: "heatmap",
+            source,
+            filter: ["in", ["geometry-type"], ["literal", ["Point", "MultiPoint"]]],
+            paint: {
+              // À petite échelle, les détections sont réparties sur une grande surface :
+              // un rayon plus large et des seuils bas rendent les concentrations visibles dès l'ouverture.
+              "heatmap-weight": 1,
+              "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 0, 2.6, 5, 3.4, 9, 2.4, 13, 1.5],
+              "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 0, 28, 5, 58, 9, 46, 13, 30],
+              "heatmap-opacity": 0.94,
+              "heatmap-color": [
+                "interpolate",
+                ["linear"],
+                ["heatmap-density"],
+                0, "rgba(254, 240, 138, 0)",
+                0.004, "rgba(254, 240, 138, 0.24)",
+                0.015, "rgba(250, 204, 21, 0.48)",
+                0.04, "rgba(249, 115, 22, 0.68)",
+                0.09, "rgba(220, 38, 38, 0.84)",
+                0.2, "rgba(127, 29, 29, 0.94)",
+              ],
+            },
+          },
+          false
+        );
+        return;
+      }
+
       if (regrouper) {
         ajouter({
           id: `${source}-regroupements`, type: "circle", source, filter: ["has", "point_count"],
@@ -369,15 +405,18 @@ interface GlobeDonneesProps {
   /** Fichier affiché au départ (sinon le principal, sinon le premier). */
   initial?: string;
   hauteur?: string;
+  /** Active le sélecteur « concentration / détections », avec la heatmap affichée au départ. */
+  heatmapInitiale?: boolean;
 }
 
 /** Carte des fichiers GeoJSON d'une fiche : choix du fichier affiché, ou superposition de tous. */
-export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", projection }: GlobeDonneesProps) => {
+export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", projection, heatmapInitiale = false }: GlobeDonneesProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const parDefaut = initial ?? (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.id ?? "";
   const [choix, setChoix] = useState(parDefaut);
   const [autorises, setAutorises] = useState<string[]>([]);
+  const [modeHeatmap, setModeHeatmap] = useState(heatmapInitiale);
 
   const selection = choix === TOUT ? fichiers : fichiers.filter((fichier) => fichier.id === choix);
   const tailleSelection = selection.reduce((somme, fichier) => somme + (fichier.taille_octets ?? 0), 0);
@@ -393,28 +432,61 @@ export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", project
             nom: nomSansFormat(selection[indice]),
             couleur: choix === TOUT ? COULEURS[fichiers.indexOf(selection[indice]) % COULEURS.length] : VERT,
             donnees,
+            heatmap: heatmapInitiale && modeHeatmap && selection.length === 1,
           }))
         : [],
-    [chargement.statut, chargement.donnees] // eslint-disable-line react-hooks/exhaustive-deps
+    [chargement.statut, chargement.donnees, modeHeatmap, heatmapInitiale, choix, fichiers] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const selecteur = fichiers.length > 1 && (
-    <div className="mb-3 flex flex-wrap items-center gap-2">
-      <Layers className="h-4 w-4 text-muted-foreground" aria-hidden />
-      <Select value={choix} onValueChange={setChoix}>
-        <SelectTrigger className="h-9 w-auto min-w-[14rem] max-w-full" aria-label={t("fiche.carteChoix")}>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {fichiers.length <= MAX_SUPERPOSES && <SelectItem value={TOUT}>{t("fiche.toutSuperposer", { count: fichiers.length })}</SelectItem>}
-          {fichiers.map((fichier) => (
-            <SelectItem key={fichier.id} value={fichier.id}>
-              <span dir="ltr">{nomSansFormat(fichier)}</span>
-              {fichier.taille_octets !== null && <span className="ms-2 text-xs text-muted-foreground">{formaterTaille(fichier.taille_octets, langue)}</span>}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+  const selecteur = (fichiers.length > 1 || heatmapInitiale) && (
+    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+      {fichiers.length > 1 && (
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <Layers className="h-4 w-4 text-muted-foreground" aria-hidden />
+          <Select value={choix} onValueChange={setChoix}>
+            <SelectTrigger className="h-9 w-auto min-w-[14rem] max-w-full" aria-label={t("fiche.carteChoix")}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {fichiers.length <= MAX_SUPERPOSES && <SelectItem value={TOUT}>{t("fiche.toutSuperposer", { count: fichiers.length })}</SelectItem>}
+              {fichiers.map((fichier) => (
+                <SelectItem key={fichier.id} value={fichier.id}>
+                  <span dir="ltr">{nomSansFormat(fichier)}</span>
+                  {fichier.taille_octets !== null && <span className="ms-2 text-xs text-muted-foreground">{formaterTaille(fichier.taille_octets, langue)}</span>}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+      {heatmapInitiale && (
+        <ToggleGroup
+          type="single"
+          value={modeHeatmap ? "heatmap" : "points"}
+          onValueChange={(valeur) => valeur && setModeHeatmap(valeur === "heatmap")}
+          className="rounded-lg bg-muted p-1"
+          aria-label={t("visuel.modeCarte")}
+        >
+          <ToggleGroupItem value="heatmap" size="sm" className="px-3 data-[state=on]:bg-background data-[state=on]:shadow-sm">
+            {t("visuel.concentration")}
+          </ToggleGroupItem>
+          <ToggleGroupItem value="points" size="sm" className="px-3 data-[state=on]:bg-background data-[state=on]:shadow-sm">
+            {t("visuel.detections")}
+          </ToggleGroupItem>
+        </ToggleGroup>
+      )}
+    </div>
+  );
+
+  const legendeChaleur = heatmapInitiale && modeHeatmap && (
+    <div className="absolute bottom-2 start-2 w-56 max-w-[calc(100%-1rem)] rounded-lg bg-white/90 p-2 text-xs shadow-md backdrop-blur dark:bg-gray-900/90">
+      <p className="mb-1 font-semibold">{t("visuel.legendeConcentration")}</p>
+      <div className="h-2.5 rounded-full" style={{ background: "linear-gradient(to right, #fef08a, #facc15, #f97316, #dc2626, #7f1d1d)" }} aria-hidden />
+      <div className="mt-1 flex justify-between text-muted-foreground">
+        <span>{t("visuel.faible")}</span>
+        <span>{t("visuel.elevee")}</span>
+      </div>
+      <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{t("visuel.noteConcentration")}</p>
     </div>
   );
 
@@ -446,7 +518,7 @@ export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", project
       </div>
     );
   } else {
-    contenu = <Globe couches={couches} hauteur={hauteur} projection={projection} />;
+    contenu = <Globe couches={couches} hauteur={hauteur} projection={projection} enSurimpression={legendeChaleur} />;
   }
 
   return (

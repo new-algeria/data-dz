@@ -470,7 +470,14 @@ export function valeursWilayas(
  */
 export function uniteDepuisMesure(mesure: string, unite: string | null): string | null {
   if (unite && unite.trim()) return unite.trim();
-  const correspondance = /^(nb|nbre|nombre)_(?:de_|d_)?(.+)$/.exec(normaliserCle(mesure));
+  const cle = normaliserCle(mesure);
+  // Unités explicites des indicateurs climatiques (sinon l'infobulle serait ambiguë).
+  if (cle === "spi_3" || cle === "spi_12") return "indice SPI";
+  if (cle === "precipitation_mm" || cle === "precipitation_normale_mm") return "mm";
+  if (cle === "anomalie_precipitation_pct" || cle === "percentile_humidite_sol") return "%";
+  if (/^humidite_sol_/.test(cle)) return "m³/m³";
+  if (cle === "temperature_moyenne_c") return "°C";
+  const correspondance = /^(nb|nbre|nombre)_(?:de_|d_)?(.+)$/.exec(cle);
   return correspondance ? correspondance[2].replace(/_/g, " ") : null;
 }
 

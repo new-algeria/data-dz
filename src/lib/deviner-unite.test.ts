@@ -5,6 +5,11 @@ describe("unité des données connues (table par identifiant)", () => {
   it.each([
     ["mosquees", "mosquées", "mosques", "مساجد"],
     ["gas-stations", "stations", "stations", "محطات"],
+    ["seismes-algerie", "séismes", "earthquakes", "زلازل"],
+    ["electricite-algerie", "observations", "observations", "رصدات"],
+    ["biodiversite-algerie", "observations", "observations", "رصدات"],
+    ["faune-algerie", "espèces", "species", "أنواع"],
+    ["pollution-atmospherique-algerie", "mesures", "measurements", "قياسات"],
     ["poste", "bureaux et GAB", "offices and ATMs", "مكاتب وصرافات"],
     ["divisions-administratives", "communes", "municipalities", "بلديات"],
     ["mobilis", "points de vente", "outlets", "نقاط بيع"],
@@ -14,8 +19,8 @@ describe("unité des données connues (table par identifiant)", () => {
     expect(devinerUnite("أي", "ar", slug)).toBe(ar);
   });
 
-  it("couvre les 33 données du catalogue (hors série du FMI) et les 11 créées par la synchro OpenStreetMap, dans les trois langues", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(44);
+  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique et biodiversité", () => {
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(49);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }

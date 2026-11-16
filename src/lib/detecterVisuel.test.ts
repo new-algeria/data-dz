@@ -264,6 +264,11 @@ describe("unités", () => {
     expect(uniteDepuisMesure("nombre_de_lits", null)).toBe("lits");
     expect(uniteDepuisMesure("valeur", "% du PIB")).toBe("% du PIB");
     expect(uniteDepuisMesure("pib", null)).toBeNull();
+    expect(uniteDepuisMesure("spi_3", null)).toBe("indice SPI");
+    expect(uniteDepuisMesure("precipitation_mm", null)).toBe("mm");
+    expect(uniteDepuisMesure("anomalie_precipitation_pct", null)).toBe("%");
+    expect(uniteDepuisMesure("humidite_sol_0_100_cm", null)).toBe("m³/m³");
+    expect(uniteDepuisMesure("temperature_moyenne_c", null)).toBe("°C");
     expect(premiereValeur(fmi, "unite")).toBe("% du PIB");
   });
 });
