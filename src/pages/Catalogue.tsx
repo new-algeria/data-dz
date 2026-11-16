@@ -16,6 +16,7 @@ import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
 import { RechercheHero } from "@/components/accueil/RechercheHero";
 import { EVENEMENT_RECHERCHE } from "@/components/RechercheNavbar";
 import { SectionThematiques } from "@/components/thematiques/SectionThematiques";
+import { EncartMaWilaya } from "@/components/wilayas/EncartMaWilaya";
 import { IconeCategorie } from "@/components/BadgeCategorie";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Input } from "@/components/ui/input";
@@ -332,6 +333,7 @@ const Catalogue = () => {
 
       <div className="bg-accent dark:bg-inherit">
         <SectionThematiques />
+        <EncartMaWilaya />
       </div>
 
       <section id="catalog" className="scroll-mt-16 py-14 px-4 bg-accent dark:bg-inherit flex-1">
