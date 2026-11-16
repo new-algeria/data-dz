@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Braces, ChevronRight, Info, MapPin, Share2, Trophy, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Braces, ChevronRight, Info, MapPin, Share2, ChartNoAxesColumnIncreasing, Users } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CustomMetaTags } from "@/components/MetaTags";
@@ -218,7 +218,7 @@ const Contenu = ({ liste, categories, nom, code, complet }: { liste: ChiffreWila
       {faits.length > 0 && (
         <section className="mt-10" aria-labelledby="titre-faits">
           <h2 id="titre-faits" className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-            <Trophy className="h-6 w-6 text-amber-500" aria-hidden />
+            <ChartNoAxesColumnIncreasing className="h-6 w-6 text-muted-foreground" aria-hidden />
             {t("wilayas.faitsMarquants")}
           </h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
