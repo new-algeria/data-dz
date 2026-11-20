@@ -486,7 +486,7 @@
         {
           "id": "data",
           "titre": "What data do we collect?",
-          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profile).\n\n**Usage statistics**: every dataset page view and every download is recorded with its date, without any link to an account, except downloads made on the website by a signed-in member, which are linked to their account. Only data-dz administrators can see these statistics; they are deleted after 12 months."
+          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profile).\n\n**Usage statistics**: every dataset page view and every download is recorded with its date, without any link to an account, except downloads made on the website by a signed-in member, which are linked to their account. Only data-dz administrators can see these statistics; if you delete your account, your downloads are no longer linked to it."
         },
         {
           "id": "purpose",
@@ -1555,7 +1555,7 @@
     "telechargementsCourt": "Downl.",
     "comptesActifs": "Accounts that downloaded",
     "evolution": "Trend",
-    "note": "Algiers time. Views and public API downloads are not linked to any account. History kept for 12 months.",
+    "note": "Algiers time. Views and public API downloads are not linked to any account.",
     "topDonnees": "Most downloaded datasets",
     "donnee": "Dataset",
     "repartition": "Downloads breakdown",
