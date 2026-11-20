@@ -36,6 +36,7 @@ const GestionMembres = lazyAvecRechargement(() => import("./pages/admin/GestionM
 const GestionRoles = lazyAvecRechargement(() => import("./pages/admin/GestionRoles"));
 const GestionDonnees = lazyAvecRechargement(() => import("./pages/admin/GestionDonnees"));
 const GestionSynchros = lazyAvecRechargement(() => import("./pages/admin/GestionSynchros"));
+const PageAnalytics = lazyAvecRechargement(() => import("./pages/admin/PageAnalytics"));
 const PageApi = lazyAvecRechargement(() => import("./pages/PageApi"));
 const PageThematiques = lazyAvecRechargement(() => import("./pages/PageThematiques"));
 const PageDjazAI = lazyAvecRechargement(() => import("./pages/PageDjazAI"));
@@ -137,6 +138,16 @@ function App() {
                 <RouteProtegee>
                   <RouteAdmin permission="synchro.gerer">
                     <GestionSynchros />
+                  </RouteAdmin>
+                </RouteProtegee>
+              }
+            />
+            <Route
+              path={routes.adminAnalytics}
+              element={
+                <RouteProtegee>
+                  <RouteAdmin>
+                    <PageAnalytics />
                   </RouteAdmin>
                 </RouteProtegee>
               }

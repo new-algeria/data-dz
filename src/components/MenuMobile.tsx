@@ -23,6 +23,7 @@ import {
   UsersRound,
   type LucideIcon,
   MapPin,
+  ChartColumn,
 } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { Button } from "@/components/ui/button";
@@ -254,6 +255,11 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
               {a("synchro.gerer") && (
                 <Lien vers={routes.adminSynchros} icone={RefreshCw}>
                   {t("synchros.titre")}
+                </Lien>
+              )}
+              {admin && (
+                <Lien vers={routes.adminAnalytics} icone={ChartColumn}>
+                  {t("analytics.titre")}
                 </Lien>
               )}
             </>
