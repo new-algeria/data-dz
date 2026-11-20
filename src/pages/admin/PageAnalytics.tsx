@@ -139,7 +139,7 @@ const PageAnalytics = () => {
   }
 
   const choixPeriode = (
-    <div role="group" aria-label={t("analytics.periode")} className="inline-flex rounded-lg bg-gray-200/70 p-1 dark:bg-white/10">
+    <div role="group" aria-label={t("analytics.periode")} className="inline-flex flex-wrap rounded-lg bg-gray-200/70 p-1 dark:bg-white/10">
       {PERIODES.map((p) => (
         <button
           key={p}

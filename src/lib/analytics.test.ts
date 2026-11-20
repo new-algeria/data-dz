@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { enNombre, estPeriode, intervallePeriode, libellePeriode, part, totauxSerie } from "./analytics";
+import { DEBUT_STATISTIQUES, enNombre, estPeriode, intervallePeriode, libellePeriode, part, pasPourDuree, totauxSerie } from "./analytics";
 
 const maintenant = new Date("2026-11-20T12:00:00Z");
 
@@ -11,12 +11,18 @@ describe("intervallePeriode", () => {
     expect(i.fin.toISOString()).toBe("2026-11-20T12:00:00.000Z");
     expect(intervallePeriode("30j", maintenant).debut.toISOString()).toBe("2026-10-21T12:00:00.000Z");
   });
-  it("90 jours : pas hebdomadaire ; 12 mois : pas mensuel, moins de 400 jours", () => {
+  it("90 jours : pas hebdomadaire ; 12 mois : pas mensuel", () => {
     expect(intervallePeriode("90j", maintenant).pas).toBe("week");
     const an = intervallePeriode("12m", maintenant);
     expect(an.pas).toBe("month");
     expect(an.debut.toISOString()).toBe("2025-11-20T12:00:00.000Z");
-    expect((an.fin.getTime() - an.debut.getTime()) / 86_400_000).toBeLessThanOrEqual(400);
+  });
+  it("depuis le début : du premier jour d'enregistrement à maintenant, pas adapté à la durée", () => {
+    const tout = intervallePeriode("tout", maintenant);
+    expect(tout.debut).toEqual(DEBUT_STATISTIQUES);
+    expect(tout.pas).toBe("day");
+    expect(intervallePeriode("tout", new Date("2028-06-01T00:00:00Z")).pas).toBe("month");
+    expect(pasPourDuree(new Date("2026-01-01"), new Date("2026-07-01"))).toBe("week");
   });
 });
 

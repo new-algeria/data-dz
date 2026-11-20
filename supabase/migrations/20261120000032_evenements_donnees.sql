@@ -91,7 +91,7 @@ grant execute on function public.enregistrer_evenement_donnee(text, text, uuid, 
 -- ---------------------------------------------------------------------
 -- 3. Lectures pour la page /admin/analytics (admins seulement)
 -- ---------------------------------------------------------------------
--- Contrôle commun : admin et période valide (400 jours au plus).
+-- Contrôle commun : admin et période valide (aucune limite de durée).
 create or replace function public.analytics_verifier(p_debut timestamptz, p_fin timestamptz)
 returns void
 language plpgsql
@@ -103,8 +103,8 @@ begin
   if not public.est_admin() then
     raise exception 'Réservé aux administrateurs' using errcode = '42501';
   end if;
-  if p_debut is null or p_fin is null or p_fin <= p_debut or p_fin - p_debut > interval '400 days' then
-    raise exception 'Période invalide (400 jours au plus)' using errcode = '22023';
+  if p_debut is null or p_fin is null or p_fin <= p_debut then
+    raise exception 'Période invalide' using errcode = '22023';
   end if;
 end;
 $$;
