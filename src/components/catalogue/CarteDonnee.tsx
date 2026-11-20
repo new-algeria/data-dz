@@ -76,7 +76,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             decoding="async"
             onError={(e) => (e.currentTarget.style.display = "none")}
             className={cn(
-              "h-full w-full object-cover transition-[transform,opacity] duration-500 group-hover:scale-105 motion-reduce:transition-none",
+              "h-full w-full object-cover transition-[transform,opacity] duration-300 group-hover:scale-105 motion-reduce:transition-none",
               montrerApercu && "opacity-0"
             )}
           />
@@ -90,7 +90,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
               onLoad={apercu.surChargement}
               onError={apercu.surEchec}
               className={cn(
-                "absolute inset-0 h-full w-full object-contain px-2 pb-3 pt-9 transition-opacity duration-500 motion-reduce:transition-none",
+                "absolute inset-0 h-full w-full object-contain px-1 pb-4 pt-5 transition-opacity duration-300 motion-reduce:transition-none",
                 montrerApercu ? "opacity-100" : "opacity-0"
               )}
             />
@@ -243,7 +243,7 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
 }
 
 /**
- * Survol d'une carte : à la souris, l'aperçu s'affiche après un court délai (passer sur la grille ne charge rien) ;
+ * Survol d'une carte : à la souris, la vignette est demandée dès l'entrée et l'aperçu s'affiche après un court délai ;
  * au clavier, dès que la carte reçoit le focus. Rien sur écran tactile (pas de survol) : la fiche montre le visuel.
  */
 function useApercuSurvol(disponible: boolean) {
@@ -268,7 +268,9 @@ function useApercuSurvol(disponible: boolean) {
         onPointerEnter: (evenement: PointerEvent) => {
           if (evenement.pointerType !== "mouse") return;
           arreter();
-          minuteur.current = window.setTimeout(afficher, DELAI_APERCU_MS);
+          // La vignette se charge pendant le délai : elle est souvent prête quand l'aperçu s'affiche.
+          setDemande(true);
+          minuteur.current = window.setTimeout(() => setMontre(true), DELAI_APERCU_MS);
         },
         onPointerLeave: cacher,
         onFocus: afficher,

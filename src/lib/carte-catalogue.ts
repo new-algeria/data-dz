@@ -69,8 +69,11 @@ export function apercuSurvol(donnee: Pick<ResumeDonnee, "ressources" | "versions
   return action === "carte" || action === "graphique" ? action : null;
 }
 
-/** Délai avant d'afficher l'aperçu au survol : passer la souris sur la grille ne déclenche rien. */
-export const DELAI_APERCU_MS = 300;
+/**
+ * Délai avant d'afficher l'aperçu au survol : assez court pour le voir vite, assez long pour qu'un simple passage
+ * de la souris sur la grille ne fasse pas clignoter les cartes. La vignette, elle, est demandée dès l'entrée.
+ */
+export const DELAI_APERCU_MS = 150;
 
 const entier = (valeur: unknown): number | null => {
   const nombre = typeof valeur === "string" ? Number(valeur) : valeur;
