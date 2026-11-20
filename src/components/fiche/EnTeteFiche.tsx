@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Eye, Map as IconeCarte, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,8 @@ import { formaterNombre } from "@/lib/fichiers";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
+import { useAuth } from "@/contexte/ContexteAuth";
+import { PARAMETRE_TELECHARGEMENT } from "@/lib/telechargement";
 import type { Donnee, Ressource } from "@/lib/types";
 import { catalogueParCategorie, routes } from "@/lib/routes";
 import { DialogueTelechargement } from "./DialogueTelechargement";
@@ -41,15 +43,20 @@ const ChiffreCle = ({ valeur, libelle }: { valeur: string; libelle: string }) =>
   </div>
 );
 
-/** Un seul bouton : ouvre le choix fichier/format dès qu'il y a plusieurs possibilités. */
+/**
+ * Un seul bouton : ouvre le choix fichier/format dès qu'il y a plusieurs possibilités. Un visiteur passe toujours
+ * par le dialogue (connexion d'abord) ; c'est aussi ce dialogue qui se rouvre au retour de la connexion.
+ */
 const BoutonTelecharger = ({ ressources, slug }: { ressources: Ressource[]; slug: string }) => {
   const { t } = useTranslation();
+  const { session } = useAuth();
+  const [parametres] = useSearchParams();
   const ressource = ressourcePrincipale(ressources);
   if (!ressource) return null;
   const formats = telechargementsRessource(ressource);
   if (formats.length === 0) return null;
 
-  const choixNecessaire = ressources.length > 1 || formats.length > 1 || aSourceConvertible(ressource);
+  const choixNecessaire = ressources.length > 1 || formats.length > 1 || aSourceConvertible(ressource) || !session || parametres.has(PARAMETRE_TELECHARGEMENT);
   const etiquetteFormat = (format: string) => t(`telechargement.formatsCourts.${format}`, { defaultValue: format.toUpperCase() });
 
   if (choixNecessaire) {
@@ -58,6 +65,7 @@ const BoutonTelecharger = ({ ressources, slug }: { ressources: Ressource[]; slug
         ressources={ressources}
         slug={slug}
         apercu
+        rouvrirApresConnexion
         declencheur={
           <Button size="lg" className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800">
             <Download className="h-5 w-5" aria-hidden />

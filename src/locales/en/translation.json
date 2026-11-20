@@ -1147,6 +1147,13 @@
       "json": "JSON",
       "geojson": "GeoJSON",
       "parquet": "Parquet"
+    },
+    "connexion": {
+      "titre": "Sign in to download",
+      "description": "Takes 2 seconds, and the data is yours. You'll come right back here, ready to pick the file and format.",
+      "autreMode": "Other sign-in options",
+      "gratuit": "Free, no strings attached. Your account also lets you follow your favourite datasets.",
+      "verification": "Checking your session…"
     }
   },
   "api": {
