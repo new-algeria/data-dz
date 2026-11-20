@@ -1147,6 +1147,13 @@
       "json": "JSON",
       "geojson": "GeoJSON",
       "parquet": "Parquet"
+    },
+    "connexion": {
+      "titre": "Connectez-vous pour télécharger",
+      "description": "2 secondes, et la donnée est à vous. Vous revenez ensuite ici, prêt à choisir le fichier et le format.",
+      "autreMode": "Autre mode de connexion",
+      "gratuit": "Gratuit, sans engagement. Votre compte sert aussi à suivre vos données préférées.",
+      "verification": "Vérification de la connexion…"
     }
   },
   "api": {

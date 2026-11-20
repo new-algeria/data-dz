@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactElement } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Check, Download, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -6,14 +7,16 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { appelerApi, ErreurApi } from "@/lib/api";
-import { verifierLien } from "@/lib/telechargement";
+import { fichierDemande, lienRetourTelechargement, PARAMETRE_TELECHARGEMENT, verifierLien } from "@/lib/telechargement";
 import { formaterTaille, sourcesDesFichiers } from "@/lib/fichiers";
 import { aSourceConvertible, telechargementsRessource } from "@/lib/fiche";
 import { useLangue } from "@/hooks/use-langue";
+import { useAuth } from "@/contexte/ContexteAuth";
 import type { Ressource } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { IconeFormat } from "./BadgeFormat";
 import { MentionSource } from "./MentionSource";
+import { ConnexionTelechargement } from "./ConnexionTelechargement";
 
 const ORDRE = ["csv", "xlsx", "json", "geojson", "parquet", "ics", "pdf", "xml", "zip"];
 // Formats connus dans l'ordre ci-dessus, formats inconnus à la fin.
@@ -35,22 +38,32 @@ interface DialogueTelechargementProps {
   /** Ouverture pilotée de l'extérieur (ex. depuis un menu, qui se ferme avant le dialogue). */
   ouvert?: boolean;
   onOuvertChange?: (ouvert: boolean) => void;
+  /**
+   * Rouvre le dialogue au retour de la connexion (`?download=<fichier>` dans l'URL de la fiche). Un seul dialogue
+   * par page doit l'activer : celui de l'en-tête de la fiche.
+   */
+  rouvrirApresConnexion?: boolean;
 }
 
 /**
  * Téléchargement d'une donnée : choix du fichier (s'il y en a plusieurs) et du format, conversion par l'API.
  * Même dialogue pour le bouton principal de l'en-tête et pour chaque fichier de la liste (`ListeFichiers`).
+ * Il faut être connecté pour télécharger : un visiteur voit d'abord l'étape de connexion (`ConnexionTelechargement`),
+ * puis revient sur la fiche, où le dialogue se rouvre sur le fichier choisi.
  */
-export const DialogueTelechargement = ({ ressources, slug, apercu: afficherApercu = false, nomInitial, declencheur, ouvert: ouvertExterne, onOuvertChange }: DialogueTelechargementProps) => {
+export const DialogueTelechargement = ({ ressources, slug, apercu: afficherApercu = false, nomInitial, declencheur, ouvert: ouvertExterne, onOuvertChange, rouvrirApresConnexion = false }: DialogueTelechargementProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
+  const { session, chargement } = useAuth();
+  const [parametres, setParametres] = useSearchParams();
+  const [nomRetour, setNomRetour] = useState<string | null>(null);
   const [ouvertInterne, setOuvertInterne] = useState(false);
   const ouvert = ouvertExterne ?? ouvertInterne;
   const setOuvert = (valeur: boolean) => {
     if (ouvertExterne === undefined) setOuvertInterne(valeur);
     onOuvertChange?.(valeur);
   };
-  const nomParDefaut = () => nomInitial ?? (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "";
+  const nomParDefaut = () => nomRetour ?? nomInitial ?? (ressources.find((ressource) => ressource.principal) ?? ressources[0])?.nom ?? "";
   const [nom, setNom] = useState(nomParDefaut);
   const [format, setFormat] = useState("csv");
   const [statut, setStatut] = useState<"pret" | "conversion" | "erreur">("pret");
@@ -69,8 +82,24 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
     }
   }
 
+  // Retour de la connexion : la fiche rouvre le dialogue sur le fichier choisi, puis retire le paramètre de l'URL.
+  const demande = rouvrirApresConnexion ? parametres.get(PARAMETRE_TELECHARGEMENT) : null;
+  useEffect(() => {
+    if (!demande || !session) return;
+    const fichier = fichierDemande(demande, ressources.map((element) => element.nom));
+    if (fichier) {
+      setNomRetour(fichier);
+      setNom(fichier);
+      setOuvert(true);
+    }
+    const suite = new URLSearchParams(parametres);
+    suite.delete(PARAMETRE_TELECHARGEMENT);
+    setParametres(suite, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- une seule fois, à l'arrivée de la session
+  }, [demande, session]);
+
   const ressource = ressources.find((element) => element.nom === nom) ?? ressources[0];
-  const apercuPossible = Boolean(afficherApercu && ressource && aSourceConvertible(ressource));
+  const apercuPossible = Boolean(session && afficherApercu && ressource && aSourceConvertible(ressource));
 
   useEffect(() => {
     if (!ouvert || !apercuPossible || !ressource) {
@@ -152,7 +181,17 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
         </DialogTrigger>
       )}
 
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-5xl">
+      <DialogContent className={cn("max-h-[90vh] overflow-y-auto", session ? "sm:max-w-5xl" : "sm:max-w-md")}>
+        {!session ? (
+          chargement ? (
+            <div className="flex justify-center py-16" role="status" aria-label={t("telechargement.connexion.verification")}>
+              <Loader2 className="h-6 w-6 animate-spin text-emerald-700" aria-hidden />
+            </div>
+          ) : (
+            <ConnexionTelechargement suite={lienRetourTelechargement(slug, ressource.nom)} />
+          )
+        ) : (
+        <>
         <DialogHeader>
           <DialogTitle>{t("telechargement.titre")}</DialogTitle>
           <DialogDescription>{t("telechargement.description")}</DialogDescription>
@@ -266,6 +305,8 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
             {statut === "conversion" ? t("telechargement.preparation") : t("telechargement.bouton", { format: choisi.format.toUpperCase() })}
           </Button>
         </DialogFooter>
+        </>
+        )}
       </DialogContent>
     </Dialog>
   );
