@@ -19,8 +19,8 @@ describe("unité des données connues (table par identifiant)", () => {
     expect(devinerUnite("أي", "ar", slug)).toBe(ar);
   });
 
-  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique et biodiversité", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(49);
+  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique, biodiversité et football", () => {
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(50);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }

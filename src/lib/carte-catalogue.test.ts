@@ -121,4 +121,10 @@ describe("cartes du catalogue", () => {
     expect(apercuSurvol({ ressources: [ressource("geojson")], versions: null, diffusion_restreinte: true })).toBeNull();
     expect(apercuSurvol({ ressources: [ressource("csv")], versions: { colonnes: colonnes("nom") } } as never)).toBeNull();
   });
+
+  it("compte les enregistrements annoncés par la synchro plutôt que les lignes du fichier principal", () => {
+    const foot = { slug: "equipe-algerie-foot-m", versions: { nb_lignes: 64, colonnes: colonnes("annee", "matchs", "victoires") }, infos_source: { nb_enregistrements: 623 } };
+    expect(chiffreCarte(foot as never, "Équipe d'Algérie de football (hommes) : tous les matchs depuis 1963", "fr")).toEqual({ genre: "compte", nombre: 623, unite: "matchs" });
+    expect(chiffreCarte({ ...foot, infos_source: {} } as never, "x", "en")).toEqual({ genre: "compte", nombre: 64, unite: "matches" });
+  });
 });
