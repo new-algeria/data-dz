@@ -63,6 +63,7 @@ export const UNITES_PAR_SLUG: Record<string, Unites> = {
   "biodiversite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
   "faune-algerie": { fr: "espèces", en: "species", ar: "أنواع" },
   "pollution-atmospherique-algerie": { fr: "mesures", en: "measurements", ar: "قياسات" },
+  "equipe-algerie-foot-m": { fr: "matchs", en: "matches", ar: "مباراة" },
 };
 
 const ARABE = /[؀-ۿ]/;

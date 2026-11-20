@@ -116,7 +116,9 @@ export function chiffreCarte(
       };
     }
   }
-  const lignes = donnee.versions?.nb_lignes;
+  // `infos_source.nb_enregistrements` (écrit par une synchro) l'emporte sur les lignes du fichier principal : la donnée
+  // equipe-algerie-foot-m a une ligne par année dans son fichier principal, mais on compte ses matchs.
+  const lignes = entier(infos.nb_enregistrements) ?? donnee.versions?.nb_lignes;
   return lignes === null || lignes === undefined ? null : { genre: "compte", nombre: lignes, unite: devinerUnite(titre, langue, donnee.slug) };
 }
 
