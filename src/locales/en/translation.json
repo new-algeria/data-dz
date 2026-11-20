@@ -1401,7 +1401,7 @@
     "partPopulation": "{{part}}% of the country's population",
     "partager": "Share my wilaya",
     "lienCopie": "Link copied: send it to your friends!",
-    "faitsMarquants": "Highlights",
+    "faitsMarquants": "Key statistics",
     "fait_ordinal_one": "{{count}}st wilaya · {{titre}}",
     "fait_ordinal_two": "{{count}}nd wilaya · {{titre}}",
     "fait_ordinal_few": "{{count}}rd wilaya · {{titre}}",

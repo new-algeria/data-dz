@@ -1522,7 +1522,7 @@
     "partPopulation": "{{part}}٪ من سكان البلاد",
     "partager": "شارك ولايتي",
     "lienCopie": "تم نسخ الرابط: أرسله لأصدقائك!",
-    "faitsMarquants": "نقاط القوة",
+    "faitsMarquants": "إحصاءات بارزة",
     "fait_ordinal_other": "المرتبة {{count}} وطنيًا · {{titre}}",
     "faitDetail": "{{nombre}} على الخريطة، أي {{part}}٪ من البلاد",
     "essentiel": "أهم الأرقام في {{nom}}",
