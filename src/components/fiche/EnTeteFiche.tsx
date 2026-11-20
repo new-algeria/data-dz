@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Eye, Map as IconeCarte, Share2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, ChartLine, ChevronRight, Download, Eye, Loader2, Map as IconeCarte, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,8 @@ import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useAuth } from "@/contexte/ContexteAuth";
-import { PARAMETRE_TELECHARGEMENT } from "@/lib/telechargement";
+import { lienTelechargementSite, PARAMETRE_TELECHARGEMENT } from "@/lib/telechargement";
+import { ErreurApi } from "@/lib/api";
 import type { Donnee, Ressource } from "@/lib/types";
 import { catalogueParCategorie, routes } from "@/lib/routes";
 import { DialogueTelechargement } from "./DialogueTelechargement";
@@ -77,13 +79,28 @@ const BoutonTelecharger = ({ ressources, slug }: { ressources: Ressource[]; slug
   }
 
   const fichier = formats[0];
+  return <BoutonTelechargementDirect slug={slug} nom={ressource.nom} format={fichier.format} etiquette={etiquetteFormat(fichier.format)} />;
+};
+
+/** Fichier unique dans un seul format (membre connecté) : un clic, un téléchargement enregistré avec le compte. */
+const BoutonTelechargementDirect = ({ slug, nom, format, etiquette }: { slug: string; nom: string; format: string; etiquette: string }) => {
+  const { t } = useTranslation();
+  const [enCours, setEnCours] = useState(false);
+  const telecharger = async () => {
+    setEnCours(true);
+    try {
+      window.location.assign(await lienTelechargementSite(slug, nom, format));
+    } catch (probleme) {
+      toast.error(probleme instanceof ErreurApi && probleme.statut === 422 ? t("telechargement.indisponible") : t("telechargement.erreur"));
+    } finally {
+      setEnCours(false);
+    }
+  };
   return (
-    <Button asChild size="lg" className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800">
-      <a href={fichier.url}>
-        <Download className="h-5 w-5" aria-hidden />
-        {t("fiche.telecharger")}
-        <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">{etiquetteFormat(fichier.format)}</span>
-      </a>
+    <Button size="lg" onClick={() => void telecharger()} disabled={enCours} className="gap-2 rounded-lg bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 hover:bg-emerald-800">
+      {enCours ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> : <Download className="h-5 w-5" aria-hidden />}
+      {t("fiche.telecharger")}
+      <span className="rounded bg-white/20 px-1.5 py-0.5 text-xs font-semibold" dir="ltr">{etiquette}</span>
     </Button>
   );
 };

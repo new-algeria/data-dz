@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, Database, FilePlus2, Inbox, KeyRound, LogOut, RefreshCw, ShieldCheck, Star, UserRound, UsersRound, type LucideIcon } from "lucide-react";
+import { ChartColumn, ChevronDown, Database, FilePlus2, Inbox, KeyRound, LogOut, RefreshCw, ShieldCheck, Star, UserRound, UsersRound, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -144,6 +144,11 @@ export const MenuUtilisateur = () => {
         {a("synchro.gerer") && (
           <Element vers={routes.adminSynchros} icone={RefreshCw}>
             {t("synchros.titre")}
+          </Element>
+        )}
+        {admin && (
+          <Element vers={routes.adminAnalytics} icone={ChartColumn}>
+            {t("analytics.titre")}
           </Element>
         )}
         <DropdownMenuSeparator />

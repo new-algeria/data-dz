@@ -486,7 +486,7 @@
         {
           "id": "data",
           "titre": "What data do we collect?",
-          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profile)."
+          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profile).\n\n**Usage statistics**: every dataset page view and every download is recorded with its date, without any link to an account, except downloads made on the website by a signed-in member, which are linked to their account. Only data-dz administrators can see these statistics; they are deleted after 12 months."
         },
         {
           "id": "purpose",
@@ -1539,5 +1539,42 @@
       "confirmerEffacer": "Delete all your conversations from this browser?",
       "local": "Saved only in this browser, never on our servers."
     }
+  },
+  "analytics": {
+    "titre": "Analytics",
+    "sousTitre": "Dataset page views and downloads over time, and downloads per account.",
+    "periode": "Period",
+    "periodes": {
+      "7j": "7 days",
+      "30j": "30 days",
+      "90j": "90 days",
+      "12m": "12 months"
+    },
+    "vues": "Views",
+    "telechargements": "Downloads",
+    "telechargementsCourt": "Downl.",
+    "comptesActifs": "Accounts that downloaded",
+    "evolution": "Trend",
+    "note": "Algiers time. Views and public API downloads are not linked to any account. History kept for 12 months.",
+    "topDonnees": "Most downloaded datasets",
+    "donnee": "Dataset",
+    "repartition": "Downloads breakdown",
+    "origine": "Origin",
+    "origines": {
+      "site": "Website",
+      "api": "Public API"
+    },
+    "format": "Format",
+    "inconnu": "Unknown",
+    "parCompte": "Downloads per account",
+    "parCompteAide": "Downloads made on the website by signed-in members. Click an account to see the details.",
+    "compte": "Account",
+    "donneesDistinctes": "Datasets",
+    "dernier": "Latest",
+    "compteSupprime": "Deleted account",
+    "detailDescription": "This account's downloads over the period (latest 200).",
+    "vide": "No events in this period.",
+    "migration": "Analytics are not enabled yet: apply migration 20261120000032_evenements_donnees.sql in Supabase.",
+    "erreur": "Could not load analytics."
   }
 }

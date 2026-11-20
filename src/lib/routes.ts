@@ -25,6 +25,7 @@ export const routes = {
   adminRoles: "/admin/roles",
   adminDonnees: "/admin/datasets",
   adminSynchros: "/admin/sync",
+  adminAnalytics: "/admin/analytics",
   api: "/api",
   thematiques: "/themes",
   djazai: "/djazai",
