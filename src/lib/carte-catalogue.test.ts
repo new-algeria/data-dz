@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { aDesWilayas, actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
+import { aDesWilayas, actionVisuelle, apercuSurvol, chiffreCarte, estLibre, estNouvelle, estRestreinte, estSerieTemporelle, ilYA, sourceCourte } from "./carte-catalogue";
 import type { Ressource } from "./types";
 
 const maintenant = Date.parse("2026-10-30T12:00:00Z");
@@ -112,5 +112,13 @@ describe("cartes du catalogue", () => {
     expect(ilYA(ilYaJours(0.2), "en", maintenant)).toBe("4 hours ago");
     expect(ilYA(ilYaJours(70), "en", maintenant)).toBe("2 months ago");
     expect(ilYA("pas une date", "fr", maintenant)).toBeNull();
+  });
+
+  it("propose l'aperçu au survol seulement pour une carte ou un graphique", () => {
+    expect(apercuSurvol({ ressources: [ressource("geojson")], versions: null })).toBe("carte");
+    expect(apercuSurvol({ ressources: [], versions: { colonnes: colonnes("annee", "valeur") } } as never)).toBe("graphique");
+    expect(apercuSurvol({ ressources: [ressource("ics")], versions: null })).toBeNull();
+    expect(apercuSurvol({ ressources: [ressource("geojson")], versions: null, diffusion_restreinte: true })).toBeNull();
+    expect(apercuSurvol({ ressources: [ressource("csv")], versions: { colonnes: colonnes("nom") } } as never)).toBeNull();
   });
 });

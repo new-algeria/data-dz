@@ -48,6 +48,10 @@ export const urlApiDonnee = (slug: string) => `${URL_API}/v1/datasets/${slug}`;
 export const urlApercu = (slug: string, langue: string, version?: string) =>
   `${urlApiDonnee(slug)}/preview.png?lng=${langue}&v=${encodeURIComponent(version ?? "")}`;
 
+/** Vignette du visuel (720 × 300, fond transparent) pour le survol des cartes du catalogue ; `version` renouvelle le cache. */
+export const urlVignette = (slug: string, version?: string) =>
+  `${urlApiDonnee(slug)}/thumbnail.webp?v=${encodeURIComponent(version ?? "")}`;
+
 /** Lien de téléchargement stable (l'API redirige vers un lien signé qui expire). */
 export function urlTelechargement(slug: string, nom: string, format: string, inline = false): string {
   const params = new URLSearchParams({ format, file: nom });

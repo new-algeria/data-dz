@@ -60,6 +60,18 @@ export function actionVisuelle(donnee: Pick<ResumeDonnee, "ressources" | "versio
   return null;
 }
 
+/**
+ * Aperçu au survol d'une carte du catalogue : la vignette de l'API (petite carte ou petit graphique) remplace
+ * l'illustration. Seulement pour les données qui ont un visuel (pas un calendrier, pas une donnée restreinte).
+ */
+export function apercuSurvol(donnee: Pick<ResumeDonnee, "ressources" | "versions" | "diffusion_restreinte">): "carte" | "graphique" | null {
+  const action = actionVisuelle(donnee);
+  return action === "carte" || action === "graphique" ? action : null;
+}
+
+/** Délai avant d'afficher l'aperçu au survol : passer la souris sur la grille ne déclenche rien. */
+export const DELAI_APERCU_MS = 300;
+
 const entier = (valeur: unknown): number | null => {
   const nombre = typeof valeur === "string" ? Number(valeur) : valeur;
   return typeof nombre === "number" && Number.isFinite(nombre) ? Math.round(nombre) : null;
