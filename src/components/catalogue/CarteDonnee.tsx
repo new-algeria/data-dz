@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState, type FocusEvent, type PointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Check, ChartLine, Download, Eye, Map as IconeCarte, Package, Sparkles } from "lucide-react";
@@ -10,7 +11,8 @@ import { BoutonFavori } from "@/components/communaute/BoutonFavori";
 import { DialogueTelechargement } from "@/components/fiche/DialogueTelechargement";
 import { chargerLicencesApi } from "@/lib/admin-donnees";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
-import { actionVisuelle, chiffreCarte, estLibre, estNouvelle, estRestreinte, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
+import { actionVisuelle, apercuSurvol, chiffreCarte, DELAI_APERCU_MS, estLibre, estNouvelle, estRestreinte, ilYA, JOURS_NOUVEAU, sourceCourte } from "@/lib/carte-catalogue";
+import { urlVignette } from "@/lib/api";
 import { telechargementsRessource } from "@/lib/fiche";
 import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
@@ -55,10 +57,12 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
   const fraicheur = ilYA(donnee.mis_a_jour_le, langue);
   const seuilNouveautes = useSeuilNouveautes();
   const nouvelle = estNouvelle(donnee, seuilNouveautes);
+  const apercu = useApercuSurvol(apercuSurvol(donnee) !== null);
+  const montrerApercu = apercu.montre && apercu.charge && !apercu.echec;
 
   return (
     // Le lien du titre couvre toute la carte (after:inset-0) ; l'étoile et les boutons passent au-dessus (z-10).
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full" {...apercu.gestionnaires}>
       <Card className="group relative isolate flex h-full flex-col overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/10 focus-within:ring-2 focus-within:ring-emerald-500 dark:bg-gray-800">
         <BorderBeam size={300} duration={20} colorFrom="#1a365d" colorTo="#10b981" className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -71,8 +75,32 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
             loading="lazy"
             decoding="async"
             onError={(e) => (e.currentTarget.style.display = "none")}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className={cn(
+              "h-full w-full object-cover transition-[transform,opacity] duration-500 group-hover:scale-105 motion-reduce:transition-none",
+              montrerApercu && "opacity-0"
+            )}
           />
+          {/* Aperçu au survol : petite carte ou petit graphique de la donnée (vignette de l'API), chargé à la première intention. */}
+          {apercu.demande && !apercu.echec && (
+            <img
+              src={urlVignette(donnee.slug, donnee.mis_a_jour_le)}
+              alt=""
+              aria-hidden
+              decoding="async"
+              onLoad={apercu.surChargement}
+              onError={apercu.surEchec}
+              className={cn(
+                "absolute inset-0 h-full w-full object-contain px-2 pb-3 pt-9 transition-opacity duration-500 motion-reduce:transition-none",
+                montrerApercu ? "opacity-100" : "opacity-0"
+              )}
+            />
+          )}
+          {apercu.disponible && !apercu.echec && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100" aria-hidden>
+              <span className={cn("h-1.5 rounded-full bg-white/90 shadow transition-all duration-300", montrerApercu ? "w-1.5 opacity-60" : "w-4")} />
+              <span className={cn("h-1.5 rounded-full bg-white/90 shadow transition-all duration-300", montrerApercu ? "w-4" : "w-1.5 opacity-60")} />
+            </div>
+          )}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/35 to-transparent" aria-hidden />
           {/* Place laissée à l'étoile, plus large quand elle affiche le nombre de favoris (à partir de 2). */}
           <div className={`absolute inset-x-3 top-3 flex items-start gap-2 ${donnee.nb_favoris > 1 ? "pe-[4.5rem]" : "pe-11"}`}>
@@ -212,6 +240,44 @@ export function CarteDonnee({ donnee, categorie }: CarteDonneeProps) {
       </Card>
     </div>
   );
+}
+
+/**
+ * Survol d'une carte : à la souris, l'aperçu s'affiche après un court délai (passer sur la grille ne charge rien) ;
+ * au clavier, dès que la carte reçoit le focus. Rien sur écran tactile (pas de survol) : la fiche montre le visuel.
+ */
+function useApercuSurvol(disponible: boolean) {
+  const [demande, setDemande] = useState(false);
+  const [montre, setMontre] = useState(false);
+  const [charge, setCharge] = useState(false);
+  const [echec, setEchec] = useState(false);
+  const minuteur = useRef<number>();
+  const arreter = () => window.clearTimeout(minuteur.current);
+  useEffect(() => () => window.clearTimeout(minuteur.current), []);
+
+  const afficher = () => {
+    setDemande(true);
+    setMontre(true);
+  };
+  const cacher = () => {
+    arreter();
+    setMontre(false);
+  };
+  const gestionnaires = disponible
+    ? {
+        onPointerEnter: (evenement: PointerEvent) => {
+          if (evenement.pointerType !== "mouse") return;
+          arreter();
+          minuteur.current = window.setTimeout(afficher, DELAI_APERCU_MS);
+        },
+        onPointerLeave: cacher,
+        onFocus: afficher,
+        onBlur: (evenement: FocusEvent) => {
+          if (!evenement.currentTarget.contains(evenement.relatedTarget as Node | null)) cacher();
+        },
+      }
+    : {};
+  return { disponible, demande, montre, charge, echec, gestionnaires, surChargement: () => setCharge(true), surEchec: () => setEchec(true) };
 }
 
 export function CarteDonneeSquelette() {
