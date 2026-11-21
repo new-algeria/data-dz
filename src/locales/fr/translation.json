@@ -1660,11 +1660,11 @@
       "djazai": "Demander à DjazAI"
     },
     "catalogue": {
-      "compte_one": "{{count}} ressource mondiale pour l'IA",
-      "compte_other": "{{count}} ressources mondiales pour l'IA",
-      "separateur": "Ressources mondiales pour l'IA · hébergées par leurs auteurs",
-      "interrupteur": "Afficher",
-      "toutVoir": "Toutes les données pour l'IA, par domaine"
+      "bandeauRecherche_one": "{{count}} ressource mondiale pour l'IA correspond à « {{recherche}} »",
+      "bandeauRecherche_other": "{{count}} ressources mondiales pour l'IA correspondent à « {{recherche}} »",
+      "bandeauCategorie_one": "{{count}} ressource mondiale pour l'IA dans cette thématique",
+      "bandeauCategorie_other": "{{count}} ressources mondiales pour l'IA dans cette thématique",
+      "voir": "Voir dans Données pour l'IA"
     },
     "ressources": {
       "medmnist": {

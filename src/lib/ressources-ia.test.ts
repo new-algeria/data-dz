@@ -5,12 +5,10 @@ import en from "@/locales/en/translation.json";
 import ar from "@/locales/ar/translation.json";
 import type { ResumeDonnee } from "./types";
 import {
-  CLE_AFFICHAGE_RESSOURCES,
   DOMAINES_IA,
   donneesDuDomaine,
   estCleLicence,
   imageRessource,
-  lireAffichageRessources,
   RESSOURCES_IA,
   ressourcesCorrespondantes,
   ressourcesDuDomaine,
@@ -70,6 +68,8 @@ describe("ressourcesCorrespondantes", () => {
     expect(ids("MÉDICAL")).toContain("medmnist");
     expect(ids("kabyle")).toContain("common-voice");
     expect(ids("radio poumon")).toEqual(["chestxray14"]);
+    expect(ids("médical")).toEqual(expect.arrayContaining(["medmnist", "chestxray14", "isic", "brats", "physionet", "uci-ml"]));
+    expect(ids("IA")).toHaveLength(RESSOURCES_IA.length);
     expect(ids("abcdefgh")).toEqual([]);
   });
 
@@ -93,14 +93,5 @@ describe("par domaine", () => {
     const catalogue = [donnee("a", "sante", 1, 50), donnee("b", "sante", 9), donnee("c", "transport", 99), donnee("d", "sante", 1, 80), donnee("e", null, 5)];
     expect(donneesDuDomaine("sante", catalogue, 2).map((element) => element.slug)).toEqual(["b", "d"]);
     expect(donneesDuDomaine("satellite", catalogue)).toEqual([]);
-  });
-});
-
-describe("lireAffichageRessources", () => {
-  it("affiché par défaut, masqué seulement si « 0 », et tolérant si le stockage est bloqué", () => {
-    expect(lireAffichageRessources(null)).toBe(true);
-    expect(lireAffichageRessources({ getItem: () => null })).toBe(true);
-    expect(lireAffichageRessources({ getItem: (cle) => (cle === CLE_AFFICHAGE_RESSOURCES ? "0" : null) })).toBe(false);
-    expect(lireAffichageRessources({ getItem: () => { throw new Error("bloqué"); } })).toBe(true);
   });
 });

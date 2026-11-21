@@ -1788,15 +1788,19 @@
       "djazai": "اسأل DjazAI"
     },
     "catalogue": {
-      "compte_zero": "لا توجد موارد عالمية",
-      "compte_one": "مورد عالمي واحد للذكاء الاصطناعي",
-      "compte_two": "موردان عالميان للذكاء الاصطناعي",
-      "compte_few": "{{count}} موارد عالمية للذكاء الاصطناعي",
-      "compte_many": "{{count}} موردًا عالميًا للذكاء الاصطناعي",
-      "compte_other": "{{count}} مورد عالمي للذكاء الاصطناعي",
-      "separateur": "موارد عالمية للذكاء الاصطناعي · يستضيفها أصحابها",
-      "interrupteur": "إظهار",
-      "toutVoir": "كل بيانات الذكاء الاصطناعي حسب المجال"
+      "bandeauRecherche_zero": "لا توجد موارد عالمية تطابق «{{recherche}}»",
+      "bandeauRecherche_one": "مورد عالمي واحد للذكاء الاصطناعي يطابق «{{recherche}}»",
+      "bandeauRecherche_two": "موردان عالميان للذكاء الاصطناعي يطابقان «{{recherche}}»",
+      "bandeauRecherche_few": "{{count}} موارد عالمية للذكاء الاصطناعي تطابق «{{recherche}}»",
+      "bandeauRecherche_many": "{{count}} موردًا عالميًا للذكاء الاصطناعي يطابق «{{recherche}}»",
+      "bandeauRecherche_other": "{{count}} مورد عالمي للذكاء الاصطناعي يطابق «{{recherche}}»",
+      "bandeauCategorie_zero": "لا توجد موارد عالمية في هذا المحور",
+      "bandeauCategorie_one": "مورد عالمي واحد للذكاء الاصطناعي في هذا المحور",
+      "bandeauCategorie_two": "موردان عالميان للذكاء الاصطناعي في هذا المحور",
+      "bandeauCategorie_few": "{{count}} موارد عالمية للذكاء الاصطناعي في هذا المحور",
+      "bandeauCategorie_many": "{{count}} موردًا عالميًا للذكاء الاصطناعي في هذا المحور",
+      "bandeauCategorie_other": "{{count}} مورد عالمي للذكاء الاصطناعي في هذا المحور",
+      "voir": "عرض في بيانات للذكاء الاصطناعي"
     },
     "ressources": {
       "medmnist": {

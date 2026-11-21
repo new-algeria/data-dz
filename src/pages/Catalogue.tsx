@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowDownWideNarrow, Compass, FileText, MapPin, RotateCcw, Search, SearchX } from "lucide-react";
@@ -12,8 +12,7 @@ import { EtatErreur } from "@/components/EtatErreur";
 // import { Statistiques } from "@/components/catalogue/Statistiques";
 import { BandeauSources } from "@/components/accueil/BandeauSources";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
-import { CarteRessourceIA } from "@/components/ressources-ia/CarteRessourceIA";
-import { Switch } from "@/components/ui/switch";
+import { BandeauRessourcesIA } from "@/components/ressources-ia/BandeauRessourcesIA";
 import { GlobeAccueil } from "@/components/accueil/GlobeAccueil";
 import { RechercheHero } from "@/components/accueil/RechercheHero";
 import { EVENEMENT_RECHERCHE } from "@/components/RechercheNavbar";
@@ -34,8 +33,7 @@ import { chargerCatalogue, chargerCategories, chargerStatistiques } from "@/lib/
 import { chargerWilayas } from "@/lib/referentiels";
 import { estTri, TRI_PAR_DEFAUT, TRIS, trierDonnees, type Tri } from "@/lib/communaute";
 import { recentsEnPremier } from "@/lib/recents";
-import { routes } from "@/lib/routes";
-import { CLE_AFFICHAGE_RESSOURCES, lireAffichageRessources, RESSOURCES_IA, ressourcesCorrespondantes } from "@/lib/ressources-ia";
+import { RESSOURCES_IA, ressourcesCorrespondantes } from "@/lib/ressources-ia";
 import { useSeuilNouveautes } from "@/hooks/use-nouveautes";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
@@ -215,22 +213,11 @@ const Catalogue = () => {
   }, [requeteCatalogue.data, wilaya, format, tri, langue, seuil]);
   const filtresActifs = Boolean(saisie.trim() || categorie || wilaya || format);
 
-  // Ressources mondiales pour l'IA : toujours après les données algériennes, avec le même filtre (catégorie, recherche).
-  // Elles n'ont ni wilaya ni format : masquées dès que l'un de ces filtres est actif.
-  const [afficherRessources, setAfficherRessources] = useState(() =>
-    lireAffichageRessources(typeof window === "undefined" ? null : window.localStorage)
-  );
-  const changerAffichageRessources = (afficher: boolean) => {
-    setAfficherRessources(afficher);
-    try {
-      window.localStorage.setItem(CLE_AFFICHAGE_RESSOURCES, afficher ? "1" : "0");
-    } catch {
-      /* stockage bloqué : le choix vaut pour la visite */
-    }
-  };
+  // Ressources mondiales pour l'IA : jamais dans la grille (le catalogue reste algérien), seulement un bandeau discret
+  // vers /ai-datasets quand une recherche ou une catégorie correspond. Sans objet avec un filtre wilaya ou format.
   const ressourcesIA = useMemo(
     () =>
-      wilaya || format
+      wilaya || format || (!terme && !categorie)
         ? []
         : ressourcesCorrespondantes(RESSOURCES_IA, { terme, categorie }, (ressource) => [
             t(`ressourcesIA.ressources.${ressource.id}.description`),
@@ -496,8 +483,9 @@ const Catalogue = () => {
             <>
               <p className="text-gray-600 dark:text-gray-400 mb-4" aria-live="polite">
                 {t("catalogue.resultats", { count: listeDonnees.length })}
-                {afficherRessources && ressourcesIA.length > 0 && <> · {t("ressourcesIA.catalogue.compte", { count: ressourcesIA.length })}</>}
               </p>
+
+              {ressourcesIA.length > 0 && <BandeauRessourcesIA ressources={ressourcesIA} recherche={terme} />}
 
               {listeDonnees.length === 0 ? (
                 <div className="flex flex-col items-center text-center gap-3 py-16">
@@ -538,37 +526,6 @@ const Catalogue = () => {
                   <Button onClick={() => setNbVisibles((nombre) => nombre + TAILLE_PAGE)}>
                     {t("catalogue.afficherPlus")}
                   </Button>
-                </div>
-              )}
-
-              {/* Ressources mondiales pour l'IA, une fois toutes les données algériennes affichées */}
-              {!resteAAfficher && ressourcesIA.length > 0 && (
-                <div className="mt-10">
-                  <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-3">
-                    <div className="flex min-w-0 flex-1 items-center gap-3 text-sm font-semibold text-indigo-800 dark:text-indigo-300">
-                      <span className="h-px flex-1 bg-indigo-200 dark:bg-indigo-500/30" aria-hidden />
-                      <span className="text-center">🌍 {t("ressourcesIA.catalogue.separateur")}</span>
-                      <span className="h-px flex-1 bg-indigo-200 dark:bg-indigo-500/30" aria-hidden />
-                    </div>
-                    <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
-                      <Switch checked={afficherRessources} onCheckedChange={changerAffichageRessources} />
-                      {t("ressourcesIA.catalogue.interrupteur")}
-                    </label>
-                  </div>
-                  {afficherRessources && (
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {ressourcesIA.map((ressource) => (
-                        <CarteRessourceIA key={ressource.id} ressource={ressource} />
-                      ))}
-                    </div>
-                  )}
-                  {afficherRessources && (
-                    <p className="mt-4 text-center text-sm">
-                      <Link to={routes.donneesIA} className="font-medium text-indigo-700 hover:underline dark:text-indigo-300">
-                        {t("ressourcesIA.catalogue.toutVoir")} →
-                      </Link>
-                    </p>
-                  )}
                 </div>
               )}
             </>
