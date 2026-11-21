@@ -1,0 +1,75 @@
+/* Bordure animée : un dégradé conique vert / blanc / rouge qui tourne derrière le fond. */
+@property --angle-balade {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.bouton-balade {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 2px;
+  border-radius: 0.5rem;
+  background: conic-gradient(from var(--angle-balade), #006233, #10b981, #ffffff, #d21034, #ffffff, #006233);
+  box-shadow: 0 10px 24px -10px rgba(58, 53, 80, 0.45);
+  animation: bouton-balade-tour 5s linear infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bouton-balade:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px -10px rgba(16, 185, 129, 0.45);
+}
+.bouton-balade:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 3px;
+}
+
+.bouton-balade-fond {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  border-radius: calc(0.5rem - 2px);
+  background: #1f1d2b;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.bouton-balade-icone {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: #34d399;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.bouton-balade:hover .bouton-balade-icone {
+  transform: rotate(180deg);
+}
+.bouton-balade-badge {
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+@keyframes bouton-balade-tour {
+  to {
+    --angle-balade: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bouton-balade {
+    animation: none;
+  }
+  .bouton-balade-icone {
+    transition: none;
+  }
+}

@@ -10,6 +10,7 @@ import { CustomMetaTags } from "@/components/MetaTags";
 import { EtatErreur } from "@/components/EtatErreur";
 // Tuiles de chiffres masquées pour l'instant (remplacées par le bandeau des sources) : à réactiver plus tard.
 // import { Statistiques } from "@/components/catalogue/Statistiques";
+import { BoutonBalade } from "@/components/accueil/BoutonBalade";
 import { BandeauSources } from "@/components/accueil/BandeauSources";
 import { CarteDonnee, CarteDonneeSquelette } from "@/components/catalogue/CarteDonnee";
 import { BandeauRessourcesIA } from "@/components/ressources-ia/BandeauRessourcesIA";
@@ -322,6 +323,7 @@ const Catalogue = () => {
                 {statistiques ? t("accueil.explorerNombre", { count: statistiques.nbDonnees }) : t("accueil.explorer")}
                 <ArrowDown className="transition-transform group-hover:translate-y-0.5" />
               </Button>
+              <BoutonBalade />
             </motion.div>
 
             {/* Tuiles de chiffres (jeux de données, catégories, lignes, membres) masquées temporairement.
