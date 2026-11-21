@@ -10,8 +10,10 @@ import { AvatarMembre } from "@/components/AvatarMembre";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useLangue } from "@/hooks/use-langue";
+import { chargerCatalogue } from "@/lib/catalogue";
 import {
   chargerComptes,
+  cumulsCatalogue,
   chargerRepartition,
   chargerSerie,
   chargerTelechargementsCompte,
@@ -61,6 +63,58 @@ const Vide = () => {
 
 const messageErreur = (erreur: unknown, t: (cle: string) => string) =>
   erreur instanceof MigrationAnalyticsAbsente ? t("analytics.migration") : t("analytics.erreur");
+
+/** Compteurs cumulés depuis la mise en ligne (datasets.nb_vues / nb_telechargements, lus dans le catalogue). */
+const CumulsDepuisLancement = () => {
+  const { t } = useTranslation();
+  const langue = useLangue();
+  const catalogue = useQuery({ queryKey: ["catalogue", "", null], queryFn: () => chargerCatalogue({ terme: "", categorie: null }) });
+  const { totaux, top } = useMemo(() => cumulsCatalogue(catalogue.data ?? []), [catalogue.data]);
+  const nombre = (n: number) => formaterNombre(n, langue);
+  return (
+    <Carte titre={t("analytics.cumul.titre")}>
+      <p className="-mt-2 mb-4 text-sm text-muted-foreground">{t("analytics.cumul.aide")}</p>
+      {catalogue.isLoading && <Skeleton className="h-48 w-full" />}
+      {catalogue.error && <p className="text-sm text-red-600">{t("analytics.erreur")}</p>}
+      {catalogue.data && (
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid content-start gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            <Tuile icone={Eye} libelle={t("analytics.cumul.vues")} valeur={nombre(totaux.vues)} couleur={COULEUR_VUES} />
+            <Tuile icone={Download} libelle={t("analytics.cumul.telechargements")} valeur={nombre(totaux.telechargements)} couleur={COULEUR_TELECHARGEMENTS} />
+          </div>
+          <div className="min-w-0 lg:col-span-2">
+            {top.length === 0 ? (
+              <Vide />
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-xs text-muted-foreground">
+                    <th className="pb-2 text-start font-medium">{t("analytics.donnee")}</th>
+                    <th className="pb-2 text-end font-medium">{t("analytics.vues")}</th>
+                    <th className="pb-2 text-end font-medium">{t("analytics.telechargementsCourt")}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-white/10">
+                  {top.map((d) => (
+                    <tr key={d.slug}>
+                      <td className="max-w-0 truncate py-2 pe-3">
+                        <Link to={routes.donnee(d.slug)} className="hover:underline">
+                          {texteTraduit(d.titre, langue) || d.slug}
+                        </Link>
+                      </td>
+                      <td className="py-2 text-end tabular-nums">{nombre(d.vues)}</td>
+                      <td className="py-2 text-end font-semibold tabular-nums">{nombre(d.telechargements)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+      )}
+    </Carte>
+  );
+};
 
 const DetailCompte = ({ compte, intervalle, onFermer }: { compte: CompteTelechargements | null; intervalle: Intervalle; onFermer: () => void }) => {
   const { t } = useTranslation();
@@ -133,7 +187,10 @@ const PageAnalytics = () => {
   if (serie.error) {
     return (
       <MiseEnPage titre={t("analytics.titre")} sousTitre={t("analytics.sousTitre")} chemin={routes.adminAnalytics} largeur="large">
-        <EtatErreur message={messageErreur(serie.error, t)} onReessayer={() => void serie.refetch()} />
+        <div className="grid gap-6">
+          <EtatErreur message={messageErreur(serie.error, t)} onReessayer={() => void serie.refetch()} />
+          <CumulsDepuisLancement />
+        </div>
       </MiseEnPage>
     );
   }
@@ -258,6 +315,8 @@ const PageAnalytics = () => {
             )}
           </Carte>
         </div>
+
+        <CumulsDepuisLancement />
 
         <Carte titre={t("analytics.parCompte")}>
           <p className="-mt-2 mb-4 text-sm text-muted-foreground">{t("analytics.parCompteAide")}</p>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEBUT_STATISTIQUES, enNombre, estPeriode, intervallePeriode, libellePeriode, part, pasPourDuree, totauxSerie } from "./analytics";
+import { cumulsCatalogue, DEBUT_STATISTIQUES, enNombre, estPeriode, intervallePeriode, libellePeriode, part, pasPourDuree, totauxSerie } from "./analytics";
 
 const maintenant = new Date("2026-11-20T12:00:00Z");
 
@@ -49,5 +49,21 @@ describe("outils", () => {
   it("libellePeriode à l'heure d'Alger", () => {
     expect(libellePeriode("2026-11-01T00:00:00+01:00", "month", "fr-FR")).toMatch(/nov\.? 2026/);
     expect(libellePeriode("2026-11-19T23:00:00Z", "day", "fr-FR")).toMatch(/^20 nov/);
+  });
+});
+
+describe("cumulsCatalogue", () => {
+  it("additionne les compteurs et classe par téléchargements puis vues, sans les données à zéro", () => {
+    const { totaux, top } = cumulsCatalogue(
+      [
+        { slug: "a", titre: null, nb_vues: 10, nb_telechargements: 2 },
+        { slug: "b", titre: null, nb_vues: 50, nb_telechargements: 2 },
+        { slug: "c", titre: null, nb_vues: 3, nb_telechargements: 9 },
+        { slug: "d", titre: null },
+      ],
+      2,
+    );
+    expect(totaux).toEqual({ vues: 63, telechargements: 13 });
+    expect(top.map((l) => l.slug)).toEqual(["c", "b"]);
   });
 });

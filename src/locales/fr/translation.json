@@ -1570,6 +1570,12 @@
     "detailDescription": "Téléchargements de ce compte sur la période (200 derniers).",
     "vide": "Aucun événement sur cette période.",
     "migration": "Les statistiques ne sont pas encore activées : appliquez la migration 20261120000032_evenements_donnees.sql dans Supabase.",
-    "erreur": "Impossible de charger les statistiques."
+    "erreur": "Impossible de charger les statistiques.",
+    "cumul": {
+      "titre": "Depuis la mise en ligne",
+      "aide": "Compteurs cumulés de chaque donnée publiée, y compris avant le début des statistiques datées (20 novembre 2026). Ils ne dépendent pas de la période choisie.",
+      "vues": "Vues au total",
+      "telechargements": "Téléchargements au total"
+    }
   }
 }

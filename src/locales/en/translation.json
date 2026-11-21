@@ -1576,6 +1576,12 @@
     "detailDescription": "This account's downloads over the period (latest 200).",
     "vide": "No events in this period.",
     "migration": "Analytics are not enabled yet: apply migration 20261120000032_evenements_donnees.sql in Supabase.",
-    "erreur": "Could not load analytics."
+    "erreur": "Could not load analytics.",
+    "cumul": {
+      "titre": "Since launch",
+      "aide": "All-time counters for each published dataset, including before dated analytics started (20 November 2026). They don't depend on the selected period.",
+      "vues": "Total views",
+      "telechargements": "Total downloads"
+    }
   }
 }
