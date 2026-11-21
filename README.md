@@ -4,87 +4,102 @@
 
 # data-dz
 
-**Les données ouvertes sur l'Algérie, au même endroit.**
+**Toute l'Algérie en chiffres et en cartes 🇩🇿**
 
-Portail open source porté par [New Algeria](https://newalgeria.org) : un catalogue de jeux de données sur l'Algérie,
-avec aperçu, globe interactif et téléchargement direct, toujours accompagnés de leur source et de leur licence.
+Le portail open source des données sur l'Algérie, porté par [New Algeria](https://newalgeria.org).
+Pharmacies, écoles, climat, population, économie… à chercher, visualiser et télécharger gratuitement,
+toujours avec leur source et leur licence.
 
-[data-dz.com](https://www.data-dz.com) · [Signaler un problème](https://github.com/new-algeria/data-dz/issues) · [Contribuer](#contribuer)
+[🌐 data-dz.com](https://www.data-dz.com) · [🔌 API publique](https://www.data-dz.com/api) · [🤖 DjazAI](https://www.data-dz.com/djazai) · [🐛 Signaler un problème](https://github.com/new-algeria/data-dz/issues)
+
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20Postgres-3ECF8E?logo=supabase&logoColor=white)
+![i18n](https://img.shields.io/badge/i18n-FR%20%7C%20EN%20%7C%20AR-green)
+
+<img src="docs/captures/accueil.webp" alt="Page d'accueil de data-dz : « Toute l'Algérie en chiffres et en cartes », recherche et globe centré sur l'Algérie" width="860" />
 
 </div>
 
 ---
 
-## Sommaire
+## ✨ Ce que propose le site
 
-- [Ce que fait le site](#ce-que-fait-le-site)
-- [Architecture](#architecture)
-- [Démarrer en local](#démarrer-en-local)
-- [Structure du dépôt](#structure-du-dépôt)
-- [Les données](#les-données)
-- [Langues et traductions](#langues-et-traductions)
-- [Déploiement](#déploiement)
-- [Contribuer](#contribuer)
-- [Sécurité](#sécurité)
-- [Ce qu'il reste à faire](#ce-quil-reste-à-faire)
-- [Crédits et licences des données](#crédits-et-licences-des-données)
-
-## Ce que fait le site
-
-Le catalogue affiche ce qui est publié dans la base. Les visiteurs peuvent créer un compte pour avoir un profil public et **proposer des données**, relues par les modérateurs avant leur mise en ligne. Toutes les URL sont en anglais (liste complète dans [`CLAUDE.md`](./CLAUDE.md#routes-url-en-anglais)).
-
-| Page | Contenu |
+| | |
 |---|---|
-| **Accueil et catalogue** (`/`) | Globe animé centré sur l'Algérie, chiffres réels lus dans la base (jeux de données, catégories couvertes, total de lignes), recherche plein texte en français, anglais et arabe, filtre par catégorie, tri (les plus appréciés, récemment mis à jour, A → Z), votes et favoris sur chaque carte. Les filtres et le tri sont gardés dans l'URL (`/?q=pharmacies&category=sante&sort=recent`) pour pouvoir partager un lien. |
-| **Fiche d'une donnée** (`/datasets/:slug`) | Votes 👍 / 👎, favori ⭐, commentaires avec réponses, bouton de téléchargement du fichier principal, chiffres clés (lignes, colonnes, fichiers, mise à jour), licence et ce qu'elle autorise, globe interactif pour les GeoJSON, liste des fichiers, aperçu des premières lignes, description des colonnes, documentation (README), informations de couverture. |
-| **Comptes** (`/login`, `/signup`, `/profile`, `/members/:username`) | Inscription par email, connexion par mot de passe, lien magique ou Google, mot de passe oublié, profil modifiable (pseudo, bio, site web, photo) et page publique de chaque membre. Détails dans [`CLAUDE.md`](./CLAUDE.md#authentification). |
-| **Favoris** (`/favorites`) | Les données suivies par le membre ; il est notifié de leurs nouvelles versions. |
-| **Notifications** (cloche de l'en-tête) | Réponses aux commentaires, décisions sur ses propositions, publication, nouvelles versions des données suivies, nouvelles propositions (modérateurs). |
-| **Propositions** (`/submit`, `/my-submissions`) | Proposer une nouvelle donnée ou la mise à jour d'une donnée existante (titre, description, catégorie, licence, source, mots-clés, wilayas, période, fichiers jusqu'à 50 Mo), puis suivre son statut, répondre aux demandes de modification, renvoyer ou retirer. |
-| **Modération** (`/moderation`, réservé aux rôles `moderateur` et `admin`) | File des propositions par statut, revue avec aperçu des fichiers et historique, décision (accepter, demander des modifications, refuser, commenter), changement de statut des datasets (publié, brouillon, archivé). |
-| **Gestion des membres** (`/admin/users`, réservé aux administrateurs) | Liste des comptes, recherche, filtre par rôle et changement de rôle (membre, contributeur, modérateur) ; le rôle d'un administrateur n'est pas modifiable depuis le site. |
-| **Pages légales** (`/privacy`, `/terms`) | Politique de confidentialité et conditions d'utilisation. |
-| **Anciennes URL françaises** (`/donnees/:slug`, `/profil`, `/connexion`…) | Redirigent vers les nouvelles URL anglaises. |
+| 🔎 **Catalogue** | Recherche instantanée en français, anglais et arabe, filtres par thématique, tri, défilement infini. |
+| 📄 **Fiche d'une donnée** | Carte ou graphique détectés automatiquement, chiffres clés, colonnes, aperçu, source et licence. Téléchargement en **CSV, Excel, JSON ou GeoJSON**. |
+| 🗺️ **Ma wilaya en chiffres** | Carte des 69 wilayas, classements par mesure (au total ou pour 100 000 habitants) et une page par wilaya. |
+| 🧠 **Données pour l'IA** | Les données algériennes et une sélection de jeux mondiaux reconnus, par domaine, la santé en premier. |
+| 🤖 **DjazAI** | Un assistant qui répond à partir du catalogue et cite ses sources. |
+| 🔌 **API publique** | Gratuite et sans clé, documentée en OpenAPI : catalogue, enregistrements et fichiers. |
+| 👥 **Communauté** | Comptes (email, Google…), profils publics, votes, favoris, commentaires, notifications. Chacun peut **proposer une donnée**, relue par les modérateurs avant sa mise en ligne. |
+| 🛠️ **Administration** | Gestion des données, des membres, des rôles et permissions, des synchronisations automatiques et des statistiques. |
 
-Le site est disponible en **français, anglais et arabe** (l'arabe s'affiche de droite à gauche), en **mode clair et sombre**, et respecte le réglage « réduire les animations » du système.
+Le site est trilingue (l'arabe s'affiche de droite à gauche), en mode clair ou sombre, et respecte le réglage « réduire les animations ».
 
-## Architecture
+<table>
+  <tr>
+    <td><img src="docs/captures/fiche.webp" alt="Fiche des pharmacies d'Algérie" /></td>
+    <td><img src="docs/captures/wilayas.webp" alt="Ma wilaya en chiffres : carte des 69 wilayas" /></td>
+    <td><img src="docs/captures/ia.webp" alt="Page Données pour l'IA" /></td>
+  </tr>
+  <tr>
+    <td align="center">Fiche d'une donnée</td>
+    <td align="center">Ma wilaya en chiffres</td>
+    <td align="center">Données pour l'IA</td>
+  </tr>
+  <tr>
+    <td><img src="docs/captures/api.webp" alt="Page de l'API publique" /></td>
+    <td><img src="docs/captures/djazai.webp" alt="Page DjazAI" /></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td align="center">API publique</td>
+    <td align="center">DjazAI</td>
+    <td></td>
+  </tr>
+</table>
+
+## 📚 D'où viennent les données
+
+Chaque donnée garde **la licence de sa source**, affichée sur sa fiche. Une partie est renouvelée automatiquement par les robots de l'API :
+
+- **[GeoAlgeria](https://geoalgeria.com)** par Yasser's studio : lieux et équipements (santé, écoles, télécoms…), chaque semaine
+- **[OpenStreetMap](https://www.openstreetmap.org/copyright)** (ODbL, citation obligatoire) : chiffres présentés comme des estimations
+- **WorldPop** (population des wilayas), **NASA FIRMS** (feux), **USGS** (séismes), **Ember** (électricité), **Copernicus ERA5-Land** et **CAMS** (sécheresse, pollution), **GBIF** (biodiversité), **FMI** et **Banque mondiale** (économie)…
+- Les propositions de la communauté, une fois relues
+
+Une erreur dans une donnée GeoAlgeria se signale à la source : [yasserstudio/geoalgeria](https://github.com/yasserstudio/geoalgeria/issues).
+
+## 🏗️ Architecture
 
 ```
-                        ┌──────────────────────────────────────────────┐
-                        │ Script de synchronisation (hors de ce dépôt) │
-                        │ chaque semaine, depuis GeoAlgeria            │
-                        └───────────────┬──────────────────┬───────────┘
-                                        │ métadonnées      │ fichiers
-                                        ▼                  ▼
-┌──────────────────────┐   lecture   ┌──────────────┐   ┌──────────────────────────────┐
-│ Navigateur           │ ──────────▶ │   Supabase   │   │ Cloudflare R2                │
-│ data-dz (React, SPA) │             │ Postgres+RLS │   │ https://files.data-dz.com    │
-│ hébergé sur Vercel   │ ──────────────────────────────▶│ lecture publique             │
-└──────────────────────┘   téléchargements, GeoJSON     └──────────────────────────────┘
+Navigateur (data-dz : React, site statique sur Vercel)
+  ├── API data-dz (https://api.data-dz.com)   → catalogue, fiches, statistiques, téléchargements,
+  │                                               conversions, DjazAI, administration des données
+  ├── Supabase (Auth + Postgres avec RLS)      → comptes, profils, votes, favoris, commentaires,
+  │                                               propositions, modération, notifications
+  └── Cloudflare R2 public (web-assets/)       → illustrations uniquement
 ```
 
-- **Pas de backend maison.** Le navigateur interroge directement Supabase avec la clé *publishable*. Ce qui est visible est décidé par les règles RLS de la base, pas par le site. L'ancien serveur Express (api-dz-backend) et RapidAPI sont abandonnés.
-- **Supabase** contient le catalogue : une ligne par donnée dans `datasets`, ses versions, ses fichiers, les catégories, les sources et les licences.
-- **Cloudflare R2** contient les fichiers bruts, rangés par format (`json/<nom>.json`, `geojson/<nom>.geojson`…). L'URL d'un fichier est `${VITE_URL_FICHIERS}/${cle_stockage}`.
-- **Le site ne fait que lire.** Les données GeoAlgeria sont écrites dans Supabase et R2 par un script de synchronisation externe.
+- Le **catalogue et les fichiers passent par l'API** ([dépôt de l'API](https://github.com/new-algeria/api-dz-backend), Hono sur Vercel). Les fichiers sortent par des liens signés de 10 minutes : aucune clé de stockage n'est exposée.
+- Le site parle à **Supabase** avec la seule clé *publishable*. Ce qu'un visiteur peut lire ou écrire est décidé par les règles RLS et les fonctions de la base, jamais par le site.
+- Les emails (notifications, connexion) partent d'une fonction Edge Supabase via Resend (`supabase/functions/envoyer-email/`).
 
 ### Stack
 
-| Rôle | Outil |
+| Rôle | Outils |
 |---|---|
-| Interface | React 18, TypeScript, Vite 5 |
-| Style | Tailwind CSS 3, composants [shadcn/ui](https://ui.shadcn.com) (`src/components/ui`), framer-motion pour les animations |
-| Données | `@supabase/supabase-js` v2, `@tanstack/react-query` (cache, chargement, erreurs) |
-| Navigation | `react-router-dom` v6 |
-| Langues | `i18next` et `react-i18next` |
-| Globe de l'accueil | `d3-geo` + `world-atlas` (Natural Earth 1:110m), dessiné en Canvas 2D |
-| Globe des fiches | `maplibre-gl` v5 en projection globe, fond OpenStreetMap |
-| Markdown | `react-markdown` + `remark-gfm` (HTML brut désactivé) |
+| Interface | React 18, TypeScript, Vite 5, Tailwind CSS 3, [shadcn/ui](https://ui.shadcn.com), framer-motion |
+| Données | `@tanstack/react-query`, `@supabase/supabase-js` v2 |
+| Cartes et graphiques | MapLibre GL, d3-geo, Recharts (chargés à la demande) |
+| Langues | i18next, react-i18next |
+| Tests | Vitest |
 
-## Démarrer en local
+## 🚀 Démarrer en local
 
-**Prérequis** : Node.js 18 ou plus récent (testé avec Node 22), npm.
+**Prérequis** : Node.js 22 et npm.
 
 ```bash
 git clone https://github.com/new-algeria/data-dz.git
@@ -94,147 +109,71 @@ npm install
 npm run dev
 ```
 
-Le site s'ouvre sur **http://localhost:5173**. Il lit directement la base de production, en lecture seule.
+Le site s'ouvre sur **http://localhost:5173** et lit l'API et la base de production (la RLS limite ce qui est visible).
 
-### Variables d'environnement
-
-Les trois valeurs sont **publiques par nature** et déjà remplies dans `.env.example` :
+Les variables de `.env.example` sont **publiques par nature** et déjà remplies :
 
 | Variable | Rôle |
 |---|---|
 | `VITE_SUPABASE_URL` | URL du projet Supabase |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Clé publishable (`sb_publishable_…`), faite pour le navigateur et protégée par la RLS |
-| `VITE_URL_FICHIERS` | Adresse publique des fichiers sur R2 (`https://files.data-dz.com`) |
-
-Si une variable manque, le site affiche des messages d'erreur au lieu d'une page blanche, et la console indique quoi faire.
-
-### Scripts
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Clé publishable (`sb_publishable_…`), faite pour le navigateur |
+| `VITE_URL_API` | API publique (`https://api.data-dz.com`, ou `http://localhost:3000` avec l'API en local) |
+| `VITE_URL_FICHIERS` | Domaine public des illustrations (`https://files.data-dz.com`) |
 
 | Commande | Effet |
 |---|---|
-| `npm run dev` | Serveur de développement avec rechargement à chaud |
-| `npm run build` | Site statique dans `dist/` |
-| `npm run preview` | Sert le contenu de `dist/` pour le vérifier |
-| `npm run lint` | ESLint (doit finir avec 0 erreur) |
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Site statique dans `dist/`, puis `sitemap.xml` |
+| `npm run preview` | Sert `dist/` pour vérifier la build |
+| `npm run lint` | ESLint |
+| `npm test` | Tests Vitest |
 
-## Structure du dépôt
+Pour travailler sur la base : `npx supabase start` puis `npx supabase db reset` (applique `supabase/migrations/` et `supabase/seed.sql`, emails visibles dans Mailpit).
+
+## 📁 Structure du dépôt
 
 ```
 src/
-├── pages/
-│   ├── Catalogue.tsx          Accueil : globe, chiffres, recherche, liste
-│   └── FicheDonnee.tsx        Fiche d'une donnée
-├── components/
-│   ├── accueil/               Globe de l'accueil, compteurs animés
-│   ├── catalogue/             Carte d'une donnée, statistiques
-│   ├── fiche/                 En-tête, chiffres clés, licence, attribution,
-│   │                          globe MapLibre, fichiers, aperçu, colonnes
-│   ├── ui/                    Composants shadcn/ui (génériques)
-│   └── Navbar, Footer, LanguageSelector, MetaTags…
-├── lib/
-│   ├── supabase.ts            Client Supabase unique
-│   ├── catalogue.ts           Toutes les requêtes (catalogue, catégories, stats, fiche)
-│   ├── fichiers.ts            URL R2, formats de taille et de nombres
-│   ├── types.ts               Types des tables lues par le site
-│   └── traduction.ts, emprise.ts, valeurs.ts
-├── hooks/                     Langue, thème, chargement de fichiers avec progression…
-├── locales/{fr,en,ar}/        Traductions
-└── i18n.ts                    Configuration i18next et sens d'écriture (RTL)
-public/                        Icônes, image de partage, manifeste
-CLAUDE.md                      Référence technique du projet (tables, conventions)
-vercel.json                    Configuration d'hébergement
+├── pages/            Catalogue, fiche, wilayas, thématiques, Données pour l'IA, DjazAI, API,
+│                     profil, membres, propositions, modération, administration, pages légales
+├── components/       Par domaine (accueil, catalogue, fiche, wilayas, djazai, communauté, admin…)
+│                     et composants génériques shadcn/ui dans ui/
+├── lib/              Logique métier pure et testée (*.test.ts), appels à l'API et à Supabase,
+│                     routes centralisées (routes.ts)
+├── hooks/  contexte/ Hooks React, authentification
+└── locales/          Traductions fr / en / ar
+supabase/             Migrations SQL, fonction Edge des emails, modèles d'emails, config locale
+scripts/              Sitemap, photos des wilayas
+public/               Icônes, images de partage, mascotte, logos des sources
+docs/captures/        Captures de ce README
+CLAUDE.md             Référence technique détaillée (tables, routes, règles de chaque fonctionnalité)
 ```
 
-## Les données
+## 🤝 Contribuer
 
-Le site lit sept tables Supabase. Le détail des colonnes est dans [`CLAUDE.md`](./CLAUDE.md#tables-supabase-lecture-seule-pour-le-site).
+Toute aide est bienvenue : code, design, traduction, signalement d'erreurs dans les données. Tu peux aussi **proposer une donnée** directement sur le site.
 
-| Table | Ce qu'elle contient |
-|---|---|
-| `datasets` | Une ligne par donnée : titre et description en `{fr, en, ar}`, README, catégorie, source, licence, mots-clés, statut |
-| `versions` | Versions d'une donnée : nombre de lignes, colonnes, aperçu des premières lignes |
-| `fichiers` | Fichiers d'une version sur R2 : format, taille, fichier principal |
-| `categories`, `sources`, `licences` | Référentiels (noms traduits, source vérifiée, droits accordés par la licence) |
-| `profils` | Profil public de chaque compte (pseudo, nom, avatar, bio, site web, rôle) |
+1. Crée une branche depuis `main`.
+2. Respecte les conventions (détails dans [`CLAUDE.md`](./CLAUDE.md)) :
+   - noms de variables, fonctions et composants métier **en français** (`chargerCatalogue`, `FicheDonnee`), URL en anglais ;
+   - tous les textes visibles traduits en `fr`, `en` et `ar`, jamais en dur ;
+   - **aucun chiffre, partenaire ou logo inventé** ;
+   - une nouvelle logique dans `src/lib/` arrive avec ses tests ;
+   - une migration déjà appliquée en production ne se modifie jamais : toute évolution passe par un nouveau fichier.
+3. Vérifie que `npm run lint`, `npm test` et `npm run build` passent.
+4. Ouvre une pull request vers `main` avec une capture d'écran si l'interface change. Chaque PR a son aperçu Vercel ; seule `main` part en production.
 
-Toutes les requêtes sont regroupées dans [`src/lib/catalogue.ts`](./src/lib/catalogue.ts). Un titre ou une description peut manquer dans une langue : le site affiche alors la langue courante, puis le français, puis l'anglais.
+## 🔒 Sécurité
 
-## Langues et traductions
+- Le dépôt est **public** : aucun secret ne doit y être commité (seul `.env.example` est versionné).
+- Seule la clé **publishable** de Supabase va dans le site, jamais la clé secrète / `service_role`.
+- La RLS est active sur toutes les tables : il ne faut jamais chercher à la contourner.
+- Une faille se signale en privé à **admin@newalgeria.org**, pas dans une issue publique.
 
-Tous les textes visibles passent par i18next, jamais en dur. Pour ajouter un texte :
+## 📜 Licences
 
-1. Ajoute la clé dans les **trois** fichiers `src/locales/fr`, `en` et `ar/translation.json`.
-2. Utilise-la avec `const { t } = useTranslation()` puis `t("section.cle")`.
-
-L'arabe passe automatiquement en `dir="rtl"`. Côté mise en page, préfère les classes logiques de Tailwind (`ms-`, `me-`, `ps-`, `start-`, `end-`, `text-start`) à `ml-`, `mr-`, `left-`…
-
-## Déploiement
-
-- Hébergement sur **Vercel** (équipe new-algeria, projet data-dz). **Seule la branche `main` part en production** ; chaque pull request a sa preview.
-- Les trois variables d'environnement doivent être définies dans Vercel, pour la Production et pour les Preview.
-- Dans `vercel.json`, la règle `{ "handle": "filesystem" }` doit rester **avant** la redirection vers `index.html`. Sinon les fichiers de `public/` (icônes, image de partage) renvoient la page HTML.
-
-## Contribuer
-
-Toute aide est bienvenue : code, design, traduction, signalement d'erreurs dans les données.
-
-1. Crée une branche depuis `main` (ex. `fiche/onglet-statistiques`).
-2. Respecte les conventions de [`CLAUDE.md`](./CLAUDE.md) :
-   - noms de variables, fonctions et composants métier **en français** (`chargerCatalogue`, `FicheDonnee`) ;
-   - tous les textes visibles traduits en `fr`, `en` et `ar` ;
-   - **aucun chiffre, partenaire ou logo inventé** : tout ce qui est affiché vient de la base ;
-   - petits commits clairs.
-3. Avant d'ouvrir la PR, vérifie que `npm run build` et `npm run lint` passent sans erreur.
-4. Ouvre une pull request vers `main`, avec une description de ce qui change et une capture d'écran si l'interface bouge.
-
-Une erreur dans une donnée GeoAlgeria (adresse, coordonnées…) se signale à la source : [yasserstudio/geoalgeria](https://github.com/yasserstudio/geoalgeria/issues).
-
-## Sécurité
-
-- Le dépôt est **public** : aucun secret ne doit y être commité. Seul `.env.example` est versionné.
-- Le site n'utilise que la clé **publishable** de Supabase. La clé `service_role` (ou *secret key*) ne doit **jamais** apparaître dans ce dépôt ni dans le code du site.
-- La RLS (*Row Level Security*) est active sur toutes les tables : un visiteur ne voit que les données publiées. Il ne faut jamais chercher à la contourner côté site.
-- Les contenus venant des sources (README, propriétés GeoJSON) sont affichés comme du texte : le HTML brut n'est jamais interprété.
-- Une faille de sécurité se signale en privé à **admin@newalgeria.org**, pas dans une issue publique.
-
-## Ce qu'il reste à faire
-
-### Feuille de route
-
-- [x] **1. Catalogue en lecture** : liste, recherche plein texte, filtre par catégorie
-- [x] **2. Fiche détail** : README, colonnes, aperçu, globe GeoJSON, téléchargements, licence, attribution
-- [x] **3. Comptes** : inscription et connexion par email, lien magique et Google (à activer dans Supabase), profil modifiable, avatar, page publique
-- [x] **4. Propositions et espace modération** pour les rôles `moderateur` et `admin` : file des propositions, revue, publier / dépublier / archiver un dataset
-- [x] **5. Communauté** : votes, tri du catalogue, favoris, commentaires, notifications
-- [ ] **6. Pack de téléchargement** : zip de tous les fichiers + `datapackage.json`
-
-### À décider
-
-- [ ] **Choisir une licence pour le code** : il n'y a pas encore de fichier `LICENSE`. Sans licence, le code n'est pas légalement réutilisable, même s'il est public. MIT ou Apache-2.0 sont les choix courants.
-- [ ] Fonction serveur pour les invitations dans l'organisation GitHub. Le bouton « Contribuer » est pour l'instant un simple lien, car l'ancienne version exposait un token GitHub dans le navigateur.
-
-### À vérifier en production
-
-- [ ] **CORS sur R2** : `files.data-dz.com` doit autoriser `GET` depuis data-dz.com et les domaines de preview Vercel. Sinon le globe d'une fiche ne peut pas charger le GeoJSON (les téléchargements fonctionnent dans tous les cas).
-- [ ] Domaine principal (`www.data-dz.com` ou `data-dz.com`) : il doit correspondre aux URL absolues de `index.html` et `src/components/MetaTags.tsx` (image de partage, `og:url`).
-
-### Améliorations techniques
-
-- [ ] **Tests et CI** : aucun test automatisé ni workflow GitHub Actions pour l'instant. Première étape utile : une action qui lance `npm run lint` et `npm run build` sur chaque PR.
-- [ ] **Nettoyer les dépendances** héritées de Lovable et plus utilisées : `apexcharts`, `react-apexcharts`, `ldrs`, `react-country-flag`, `dotted-map`, `react-syntax-highlighter`, `next-navigation`, `react-icons`, `@fortawesome/free-solid-svg-icons`, l'auto-référence `vite_react_shadcn_ts`, ainsi que le plugin `lovable-tagger` dans `vite.config.ts`.
-- [ ] **Alléger le premier chargement** : le bundle principal dépasse 1 Mo (Vite affiche un avertissement). Pistes : découper par page avec `React.lazy`, supprimer les composants `ui/` inutilisés.
-- [ ] **Types Supabase générés** (`supabase gen types typescript`) à la place des types écrits à la main dans `src/lib/types.ts`.
-- [ ] **Versionner le schéma** de la base dans `supabase/migrations/`. Les migrations ont été appliquées à la main dans le SQL Editor et ne sont pas dans ce dépôt.
-- [ ] **Pagination côté serveur** (`.range()`) quand le catalogue dépassera quelques centaines de données. Aujourd'hui tout est chargé en une fois.
-- [ ] **Aperçus de partage par fiche** : les balises `<meta>` d'une fiche sont posées par JavaScript, donc les robots de partage voient seulement celles de l'accueil. Il faudrait un pré-rendu, ou une fonction Vercel qui sert les bonnes balises.
-- [ ] Filtre par **wilaya** (la colonne `datasets.wilayas` existe déjà).
-
-## Crédits et licences des données
-
-- Chaque jeu de données garde **la licence de sa source**, affichée sur sa fiche.
-- Les données géographiques viennent de [**GeoAlgeria**](https://geoalgeria.com) par Yasser's studio, synchronisées chaque semaine.
-- Une partie provient d'[**OpenStreetMap**](https://www.openstreetmap.org/copyright), sous licence ODbL : la citation est obligatoire en cas de réutilisation.
-- Le fond du globe de l'accueil vient de [Natural Earth](https://www.naturalearthdata.com) (domaine public), via [world-atlas](https://github.com/topojson/world-atlas). Le fond des globes des fiches vient d'OpenStreetMap.
+- **Données** : chacune garde la licence de sa source, indiquée sur sa fiche (attribution GeoAlgeria et OpenStreetMap obligatoire en cas de réutilisation).
+- **Code** : aucune licence n'est encore choisie. Tant qu'il n'y a pas de fichier `LICENSE`, le code est consultable mais pas légalement réutilisable.
 
 ---
 
