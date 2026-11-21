@@ -85,6 +85,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/djazai` (ancre `#chat`) | Page DjazAI : hero animé, sources, conversation en grand avec historique local (voir « Interface », DjazAI) | public (réponses : connecté) |
 | `/wilayas`, `/wilayas/:wilaya` (identifiant `16-alger`) | « Ma wilaya en chiffres » : carte cliquable et liste des 69 wilayas, puis page d'une wilaya (voir « Ma wilaya en chiffres ») | public |
 | `/ai-datasets` | Données pour l'IA : par domaine (santé en premier), données algériennes du catalogue puis ressources mondiales (voir « Données pour l'IA ») | public |
+| `/walk` | La balade : galerie 3D des illustrations des données ; un clic s'approche d'un tableau, un second ouvre sa fiche (voir « La balade ») | public |
 | `/api` | Page de l'API publique (thème violet) : adresse, exemples, routes, liste de toutes les données avec leur URL API | public |
 | `/privacy`, `/terms` | Pages légales | public |
 
@@ -268,6 +269,12 @@ Code : `src/lib/ressources-ia.ts` (testé), `src/components/ressources-ia/CarteR
 - **Accès** : comme les téléchargements, un visiteur qui clique voit l'étape de connexion (`ConnexionTelechargement`, titre et texte propres) ; un membre ouvre la source dans un nouvel onglet. Pas de bouton « Citer ».
 - **Page** : barre des domaines collante (`DOMAINES_IA`, santé en premier ; pastille active qui suit le clic et le défilement, fond animé `layoutId`), par domaine les 3 données algériennes les plus téléchargées de ses catégories (`donneesDuDomaine()`, catalogue en cache `["catalogue", "", null]`), puis les ressources mondiales ; encadré « Données de santé : les règles » (loi 18-07, ANPDP, CHU et comité d'éthique, jamais de diagnostic) ; appel à proposer une donnée. Animations framer-motion (hero, fennec qui flotte, sections et cartes en cascade), coupées par « réduire les animations » (`MotionConfig reducedMotion="user"`). Liens dans le pied de page, le menu mobile et `sitemap.xml`.
 - **Catalogue** : le catalogue reste 100 % algérien, aucune carte de ressource mondiale dans la grille. Quand une recherche ou une catégorie correspond à des ressources (`ressourcesCorrespondantes()`, rien avec un filtre wilaya ou format ni sans filtre), un bandeau discret au-dessus des résultats (`BandeauRessourcesIA` : nombre, 3 premiers noms) mène à `/ai-datasets#<domaine>`, où la page défile jusqu'au domaine.
+
+## La balade (`/walk`)
+Code : `src/lib/balade.ts` (géométrie, poses, répartition, courbes : testé), `src/components/balade/SceneBalade.ts` (three.js, chargé à la demande), `src/pages/PageBalade.tsx`, `src/pages/balade.css`.
+- Couloir en anneau (mur extérieur R 18 m à droite, pilier R 12,2 m à gauche, 6,2 m de haut), surfaces non éclairées (`MeshBasicMaterial`) et dégradés sur canvas, brouillard crème. 60 emplacements (36 + 24) : les données du catalogue (clé `["catalogue", "", null]`) les plus téléchargées d'abord (`ordreBalade()`), répétées s'il y en a moins. Chaque tableau : illustration `urlIllustration(…, "petite")` (CORS ouvert sur `files.data-dz.com`) sur un passe-partout blanc (fonds transparents), cadre, halo, ombre, cartel (titre, source courte, chiffre de `chiffreCarte()`), texture de secours avec le titre si l'image manque.
+- Marche : molette, glisser (seuil 6 px), flèches et clavier (pas de 10°, sens inversé en arabe), suivi exponentiel (0,36 s). Clic sur un tableau : glissement de 0,95 s (déplacement en quartique, rotation en quadratique) ; second clic, Entrée ou bulle « Ouvrir la donnée » : fondu blanc de 300 ms puis `routes.donnee(slug)`. Échap, clic à côté, molette ou glisser : retour à la marche.
+- Mise en page : unité `--u` sur un écran de 1440 × 900, 1 px sur téléphone (même requête dans le CSS et `REQUETE_TELEPHONE`) ; « réduire les animations » coupe glissements et entrée. La bulle DjazAI est masquée sur cette page. Liens dans le pied de page, le menu mobile et `sitemap.xml`.
 
 ## Page API (`/api`)
 Code : `src/pages/PageApi.tsx`. Couleur de l'API sur tout le site : **violet** (comme `BoutonApi` sur la fiche).

@@ -1740,5 +1740,26 @@
       "cc-by-annotations": "CC BY 4.0 (annotations)",
       "conditions-fao": "FAO terms"
     }
+  },
+  "balade": {
+    "menu": "The walk",
+    "titre": "The walk",
+    "metaDescription": "Stroll through a 3D gallery where Algeria's data hangs on the walls, and open whatever catches your eye.",
+    "chargement": "Loading the gallery…",
+    "erreur": "The data can't be loaded right now.",
+    "sansWebgl": "Your browser can't display the 3D gallery.",
+    "voirCatalogue": "See the catalogue",
+    "precedent": "Previous painting",
+    "suivant": "Next painting",
+    "aideMarche1": "Scroll or drag to walk round",
+    "aideMarche2": "Click a painting to look closer",
+    "aideFocus1": "Click the painting to open it",
+    "aideFocus2": "Esc or click away to step back",
+    "vue": "View",
+    "vueBalade": "Walk",
+    "vueListe": "List",
+    "surtitre": "You are walking through",
+    "grandTitre": "All of Algeria",
+    "ouvrir": "Open the dataset"
   }
 }

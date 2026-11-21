@@ -156,7 +156,8 @@ export const BulleIA = () => {
   };
 
   // La page DjazAI a sa propre conversation en grand : pas de bulle par-dessus.
-  if (emplacement.pathname === routes.djazai) return null;
+  // Masquée sur la page DjazAI (la conversation y est en grand) et dans la balade (plein écran).
+  if (emplacement.pathname === routes.djazai || emplacement.pathname === routes.balade) return null;
 
   return (
     <div className={`fixed bottom-4 end-4 z-40 sm:bottom-6 sm:end-6 ${ouverte ? "pointer-events-none opacity-0" : ""}`}>

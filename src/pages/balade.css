@@ -1,0 +1,338 @@
+/* Balade : galerie 3D. Une unité de dessin --u calculée sur un écran de 1440 × 900 ; 1px sur téléphone. */
+.balade {
+  --u: min(calc(100vw / 1440), calc(100vh / 900));
+  --mur: #fff9ec;
+  --encre: #3a3550;
+  --encre-60: rgba(58, 53, 80, 0.6);
+  --encre-35: rgba(58, 53, 80, 0.35);
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--mur);
+  color: var(--encre);
+}
+
+.balade-scene {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+.balade-voile {
+  position: absolute;
+  inset: 0;
+  background: var(--mur);
+  pointer-events: none;
+  transition: opacity 900ms ease-out;
+}
+.balade-voile-parti {
+  opacity: 0;
+}
+
+.balade-chargement,
+.balade-erreur {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #059669;
+  z-index: 25;
+}
+.balade-erreur p {
+  max-width: 420px;
+  padding: 0 20px;
+  text-align: center;
+  color: var(--encre);
+}
+.balade-erreur a {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Interface par-dessus la scène : seuls ses éléments captent les clics. */
+.balade-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+.balade-ui > * {
+  pointer-events: auto;
+}
+
+.balade-fleches {
+  position: absolute;
+  inset-inline-start: calc(27 * var(--u));
+  top: calc(262 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+}
+.balade-fleches button {
+  display: grid;
+  place-items: center;
+  width: max(40px, calc(50 * var(--u)));
+  height: max(40px, calc(50 * var(--u)));
+  border: 1.5px solid var(--encre);
+  border-radius: 999px;
+  background: rgba(255, 249, 236, 0.6);
+  color: var(--encre);
+  transition: background-color 0.25s, color 0.25s;
+}
+.balade-fleches button:hover,
+.balade-fleches button:focus-visible {
+  background: var(--encre);
+  color: var(--mur);
+}
+.balade-fleches svg {
+  width: max(18px, calc(20 * var(--u)));
+  height: max(18px, calc(20 * var(--u)));
+}
+
+.balade-aide {
+  position: absolute;
+  inset-inline-end: calc(27 * var(--u));
+  bottom: calc(229 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: max(11px, calc(11 * var(--u)));
+  letter-spacing: 0.12em;
+  line-height: 1.65;
+  text-transform: uppercase;
+  text-align: end;
+  pointer-events: none;
+}
+
+.balade-bascule {
+  position: absolute;
+  inset-inline-end: calc(29 * var(--u));
+  bottom: calc(174 * var(--u));
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--encre-35);
+  border-radius: 999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: max(11px, calc(10 * var(--u)));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.balade-bascule > * {
+  display: flex;
+  align-items: center;
+  min-height: max(26px, calc(24 * var(--u)));
+  padding: 0 calc(14 * var(--u));
+  padding-inline: max(10px, calc(14 * var(--u)));
+  border-radius: 999px;
+}
+.balade-bascule-actif {
+  background: var(--encre);
+  color: var(--mur);
+}
+.balade-bascule a:hover {
+  background: rgba(58, 53, 80, 0.08);
+}
+
+.balade-legende {
+  position: absolute;
+  inset-inline-start: calc(25 * var(--u));
+  bottom: calc(30 * var(--u));
+  pointer-events: none;
+}
+.balade-legende a {
+  pointer-events: auto;
+}
+.balade-surtitre {
+  margin: 0 0 calc(10 * var(--u));
+  margin-inline-start: calc(3 * var(--u));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: max(11px, calc(11.5 * var(--u)));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.balade-titre-ligne {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(24 * var(--u));
+}
+.balade-titre {
+  margin: 0;
+  font-size: calc(150 * var(--u));
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Place pour les accents des capitales (É) dans le masque. */
+.balade-titre > span {
+  padding-top: 0.12em;
+}
+.balade-lien {
+  margin-bottom: calc(9 * var(--u));
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: max(11px, calc(11 * var(--u)));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.balade-lien > span {
+  border-bottom: 1px solid var(--encre);
+  padding-bottom: calc(2 * var(--u));
+}
+
+/* Entrée : chaque ligne monte depuis son masque, l'une après l'autre. */
+.balade-masque {
+  display: block;
+  overflow: hidden;
+}
+.balade-masque > span {
+  display: inline-block;
+  transform: translateY(105%);
+}
+.balade-ui-entree .balade-masque > span {
+  animation: balade-monter 1000ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.balade-ui-entree .balade-aide .balade-masque:nth-child(1) > span { animation-delay: 250ms; }
+.balade-ui-entree .balade-aide .balade-masque:nth-child(2) > span { animation-delay: 310ms; }
+.balade-ui-entree .balade-surtitre > span { animation-delay: 370ms; }
+.balade-ui-entree .balade-titre > span { animation-delay: 430ms; }
+.balade-ui-entree .balade-lien > span { animation-delay: 490ms; }
+.balade-fleches,
+.balade-bascule {
+  opacity: 0;
+}
+.balade-ui-entree .balade-fleches,
+.balade-ui-entree .balade-bascule {
+  animation: balade-apparaitre 1000ms cubic-bezier(0.2, 0.7, 0.2, 1) 550ms both;
+}
+@keyframes balade-monter {
+  from { transform: translateY(105%); }
+  to { transform: translateY(0); }
+}
+@keyframes balade-apparaitre {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.balade-bulle {
+  position: absolute;
+  z-index: 30;
+  padding: calc(7 * var(--u)) calc(13 * var(--u));
+  padding-block: max(6px, calc(7 * var(--u)));
+  padding-inline: max(11px, calc(13 * var(--u)));
+  border-radius: 999px;
+  background: #1e1b2b;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: max(11px, calc(10 * var(--u)));
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+}
+.balade-bulle-visible {
+  opacity: 1;
+}
+
+.balade-sortie {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-in;
+}
+.balade-sortie-active {
+  opacity: 1;
+}
+
+/* Téléphone et tablette en portrait : mêmes conditions que REQUETE_TELEPHONE. */
+@media (max-width: 819px), (orientation: portrait) and (max-width: 1100px), (orientation: landscape) and (max-height: 500px) {
+  .balade {
+    --u: 1px;
+  }
+  .balade-aide {
+    top: 76px;
+    bottom: auto;
+    inset-inline: 16px;
+    align-items: flex-start;
+    text-align: start;
+  }
+  .balade-legende {
+    inset-inline-start: 14px;
+    inset-inline-end: 14px;
+    bottom: 96px;
+  }
+  .balade-titre-ligne {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .balade-titre {
+    font-size: min(17vw, 15vh);
+    white-space: normal;
+    line-height: 0.88;
+  }
+  .balade-fleches {
+    top: auto;
+    bottom: 24px;
+    inset-inline-start: 16px;
+    flex-direction: row;
+  }
+  .balade-fleches button {
+    width: 44px;
+    height: 44px;
+  }
+  .balade-bascule {
+    inset-inline-end: 16px;
+    bottom: 30px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .balade-aide {
+    display: none;
+  }
+  .balade-titre {
+    font-size: min(10vw, 22vh);
+    white-space: nowrap;
+  }
+  .balade-legende {
+    bottom: 18px;
+  }
+  .balade-fleches {
+    inset-inline-start: auto;
+    inset-inline-end: 16px;
+    bottom: 18px;
+  }
+  .balade-bascule {
+    top: 76px;
+    bottom: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balade *,
+  .balade *::before,
+  .balade *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .balade-masque > span {
+    transform: none;
+  }
+  .balade-fleches,
+  .balade-bascule {
+    opacity: 1;
+  }
+}
