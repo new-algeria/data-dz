@@ -1764,6 +1764,8 @@
     "titreLigne1": "Explore Algeria",
     "titreLigne2": "through ",
     "titreSurligne": "data",
-    "sousTitre": "Browse the data, see it on the map and discover Algeria from a new angle."
+    "sousTitre": "Browse the data, see it on the map and discover Algeria from a new angle.",
+    "sonActiver": "Turn music on",
+    "sonCouper": "Mute music"
   }
 }
