@@ -31,6 +31,8 @@ export const routes = {
   thematiques: "/themes",
   djazai: "/djazai",
   wilayas: "/wilayas",
+  /** Balade : galerie 3D des données. */
+  balade: "/walk",
   /** Page d'une wilaya : identifiant « 16-alger » (voir `identifiantWilaya()`). */
   wilaya: (identifiant: string) => `/wilayas/${encodeURIComponent(identifiant)}`,
 } as const;

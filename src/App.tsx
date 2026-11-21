@@ -43,6 +43,7 @@ const PageThematiques = lazyAvecRechargement(() => import("./pages/PageThematiqu
 const PageDjazAI = lazyAvecRechargement(() => import("./pages/PageDjazAI"));
 const PageWilayas = lazyAvecRechargement(() => import("./pages/PageWilayas"));
 const PageWilaya = lazyAvecRechargement(() => import("./pages/PageWilaya"));
+const PageBalade = lazyAvecRechargement(() => import("./pages/PageBalade"));
 
 /**
  * Redirige une ancienne URL française vers la nouvelle, en gardant ?… et #… :
@@ -160,6 +161,7 @@ function App() {
             <Route path={routes.djazai} element={<PageDjazAI />} />
             <Route path={routes.wilayas} element={<PageWilayas />} />
             <Route path="/wilayas/:wilaya" element={<PageWilaya />} />
+            <Route path={routes.balade} element={<PageBalade />} />
             <Route path={routes.confidentialite} element={<Confidentialite />} />
             <Route path={routes.conditions} element={<Conditions />} />
 

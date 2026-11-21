@@ -1734,5 +1734,26 @@
       "cc-by-annotations": "CC BY 4.0 (annotations)",
       "conditions-fao": "Conditions de la FAO"
     }
+  },
+  "balade": {
+    "menu": "La balade",
+    "titre": "La balade",
+    "metaDescription": "Promène-toi dans une galerie 3D où les données de l'Algérie sont accrochées aux murs, et ouvre celles qui t'intriguent.",
+    "chargement": "Chargement de la galerie…",
+    "erreur": "Impossible de charger les données pour l'instant.",
+    "sansWebgl": "Ton navigateur ne peut pas afficher la galerie en 3D.",
+    "voirCatalogue": "Voir le catalogue",
+    "precedent": "Tableau précédent",
+    "suivant": "Tableau suivant",
+    "aideMarche1": "Fais défiler ou glisse pour avancer",
+    "aideMarche2": "Clique sur un tableau pour t'approcher",
+    "aideFocus1": "Clique sur le tableau pour l'ouvrir",
+    "aideFocus2": "Échap ou clic à côté pour reculer",
+    "vue": "Affichage",
+    "vueBalade": "Balade",
+    "vueListe": "Liste",
+    "surtitre": "Tu te promènes dans",
+    "grandTitre": "Toute l'Algérie",
+    "ouvrir": "Ouvrir la donnée"
   }
 }

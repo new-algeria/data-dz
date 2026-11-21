@@ -25,6 +25,7 @@ import {
   MapPin,
   ChartColumn,
   BrainCircuit,
+  Footprints,
 } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { Button } from "@/components/ui/button";
@@ -189,6 +190,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           </Lien>
           <Lien vers={routes.wilayas} icone={MapPin}>
             {t("wilayas.menu")}
+          </Lien>
+          <Lien vers={routes.balade} icone={Footprints}>
+            {t("balade.menu")}
           </Lien>
           <Lien vers={routes.donneesIA} icone={BrainCircuit}>
             {t("ressourcesIA.titre")}

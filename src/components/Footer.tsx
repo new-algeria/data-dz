@@ -81,6 +81,7 @@ const Footer = () => {
             <LienInterne vers={routes.catalogue}>{t("navbar.catalogue")}</LienInterne>
             <LienInterne vers={routes.thematiques}>{t("thematiques.titre")}</LienInterne>
             <LienInterne vers={routes.wilayas}>{t("wilayas.menu")}</LienInterne>
+            <LienInterne vers={routes.balade}>{t("balade.menu")}</LienInterne>
             <LienInterne vers={routes.donneesIA}>{t("ressourcesIA.titre")}</LienInterne>
             <LienInterne vers={routes.djazai}>DjazAI</LienInterne>
             <LienInterne vers={routes.api}>{t("navbar.apiLong")}</LienInterne>
