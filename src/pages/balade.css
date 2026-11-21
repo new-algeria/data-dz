@@ -138,6 +138,31 @@
   background: rgba(58, 53, 80, 0.08);
 }
 
+.balade-son {
+  position: absolute;
+  inset-inline-end: calc(29 * var(--u));
+  top: max(166px, calc(196 * var(--u)));
+  display: grid;
+  place-items: center;
+  width: max(34px, calc(34 * var(--u)));
+  height: max(34px, calc(34 * var(--u)));
+  border: 1px solid var(--encre-35);
+  border-radius: 999px;
+  background: rgba(255, 249, 236, 0.6);
+  color: var(--encre);
+  animation: balade-apparaitre 600ms ease both;
+  transition: background-color 0.25s, color 0.25s;
+}
+.balade-son:hover,
+.balade-son:focus-visible {
+  background: var(--encre);
+  color: var(--mur);
+}
+.balade-son svg {
+  width: 16px;
+  height: 16px;
+}
+
 .balade-legende {
   position: absolute;
   inset-inline-start: calc(32 * var(--u));
@@ -350,6 +375,11 @@
     inset-inline-end: 16px;
     bottom: 30px;
   }
+  .balade-son {
+    top: auto;
+    inset-inline-end: 16px;
+    bottom: 76px;
+  }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
@@ -377,6 +407,10 @@
   }
   .balade-bascule {
     top: 76px;
+    bottom: auto;
+  }
+  .balade-son {
+    top: 116px;
     bottom: auto;
   }
 }

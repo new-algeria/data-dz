@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, Volume2, VolumeX } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { CustomMetaTags } from "@/components/MetaTags";
 import type { EtatBalade, SceneBalade, TableauBalade } from "@/components/balade/SceneBalade";
@@ -11,6 +11,7 @@ import { chiffreCarte, sourceCourte } from "@/lib/carte-catalogue";
 import { formaterNombre } from "@/lib/fichiers";
 import { urlIllustration } from "@/lib/illustrations";
 import { ordreBalade } from "@/lib/balade";
+import { useMusiqueBalade } from "@/hooks/use-musique-balade";
 import { routes } from "@/lib/routes";
 import { texteTraduit } from "@/lib/traduction";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,9 @@ export default function PageBalade() {
   const [sortie, setSortie] = useState(false);
   const [webglAbsent, setWebglAbsent] = useState(false);
   const [enMouvement, setEnMouvement] = useState(false);
+  const musique = useMusiqueBalade();
+  const arreterMusique = useRef(musique.arreter);
+  arreterMusique.current = musique.arreter;
 
   const catalogue = useQuery({ queryKey: ["catalogue", "", null], queryFn: () => chargerCatalogue({ terme: "", categorie: null }) });
 
@@ -85,6 +89,7 @@ export default function PageBalade() {
           surBulle: setBulle,
           surOuvrir: (slug) => {
             setSortie(true);
+            arreterMusique.current();
             window.setTimeout(() => navigate(routes.donnee(slug)), reduireAnimations() ? 0 : 300);
           },
           surPret: () => {
@@ -145,6 +150,19 @@ export default function PageBalade() {
           <span className="balade-masque"><span>{etat === "focus" ? t("balade.aideFocus1") : t("balade.aideMarche1")}</span></span>
           <span className="balade-masque"><span>{etat === "focus" ? t("balade.aideFocus2") : t("balade.aideMarche2")}</span></span>
         </p>
+
+        {musique.disponible && (
+          <button
+            type="button"
+            className="balade-son"
+            onClick={musique.basculer}
+            aria-pressed={!musique.coupe}
+            aria-label={musique.coupe ? t("balade.sonActiver") : t("balade.sonCouper")}
+            title={musique.coupe ? t("balade.sonActiver") : t("balade.sonCouper")}
+          >
+            {musique.coupe ? <VolumeX aria-hidden /> : <Volume2 aria-hidden />}
+          </button>
+        )}
 
         <div className="balade-bascule" role="group" aria-label={t("balade.vue")}>
           <span className="balade-bascule-actif" aria-current="page">{t("balade.vueBalade")}</span>

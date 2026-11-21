@@ -1758,6 +1758,8 @@
     "titreLigne1": "Explore l'Algérie",
     "titreLigne2": "en ",
     "titreSurligne": "données",
-    "sousTitre": "Parcours les données, visualise-les sur la carte et découvre l'Algérie sous un nouvel angle."
+    "sousTitre": "Parcours les données, visualise-les sur la carte et découvre l'Algérie sous un nouvel angle.",
+    "sonActiver": "Activer la musique",
+    "sonCouper": "Couper la musique"
   }
 }
