@@ -56,37 +56,37 @@ export const RESSOURCES_IA: RessourceIA[] = [
     id: "medmnist", nom: "MedMNIST", domaine: "sante", categorie: "sante", types: ["images", "images3d"],
     licence: "CC BY 4.0", licenceRestreinte: true, acces: "libre", hebergeur: "MedMNIST (Zenodo)", url: "https://medmnist.com/", chiffre: "18",
     credit: { auteur: "ZEISS Microscopy", licence: "CC BY 2.0", page: "https://commons.wikimedia.org/wiki/File:Mouse_tissue,_stained_histology_preparation_(23782972906).jpg" },
-    motsCles: ["medical", "médical", "imagerie", "classification", "histologie", "radiographie", "طبي"],
+    motsCles: ["médical", "santé", "health", "medical", "médical", "imagerie", "classification", "histologie", "radiographie", "طبي"],
   },
   {
     id: "chestxray14", nom: "NIH ChestX-ray14", domaine: "sante", categorie: "sante", types: ["images"],
     licence: "acces-libre", acces: "libre", hebergeur: "NIH Clinical Center", url: "https://nihcc.app.box.com/v/ChestXray-NIHCC", chiffre: "112 120",
     credit: { auteur: "Nevit Dilmen", licence: "CC BY-SA 3.0", page: "https://commons.wikimedia.org/wiki/File:Chest_X-ray_1300275.JPG" },
-    motsCles: ["radiographie", "radio", "poumon", "thorax", "x-ray", "chest", "lung", "أشعة"],
+    motsCles: ["médical", "santé", "health", "radiographie", "radio", "poumon", "thorax", "x-ray", "chest", "lung", "أشعة"],
   },
   {
     id: "isic", nom: "ISIC Archive", domaine: "sante", categorie: "sante", types: ["images"],
     licence: "CC BY · CC BY-NC", licenceRestreinte: true, acces: "libre", hebergeur: "International Skin Imaging Collaboration", url: "https://www.isic-archive.com/",
     credit: { auteur: "Frank33", licence: "CC BY-SA 3.0", page: "https://commons.wikimedia.org/wiki/File:Dermatoscope1.JPG" },
-    motsCles: ["dermatologie", "peau", "melanome", "mélanome", "skin", "dermatology", "جلد"],
+    motsCles: ["médical", "santé", "health", "dermatologie", "peau", "melanome", "mélanome", "skin", "dermatology", "جلد"],
   },
   {
     id: "brats", nom: "BraTS", domaine: "sante", categorie: "sante", types: ["images3d"],
     licence: "conditions-challenge", licenceRestreinte: true, acces: "inscription", hebergeur: "Synapse (BraTS)", url: "https://www.synapse.org/brats",
     credit: { auteur: "Bobjgalindo", licence: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:MRI_brain_tumor.jpg" },
-    motsCles: ["irm", "mri", "cerveau", "brain", "tumeur", "tumor", "segmentation", "دماغ"],
+    motsCles: ["médical", "santé", "health", "irm", "mri", "cerveau", "brain", "tumeur", "tumor", "segmentation", "دماغ"],
   },
   {
     id: "physionet", nom: "PhysioNet (MIMIC-IV, ECG)", domaine: "sante", categorie: "sante", types: ["signaux", "tableaux"],
     licence: "selon-jeu", licenceRestreinte: true, acces: "controle", hebergeur: "MIT (PhysioNet)", url: "https://physionet.org/",
     credit: { auteur: "medipics1066", licence: "CC BY 2.0", page: "https://commons.wikimedia.org/wiki/File:Normal_electrocardiogram.jpg" },
-    motsCles: ["ecg", "eeg", "signal", "coeur", "cœur", "heart", "mimic", "réanimation", "intensive care", "قلب"],
+    motsCles: ["médical", "santé", "health", "ecg", "eeg", "signal", "coeur", "cœur", "heart", "mimic", "réanimation", "intensive care", "قلب"],
   },
   {
     id: "uci-ml", nom: "UCI Machine Learning Repository", domaine: "sante", categorie: "sante", types: ["tableaux"],
     licence: "souvent-cc-by", acces: "libre", hebergeur: "University of California, Irvine", url: "https://archive.ics.uci.edu/",
     credit: { auteur: "Jacek Halicki", licence: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:2023_Stetoskop.jpg" },
-    motsCles: ["diabete", "diabète", "cardiaque", "heart disease", "cancer", "tabulaire", "machine learning", "سكري"],
+    motsCles: ["médical", "santé", "health", "diabete", "diabète", "cardiaque", "heart disease", "cancer", "tabulaire", "machine learning", "سكري"],
   },
   {
     id: "common-voice", nom: "Mozilla Common Voice", domaine: "langues", categorie: "culture-tourisme", types: ["audio", "texte"],
@@ -132,6 +132,9 @@ export const RESSOURCES_IA: RessourceIA[] = [
   },
 ];
 
+/** Toutes les ressources répondent aussi à une recherche sur l'IA elle-même (« IA », « machine learning »…). */
+const MOTS_IA = ["ia", "ai", "intelligence artificielle", "artificial intelligence", "machine learning", "deep learning", "dataset", "الذكاء الاصطناعي"];
+
 const normaliser = (texte: string) => texte.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const motsDe = (texte: string): string[] => normaliser(texte).match(/[\p{L}\p{M}\p{N}]+/gu) ?? [];
 
@@ -148,7 +151,7 @@ export function ressourcesCorrespondantes(
   return ressources.filter((ressource) => {
     if (categorie && ressource.categorie !== categorie) return false;
     if (recherche.length === 0) return true;
-    const mots = new Set([ressource.nom, ressource.hebergeur, ...ressource.motsCles, ...textes(ressource)].flatMap(motsDe));
+    const mots = new Set([ressource.nom, ressource.hebergeur, ...MOTS_IA, ...ressource.motsCles, ...textes(ressource)].flatMap(motsDe));
     return recherche.every((mot) => [...mots].some((candidat) => candidat.startsWith(mot)));
   });
 }
@@ -173,13 +176,3 @@ export const estCleLicence = (licence: string) => /^[a-z-]+$/.test(licence);
 
 /** Image de la carte (WebP 800 × 480 dans public/). */
 export const imageRessource = (ressource: Pick<RessourceIA, "id">) => `/ressources-ia/${ressource.id}.webp`;
-
-/** Choix mémorisé de l'interrupteur du catalogue (localStorage, lecture tolérante). */
-export const CLE_AFFICHAGE_RESSOURCES = "data-dz:ressources-ia:afficher";
-export function lireAffichageRessources(stockage: Pick<Storage, "getItem"> | null): boolean {
-  try {
-    return stockage?.getItem(CLE_AFFICHAGE_RESSOURCES) !== "0";
-  } catch {
-    return true;
-  }
-}

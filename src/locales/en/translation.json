@@ -1666,11 +1666,11 @@
       "djazai": "Ask DjazAI"
     },
     "catalogue": {
-      "compte_one": "{{count}} global resource for AI",
-      "compte_other": "{{count}} global resources for AI",
-      "separateur": "Global resources for AI · hosted by their authors",
-      "interrupteur": "Show",
-      "toutVoir": "All data for AI, by field"
+      "bandeauRecherche_one": "{{count}} global resource for AI matches “{{recherche}}”",
+      "bandeauRecherche_other": "{{count}} global resources for AI match “{{recherche}}”",
+      "bandeauCategorie_one": "{{count}} global resource for AI in this theme",
+      "bandeauCategorie_other": "{{count}} global resources for AI in this theme",
+      "voir": "See in Data for AI"
     },
     "ressources": {
       "medmnist": {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, MotionConfig } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { GraduationCap, Scale } from "lucide-react";
@@ -69,6 +69,16 @@ const PageDonneesIA = () => {
   useEffect(() => {
     barre.current?.querySelector<HTMLElement>(`[data-domaine="${actif}"]`)?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
   }, [actif]);
+  // Arrivée sur /ai-datasets#<domaine> (bandeau du catalogue) : défiler jusqu'au domaine une fois la page affichée.
+  const { hash } = useLocation();
+  useEffect(() => {
+    const code = decodeURIComponent(hash.replace(/^#/, ""));
+    if (!code || !codes.split(",").includes(code)) return;
+    clicRecent.current = Date.now();
+    setActif(code);
+    const minuterie = window.setTimeout(() => document.getElementById(code)?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+    return () => window.clearTimeout(minuterie);
+  }, [hash, codes]);
   const choisir = (code: string) => {
     clicRecent.current = Date.now();
     setActif(code);
