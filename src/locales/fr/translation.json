@@ -1577,5 +1577,179 @@
       "vues": "Vues au total",
       "telechargements": "Téléchargements au total"
     }
+  },
+  "ressourcesIA": {
+    "titre": "Données pour l'IA",
+    "metaDescription": "Données algériennes et jeux de données mondiaux reconnus pour entraîner une IA : santé, langues, climat, images satellite, économie. Licence, accès et idées de PFE.",
+    "badge": "Ressource mondiale",
+    "badgeHero": "Pour les PFE, mémoires et projets",
+    "heroTitre": "Toutes les données pour entraîner",
+    "heroSurligne": "ton IA",
+    "heroTexte": "Les données algériennes de data-dz et une sélection de jeux de données mondiaux reconnus, rangés par domaine. Pour chacun : le type de données, la licence, comment y accéder et une idée de projet.",
+    "domainesAria": "Domaines",
+    "donneesAlgeriennes": "Données algériennes sur data-dz",
+    "ressourcesMondiales": "Ressources mondiales, hébergées par leurs auteurs",
+    "creditImage": "Photo : {{auteur}} · {{licence}}",
+    "hebergePar": "Hébergé par : {{nom}}",
+    "voirSource": "Voir la source",
+    "connexion": {
+      "titre": "Connecte-toi pour accéder à la ressource",
+      "description": "C'est gratuit et rapide : connecte-toi pour ouvrir {{nom}} et toutes les ressources pour l'IA."
+    },
+    "acces": {
+      "libre": "Accès libre",
+      "inscription": "Compte gratuit",
+      "controle": "Accès contrôlé"
+    },
+    "types": {
+      "images": "Images",
+      "images3d": "Images 3D",
+      "audio": "Audio",
+      "texte": "Texte",
+      "signaux": "Signaux",
+      "tableaux": "Tableaux",
+      "series": "Séries temporelles",
+      "grilles": "Grilles",
+      "cartes": "Cartes"
+    },
+    "domaines": {
+      "sante": {
+        "nom": "Santé",
+        "description": "Images médicales, signaux, dossiers anonymisés et offre de soins en Algérie."
+      },
+      "langues": {
+        "nom": "Langues et texte",
+        "description": "Arabe, tamazight, français : voix, textes et traduction pour le traitement du langage."
+      },
+      "climat": {
+        "nom": "Climat et environnement",
+        "description": "Sécheresse, feux, séismes, météo : des séries longues pour la prévision."
+      },
+      "satellite": {
+        "nom": "Images satellite et vision",
+        "description": "Pour la vision par ordinateur : occupation du sol, détection d'objets."
+      },
+      "economie": {
+        "nom": "Économie et société",
+        "description": "Population, emploi, indicateurs du pays : pour la prévision et la data science."
+      },
+      "agriculture": {
+        "nom": "Agriculture",
+        "description": "Productions, rendements et terres agricoles."
+      },
+      "mobilite": {
+        "nom": "Villes et mobilité",
+        "description": "Routes, transports et réseaux pour l'optimisation et les graphes."
+      },
+      "energie": {
+        "nom": "Énergie",
+        "description": "Production d'électricité, consommation et ressources."
+      }
+    },
+    "regles": {
+      "titre": "Données de santé : les règles à connaître",
+      "loi": "En Algérie, les données de santé sont des données sensibles (loi 18-07) : pas de données de patients sans autorisation de l'ANPDP.",
+      "chu": "Pour des données algériennes réelles, passe par ton encadrant et un CHU, avec l'accord de son comité d'éthique et des données anonymisées par l'hôpital.",
+      "licence": "Respecte la licence de chaque jeu et cite toujours la source dans ton mémoire.",
+      "diagnostic": "Ces jeux servent à la recherche et à l'apprentissage, jamais à poser un diagnostic."
+    },
+    "appel": {
+      "titre": "Il te manque une donnée pour ton PFE ?",
+      "texte": "Dis-nous ce que tu cherches : on l'ajoute, ou on t'oriente vers la bonne source.",
+      "proposer": "Proposer une donnée",
+      "djazai": "Demander à DjazAI"
+    },
+    "catalogue": {
+      "compte_one": "{{count}} ressource mondiale pour l'IA",
+      "compte_other": "{{count}} ressources mondiales pour l'IA",
+      "separateur": "Ressources mondiales pour l'IA · hébergées par leurs auteurs",
+      "interrupteur": "Afficher",
+      "toutVoir": "Toutes les données pour l'IA, par domaine"
+    },
+    "ressources": {
+      "medmnist": {
+        "description": "Radios, histologie, rétine, organes… en images légères, de 28 × 28 à 224 × 224, prêtes pour la classification.",
+        "idee": "Idéal pour un premier PFE en vision médicale",
+        "chiffre": "jeux d'images (2D et 3D)"
+      },
+      "chestxray14": {
+        "description": "Radiographies thoraciques de face, étiquetées pour 14 pathologies.",
+        "idee": "Détecter des pathologies pulmonaires",
+        "chiffre": "radiographies"
+      },
+      "isic": {
+        "description": "Images de lésions de la peau, base des challenges de détection du mélanome. Licence propre à chaque collection.",
+        "idee": "Classer des lésions de la peau"
+      },
+      "brats": {
+        "description": "IRM cérébrales multimodales avec la segmentation des tumeurs, référence en segmentation 3D.",
+        "idee": "Segmenter une tumeur cérébrale en 3D"
+      },
+      "physionet": {
+        "description": "Signaux ECG et EEG en accès libre, et dossiers de soins intensifs anonymisés (MIMIC-IV) après une courte formation.",
+        "idee": "Détecter des arythmies sur un ECG"
+      },
+      "uci-ml": {
+        "description": "Jeux tabulaires classiques : maladies cardiaques, diabète, cancer du sein… Parfaits pour comparer des modèles.",
+        "idee": "Comparer des modèles de prédiction"
+      },
+      "common-voice": {
+        "description": "Des voix enregistrées et transcrites par des bénévoles, dont l'arabe et le kabyle, pour la reconnaissance vocale.",
+        "idee": "Un assistant vocal en kabyle",
+        "chiffre": "langues"
+      },
+      "wikipedia": {
+        "description": "Tous les articles de Wikipédia en un fichier : un corpus pour entraîner ou évaluer un modèle de langue.",
+        "idee": "Un modèle de langue en kabyle"
+      },
+      "opus": {
+        "description": "Des millions de phrases traduites entre l'arabe, le français, l'anglais et d'autres langues. Licence propre à chaque corpus.",
+        "idee": "Un traducteur arabe ↔ français"
+      },
+      "era5": {
+        "description": "Température, vent et pluie heure par heure depuis 1940, sur une grille mondiale qui couvre l'Algérie.",
+        "idee": "Prévoir la pluie ou la chaleur"
+      },
+      "sentinel-2": {
+        "description": "Images satellite de toute l'Algérie à 10 m de résolution, renouvelées tous les 5 jours environ.",
+        "idee": "Suivre l'étalement urbain ou les cultures"
+      },
+      "eurosat": {
+        "description": "Images Sentinel-2 classées en 10 types d'occupation du sol : parfait pour un premier classifieur.",
+        "idee": "Reconnaître champs, forêts et villes",
+        "chiffre": "images étiquetées"
+      },
+      "coco": {
+        "description": "Photos annotées (objets, contours, légendes), la référence de la détection d'objets.",
+        "idee": "Détecter des objets dans une image"
+      },
+      "banque-mondiale": {
+        "description": "Les indicateurs du développement (PIB, éducation, santé, emploi) pour l'Algérie et tous les pays, depuis 1960.",
+        "idee": "Prévoir un indicateur économique",
+        "chiffre": "indicateurs"
+      },
+      "owid": {
+        "description": "Des milliers de séries comparables entre pays, propres et documentées, sur la santé, l'énergie et la société.",
+        "idee": "Comparer l'Algérie à ses voisins"
+      },
+      "faostat": {
+        "description": "Productions agricoles, rendements, surfaces et commerce, pays par pays depuis 1961.",
+        "idee": "Prévoir le rendement du blé"
+      },
+      "openstreetmap": {
+        "description": "Toute la carte OpenStreetMap de l'Algérie (routes, bâtiments, lieux) en un fichier.",
+        "idee": "Calculer des itinéraires ou des temps d'accès"
+      }
+    },
+    "licences": {
+      "acces-libre": "Accès libre",
+      "conditions-challenge": "Conditions du challenge",
+      "selon-jeu": "Licence selon le jeu",
+      "souvent-cc-by": "Souvent CC BY 4.0",
+      "selon-corpus": "Licence selon le corpus",
+      "copernicus": "Licence Copernicus",
+      "cc-by-annotations": "CC BY 4.0 (annotations)",
+      "conditions-fao": "Conditions de la FAO"
+    }
   }
 }

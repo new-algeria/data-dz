@@ -24,6 +24,7 @@ import {
   type LucideIcon,
   MapPin,
   ChartColumn,
+  BrainCircuit,
 } from "lucide-react";
 import { AvatarMembre } from "@/components/AvatarMembre";
 import { Button } from "@/components/ui/button";
@@ -188,6 +189,9 @@ export const MenuMobile = ({ theme, basculerTheme }: { theme: "light" | "dark"; 
           </Lien>
           <Lien vers={routes.wilayas} icone={MapPin}>
             {t("wilayas.menu")}
+          </Lien>
+          <Lien vers={routes.donneesIA} icone={BrainCircuit}>
+            {t("ressourcesIA.titre")}
           </Lien>
           <Lien vers={routes.djazai} icone={Sparkles}>
             DjazAI

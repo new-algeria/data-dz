@@ -84,6 +84,7 @@ Toutes les URL sont en anglais ; les noms de variables et de composants restent 
 | `/themes` | Toutes les thématiques (catégories ayant des données), avec leurs données les plus récentes ; chaque carte mène au catalogue filtré | public |
 | `/djazai` (ancre `#chat`) | Page DjazAI : hero animé, sources, conversation en grand avec historique local (voir « Interface », DjazAI) | public (réponses : connecté) |
 | `/wilayas`, `/wilayas/:wilaya` (identifiant `16-alger`) | « Ma wilaya en chiffres » : carte cliquable et liste des 69 wilayas, puis page d'une wilaya (voir « Ma wilaya en chiffres ») | public |
+| `/ai-datasets` | Données pour l'IA : par domaine (santé en premier), données algériennes du catalogue puis ressources mondiales (voir « Données pour l'IA ») | public |
 | `/api` | Page de l'API publique (thème violet) : adresse, exemples, routes, liste de toutes les données avec leur URL API | public |
 | `/privacy`, `/terms` | Pages légales | public |
 
@@ -259,6 +260,14 @@ Code : `src/lib/wilayas.ts` (testé), `src/hooks/use-wilayas.ts`, `src/component
 - **Estimations** : les données de source `openstreetmap` portent la mention « estimés » (`estimee()`).
 - Encart sur l'accueil sous les thématiques (`EncartMaWilaya`, sans requête), lien « Ma wilaya » dans le menu mobile et le pied de page. Les 69 pages sont dans `sitemap.xml` (noms lus dans l'API pendant la build, sinon URL courtes).
 - Une nouvelle donnée de lieux apparaît d'elle-même ; si son fichier principal n'est pas l'inventaire, l'ajouter à `FICHIERS_PAR_DONNEE` de l'API.
+
+## Données pour l'IA (`/ai-datasets`)
+Code : `src/lib/ressources-ia.ts` (testé), `src/components/ressources-ia/CarteRessourceIA.tsx`, `src/pages/PageDonneesIA.tsx`, images `public/ressources-ia/<id>.webp`.
+- **Ressources mondiales** (`RESSOURCES_IA`) : jeux de données reconnus (MedMNIST, ChestX-ray14, ISIC, BraTS, PhysioNet, UCI, Common Voice, Wikipédia, OPUS, ERA5, Sentinel-2, EuroSAT, COCO, Banque mondiale, Our World in Data, FAOSTAT, OpenStreetMap), **jamais hébergés par data-dz** : la carte renvoie vers la source officielle. Pour chacune : domaine, catégorie du catalogue, types, licence (code court affiché tel quel, ou clé en minuscules traduite `ressourcesIA.licences.*` ; `licenceRestreinte` = badge ambre), accès, hébergeur, chiffre facultatif, crédit de l'image. Textes dans `ressourcesIA.ressources.<id>.{description, idee, chiffre}` (fr / en / ar ; un test vérifie qu'ils existent).
+- **Images** : une photo libre de droits par ressource (Wikimedia Commons, CC0, CC BY, CC BY-SA ou domaine public), recadrée en 800 × 480 WebP, auteur et licence affichés sur l'image avec un lien vers la page Commons (`credit`). Toute nouvelle ressource arrive avec son image et son crédit.
+- **Accès** : comme les téléchargements, un visiteur qui clique voit l'étape de connexion (`ConnexionTelechargement`, titre et texte propres) ; un membre ouvre la source dans un nouvel onglet. Pas de bouton « Citer ».
+- **Page** : barre des domaines collante (`DOMAINES_IA`, santé en premier), par domaine les 3 données algériennes les plus téléchargées de ses catégories (`donneesDuDomaine()`, catalogue en cache `["catalogue", "", null]`), puis les ressources mondiales ; encadré « Données de santé : les règles » (loi 18-07, ANPDP, CHU et comité d'éthique, jamais de diagnostic) ; appel à proposer une donnée. Liens dans le pied de page, le menu mobile et `sitemap.xml`.
+- **Catalogue** : une fois toutes les données algériennes affichées, une ligne « Ressources mondiales pour l'IA » puis leurs cartes (même filtre catégorie / recherche, `ressourcesCorrespondantes()` ; masquées si un filtre wilaya ou format est actif), toujours **après** nos données. Interrupteur « Afficher » mémorisé (`data-dz:ressources-ia:afficher`).
 
 ## Page API (`/api`)
 Code : `src/pages/PageApi.tsx`. Couleur de l'API sur tout le site : **violet** (comme `BoutonApi` sur la fiche).

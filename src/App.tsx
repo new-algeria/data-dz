@@ -37,6 +37,7 @@ const GestionRoles = lazyAvecRechargement(() => import("./pages/admin/GestionRol
 const GestionDonnees = lazyAvecRechargement(() => import("./pages/admin/GestionDonnees"));
 const GestionSynchros = lazyAvecRechargement(() => import("./pages/admin/GestionSynchros"));
 const PageAnalytics = lazyAvecRechargement(() => import("./pages/admin/PageAnalytics"));
+const PageDonneesIA = lazyAvecRechargement(() => import("./pages/PageDonneesIA"));
 const PageApi = lazyAvecRechargement(() => import("./pages/PageApi"));
 const PageThematiques = lazyAvecRechargement(() => import("./pages/PageThematiques"));
 const PageDjazAI = lazyAvecRechargement(() => import("./pages/PageDjazAI"));
@@ -154,6 +155,7 @@ function App() {
             />
 
             <Route path={routes.api} element={<PageApi />} />
+            <Route path={routes.donneesIA} element={<PageDonneesIA />} />
             <Route path={routes.thematiques} element={<PageThematiques />} />
             <Route path={routes.djazai} element={<PageDjazAI />} />
             <Route path={routes.wilayas} element={<PageWilayas />} />

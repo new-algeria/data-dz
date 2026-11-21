@@ -1583,5 +1583,179 @@
       "vues": "Total views",
       "telechargements": "Total downloads"
     }
+  },
+  "ressourcesIA": {
+    "titre": "Data for AI",
+    "metaDescription": "Algerian data and well-known global datasets to train AI: health, languages, climate, satellite imagery, economy. Licence, access and project ideas.",
+    "badge": "Global resource",
+    "badgeHero": "For final-year projects, theses and side projects",
+    "heroTitre": "All the data to train",
+    "heroSurligne": "your AI",
+    "heroTexte": "Algerian data from data-dz and a selection of well-known global datasets, sorted by field. For each one: the type of data, the licence, how to access it and a project idea.",
+    "domainesAria": "Fields",
+    "donneesAlgeriennes": "Algerian data on data-dz",
+    "ressourcesMondiales": "Global resources, hosted by their authors",
+    "creditImage": "Photo: {{auteur}} · {{licence}}",
+    "hebergePar": "Hosted by: {{nom}}",
+    "voirSource": "View the source",
+    "connexion": {
+      "titre": "Sign in to access the resource",
+      "description": "It's free and quick: sign in to open {{nom}} and all the resources for AI."
+    },
+    "acces": {
+      "libre": "Open access",
+      "inscription": "Free account",
+      "controle": "Controlled access"
+    },
+    "types": {
+      "images": "Images",
+      "images3d": "3D images",
+      "audio": "Audio",
+      "texte": "Text",
+      "signaux": "Signals",
+      "tableaux": "Tables",
+      "series": "Time series",
+      "grilles": "Grids",
+      "cartes": "Maps"
+    },
+    "domaines": {
+      "sante": {
+        "nom": "Health",
+        "description": "Medical images, signals, anonymised records and healthcare facilities in Algeria."
+      },
+      "langues": {
+        "nom": "Languages and text",
+        "description": "Arabic, Tamazight, French: voice, text and translation for language processing."
+      },
+      "climat": {
+        "nom": "Climate and environment",
+        "description": "Drought, fires, earthquakes, weather: long series for forecasting."
+      },
+      "satellite": {
+        "nom": "Satellite imagery and vision",
+        "description": "For computer vision: land cover, object detection."
+      },
+      "economie": {
+        "nom": "Economy and society",
+        "description": "Population, jobs, country indicators: for forecasting and data science."
+      },
+      "agriculture": {
+        "nom": "Agriculture",
+        "description": "Crops, yields and farmland."
+      },
+      "mobilite": {
+        "nom": "Cities and mobility",
+        "description": "Roads, transport and networks for optimisation and graphs."
+      },
+      "energie": {
+        "nom": "Energy",
+        "description": "Electricity generation, consumption and resources."
+      }
+    },
+    "regles": {
+      "titre": "Health data: the rules",
+      "loi": "In Algeria, health data are sensitive data (law 18-07): no patient data without authorisation from the ANPDP.",
+      "chu": "For real Algerian data, go through your supervisor and a university hospital, with approval from its ethics committee and data anonymised by the hospital.",
+      "licence": "Respect each dataset's licence and always cite the source in your thesis.",
+      "diagnostic": "These datasets are for research and learning, never for diagnosis."
+    },
+    "appel": {
+      "titre": "Missing a dataset for your project?",
+      "texte": "Tell us what you're looking for: we'll add it, or point you to the right source.",
+      "proposer": "Suggest a dataset",
+      "djazai": "Ask DjazAI"
+    },
+    "catalogue": {
+      "compte_one": "{{count}} global resource for AI",
+      "compte_other": "{{count}} global resources for AI",
+      "separateur": "Global resources for AI · hosted by their authors",
+      "interrupteur": "Show",
+      "toutVoir": "All data for AI, by field"
+    },
+    "ressources": {
+      "medmnist": {
+        "description": "X-rays, histology, retina, organs… as lightweight images, from 28 × 28 to 224 × 224, ready for classification.",
+        "idee": "Perfect for a first medical vision project",
+        "chiffre": "image datasets (2D and 3D)"
+      },
+      "chestxray14": {
+        "description": "Frontal chest X-rays labelled for 14 conditions.",
+        "idee": "Detect lung conditions",
+        "chiffre": "X-rays"
+      },
+      "isic": {
+        "description": "Images of skin lesions, the basis of the melanoma detection challenges. Each collection has its own licence.",
+        "idee": "Classify skin lesions"
+      },
+      "brats": {
+        "description": "Multimodal brain MRI with tumour segmentations, the reference for 3D segmentation.",
+        "idee": "Segment a brain tumour in 3D"
+      },
+      "physionet": {
+        "description": "ECG and EEG signals in open access, and anonymised intensive care records (MIMIC-IV) after a short course.",
+        "idee": "Detect arrhythmias on an ECG"
+      },
+      "uci-ml": {
+        "description": "Classic tabular datasets: heart disease, diabetes, breast cancer… Perfect to compare models.",
+        "idee": "Compare prediction models"
+      },
+      "common-voice": {
+        "description": "Voices recorded and transcribed by volunteers, including Arabic and Kabyle, for speech recognition.",
+        "idee": "A voice assistant in Kabyle",
+        "chiffre": "languages"
+      },
+      "wikipedia": {
+        "description": "Every Wikipedia article in one file: a corpus to train or evaluate a language model.",
+        "idee": "A language model in Kabyle"
+      },
+      "opus": {
+        "description": "Millions of sentences translated between Arabic, French, English and other languages. Each corpus has its own licence.",
+        "idee": "An Arabic ↔ French translator"
+      },
+      "era5": {
+        "description": "Temperature, wind and rain hour by hour since 1940, on a global grid covering Algeria.",
+        "idee": "Forecast rain or heat"
+      },
+      "sentinel-2": {
+        "description": "Satellite images of all of Algeria at 10 m resolution, refreshed about every 5 days.",
+        "idee": "Track urban sprawl or crops"
+      },
+      "eurosat": {
+        "description": "Sentinel-2 images sorted into 10 land cover types: perfect for a first classifier.",
+        "idee": "Recognise fields, forests and cities",
+        "chiffre": "labelled images"
+      },
+      "coco": {
+        "description": "Annotated photos (objects, outlines, captions), the reference for object detection.",
+        "idee": "Detect objects in an image"
+      },
+      "banque-mondiale": {
+        "description": "Development indicators (GDP, education, health, jobs) for Algeria and every country, since 1960.",
+        "idee": "Forecast an economic indicator",
+        "chiffre": "indicators"
+      },
+      "owid": {
+        "description": "Thousands of clean, documented series comparable across countries, on health, energy and society.",
+        "idee": "Compare Algeria with its neighbours"
+      },
+      "faostat": {
+        "description": "Crop production, yields, areas and trade, country by country since 1961.",
+        "idee": "Forecast wheat yields"
+      },
+      "openstreetmap": {
+        "description": "The whole OpenStreetMap map of Algeria (roads, buildings, places) in one file.",
+        "idee": "Compute routes or travel times"
+      }
+    },
+    "licences": {
+      "acces-libre": "Open access",
+      "conditions-challenge": "Challenge terms",
+      "selon-jeu": "Licence varies by dataset",
+      "souvent-cc-by": "Often CC BY 4.0",
+      "selon-corpus": "Licence varies by corpus",
+      "copernicus": "Copernicus licence",
+      "cc-by-annotations": "CC BY 4.0 (annotations)",
+      "conditions-fao": "FAO terms"
+    }
   }
 }
