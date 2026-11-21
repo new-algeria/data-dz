@@ -94,8 +94,8 @@
 
 .balade-aide {
   position: absolute;
-  inset-inline-end: calc(27 * var(--u));
-  bottom: calc(229 * var(--u));
+  inset-inline-end: calc(29 * var(--u));
+  top: max(76px, calc(92 * var(--u)));
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -111,7 +111,7 @@
 .balade-bascule {
   position: absolute;
   inset-inline-end: calc(29 * var(--u));
-  bottom: calc(174 * var(--u));
+  top: max(124px, calc(150 * var(--u)));
   display: flex;
   gap: 2px;
   padding: 2px;
@@ -140,41 +140,84 @@
 
 .balade-legende {
   position: absolute;
-  inset-inline-start: calc(25 * var(--u));
-  bottom: calc(30 * var(--u));
+  inset-inline-start: calc(32 * var(--u));
+  inset-inline-end: calc(32 * var(--u));
+  bottom: calc(36 * var(--u));
   pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+/* Pendant la marche ou devant un tableau, le titre s'efface pour laisser voir la galerie. */
+.balade-legende-cachee {
+  opacity: 0;
+  transform: translateY(calc(14 * var(--u)));
+}
+.balade-legende-cachee a {
+  pointer-events: none !important;
 }
 .balade-legende a {
   pointer-events: auto;
 }
 .balade-surtitre {
-  margin: 0 0 calc(10 * var(--u));
-  margin-inline-start: calc(3 * var(--u));
+  margin: 0 0 calc(14 * var(--u));
+  margin-inline-start: calc(4 * var(--u));
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: max(11px, calc(11.5 * var(--u)));
-  letter-spacing: 0.14em;
+  font-size: max(11px, calc(13 * var(--u)));
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 .balade-titre-ligne {
   display: flex;
   align-items: flex-end;
-  gap: calc(24 * var(--u));
+  gap: calc(56 * var(--u));
 }
 .balade-titre {
   margin: 0;
-  font-size: calc(150 * var(--u));
+  font-size: calc(116 * var(--u));
   font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.035em;
-  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.04em;
   white-space: nowrap;
 }
-/* Place pour les accents des capitales (É) dans le masque. */
-.balade-titre > span {
-  padding-top: 0.12em;
+.balade-titre > .balade-masque {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.balade-surligne {
+  position: relative;
+  display: inline-block;
+  color: #059669;
+}
+.balade-surligne svg {
+  position: absolute;
+  inset-inline: 2%;
+  bottom: -0.08em;
+  width: 96%;
+  height: 0.16em;
+  overflow: visible;
+}
+.balade-surligne path {
+  fill: none;
+  stroke: #10b981;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.balade-cote {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u));
+  max-width: calc(470 * var(--u));
+  margin-bottom: calc(22 * var(--u));
+  padding-inline-start: calc(36 * var(--u));
+  border-inline-start: 1.5px solid var(--encre-35);
+}
+.balade-sous-titre {
+  margin: 0;
+  font-size: max(14px, calc(21 * var(--u)));
+  line-height: 1.5;
+  color: rgba(58, 53, 80, 0.8);
 }
 .balade-lien {
-  margin-bottom: calc(9 * var(--u));
+  align-self: flex-start;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: max(11px, calc(11 * var(--u)));
   letter-spacing: 0.12em;
@@ -201,8 +244,10 @@
 .balade-ui-entree .balade-aide .balade-masque:nth-child(1) > span { animation-delay: 250ms; }
 .balade-ui-entree .balade-aide .balade-masque:nth-child(2) > span { animation-delay: 310ms; }
 .balade-ui-entree .balade-surtitre > span { animation-delay: 370ms; }
-.balade-ui-entree .balade-titre > span { animation-delay: 430ms; }
-.balade-ui-entree .balade-lien > span { animation-delay: 490ms; }
+.balade-ui-entree .balade-titre > .balade-masque:nth-child(1) > span { animation-delay: 430ms; }
+.balade-ui-entree .balade-titre > .balade-masque:nth-child(2) > span { animation-delay: 490ms; }
+.balade-ui-entree .balade-sous-titre > span { animation-delay: 550ms; }
+.balade-ui-entree .balade-lien > span { animation-delay: 610ms; }
 .balade-fleches,
 .balade-bascule {
   opacity: 0;
@@ -276,12 +321,19 @@
   .balade-titre-ligne {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
   }
   .balade-titre {
-    font-size: min(17vw, 15vh);
+    font-size: min(12.5vw, 9vh);
     white-space: normal;
-    line-height: 0.88;
+  }
+  .balade-cote {
+    max-width: none;
+    margin-bottom: 0;
+    padding-inline-start: 14px;
+  }
+  .balade-sous-titre {
+    font-size: 14px;
   }
   .balade-fleches {
     top: auto;
@@ -294,6 +346,7 @@
     height: 44px;
   }
   .balade-bascule {
+    top: auto;
     inset-inline-end: 16px;
     bottom: 30px;
   }
@@ -304,8 +357,15 @@
     display: none;
   }
   .balade-titre {
-    font-size: min(10vw, 22vh);
+    font-size: min(7vw, 15vh);
     white-space: nowrap;
+  }
+  .balade-titre-ligne {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  .balade-sous-titre {
+    display: none;
   }
   .balade-legende {
     bottom: 18px;

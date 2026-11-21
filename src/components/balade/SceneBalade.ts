@@ -52,6 +52,8 @@ export interface OptionsSceneBalade {
   surOuvrir: (slug: string) => void;
   /** La scène est prête (illustrations des tableaux proches chargées ou délai dépassé). */
   surPret: () => void;
+  /** La caméra se déplace (marche, glissement) ou un tableau est visé : la page masque son titre. */
+  surMouvement: (enMouvement: boolean) => void;
 }
 
 type Glissement = { depart: Pose; arrivee: Pose; debut: number; duree: number; courbe: "pose" | "expo"; ensuite: EtatBalade };
@@ -87,6 +89,57 @@ function textureTache(couleur: string, plein: number): THREE.Texture {
   degrade.addColorStop(1, couleur.replace(/[\d.]+\)$/, "0)"));
   ctx.fillStyle = degrade;
   ctx.fillRect(0, 0, 256, 256);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+/**
+ * URL d'une illustration pour WebGL. Une image déjà affichée par une balise <img> (cartes du catalogue) peut rester
+ * en cache sans en-têtes CORS (Safari) : la texture serait refusée. Un paramètre propre à la balade force une
+ * requête CORS distincte ; R2 ignore la chaîne de requête.
+ */
+export const urlTexture = (url: string, essai: number) => `${url}${url.includes("?") ? "&" : "?"}balade=${essai}`;
+
+/** Drapeau de l'Algérie sur canvas (vert #006233, blanc, croissant et étoile #D21034), mêmes proportions que `DrapeauAlgerie`. */
+function textureDrapeau(): THREE.Texture {
+  const L = 900;
+  const H = 600;
+  const canvas = document.createElement("canvas");
+  canvas.width = L;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#006233";
+  ctx.fillRect(0, 0, L / 2, H);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(L / 2, 0, L / 2, H);
+  // Croissant : disque de rayon H/4, moins un disque de rayon H/5 décalé vers le battant.
+  const croissant = document.createElement("canvas");
+  croissant.width = L;
+  croissant.height = H;
+  const c = croissant.getContext("2d")!;
+  c.fillStyle = "#D21034";
+  c.beginPath();
+  c.arc(L / 2, H / 2, H / 4, 0, 2 * Math.PI);
+  c.fill();
+  c.globalCompositeOperation = "destination-out";
+  c.beginPath();
+  c.arc(L / 2 + H / 16, H / 2, H / 5, 0, 2 * Math.PI);
+  c.fill();
+  ctx.drawImage(croissant, 0, 0);
+  // Étoile à cinq branches de rayon H/8, une pointe vers la hampe.
+  ctx.fillStyle = "#D21034";
+  ctx.beginPath();
+  for (let i = 0; i < 10; i++) {
+    const rayon = i % 2 === 0 ? H / 8 : (H / 8) * 0.382;
+    const angle = Math.PI + (i * Math.PI) / 5;
+    const x = 490 + rayon * Math.cos(angle);
+    const y = H / 2 + rayon * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fill();
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
@@ -167,6 +220,8 @@ export class SceneBalade {
   private appui: { x: number; y: number; th: number; glisse: boolean; id: number } | null = null;
   private survol: { x: number; y: number } | null = null;
   private detruite = false;
+  private drapeaux: { geometrie: THREE.PlaneGeometry; base: Float32Array }[] = [];
+  private enMouvement = false;
 
   constructor(options: OptionsSceneBalade) {
     this.options = options;
@@ -189,6 +244,7 @@ export class SceneBalade {
     this.construirePiece();
     this.emplacements = repartirEmplacements(options.tableaux.length);
     this.accrocherTableaux();
+    this.planterDrapeaux();
 
     this.observateur = new ResizeObserver(() => this.redimensionner());
     this.observateur.observe(conteneur);
@@ -293,27 +349,27 @@ export class SceneBalade {
         restantes--;
         if (restantes === 0) signalerPret();
       };
-      chargeur.load(
-        tableau.image,
-        (texture) => {
-          if (this.detruite) return texture.dispose();
-          texture.colorSpace = THREE.SRGBColorSpace;
-          texture.anisotropy = anisotropie;
-          this.ajouter(texture);
-          materiau.map = texture;
+      const appliquer = (texture: THREE.Texture) => {
+        if (this.detruite) return texture.dispose();
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = anisotropie;
+        this.ajouter(texture);
+        materiau.map = texture;
+        materiau.color.set(0xffffff);
+        materiau.needsUpdate = true;
+        fin();
+      };
+      const secours = () => {
+        if (!this.detruite) {
+          materiau.map = this.ajouter(textureSecours(tableau.titre, police));
           materiau.color.set(0xffffff);
           materiau.needsUpdate = true;
-          fin();
-        },
-        undefined,
-        () => {
-          if (!this.detruite) {
-            materiau.map = this.ajouter(textureSecours(tableau.titre, police));
-            materiau.color.set(0xffffff);
-            materiau.needsUpdate = true;
-          }
-          fin();
         }
+        fin();
+      };
+      // Second essai avec une autre URL avant le panneau de secours (réseau capricieux, image en cache sans CORS).
+      chargeur.load(urlTexture(tableau.image, 1), appliquer, undefined, () =>
+        chargeur.load(urlTexture(tableau.image, 2), appliquer, undefined, secours)
       );
       return materiau;
     };
@@ -354,6 +410,55 @@ export class SceneBalade {
       this.scene.add(groupe);
     });
     if (restantes === 0) signalerPret();
+  }
+
+  /** Trois drapeaux de l'Algérie sur leur mât, le long du pilier, dont un juste devant au départ. */
+  private planterDrapeaux() {
+    const texture = this.ajouter(textureDrapeau());
+    const matDrapeau = this.ajouter(new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }));
+    const matMat = this.ajouter(new THREE.MeshBasicMaterial({ color: 0xc9b08a }));
+    const matPommeau = this.ajouter(new THREE.MeshBasicMaterial({ color: 0xd8b56a }));
+    const geoMat = this.ajouter(new THREE.CylinderGeometry(0.035, 0.045, 4.2, 12));
+    const geoPommeau = this.ajouter(new THREE.SphereGeometry(0.08, 16, 12));
+    const geoSocle = this.ajouter(new THREE.CylinderGeometry(0.22, 0.26, 0.12, 24));
+    const rayon = RAYON_INT + 0.75;
+    const depart = decalageMarche(this.format());
+    for (const angle of [0, 1, 2].map((k) => depart - 0.8 + (k * 2 * Math.PI) / 3)) {
+      const groupe = new THREE.Group();
+      groupe.position.set(rayon * Math.cos(angle), 0, rayon * Math.sin(angle));
+      // Repère du mât : x vers l'extérieur de l'anneau. Le drapeau flotte en travers du couloir, face au visiteur.
+      groupe.rotation.y = -angle;
+      const mat = new THREE.Mesh(geoMat, matMat);
+      mat.position.y = 2.1;
+      const pommeau = new THREE.Mesh(geoPommeau, matPommeau);
+      pommeau.position.y = 4.24;
+      const socle = new THREE.Mesh(geoSocle, matMat);
+      socle.position.y = 0.06;
+      const geometrie = this.ajouter(new THREE.PlaneGeometry(1.65, 1.1, 24, 8));
+      geometrie.translate(0.825 + 0.04, 0, 0);
+      const drapeau = new THREE.Mesh(geometrie, matDrapeau);
+      drapeau.position.y = 3.6;
+      groupe.add(mat, pommeau, socle, drapeau);
+      this.scene.add(groupe);
+      this.drapeaux.push({ geometrie, base: Float32Array.from(geometrie.attributes.position.array as Float32Array) });
+    }
+  }
+
+  /** Ondulation des drapeaux : l'amplitude grandit vers le battant, la hampe reste fixe. */
+  private onduler(temps: number) {
+    if (this.options.reduireAnimations) return;
+    const t = temps / 1000;
+    for (const { geometrie, base } of this.drapeaux) {
+      const positions = geometrie.attributes.position.array as Float32Array;
+      for (let i = 0; i < positions.length; i += 3) {
+        const x = base[i];
+        const y = base[i + 1];
+        const amplitude = Math.min(1, x / 1.65) * 0.16;
+        positions[i + 2] = amplitude * Math.sin(x * 3.2 - t * 3.1 + y * 0.6) + amplitude * 0.35 * Math.sin(x * 6.5 - t * 4.7);
+        positions[i + 1] = y - Math.min(1, x / 1.65) * 0.05 * (1 + Math.sin(x * 2.4 - t * 2.2));
+      }
+      geometrie.attributes.position.needsUpdate = true;
+    }
   }
 
   /** Entrée : un pas en avant dans le couloir. */
@@ -553,6 +658,13 @@ export class SceneBalade {
       this.pose = poseMarche(this.th, this.format());
     }
 
+    const bouge = this.focus !== null || (this.glissement !== null && this.glissement.courbe === "pose") || Math.abs(this.thCible - this.th) > 0.01;
+    if (bouge !== this.enMouvement) {
+      this.enMouvement = bouge;
+      this.options.surMouvement(bouge);
+    }
+
+    this.onduler(temps);
     const { position, cible } = regardDepuisPose(this.pose);
     this.camera.position.set(...position);
     this.camera.lookAt(...cible);

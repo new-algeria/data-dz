@@ -1759,8 +1759,11 @@
     "vue": "View",
     "vueBalade": "Walk",
     "vueListe": "List",
-    "surtitre": "You are walking through",
-    "grandTitre": "All of Algeria",
-    "ouvrir": "Open the dataset"
+    "surtitre": "Algeria's public data",
+    "ouvrir": "Open the dataset",
+    "titreLigne1": "Explore Algeria",
+    "titreLigne2": "through ",
+    "titreSurligne": "data",
+    "sousTitre": "Browse the data, see it on the map and discover Algeria from a new angle."
   }
 }
