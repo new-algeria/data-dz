@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, MotionConfig } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -37,14 +38,51 @@ const PageDonneesIA = () => {
     [catalogue.data, catalogue.isPending]
   );
 
+  // Domaine actif : celui qu'on vient de cliquer, puis celui qui passe en haut de l'écran pendant le défilement.
+  const [actif, setActif] = useState<string>(DOMAINES_IA[0].code);
+  const clicRecent = useRef(0);
+  const barre = useRef<HTMLDivElement>(null);
+  const codes = domaines.map((domaine) => domaine.code).join(",");
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const observateur = new IntersectionObserver(
+      (entrees) => {
+        if (Date.now() - clicRecent.current < 900) return; // laisser finir le défilement lancé par un clic
+        const visible = entrees.filter((entree) => entree.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (visible) {
+          setActif(visible.target.id);
+          return;
+        }
+        // Remonté au-dessus du premier domaine (en-tête de la page) : le premier redevient actif.
+        const premier = codes.split(",")[0];
+        if ((document.getElementById(premier)?.getBoundingClientRect().top ?? 0) > 140) setActif(premier);
+      },
+      { rootMargin: "-140px 0px -55% 0px" }
+    );
+    codes.split(",").forEach((code) => {
+      const section = document.getElementById(code);
+      if (section) observateur.observe(section);
+    });
+    return () => observateur.disconnect();
+  }, [codes]);
+  // La pastille active reste visible dans la barre (défilement horizontal sur téléphone).
+  useEffect(() => {
+    barre.current?.querySelector<HTMLElement>(`[data-domaine="${actif}"]`)?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  }, [actif]);
+  const choisir = (code: string) => {
+    clicRecent.current = Date.now();
+    setActif(code);
+  };
+
   return (
+    <MotionConfig reducedMotion="user">
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-[#020817]">
       <CustomMetaTags title={`${t("ressourcesIA.titre")} - data-dz`} description={t("ressourcesIA.metaDescription")} path={routes.donneesIA} />
       <Navbar />
 
       <header className="bg-gradient-to-b from-emerald-50 via-white to-gray-50 pt-24 dark:from-[#03140f] dark:via-[#020817] dark:to-[#020817]">
         <div className="container mx-auto flex max-w-6xl items-end justify-between gap-6 px-4 pb-8">
-          <div className="max-w-2xl">
+          <motion.div className="max-w-2xl" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">
               <GraduationCap className="h-4 w-4" aria-hidden />
               {t("ressourcesIA.badgeHero")}
@@ -53,33 +91,68 @@ const PageDonneesIA = () => {
               {t("ressourcesIA.heroTitre")} <span className="text-emerald-700 dark:text-emerald-400">{t("ressourcesIA.heroSurligne")}</span>
             </h1>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">{t("ressourcesIA.heroTexte")}</p>
-          </div>
-          <img src="/mascotte/fennec.webp" alt="" aria-hidden width={241} height={332} className="hidden h-40 w-auto drop-shadow-md md:block" />
+          </motion.div>
+          <motion.img
+            src="/mascotte/fennec.webp"
+            alt=""
+            aria-hidden
+            width={241}
+            height={332}
+            className="hidden h-40 w-auto drop-shadow-md md:block"
+            initial={{ opacity: 0, y: 40, rotate: -6 }}
+            animate={{ opacity: 1, y: [0, -8, 0], rotate: 0 }}
+            transition={{ opacity: { duration: 0.5, delay: 0.3 }, rotate: { duration: 0.6, delay: 0.3 }, y: { duration: 4, delay: 0.9, repeat: Infinity, ease: "easeInOut" } }}
+          />
         </div>
       </header>
 
       {/* Domaines : rangée défilable, collée sous l'en-tête du site pendant le défilement */}
       <nav aria-label={t("ressourcesIA.domainesAria")} className="sticky top-16 z-20 border-b bg-gray-50/95 backdrop-blur dark:bg-[#020817]/95">
-        <div className="container mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]">
-          {domaines.map((domaine, indice) => (
-            <a
-              key={domaine.code}
-              href={`#${domaine.code}`}
-              className={
-                indice === 0
-                  ? "shrink-0 rounded-full bg-gray-900 px-4 py-1.5 text-sm font-medium text-white dark:bg-white dark:text-gray-900"
-                  : "shrink-0 rounded-full border bg-white px-4 py-1.5 text-sm font-medium text-gray-700 hover:border-gray-400 dark:bg-gray-900 dark:text-gray-200"
-              }
-            >
-              {domaine.icone} {t(`ressourcesIA.domaines.${domaine.code}.nom`)}
-            </a>
-          ))}
+        <div ref={barre} className="container mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none]">
+          {domaines.map((domaine) => {
+            const estActif = domaine.code === actif;
+            return (
+              <a
+                key={domaine.code}
+                href={`#${domaine.code}`}
+                data-domaine={domaine.code}
+                onClick={() => choisir(domaine.code)}
+                aria-current={estActif ? "true" : undefined}
+                className={
+                  "relative isolate shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-200 " +
+                  (estActif
+                    ? "border-transparent text-white dark:text-gray-900"
+                    : "bg-white text-gray-700 hover:-translate-y-0.5 hover:border-gray-400 dark:bg-gray-900 dark:text-gray-200")
+                }
+              >
+                {/* Fond de la pastille active : glisse d'un domaine à l'autre */}
+                {estActif && (
+                  <motion.span
+                    layoutId="domaine-actif"
+                    className="absolute inset-0 -z-10 rounded-full bg-gray-900 dark:bg-white"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative">
+                  {domaine.icone} {t(`ressourcesIA.domaines.${domaine.code}.nom`)}
+                </span>
+              </a>
+            );
+          })}
         </div>
       </nav>
 
       <main className="container mx-auto max-w-6xl flex-1 space-y-12 px-4 py-10">
         {domaines.map((domaine) => (
-          <section key={domaine.code} id={domaine.code} className="scroll-mt-32">
+          <motion.section
+            key={domaine.code}
+            id={domaine.code}
+            className="scroll-mt-40"
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <h2 className="flex items-center gap-2 text-2xl font-bold">
               <span aria-hidden>{domaine.icone}</span>
               {t(`ressourcesIA.domaines.${domaine.code}.nom`)}
@@ -95,12 +168,10 @@ const PageDonneesIA = () => {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {catalogue.isPending
                     ? Array.from({ length: 3 }, (_, indice) => <CarteDonneeSquelette key={indice} />)
-                    : domaine.donnees.map((donnee) => (
-                        <CarteDonnee
-                          key={donnee.slug}
-                          donnee={donnee}
-                          categorie={donnee.categorie_slug ? categoriesParSlug.get(donnee.categorie_slug) : undefined}
-                        />
+                    : domaine.donnees.map((donnee, indice) => (
+                        <Apparition key={donnee.slug} indice={indice}>
+                          <CarteDonnee donnee={donnee} categorie={donnee.categorie_slug ? categoriesParSlug.get(donnee.categorie_slug) : undefined} />
+                        </Apparition>
                       ))}
                 </div>
               </>
@@ -112,8 +183,10 @@ const PageDonneesIA = () => {
                   🌍 {t("ressourcesIA.ressourcesMondiales")}
                 </h3>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {domaine.ressources.map((ressource) => (
-                    <CarteRessourceIA key={ressource.id} ressource={ressource} />
+                  {domaine.ressources.map((ressource, indice) => (
+                    <Apparition key={ressource.id} indice={indice}>
+                      <CarteRessourceIA ressource={ressource} />
+                    </Apparition>
                   ))}
                 </div>
               </>
@@ -133,10 +206,15 @@ const PageDonneesIA = () => {
                 </ul>
               </div>
             )}
-          </section>
+          </motion.section>
         ))}
 
-        <section className="flex flex-col items-start justify-between gap-5 rounded-3xl bg-gray-900 p-7 text-white md:flex-row md:items-center dark:bg-gray-800">
+        <motion.section
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col items-start justify-between gap-5 rounded-3xl bg-gray-900 p-7 text-white md:flex-row md:items-center dark:bg-gray-800">
           <div>
             <h2 className="text-2xl font-bold">{t("ressourcesIA.appel.titre")}</h2>
             <p className="mt-1 text-gray-300">{t("ressourcesIA.appel.texte")}</p>
@@ -149,12 +227,26 @@ const PageDonneesIA = () => {
               <Link to={routes.djazai}>{t("ressourcesIA.appel.djazai")}</Link>
             </Button>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <Footer />
     </div>
+    </MotionConfig>
   );
 };
+
+/** Carte qui apparaît en glissant vers le haut, en cascade dans sa rangée (3 par ligne). */
+const Apparition = ({ indice, children }: { indice: number; children: React.ReactNode }) => (
+  <motion.div
+    className="h-full"
+    initial={{ opacity: 0, y: 28 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-40px" }}
+    transition={{ duration: 0.45, delay: (indice % 3) * 0.08, ease: "easeOut" }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default PageDonneesIA;

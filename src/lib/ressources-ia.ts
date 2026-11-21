@@ -95,28 +95,10 @@ export const RESSOURCES_IA: RessourceIA[] = [
     motsCles: ["voix", "audio", "parole", "speech", "kabyle", "tamazight", "amazigh", "arabe", "arabic", "reconnaissance vocale", "صوت", "أمازيغية"],
   },
   {
-    id: "wikipedia", nom: "Wikipedia (ar, kab, fr)", domaine: "langues", categorie: "culture-tourisme", types: ["texte"],
-    licence: "CC BY-SA", acces: "libre", hebergeur: "Wikimedia Foundation", url: "https://dumps.wikimedia.org/",
-    credit: { auteur: "Glossyqueen", licence: "CC BY-SA 4.0", page: "https://commons.wikimedia.org/wiki/File:Books_on_shelves_(121).jpg" },
-    motsCles: ["texte", "corpus", "nlp", "langue", "wikipedia", "arabe", "kabyle", "llm", "ويكيبيديا"],
-  },
-  {
     id: "opus", nom: "OPUS", domaine: "langues", categorie: "culture-tourisme", types: ["texte"],
     licence: "selon-corpus", licenceRestreinte: true, acces: "libre", hebergeur: "University of Helsinki", url: "https://opus.nlpl.eu/",
     credit: { auteur: "Vermondo", licence: "CC BY-SA 3.0", page: "https://commons.wikimedia.org/wiki/File:Tizi_Ouzou_Tasdawit.jpg" },
     motsCles: ["traduction", "translation", "parallele", "parallèle", "corpus", "arabe", "français", "ترجمة"],
-  },
-  {
-    id: "era5", nom: "Copernicus ERA5", domaine: "climat", categorie: "environnement", types: ["grilles", "series"],
-    licence: "copernicus", acces: "inscription", hebergeur: "Copernicus Climate Data Store", url: "https://cds.climate.copernicus.eu/",
-    credit: { auteur: "Pir6mon", licence: "CC BY-SA 3.0", page: "https://commons.wikimedia.org/wiki/File:Tadrart01.JPG" },
-    motsCles: ["climat", "climate", "meteo", "météo", "temperature", "température", "pluie", "rain", "vent", "مناخ"],
-  },
-  {
-    id: "sentinel-2", nom: "Sentinel-2", domaine: "satellite", categorie: "environnement", types: ["images"],
-    licence: "acces-libre", acces: "inscription", hebergeur: "Copernicus (ESA)", url: "https://dataspace.copernicus.eu/",
-    credit: { auteur: "SentinelHub", licence: "CC BY 2.0", page: "https://commons.wikimedia.org/wiki/File:Sand_Dunes_of_Algeria_(51255339944).png" },
-    motsCles: ["satellite", "teledetection", "télédétection", "imagerie", "sol", "remote sensing", "قمر صناعي"],
   },
   {
     id: "eurosat", nom: "EuroSAT", domaine: "satellite", categorie: "environnement", types: ["images"],
@@ -135,12 +117,6 @@ export const RESSOURCES_IA: RessourceIA[] = [
     licence: "CC BY 4.0", acces: "libre", hebergeur: "World Bank", url: "https://databank.worldbank.org/source/world-development-indicators", chiffre: "1 400+",
     credit: { auteur: "Toufik Lerari", licence: "CC BY-SA 2.0", page: "https://commons.wikimedia.org/wiki/File:Bay_of_Algiers_by_night.jpg" },
     motsCles: ["economie", "économie", "pib", "gdp", "indicateurs", "world bank", "developpement", "اقتصاد"],
-  },
-  {
-    id: "owid", nom: "Our World in Data", domaine: "economie", categorie: "economie", types: ["series"],
-    licence: "CC BY 4.0", acces: "libre", hebergeur: "University of Oxford", url: "https://ourworldindata.org/",
-    credit: { auteur: "NASA (Apollo 17)", licence: "Public domain", page: "https://commons.wikimedia.org/wiki/File:The_Blue_Marble,_AS17-148-22727.jpg" },
-    motsCles: ["statistiques", "pays", "comparaison", "energie", "énergie", "sante", "santé", "population"],
   },
   {
     id: "faostat", nom: "FAOSTAT", domaine: "agriculture", categorie: "agriculture", types: ["series"],

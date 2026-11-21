@@ -75,9 +75,9 @@ describe("ressourcesCorrespondantes", () => {
 
   it("utilise aussi les textes traduits fournis", () => {
     const ids = ressourcesCorrespondantes(RESSOURCES_IA, { terme: "زلزال", categorie: null }, (ressource) =>
-      ressource.id === "era5" ? ["زلزال"] : []
+      ressource.id === "opus" ? ["زلزال"] : []
     ).map((ressource) => ressource.id);
-    expect(ids).toEqual(["era5"]);
+    expect(ids).toEqual(["opus"]);
   });
 });
 

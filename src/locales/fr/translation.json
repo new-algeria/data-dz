@@ -1698,21 +1698,9 @@
         "idee": "Un assistant vocal en kabyle",
         "chiffre": "langues"
       },
-      "wikipedia": {
-        "description": "Tous les articles de Wikipédia en un fichier : un corpus pour entraîner ou évaluer un modèle de langue.",
-        "idee": "Un modèle de langue en kabyle"
-      },
       "opus": {
         "description": "Des millions de phrases traduites entre l'arabe, le français, l'anglais et d'autres langues. Licence propre à chaque corpus.",
         "idee": "Un traducteur arabe ↔ français"
-      },
-      "era5": {
-        "description": "Température, vent et pluie heure par heure depuis 1940, sur une grille mondiale qui couvre l'Algérie.",
-        "idee": "Prévoir la pluie ou la chaleur"
-      },
-      "sentinel-2": {
-        "description": "Images satellite de toute l'Algérie à 10 m de résolution, renouvelées tous les 5 jours environ.",
-        "idee": "Suivre l'étalement urbain ou les cultures"
       },
       "eurosat": {
         "description": "Images Sentinel-2 classées en 10 types d'occupation du sol : parfait pour un premier classifieur.",
@@ -1727,10 +1715,6 @@
         "description": "Les indicateurs du développement (PIB, éducation, santé, emploi) pour l'Algérie et tous les pays, depuis 1960.",
         "idee": "Prévoir un indicateur économique",
         "chiffre": "indicateurs"
-      },
-      "owid": {
-        "description": "Des milliers de séries comparables entre pays, propres et documentées, sur la santé, l'énergie et la société.",
-        "idee": "Comparer l'Algérie à ses voisins"
       },
       "faostat": {
         "description": "Productions agricoles, rendements, surfaces et commerce, pays par pays depuis 1961.",
@@ -1747,7 +1731,6 @@
       "selon-jeu": "Licence selon le jeu",
       "souvent-cc-by": "Souvent CC BY 4.0",
       "selon-corpus": "Licence selon le corpus",
-      "copernicus": "Licence Copernicus",
       "cc-by-annotations": "CC BY 4.0 (annotations)",
       "conditions-fao": "Conditions de la FAO"
     }
