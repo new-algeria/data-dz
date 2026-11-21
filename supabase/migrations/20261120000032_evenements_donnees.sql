@@ -2,7 +2,7 @@
 -- son fichier, son format, son origine (site ou API publique) et, pour un téléchargement fait depuis le site par un
 -- membre connecté, le compte. Les compteurs cumulés datasets.nb_vues / nb_telechargements continuent d'être tenus.
 -- Lecture réservée aux admins (RLS et fonctions security definer) ; écriture par l'API seulement (service_role).
--- Rétention : 12 mois, purge automatique au fil des enregistrements (aucune extension requise).
+-- Historique conservé sans limite de durée (un compte supprimé est détaché : utilisateur_id passe à null).
 -- À appliquer dans Supabase SQL Editor AVANT de déployer l'API et le site. Réexécutable sans erreur.
 
 -- ---------------------------------------------------------------------
@@ -20,7 +20,7 @@ create table if not exists public.evenements_donnees (
 );
 
 comment on table public.evenements_donnees is
-  'Vues de fiches et téléchargements datés (12 mois). Le compte n''est renseigné que pour un téléchargement fait depuis le site par un membre connecté. Lecture : admins ; écriture : API (service_role).';
+  'Vues de fiches et téléchargements datés. Le compte n''est renseigné que pour un téléchargement fait depuis le site par un membre connecté. Lecture : admins ; écriture : API (service_role).';
 
 create index if not exists evenements_donnees_date_idx on public.evenements_donnees (cree_le);
 create index if not exists evenements_donnees_donnee_idx on public.evenements_donnees (dataset_id, cree_le);
@@ -81,11 +81,6 @@ begin
     case when p_origine = 'site' then 'site' else 'api' end
   );
 
-  -- Rétention de 12 mois : une purge environ tous les 2 000 enregistrements, sans extension pg_cron.
-  if random() < 0.0005 then
-    delete from public.evenements_donnees where cree_le < now() - interval '12 months';
-  end if;
-
   return compteur;
 end;
 $$;
@@ -96,7 +91,7 @@ grant execute on function public.enregistrer_evenement_donnee(text, text, uuid, 
 -- ---------------------------------------------------------------------
 -- 3. Lectures pour la page /admin/analytics (admins seulement)
 -- ---------------------------------------------------------------------
--- Contrôle commun : admin et période valide (400 jours au plus).
+-- Contrôle commun : admin et période valide (aucune limite de durée).
 create or replace function public.analytics_verifier(p_debut timestamptz, p_fin timestamptz)
 returns void
 language plpgsql
@@ -108,8 +103,8 @@ begin
   if not public.est_admin() then
     raise exception 'Réservé aux administrateurs' using errcode = '42501';
   end if;
-  if p_debut is null or p_fin is null or p_fin <= p_debut or p_fin - p_debut > interval '400 days' then
-    raise exception 'Période invalide (400 jours au plus)' using errcode = '22023';
+  if p_debut is null or p_fin is null or p_fin <= p_debut then
+    raise exception 'Période invalide' using errcode = '22023';
   end if;
 end;
 $$;

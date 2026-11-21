@@ -486,7 +486,7 @@
         {
           "id": "data",
           "titre": "Quelles données collectons-nous ?",
-          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profile).\n\n**Statistiques d'usage** : chaque consultation d'une fiche et chaque téléchargement sont enregistrés avec leur date, sans lien avec un compte, sauf pour un téléchargement fait depuis le site par un membre connecté, qui est rattaché à son compte. Seuls les administrateurs de data-dz peuvent voir ces statistiques ; elles sont supprimées au bout de 12 mois."
+          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profile).\n\n**Statistiques d'usage** : chaque consultation d'une fiche et chaque téléchargement sont enregistrés avec leur date, sans lien avec un compte, sauf pour un téléchargement fait depuis le site par un membre connecté, qui est rattaché à son compte. Seuls les administrateurs de data-dz peuvent voir ces statistiques ; si vous supprimez votre compte, vos téléchargements n'y sont plus rattachés."
         },
         {
           "id": "purpose",
@@ -1542,14 +1542,15 @@
       "7j": "7 jours",
       "30j": "30 jours",
       "90j": "90 jours",
-      "12m": "12 mois"
+      "12m": "12 mois",
+      "tout": "Depuis le début"
     },
     "vues": "Vues",
     "telechargements": "Téléchargements",
     "telechargementsCourt": "Téléch.",
     "comptesActifs": "Comptes qui ont téléchargé",
     "evolution": "Évolution",
-    "note": "Heure d'Alger. Les vues et les téléchargements par l'API publique ne sont liés à aucun compte. Historique conservé 12 mois.",
+    "note": "Heure d'Alger. Les vues et les téléchargements par l'API publique ne sont liés à aucun compte.",
     "topDonnees": "Données les plus téléchargées",
     "donnee": "Donnée",
     "repartition": "Répartition des téléchargements",
@@ -1569,6 +1570,12 @@
     "detailDescription": "Téléchargements de ce compte sur la période (200 derniers).",
     "vide": "Aucun événement sur cette période.",
     "migration": "Les statistiques ne sont pas encore activées : appliquez la migration 20261120000032_evenements_donnees.sql dans Supabase.",
-    "erreur": "Impossible de charger les statistiques."
+    "erreur": "Impossible de charger les statistiques.",
+    "cumul": {
+      "titre": "Depuis la mise en ligne",
+      "aide": "Compteurs cumulés de chaque donnée publiée, y compris avant le début des statistiques datées (20 novembre 2026). Ils ne dépendent pas de la période choisie.",
+      "vues": "Vues au total",
+      "telechargements": "Téléchargements au total"
+    }
   }
 }

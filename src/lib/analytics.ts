@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 import { fonctionAbsente } from "./contributions";
 
 /** Périodes proposées sur la page /admin/analytics. */
-export const PERIODES = ["7j", "30j", "90j", "12m"] as const;
+export const PERIODES = ["7j", "30j", "90j", "12m", "tout"] as const;
 export type Periode = (typeof PERIODES)[number];
 export type Pas = "day" | "week" | "month";
 
@@ -13,6 +13,15 @@ export interface Intervalle {
 }
 
 const JOUR = 86_400_000;
+
+/** Premier jour d'enregistrement des statistiques datées (migration 20261120000032), heure d'Alger. */
+export const DEBUT_STATISTIQUES = new Date("2026-11-20T00:00:00+01:00");
+
+/** Pas lisible selon la durée : jour jusqu'à 2 mois, semaine jusqu'à 1 an, mois au-delà. */
+export function pasPourDuree(debut: Date, fin: Date): Pas {
+  const jours = (fin.getTime() - debut.getTime()) / JOUR;
+  return jours <= 62 ? "day" : jours <= 366 ? "week" : "month";
+}
 
 /** Bornes et pas d'agrégation d'une période se terminant maintenant (fin exclue). */
 export function intervallePeriode(periode: Periode, maintenant = new Date()): Intervalle {
@@ -28,6 +37,10 @@ export function intervallePeriode(periode: Periode, maintenant = new Date()): In
       const debut = new Date(fin.getTime());
       debut.setUTCFullYear(debut.getUTCFullYear() - 1);
       return { debut, fin, pas: "month" };
+    }
+    case "tout": {
+      const debut = DEBUT_STATISTIQUES.getTime() < fin.getTime() ? DEBUT_STATISTIQUES : new Date(fin.getTime() - JOUR);
+      return { debut, fin, pas: pasPourDuree(debut, fin) };
     }
   }
 }
@@ -131,3 +144,22 @@ export function libellePeriode(iso: string, pas: Pas, locale: string): string {
 
 /** Part en pourcentage, arrondie (0 si le total est nul). */
 export const part = (nombre: number, total: number) => (total > 0 ? Math.round((nombre / total) * 100) : 0);
+
+/** Compteurs cumulés d'une donnée du catalogue (avant et depuis les statistiques datées). */
+export interface DonneeCumul {
+  slug: string;
+  titre: Record<string, string> | null;
+  nb_vues?: number;
+  nb_telechargements?: number;
+}
+
+/** Totaux cumulés du catalogue et données les plus téléchargées (puis les plus vues), sans les données à zéro. */
+export function cumulsCatalogue(donnees: DonneeCumul[], limite = 10) {
+  const lignes = donnees.map((d) => ({ slug: d.slug, titre: d.titre, vues: enNombre(d.nb_vues), telechargements: enNombre(d.nb_telechargements) }));
+  const totaux = lignes.reduce((t, l) => ({ vues: t.vues + l.vues, telechargements: t.telechargements + l.telechargements }), { vues: 0, telechargements: 0 });
+  const top = lignes
+    .filter((l) => l.vues > 0 || l.telechargements > 0)
+    .sort((x, y) => y.telechargements - x.telechargements || y.vues - x.vues || x.slug.localeCompare(y.slug))
+    .slice(0, limite);
+  return { totaux, top };
+}
