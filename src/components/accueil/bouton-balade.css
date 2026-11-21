@@ -1,21 +1,31 @@
-/* Bordure animée : un dégradé conique vert / blanc / rouge qui tourne derrière le fond. */
-@property --angle-balade {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
+/*
+ * Bordure animée : un dégradé conique vert / blanc / rouge, plus grand que le bouton, qui tourne derrière le fond.
+ * Rotation d'un pseudo-élément (transform), sans @property : rien qui puisse gêner l'analyse de la feuille principale.
+ */
 .bouton-balade {
   position: relative;
+  isolation: isolate;
   display: inline-flex;
   max-width: 100%;
   min-height: 2.75rem;
   padding: 2px;
+  overflow: hidden;
   border-radius: 0.5rem;
-  background: conic-gradient(from var(--angle-balade), #006233, #10b981, #ffffff, #d21034, #ffffff, #006233);
+  background: #1f1d2b;
   box-shadow: 0 10px 24px -10px rgba(58, 53, 80, 0.45);
-  animation: bouton-balade-tour 5s linear infinite;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bouton-balade::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: 150%;
+  aspect-ratio: 1;
+  background: conic-gradient(#006233, #10b981, #ffffff, #d21034, #ffffff, #006233);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: bouton-balade-tour 5s linear infinite;
 }
 .bouton-balade:hover {
   transform: translateY(-1px);
@@ -61,12 +71,12 @@
 
 @keyframes bouton-balade-tour {
   to {
-    --angle-balade: 360deg;
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bouton-balade {
+  .bouton-balade::before {
     animation: none;
   }
   .bouton-balade-icone {
