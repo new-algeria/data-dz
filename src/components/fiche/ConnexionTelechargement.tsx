@@ -10,6 +10,9 @@ import { avecSuite, routes } from "@/lib/routes";
 interface ConnexionTelechargementProps {
   /** Page où revenir après la connexion (la fiche, qui rouvre le dialogue sur le fichier choisi). */
   suite: string;
+  /** Titre et description à la place de ceux du téléchargement (ex. ouvrir une ressource mondiale pour l'IA). */
+  titre?: string;
+  description?: string;
 }
 
 /**
@@ -17,7 +20,7 @@ interface ConnexionTelechargementProps {
  * (Google, puis Facebook / GitHub si activés) et « Autre mode de connexion » vers /login. Après la connexion,
  * le visiteur revient sur la fiche avec le dialogue rouvert, prêt à choisir le fichier et le format.
  */
-export function ConnexionTelechargement({ suite }: ConnexionTelechargementProps) {
+export function ConnexionTelechargement({ suite, titre, description }: ConnexionTelechargementProps) {
   const { t } = useTranslation();
   const [erreur, setErreur] = useState<string | null>(null);
 
@@ -25,8 +28,8 @@ export function ConnexionTelechargement({ suite }: ConnexionTelechargementProps)
     <div className="mx-auto w-full max-w-sm space-y-5 py-2 text-center">
       <img src="/mascotte/fennec.webp" alt="" aria-hidden width={241} height={332} className="mx-auto h-28 w-auto drop-shadow-md" />
       <DialogHeader className="space-y-2 sm:text-center">
-        <DialogTitle className="text-xl">{t("telechargement.connexion.titre")}</DialogTitle>
-        <DialogDescription>{t("telechargement.connexion.description")}</DialogDescription>
+        <DialogTitle className="text-xl">{titre ?? t("telechargement.connexion.titre")}</DialogTitle>
+        <DialogDescription>{description ?? t("telechargement.connexion.description")}</DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4 text-start">

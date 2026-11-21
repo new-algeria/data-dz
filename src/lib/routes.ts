@@ -27,6 +27,7 @@ export const routes = {
   adminSynchros: "/admin/sync",
   adminAnalytics: "/admin/analytics",
   api: "/api",
+  donneesIA: "/ai-datasets",
   thematiques: "/themes",
   djazai: "/djazai",
   wilayas: "/wilayas",
