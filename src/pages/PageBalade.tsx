@@ -37,7 +37,6 @@ export default function PageBalade() {
   const [pret, setPret] = useState(false);
   const [sortie, setSortie] = useState(false);
   const [webglAbsent, setWebglAbsent] = useState(false);
-  const [enMouvement, setEnMouvement] = useState(false);
 
   const catalogue = useQuery({ queryKey: ["catalogue", "", null], queryFn: () => chargerCatalogue({ terme: "", categorie: null }) });
 
@@ -81,7 +80,6 @@ export default function PageBalade() {
           telephone: () => telephone.matches,
           portrait: () => portrait.matches,
           surEtat: setEtat,
-          surMouvement: setEnMouvement,
           surBulle: setBulle,
           surOuvrir: (slug) => {
             setSortie(true);
@@ -151,29 +149,13 @@ export default function PageBalade() {
           <Link to={routes.catalogue}>{t("balade.vueListe")}</Link>
         </div>
 
-        <div className={cn("balade-legende", enMouvement && "balade-legende-cachee")}>
+        <div className="balade-legende">
           <p className="balade-surtitre balade-masque"><span>{t("balade.surtitre")}</span></p>
           <div className="balade-titre-ligne">
-            <h1 className="balade-titre">
-              <span className="balade-masque"><span>{t("balade.titreLigne1")}</span></span>
-              <span className="balade-masque">
-                <span>
-                  {t("balade.titreLigne2")}
-                  <span className="balade-surligne">
-                    {t("balade.titreSurligne")}
-                    <svg viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden>
-                      <path d="M4 14 C 80 4, 200 2, 296 10" />
-                    </svg>
-                  </span>
-                </span>
-              </span>
-            </h1>
-            <div className="balade-cote">
-              <p className="balade-sous-titre balade-masque"><span>{t("balade.sousTitre")}</span></p>
-              <Link to={routes.catalogue} className="balade-lien balade-masque">
-                <span>{t("balade.voirCatalogue")} {i18n.dir() === "rtl" ? "←" : "→"}</span>
-              </Link>
-            </div>
+            <h1 className="balade-titre balade-masque"><span>{t("balade.grandTitre")}</span></h1>
+            <Link to={routes.catalogue} className="balade-lien balade-masque">
+              <span>{t("balade.voirCatalogue")} {i18n.dir() === "rtl" ? "←" : "→"}</span>
+            </Link>
           </div>
         </div>
       </div>

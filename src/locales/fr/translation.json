@@ -1753,11 +1753,8 @@
     "vue": "Affichage",
     "vueBalade": "Balade",
     "vueListe": "Liste",
-    "surtitre": "Les données publiques de l'Algérie",
-    "ouvrir": "Ouvrir la donnée",
-    "titreLigne1": "Explore l'Algérie",
-    "titreLigne2": "en ",
-    "titreSurligne": "données",
-    "sousTitre": "Parcours les données, visualise-les sur la carte et découvre l'Algérie sous un nouvel angle."
+    "surtitre": "Tu te promènes dans",
+    "grandTitre": "Toute l'Algérie",
+    "ouvrir": "Ouvrir la donnée"
   }
 }
