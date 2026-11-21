@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, Loader2, Volume2, VolumeX } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
-import { CustomMetaTags } from "@/components/MetaTags";
+import { CustomMetaTags, URL_SITE_PUBLIC } from "@/components/MetaTags";
 import type { EtatBalade, SceneBalade, TableauBalade } from "@/components/balade/SceneBalade";
 import { chargerCatalogue } from "@/lib/catalogue";
 import { chiffreCarte, sourceCourte } from "@/lib/carte-catalogue";
@@ -115,7 +115,7 @@ export default function PageBalade() {
 
   return (
     <div className="balade">
-      <CustomMetaTags title={`${t("balade.titre")} - data-dz`} description={t("balade.metaDescription")} path={routes.balade} />
+      <CustomMetaTags title={`${t("balade.titre")} - data-dz`} description={t("balade.metaDescription")} path={routes.balade} image={`${URL_SITE_PUBLIC}/og-balade.jpg`} />
       <Navbar />
 
       <main className="balade-scene" ref={conteneur} aria-label={t("balade.titre")}>
