@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { appelerApi, ErreurApi } from "@/lib/api";
+import { feterTelechargement } from "@/lib/confettis";
 import { fichierDemande, lienRetourTelechargement, lienTelechargementSite, PARAMETRE_TELECHARGEMENT } from "@/lib/telechargement";
 import { formaterTaille, sourcesDesFichiers } from "@/lib/fichiers";
 import { aSourceConvertible, telechargementsRessource } from "@/lib/fiche";
@@ -150,6 +151,7 @@ export const DialogueTelechargement = ({ ressources, slug, apercu: afficherAperc
     try {
       // Un seul téléchargement enregistré, avec le compte du membre (route download-link de l'API).
       window.location.assign(await lienTelechargementSite(slug, ressource.nom, choisi.format));
+      void feterTelechargement();
       setStatut("pret");
       setOuvert(false);
     } catch (probleme) {
