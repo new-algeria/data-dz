@@ -14,6 +14,7 @@ import { urlIllustration } from "@/lib/illustrations";
 import { texteTraduit } from "@/lib/traduction";
 import { useLangue } from "@/hooks/use-langue";
 import { useAuth } from "@/contexte/ContexteAuth";
+import { feterTelechargement } from "@/lib/confettis";
 import { lienTelechargementSite, PARAMETRE_TELECHARGEMENT } from "@/lib/telechargement";
 import { ErreurApi } from "@/lib/api";
 import type { Donnee, Ressource } from "@/lib/types";
@@ -90,6 +91,7 @@ const BoutonTelechargementDirect = ({ slug, nom, format, etiquette }: { slug: st
     setEnCours(true);
     try {
       window.location.assign(await lienTelechargementSite(slug, nom, format));
+      void feterTelechargement();
     } catch (probleme) {
       toast.error(probleme instanceof ErreurApi && probleme.statut === 422 ? t("telechargement.indisponible") : t("telechargement.erreur"));
     } finally {
