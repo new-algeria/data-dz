@@ -60,6 +60,7 @@ export const UNITES_PAR_SLUG: Record<string, Unites> = {
   agriculture: { fr: "institutions", en: "institutions", ar: "مؤسسات" },
   "seismes-algerie": { fr: "séismes", en: "earthquakes", ar: "زلازل" },
   "electricite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
+  "temperatures-wilayas": { fr: "synthèses annuelles", en: "yearly summaries", ar: "ملخصات سنوية" },
   "biodiversite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
   "faune-algerie": { fr: "espèces", en: "species", ar: "أنواع" },
   "pollution-atmospherique-algerie": { fr: "mesures", en: "measurements", ar: "قياسات" },
