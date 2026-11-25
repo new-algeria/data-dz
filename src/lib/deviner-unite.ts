@@ -66,6 +66,7 @@ export const UNITES_PAR_SLUG: Record<string, Unites> = {
   "indicateurs-developpement-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
   "production-agricole-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
   "commerce-exterieur-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
+  "surface-batie-wilayas": { fr: "mesures par wilaya", en: "wilaya measurements", ar: "قياسات حسب الولاية" },
   "biodiversite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
   "faune-algerie": { fr: "espèces", en: "species", ar: "أنواع" },
   "pollution-atmospherique-algerie": { fr: "mesures", en: "measurements", ar: "قياسات" },
