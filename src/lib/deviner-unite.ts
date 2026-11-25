@@ -65,6 +65,7 @@ export const UNITES_PAR_SLUG: Record<string, Unites> = {
   "peche-aquaculture-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
   "indicateurs-developpement-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
   "production-agricole-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
+  "commerce-exterieur-algerie": { fr: "valeurs annuelles", en: "yearly values", ar: "قيم سنوية" },
   "biodiversite-algerie": { fr: "observations", en: "observations", ar: "رصدات" },
   "faune-algerie": { fr: "espèces", en: "species", ar: "أنواع" },
   "pollution-atmospherique-algerie": { fr: "mesures", en: "measurements", ar: "قياسات" },
