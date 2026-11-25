@@ -1250,7 +1250,18 @@
     "confirmerTexte": "« {{titre}} », ses versions et ses fichiers seront supprimés. Pour la retirer du site sans la perdre, masquez-la plutôt.",
     "confirmerSaisie": "Tapez « {{slug}} » pour confirmer",
     "supprimerDefinitivement": "Supprimer définitivement",
-    "chargement": "Chargement des données…"
+    "chargement": "Chargement des données…",
+    "propositionsImages": {
+      "bouton": "Proposer des images",
+      "placeholder": "Mots-clés (de préférence en anglais)",
+      "chercher": "Chercher",
+      "choisir": "Choisir « {{titre}} » comme illustration",
+      "voirPage": "Voir la page de l'image sur Wikimedia Commons",
+      "autres": "Autres images",
+      "aucune": "Aucune image libre trouvée. Essaie d'autres mots-clés, en anglais de préférence.",
+      "erreur": "Wikimedia Commons ne répond pas pour l'instant. Réessaie dans quelques secondes.",
+      "aide": "Photos de Wikimedia Commons libres de droits (CC0 ou domaine public) : aucun crédit à afficher."
+    }
   },
   "visuel": {
     "titre": "Visuel de la donnée",
