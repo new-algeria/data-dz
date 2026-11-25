@@ -10,6 +10,7 @@ describe("unité des données connues (table par identifiant)", () => {
     ["petrole-gaz-algerie", "valeurs annuelles", "yearly values", "قيم سنوية"],
     ["peche-aquaculture-algerie", "valeurs annuelles", "yearly values", "قيم سنوية"],
     ["indicateurs-developpement-algerie", "valeurs annuelles", "yearly values", "قيم سنوية"],
+    ["production-agricole-algerie", "valeurs annuelles", "yearly values", "قيم سنوية"],
     ["biodiversite-algerie", "observations", "observations", "رصدات"],
     ["faune-algerie", "espèces", "species", "أنواع"],
     ["pollution-atmospherique-algerie", "mesures", "measurements", "قياسات"],
@@ -22,8 +23,8 @@ describe("unité des données connues (table par identifiant)", () => {
     expect(devinerUnite("أي", "ar", slug)).toBe(ar);
   });
 
-  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique, biodiversité, football, températures, pétrole-gaz, pêche et Banque mondiale", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(54);
+  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique, biodiversité, football, températures, pétrole-gaz, pêche, Banque mondiale et agriculture", () => {
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(55);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }
