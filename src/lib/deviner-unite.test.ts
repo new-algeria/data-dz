@@ -7,6 +7,7 @@ describe("unité des données connues (table par identifiant)", () => {
     ["gas-stations", "stations", "stations", "محطات"],
     ["seismes-algerie", "séismes", "earthquakes", "زلازل"],
     ["electricite-algerie", "observations", "observations", "رصدات"],
+    ["petrole-gaz-algerie", "valeurs annuelles", "yearly values", "قيم سنوية"],
     ["biodiversite-algerie", "observations", "observations", "رصدات"],
     ["faune-algerie", "espèces", "species", "أنواع"],
     ["pollution-atmospherique-algerie", "mesures", "measurements", "قياسات"],
@@ -19,8 +20,8 @@ describe("unité des données connues (table par identifiant)", () => {
     expect(devinerUnite("أي", "ar", slug)).toBe(ar);
   });
 
-  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique, biodiversité, football et températures", () => {
-    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(51);
+  it("couvre les 33 données initiales, les 11 données OpenStreetMap, les datasets sismique, électrique, biodiversité, football, températures et pétrole-gaz", () => {
+    expect(Object.keys(UNITES_PAR_SLUG)).toHaveLength(52);
     for (const unites of Object.values(UNITES_PAR_SLUG)) {
       expect(unites.fr && unites.en && unites.ar).toBeTruthy();
     }
