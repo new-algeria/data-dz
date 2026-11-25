@@ -186,7 +186,7 @@ export async function publierFichiers(
  * Recadre l'image au format des illustrations (1200 × 720, comme le pack d'origine) et la convertit en WebP
  * (JPEG si le navigateur ne sait pas encoder le WebP). Résultat léger, homogène avec les autres illustrations.
  */
-export async function preparerIllustration(fichier: File): Promise<Blob> {
+export async function preparerIllustration(fichier: Blob): Promise<Blob> {
   const url = URL.createObjectURL(fichier);
   try {
     const image = await new Promise<HTMLImageElement>((resoudre, rejeter) => {

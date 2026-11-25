@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { CheckCircle2, ImagePlus, Loader2, RotateCcw, Star, Trash2, Upload, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { ChoixSource } from "@/components/admin/ChoixSource";
+import { PropositionsImages } from "@/components/admin/PropositionsImages";
 import { useSourcesAdmin } from "@/hooks/use-sources-admin";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -167,6 +168,14 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
   const changerTitreFr = (valeur: string) =>
     setFormulaire((actuel) => ({ ...actuel, titre: { ...actuel.titre, fr: valeur }, slug: slugManuel ? actuel.slug : slugDepuisTitre(valeur) }));
 
+  /** Image proposée (Wikimedia Commons, libre) : même recadrage qu'un fichier importé. */
+  const choisirImageProposee = async (image: Blob) => {
+    setErreur(null);
+    const blob = await preparerIllustration(image);
+    setIllustration({ blob, apercu: URL.createObjectURL(blob) });
+    setRetirer(false);
+  };
+
   const choisirImage = async (fichier: File | undefined) => {
     if (!fichier) return;
     setErreur(null);
@@ -289,6 +298,7 @@ export const DialogueDonnee = ({ donnee, ouvert, onFermer, onEnregistre }: Dialo
                 )}
               </div>
             </div>
+            <PropositionsImages titre={formulaire.titre} onChoisir={choisirImageProposee} desactive={enCours} />
             <p className="text-xs text-muted-foreground">{t("adminDonnees.aideIllustration")}</p>
           </section>
 
