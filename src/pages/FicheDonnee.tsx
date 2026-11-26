@@ -7,7 +7,9 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Building2, ExternalLink, FileArchive, Globe2, Info, Loader2, MapPinned, SearchX } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { CustomMetaTags } from "@/components/MetaTags";
+import { CustomMetaTags, URL_SITE_PUBLIC } from "@/components/MetaTags";
+import { descriptionMeta, jsonLdDataset } from "@/lib/donnees-structurees";
+import { urlIllustration } from "@/lib/illustrations";
 import CustomMarkdown from "@/components/CustomMarkdown";
 import { EtatErreur } from "@/components/EtatErreur";
 import { Button } from "@/components/ui/button";
@@ -114,6 +116,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
 
   const titre = texteTraduit(donnee.titre, langue);
   const description = texteTraduit(donnee.description, langue);
+  // Phrase de secours pour Google quand la description manque ou est trop courte.
+  const complementSeo = t("fiche.seo.complement", { titre, source: donnee.sources?.nom ?? "data-dz" });
   const version = donnee.versions;
   // Données non redistribuables : aucun fichier, aucun aperçu, pas de « Pour les développeurs » (l'API ne les sert pas).
   const restreinte = estRestreinte(donnee);
@@ -137,9 +141,17 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
     <>
       <CustomMetaTags
         title={`${titre} - data-dz`}
-        description={description || titre}
+        description={descriptionMeta(description || complementSeo)}
         path={routes.donnee(donnee.slug)}
         image={urlApercu(donnee.slug, langue, donnee.mis_a_jour_le)}
+        donneesStructurees={jsonLdDataset(donnee, {
+          titre,
+          description,
+          complement: complementSeo,
+          url: `${URL_SITE_PUBLIC}${routes.donnee(donnee.slug)}`,
+          image: urlIllustration(donnee),
+          langue,
+        })}
       />
 
       <EnTeteFiche donnee={donnee} nombreEvenementsCalendrier={nombreEvenementsCalendrier} nombreVues={nombreVues} />

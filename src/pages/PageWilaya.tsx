@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Braces, ChevronRight, Info, MapPin, Share2, ChartNoAxesColumnIncreasing, Users } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { CustomMetaTags } from "@/components/MetaTags";
+import { CustomMetaTags, URL_SITE_PUBLIC } from "@/components/MetaTags";
+import { jsonLdWilaya } from "@/lib/donnees-structurees";
 import { EtatErreur } from "@/components/EtatErreur";
 import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -83,6 +84,15 @@ const PageWilaya = () => {
         title={titrePage}
         description={t("wilayas.metaDescription", { nom })}
         path={wilaya ? routes.wilaya(identifiantWilaya(wilaya)) : routes.wilayas}
+        donneesStructurees={
+          wilaya
+            ? jsonLdWilaya(wilaya, {
+                nom,
+                url: `${URL_SITE_PUBLIC}${routes.wilaya(identifiantWilaya(wilaya))}`,
+                description: t("wilayas.metaDescription", { nom }),
+              })
+            : undefined
+        }
       />
       <Navbar />
       <main className="flex-1 pb-16 pt-20">
@@ -107,6 +117,8 @@ const PageWilaya = () => {
                 ) : (
                   <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 md:text-6xl dark:text-white">
                     {nom}
+                    {/* Espace : sans lui, le titre lu par les moteurs colle les deux noms (« Algerالجزائر »). */}
+                    {wilaya?.nom.ar && langue !== "ar" && " "}
                     {wilaya?.nom.ar && langue !== "ar" && (
                       <span className="mt-1 block text-2xl font-bold text-emerald-700 md:text-3xl dark:text-emerald-400">
                         <span lang="ar" dir="rtl">

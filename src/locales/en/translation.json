@@ -277,7 +277,10 @@
     },
     "proposePar": "Submitted by",
     "modifier": "Edit",
-    "modifierErreur": "Couldn't open the editor. Try again in a moment."
+    "modifierErreur": "Couldn't open the editor. Try again in a moment.",
+    "seo": {
+      "complement": "Open data on Algeria: {{titre}} (source: {{source}}), free to explore and download as CSV, Excel or JSON on data-dz."
+    }
   },
   "attribution": {
     "titre": "Attribution",
