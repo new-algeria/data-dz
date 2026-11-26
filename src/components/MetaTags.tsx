@@ -1,5 +1,8 @@
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
 import { URL_SITE } from "@/lib/donnees-structurees";
+import { LANGUES_SEO, alternativesLangues, localeOpenGraph, urlCanonique } from "@/lib/langues-seo";
+import { useLangue } from "@/hooks/use-langue";
 
 interface MetaTagsProps {
   title: string;
@@ -15,7 +18,10 @@ export const URL_SITE_PUBLIC = URL_SITE;
 const urlSite = URL_SITE_PUBLIC;
 
 export const CustomMetaTags = ({ title, description, path = "", image, donneesStructurees }: MetaTagsProps) => {
-  const urlComplete = `${urlSite}${path}`;
+  const { search } = useLocation();
+  const langue = useLangue();
+  // Chaque langue a sa propre adresse (?lng=fr|en|ar) : canonique de la version affichée et liens hreflang.
+  const urlComplete = urlCanonique(path, search, langue);
   const urlImage = image ?? `${urlSite}/og-data-dz-v2.jpg`;
 
   return (
@@ -29,6 +35,13 @@ export const CustomMetaTags = ({ title, description, path = "", image, donneesSt
       <meta property="og:image" content={urlImage} />
       <meta property="og:url" content={urlComplete} />
       <meta property="og:type" content="website" />
+      <meta property="og:locale" content={localeOpenGraph(langue)} />
+      {LANGUES_SEO.filter((autre) => autre !== langue).map((autre) => (
+        <meta key={autre} property="og:locale:alternate" content={localeOpenGraph(autre)} />
+      ))}
+      {alternativesLangues(path).map(({ hreflang, href }) => (
+        <link key={hreflang} rel="alternate" hrefLang={hreflang} href={href} />
+      ))}
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
