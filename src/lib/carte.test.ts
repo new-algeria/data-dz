@@ -28,4 +28,12 @@ describe("popup de la carte", () => {
   it("met le nom arabe en premier en arabe", () => {
     expect(champsLisibles(pharmacie, "ar")[0]).toEqual(["name_ar", "صيدلية الأمل"]);
   });
+
+  it("n'affiche ni les champs techniques d'OpenStreetMap (@id, @geometry) ni ceux de la synchro (doublon, wilaya codée, absence)", () => {
+    const champs = champsLisibles(
+      { "@id": "node/1", name: "Mosquée El Fath", doublon_probable: "way/2", code_wilaya: "16", osm_absent_depuis: "2026-11-01", wilaya: "Alger", "@geometry": "center" },
+      "fr"
+    );
+    expect(champs.map(([cle]) => cle)).toEqual(["name", "wilaya"]);
+  });
 });
