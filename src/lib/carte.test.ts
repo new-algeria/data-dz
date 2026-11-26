@@ -36,4 +36,12 @@ describe("popup de la carte", () => {
     );
     expect(champs.map(([cle]) => cle)).toEqual(["name", "wilaya"]);
   });
+
+  it("préfère le nom remis en forme et n'affiche pas deux fois le même nom à la casse près", () => {
+    const champs = champsLisibles({ "@id": "node/1", name: "PHARMACIE BENALI", nom_affiche: "Pharmacie Benali", "addr:street": "Rue Larbi Ben M'hidi", qualite: 2 }, "fr");
+    expect(champs).toEqual([
+      ["nom_affiche", "Pharmacie Benali"],
+      ["addr:street", "Rue Larbi Ben M'hidi"],
+    ]);
+  });
 });
