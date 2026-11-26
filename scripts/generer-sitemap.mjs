@@ -75,13 +75,29 @@ const entrees = [
   })),
 ];
 
+// Trois langues : chaque page existe sans paramètre (langue de l'appareil, x-default) et en ?lng=fr|en|ar
+// (même règle que src/lib/langues-seo.ts). Chaque entrée liste toutes ses versions (hreflang), comme le demande Google.
+const LANGUES = ["fr", "en", "ar"];
+const versions = (loc) => [
+  ...LANGUES.map((langue) => ({ hreflang: langue, href: `${loc}?lng=${langue}` })),
+  { hreflang: "x-default", href: loc },
+];
+const liens = (loc) =>
+  versions(loc)
+    .map((v) => `<xhtml:link rel="alternate" hreflang="${v.hreflang}" href="${echapper(v.href)}"/>`)
+    .join("");
+
+const lignes = entrees.flatMap((e) =>
+  versions(e.loc).map(
+    (v) => `  <url><loc>${echapper(v.href)}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ""}${liens(e.loc)}</url>`
+  )
+);
+
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${entrees
-  .map((e) => `  <url><loc>${echapper(e.loc)}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ""}</url>`)
-  .join("\n")}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${lignes.join("\n")}
 </urlset>
 `;
 
 writeFileSync("dist/sitemap.xml", xml);
-console.log(`✓ sitemap.xml : ${entrees.length} URL (${donnees.length} fiches)`);
+console.log(`✓ sitemap.xml : ${lignes.length} URL (${entrees.length} pages × 4 versions, ${donnees.length} fiches)`);

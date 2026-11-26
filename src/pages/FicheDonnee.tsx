@@ -118,6 +118,8 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
   const description = texteTraduit(donnee.description, langue);
   // Phrase de secours pour Google quand la description manque ou est trop courte.
   const complementSeo = t("fiche.seo.complement", { titre, source: donnee.sources?.nom ?? "data-dz" });
+  // Chaque version linguistique (?lng=) garde une description dans sa langue : sans traduction, la phrase de secours.
+  const descriptionSeo = donnee.description?.[langue]?.trim() || complementSeo;
   const version = donnee.versions;
   // Données non redistribuables : aucun fichier, aucun aperçu, pas de « Pour les développeurs » (l'API ne les sert pas).
   const restreinte = estRestreinte(donnee);
@@ -141,12 +143,12 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
     <>
       <CustomMetaTags
         title={`${titre} - data-dz`}
-        description={descriptionMeta(description || complementSeo)}
+        description={descriptionMeta(descriptionSeo)}
         path={routes.donnee(donnee.slug)}
         image={urlApercu(donnee.slug, langue, donnee.mis_a_jour_le)}
         donneesStructurees={jsonLdDataset(donnee, {
           titre,
-          description,
+          description: descriptionSeo,
           complement: complementSeo,
           url: `${URL_SITE_PUBLIC}${routes.donnee(donnee.slug)}`,
           image: urlIllustration(donnee),
