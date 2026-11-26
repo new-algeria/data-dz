@@ -7,7 +7,8 @@ export const COULEUR_SANS_VALEUR = "#e5e7eb";
 // Champs lisibles mis en avant dans la popup, par ordre de préférence ; puis les autres champs texte.
 const CLES_LISIBLES = ["nom", "name", "name_fr", "nom_fr", "titre", "label", "libelle", "adresse", "address", "commune", "daira", "wilaya", "ville", "operator", "operateur"];
 // Identifiants et champs techniques : jamais affichés dans la popup.
-const MOTIF_TECHNIQUE = /^(id|fid|gid|uuid|objectid|source|refs?)$|(^|_)(id|code|ref|refs|osm|wikidata|geo|precision|method|lat|lng|lon|latitude|longitude)(_|$)/i;
+// `@id`, `@geometry`… : propriétés techniques des exports OpenStreetMap (overpass-turbo, synchro data-dz).
+const MOTIF_TECHNIQUE = /^@|^(id|fid|gid|uuid|objectid|source|refs?)$|(^|_)(id|code|ref|refs|osm|wikidata|geo|precision|method|lat|lng|lon|latitude|longitude|doublon)(_|$)/i;
 const NB_CHAMPS_POPUP = 3;
 
 /** Les 3 premiers champs texte lisibles (nom, adresse, commune…), sans doublon ni identifiant technique. */
