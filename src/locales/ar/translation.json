@@ -328,7 +328,10 @@
     },
     "proposePar": "اقترحها",
     "modifier": "تعديل",
-    "modifierErreur": "تعذّر فتح التعديل. حاول بعد قليل."
+    "modifierErreur": "تعذّر فتح التعديل. حاول بعد قليل.",
+    "seo": {
+      "complement": "بيانات مفتوحة عن الجزائر: {{titre}} (المصدر: {{source}})، للاطلاع والتحميل مجانًا بصيغ CSV وExcel وJSON على data-dz."
+    }
   },
   "attribution": {
     "titre": "الإسناد",

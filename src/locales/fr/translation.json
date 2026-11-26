@@ -277,7 +277,10 @@
     },
     "proposePar": "Proposée par",
     "modifier": "Modifier",
-    "modifierErreur": "Impossible d'ouvrir la modification. Réessaie dans un instant."
+    "modifierErreur": "Impossible d'ouvrir la modification. Réessaie dans un instant.",
+    "seo": {
+      "complement": "Données ouvertes sur l'Algérie : {{titre}} (source : {{source}}), à visualiser et à télécharger gratuitement en CSV, Excel ou JSON sur data-dz."
+    }
   },
   "attribution": {
     "titre": "Attribution",
