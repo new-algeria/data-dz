@@ -6,14 +6,14 @@ import type { ResumeDonnee } from "./types";
  * Casse et accents ignorés. Les titres qui commencent par la recherche passent devant.
  */
 
-const normaliser = (texte: string) =>
+export const normaliser = (texte: string) =>
   texte
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .toLowerCase();
 
 /** Mots du texte (lettres, signes arabes et chiffres), normalisés. */
-const motsDe = (texte: string): string[] => normaliser(texte).match(/[\p{L}\p{M}\p{N}]+/gu) ?? [];
+export const motsDe = (texte: string): string[] => normaliser(texte).match(/[\p{L}\p{M}\p{N}]+/gu) ?? [];
 
 export function rechercherDonnees(liste: ResumeDonnee[], terme: string, langue: string, max = 6): ResumeDonnee[] {
   const recherche = motsDe(terme);

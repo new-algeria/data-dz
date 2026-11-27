@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useVisuel, type VueVisuel } from "@/hooks/use-visuel";
 import type { Fichier } from "@/lib/types";
+import { useLangue } from "@/hooks/use-langue";
+import { devinerUnite } from "@/lib/deviner-unite";
 
 // MapLibre et Recharts ne sont chargés que sur les fiches qui en ont besoin.
 const GlobeDonnees = lazyAvecRechargement(() => import("@/components/fiche/GlobeDonnees"));
@@ -46,14 +48,18 @@ interface VisuelDonneeProps {
   sourceUrl?: string | null;
   fichiers: Fichier[];
   onNombreEvenementsChange?: (nombre: number | null) => void;
+  /** Données OpenStreetMap : nombres « estimés » dans la recherche de zone de la carte. */
+  estimee?: boolean;
 }
 
 /**
  * Visuel détecté automatiquement en tête de fiche : carte (GeoJSON, coordonnées, wilayas) ou graphique.
  * Rien n'est affiché si le jeu n'a rien de traçable. Si les deux existent, un sélecteur permet de basculer.
  */
-export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers, onNombreEvenementsChange }: VisuelDonneeProps) => {
+export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers, onNombreEvenementsChange, estimee = false }: VisuelDonneeProps) => {
   const { t } = useTranslation();
+  const langue = useLangue();
+  const rechercheZone = useMemo(() => ({ unite: devinerUnite(titre, langue, slug), estimee }), [titre, langue, slug, estimee]);
   const [vueDemandee, setVueDemandee] = useState<VueVisuel | null>(null);
   const fichierICS = useMemo(() => fichiers.find(estFichierICS) ?? null, [fichiers]);
   // Un calendrier est prioritaire et ne déclenche aucun téléchargement du JSON pour carte/graphique.
@@ -87,9 +93,9 @@ export const VisuelDonnee = ({ slug, titre, source, sourceUrl, fichiers, onNombr
     else if (vue === "carte" && detection.carte?.genre === "points" && detection.carte.origine === "geojson") {
       // Tous les GeoJSON du jeu restent proposés dans le sélecteur de la carte.
       const geojsons = fichiers.filter((fichier) => fichier.format.toLowerCase() === "geojson");
-      contenu = <GlobeDonnees fichiers={geojsons} initial={detection.carte.fichierId} hauteur={HAUTEUR_VISUEL} projection="mercator" heatmapInitiale={slug === "wildfires"} />;
+      contenu = <GlobeDonnees fichiers={geojsons} initial={detection.carte.fichierId} hauteur={HAUTEUR_VISUEL} projection="mercator" heatmapInitiale={slug === "wildfires"} rechercheZone={rechercheZone} />;
     } else if (lignes && vue === "carte" && detection.carte && !(detection.carte.genre === "points" && detection.carte.origine === "geojson")) {
-      contenu = <CarteDepuisLignes visuel={detection.carte} lignes={lignes} hauteur={HAUTEUR_VISUEL} />;
+      contenu = <CarteDepuisLignes visuel={detection.carte} lignes={lignes} hauteur={HAUTEUR_VISUEL} rechercheZone={rechercheZone} />;
     } else if (lignes && vue === "graphique" && detection.graphique) {
       contenu = <GraphiqueVisuel visuel={detection.graphique} lignes={lignes} titreJeu={titre} source={source} slug={slug} hauteur={HAUTEUR_VISUEL} />;
     }

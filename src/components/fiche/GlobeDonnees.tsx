@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import maplibregl, { type MapGeoJSONFeature } from "maplibre-gl";
-import type { GeoJsonObject } from "geojson";
+import type { Feature, FeatureCollection, GeoJsonObject, Polygon } from "geojson";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useTranslation } from "react-i18next";
 import { Globe2, Layers, Loader2 } from "lucide-react";
@@ -17,6 +17,7 @@ import { useLangue } from "@/hooks/use-langue";
 import type { Fichier } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { champsLisibles, COULEUR_SANS_VALEUR, DEGRADE_VERT } from "@/lib/carte";
+import { useZoneCarte } from "@/components/fiche/ZoneCarte";
 
 // Au-delà de cette taille, le globe ne se charge que si le visiteur le demande.
 const SEUIL_GROS_FICHIER = 10 * 1024 * 1024;
@@ -88,6 +89,14 @@ export interface Couche {
   heatmap?: boolean;
 }
 
+/** Zone choisie dans la recherche de la carte (wilaya ou commune) : voile autour, contour, cadrage. */
+export interface ZoneAffichee {
+  cle: string;
+  masque: Feature<Polygon>;
+  trace: FeatureCollection;
+  boite: [number, number, number, number];
+}
+
 // Au-delà, les points sont regroupés (clusters) pour rester lisibles et fluides.
 const SEUIL_REGROUPEMENT = 2000;
 const EMPRISE_ALGERIE: [number, number, number, number] = [-8.7, 18.9, 12, 37.2];
@@ -116,14 +125,18 @@ interface GlobeProps {
   enSurimpression?: ReactNode;
   /** « mercator » : carte plane, mieux adaptée à un cadre bas centré sur l'Algérie (le bouton globe reste disponible). */
   projection?: "globe" | "mercator";
+  /** Zone à mettre en avant (recherche d'une wilaya ou d'une commune). */
+  zone?: ZoneAffichee | null;
+  /** Recherche de zone posée en haut de la carte. */
+  barreZone?: ReactNode;
 }
 
 /**
  * Carte MapLibre (fond OpenStreetMap, projection globe), cadrée sur l'Algérie au départ.
  * Molette : zoom seulement après un clic sur la carte (la page défile normalement sinon).
  */
-export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, projection = "globe" }: GlobeProps) => {
-  const { t } = useTranslation();
+export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, projection = "globe", zone = null, barreZone }: GlobeProps) => {
+  const { t, i18n } = useTranslation();
   const langue = useLangue();
   const conteneur = useRef<HTMLDivElement>(null);
   const refCarte = useRef<maplibregl.Map | null>(null);
@@ -135,6 +148,9 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
   const [indisponible, setIndisponible] = useState(false);
   const [molette, setMolette] = useState(false);
   const mouvementReduit = useReducedMotion();
+  const refZone = useRef<ZoneAffichee | null>(zone);
+  refZone.current = zone;
+  const zonePrecedente = useRef<string | null>(null);
 
   // La carte est créée une seule fois ; changer de fichier ne fait qu'échanger ses couches.
   useEffect(() => {
@@ -353,9 +369,38 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
     const emprise = empriseGlobale(couches);
     const premiere = premiereArrivee.current;
     premiereArrivee.current = false;
+    // Une zone est choisie : c'est elle qui fixe le cadrage.
+    if (refZone.current) return;
     if (!emprise || (premiere && recoupeAlgerie(emprise))) return;
     carte.fitBounds(emprise, { padding: 40, maxZoom: 9, duration: mouvementReduit || premiere ? 0 : 1200, essential: false });
   }, [couches, prete, mouvementReduit]);
+
+  // Zone choisie : voile sombre autour, double contour (blanc puis vert), carte cadrée sur la zone.
+  useEffect(() => {
+    const carte = refCarte.current;
+    if (!carte || !prete) return;
+    for (const calque of ["zone-masque", "zone-halo", "zone-contour"]) if (carte.getLayer(calque)) carte.removeLayer(calque);
+    for (const source of ["zone-masque", "zone-trace"]) if (carte.getSource(source)) carte.removeSource(source);
+    const duree = mouvementReduit ? 0 : 1100;
+    const precedente = zonePrecedente.current;
+    zonePrecedente.current = zone?.cle ?? null;
+    if (!zone) {
+      // Zone effacée : retour à toute l'Algérie.
+      if (precedente) carte.fitBounds(EMPRISE_ALGERIE, { padding: 16, duration: duree, essential: false });
+      return;
+    }
+    // Sous les points : avant le premier calque de données.
+    const avant = carte.getStyle().layers.find((calque) => calque.id.startsWith("donnees-"))?.id;
+    carte.addSource("zone-masque", { type: "geojson", data: zone.masque });
+    carte.addSource("zone-trace", { type: "geojson", data: zone.trace });
+    carte.addLayer({ id: "zone-masque", type: "fill", source: "zone-masque", paint: { "fill-color": "#0f172a", "fill-opacity": 0.38 } }, avant);
+    carte.addLayer(
+      { id: "zone-halo", type: "line", source: "zone-trace", paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.9, "line-blur": 1 } },
+      avant
+    );
+    carte.addLayer({ id: "zone-contour", type: "line", source: "zone-trace", paint: { "line-color": VERT, "line-width": 2.5 } }, avant);
+    carte.fitBounds(zone.boite, { padding: { top: 76, bottom: 24, left: 24, right: 56 }, maxZoom: 12.5, duration: duree, essential: false });
+  }, [zone, prete, mouvementReduit]);
 
   if (indisponible) {
     return (
@@ -388,8 +433,16 @@ export const Globe = ({ couches, hauteur = "h-[30rem]", enSurimpression, project
         </ul>
       )}
       {enSurimpression}
+      {/* Toujours à gauche, côté opposé aux boutons de la carte (qui restent à droite, même en arabe). */}
+      {barreZone && (
+        <div className="pointer-events-none absolute left-2 right-12 top-2 z-10 flex justify-start" dir="ltr">
+          <div className="contents" dir={i18n.dir()}>
+            {barreZone}
+          </div>
+        </div>
+      )}
       {!molette && (
-        <p className="pointer-events-none absolute top-2 start-2 rounded-md bg-white/85 px-2 py-1 text-[11px] text-gray-700 shadow-sm backdrop-blur dark:bg-gray-900/85 dark:text-gray-200 max-sm:hidden">
+        <p className={cn("pointer-events-none absolute rounded-md", barreZone ? "left-2 top-[4.5rem]" : "start-2 top-2", " bg-white/85 px-2 py-1 text-[11px] text-gray-700 shadow-sm backdrop-blur dark:bg-gray-900/85 dark:text-gray-200 max-sm:hidden")}>
           {t("visuel.aideMolette")}
         </p>
       )}
@@ -407,10 +460,12 @@ interface GlobeDonneesProps {
   hauteur?: string;
   /** Active le sélecteur « concentration / détections », avec la heatmap affichée au départ. */
   heatmapInitiale?: boolean;
+  /** Recherche d'une wilaya ou d'une commune sur la carte (visuel de la fiche). */
+  rechercheZone?: { unite: string; estimee: boolean };
 }
 
 /** Carte des fichiers GeoJSON d'une fiche : choix du fichier affiché, ou superposition de tous. */
-export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", projection, heatmapInitiale = false }: GlobeDonneesProps) => {
+export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", projection, heatmapInitiale = false, rechercheZone }: GlobeDonneesProps) => {
   const { t } = useTranslation();
   const langue = useLangue();
   const parDefaut = initial ?? (fichiers.find((fichier) => fichier.principal) ?? fichiers[0])?.id ?? "";
@@ -437,6 +492,8 @@ export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", project
         : [],
     [chargement.statut, chargement.donnees, modeHeatmap, heatmapInitiale, choix, fichiers] // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  const zoneCarte = useZoneCarte({ couches, unite: rechercheZone?.unite ?? "", estimee: rechercheZone?.estimee ?? false, active: Boolean(rechercheZone) });
 
   const selecteur = (fichiers.length > 1 || heatmapInitiale) && (
     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -518,7 +575,9 @@ export const GlobeDonnees = ({ fichiers, initial, hauteur = "h-[30rem]", project
       </div>
     );
   } else {
-    contenu = <Globe couches={couches} hauteur={hauteur} projection={projection} enSurimpression={legendeChaleur} />;
+    contenu = (
+      <Globe couches={zoneCarte.couches} hauteur={hauteur} projection={projection} enSurimpression={legendeChaleur} zone={zoneCarte.zone} barreZone={zoneCarte.barre} />
+    );
   }
 
   return (

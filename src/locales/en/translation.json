@@ -1792,5 +1792,15 @@
     "messageTelechargementSansPrenom": "Welcome to data-dz! Enjoy your download 🎉",
     "message": "Welcome {{prenom}}! 🎉",
     "messageSansPrenom": "Welcome to data-dz! 🎉"
+  },
+  "zoneCarte": {
+    "placeholder": "Search a wilaya or a town…",
+    "wilaya": "Wilaya {{code}}",
+    "commune": "Town · {{wilaya}}",
+    "chargement": "Loading…",
+    "aucun": "No wilaya or town found",
+    "effacer": "Back to all of Algeria",
+    "estimes": "estimated",
+    "erreur": "Boundaries unavailable"
   }
 }

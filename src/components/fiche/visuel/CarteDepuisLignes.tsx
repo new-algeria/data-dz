@@ -25,6 +25,7 @@ import { localeNombres } from "@/lib/fichiers";
 import { chargerWilayas } from "@/lib/referentiels";
 import { texteTraduit } from "@/lib/traduction";
 import { cn } from "@/lib/utils";
+import { useZoneCarte } from "@/components/fiche/ZoneCarte";
 
 // Contours des 69 wilayas : fichier publié du jeu « Divisions administratives » (GeoAlgeria).
 const SLUG_DIVISIONS = "divisions-administratives";
@@ -58,6 +59,8 @@ interface CarteDepuisLignesProps {
   visuel: Exclude<VisuelCarte, { origine: "geojson" }>;
   lignes: Ligne[];
   hauteur: string;
+  /** Recherche d'une wilaya ou d'une commune (carte à points). */
+  rechercheZone?: { unite: string; estimee: boolean };
 }
 
 /** Contours des wilayas (chargés une fois, gardés en mémoire comme les autres fichiers). */
@@ -190,8 +193,14 @@ const CarteWilayas = ({ visuel, lignes, hauteur }: { visuel: Extract<VisuelCarte
   );
 };
 
+/** Carte à points construite à partir des lignes du JSON, avec la recherche de zone. */
+const CartePoints = ({ couches, hauteur, rechercheZone }: { couches: Couche[]; hauteur: string; rechercheZone?: { unite: string; estimee: boolean } }) => {
+  const zoneCarte = useZoneCarte({ couches, unite: rechercheZone?.unite ?? "", estimee: rechercheZone?.estimee ?? false, active: Boolean(rechercheZone) });
+  return <Globe couches={zoneCarte.couches} hauteur={hauteur} projection="mercator" zone={zoneCarte.zone} barreZone={zoneCarte.barre} />;
+};
+
 /** Carte construite à partir des lignes du JSON : points (latitude / longitude) ou wilayas colorées. */
-const CarteDepuisLignes = ({ visuel, lignes, hauteur }: CarteDepuisLignesProps) => {
+const CarteDepuisLignes = ({ visuel, lignes, hauteur, rechercheZone }: CarteDepuisLignesProps) => {
   const couches = useMemo<Couche[]>(
     () =>
       visuel.genre === "points"
@@ -200,7 +209,7 @@ const CarteDepuisLignes = ({ visuel, lignes, hauteur }: CarteDepuisLignesProps) 
     [visuel, lignes]
   );
   if (visuel.genre === "wilayas") return <CarteWilayas visuel={visuel} lignes={lignes} hauteur={hauteur} />;
-  return <Globe couches={couches} hauteur={hauteur} projection="mercator" />;
+  return <CartePoints couches={couches} hauteur={hauteur} rechercheZone={rechercheZone} />;
 };
 
 export default CarteDepuisLignes;

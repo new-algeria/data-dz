@@ -1786,5 +1786,15 @@
     "messageTelechargementSansPrenom": "Bienvenue sur data-dz ! Bon téléchargement 🎉",
     "message": "Bienvenue {{prenom}} ! 🎉",
     "messageSansPrenom": "Bienvenue sur data-dz ! 🎉"
+  },
+  "zoneCarte": {
+    "placeholder": "Chercher une wilaya ou une commune…",
+    "wilaya": "Wilaya {{code}}",
+    "commune": "Commune · {{wilaya}}",
+    "chargement": "Chargement…",
+    "aucun": "Aucune wilaya ni commune trouvée",
+    "effacer": "Revenir à toute l'Algérie",
+    "estimes": "estimés",
+    "erreur": "Contours indisponibles"
   }
 }
