@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import ScrollToTop from "./components/ScrollToTop";
 import { LimiteErreurParPage } from "./components/LimiteErreur";
 import { BulleIA } from "./components/BulleIA";
+import { BienvenueMembre } from "./components/BienvenueMembre";
 import { FaviconSection } from "./components/FaviconSection";
 import { RouteProtegee } from "./components/auth/RouteProtegee";
 import { RouteModerateur } from "./components/moderation/RouteModerateur";
@@ -79,6 +80,7 @@ function App() {
       <ScrollToTop />
       <FaviconSection />
       <BulleIA />
+      <BienvenueMembre />
       <Toaster position="bottom-center" richColors closeButton dir={i18n.dir()} />
       <LimiteErreurParPage>
         <Suspense fallback={<ChargementPage />}>

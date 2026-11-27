@@ -126,3 +126,15 @@
   }
 }
 
+
+/* Accueil d'un nouveau membre (BienvenueMembre) : le fennec surgit au-dessus de la fenêtre. */
+@keyframes bienvenue-saut {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 40px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
