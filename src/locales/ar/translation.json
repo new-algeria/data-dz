@@ -1922,5 +1922,15 @@
     "messageTelechargementSansPrenom": "مرحبًا بك في data-dz! تحميلًا ممتعًا 🎉",
     "message": "مرحبًا {{prenom}}! 🎉",
     "messageSansPrenom": "مرحبًا بك في data-dz! 🎉"
+  },
+  "zoneCarte": {
+    "placeholder": "ابحث عن ولاية أو بلدية…",
+    "wilaya": "الولاية {{code}}",
+    "commune": "بلدية · {{wilaya}}",
+    "chargement": "جارٍ التحميل…",
+    "aucun": "لم يتم العثور على ولاية أو بلدية",
+    "effacer": "العودة إلى كامل الجزائر",
+    "estimes": "تقديرية",
+    "erreur": "الحدود غير متوفرة"
   }
 }

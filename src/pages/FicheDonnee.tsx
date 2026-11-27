@@ -162,7 +162,7 @@ const ContenuFiche = ({ donnee }: { donnee: Donnee }) => {
         {/* Ancre des boutons « Voir la carte » / « Voir le graphique » de l'en-tête */}
         {!restreinte && (
           <div id="visuel" className="mt-6 relative scroll-mt-24">
-            <VisuelDonnee slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} sourceUrl={donnee.sources?.url ?? donnee.url_source} fichiers={fichiers} onNombreEvenementsChange={publierNombreEvenements} />
+            <VisuelDonnee estimee={["openstreetmap", "osm"].includes(donnee.sources?.slug ?? "")} slug={donnee.slug} titre={titre} source={donnee.sources?.nom ?? null} sourceUrl={donnee.sources?.url ?? donnee.url_source} fichiers={fichiers} onNombreEvenementsChange={publierNombreEvenements} />
           </div>
         )}
 
