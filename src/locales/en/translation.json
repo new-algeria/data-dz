@@ -480,47 +480,62 @@
     "confidentialite": {
       "titre": "Privacy policy",
       "metaDescription": "What data data-dz collects, why, who can access it and how to exercise your rights.",
-      "resume": "no data is required to browse or download datasets. If you create an account, we keep the minimum needed to sign you in and show your profile. No advertising, no data selling.",
+      "resume": "no data is required to browse or download datasets. If you create an account, we keep the bare minimum to run your space. No ads, no data sales, and you can delete your account at any time.",
       "sections": [
         {
           "id": "controller",
           "titre": "Who is responsible?",
-          "texte": "The data-dz website is run by the **New Algeria** project ([newalgeria.org](https://newalgeria.org)).\n\nFor any question about your data: [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
+          "texte": "The **data-dz** ([data-dz.com](https://www.data-dz.com)) and **New Algeria** ([newalgeria.org](https://newalgeria.org)) websites are run by the New Algeria project. They share the same account and the same privacy rules.\n\nFor any question about your data: [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
+        },
+        {
+          "id": "law",
+          "titre": "Which rules do we follow?",
+          "texte": "We process your data in accordance with **Algerian Law No. 18-07 of 10 June 2018** on the protection of individuals in the processing of personal data, as amended, and, for people located in the European Union, the **General Data Protection Regulation (GDPR)**.\n\nWe only collect the data we need, for specific purposes, and we never ask for **sensitive data** (health, opinions, origin…)."
         },
         {
           "id": "data",
           "titre": "What data do we collect?",
-          "texte": "**No data is required to browse or download the datasets.**\n\nWe only collect data if you create an account:\n\n- your **email address**;\n- if you choose “Continue with Google”: your Google **name** and **profile picture**;\n- the **optional** information you add to your profile: username, display name, bio, website and avatar.\n\nWhen you sign up, a username is created automatically from the beginning of your email address. It is public: you can change it at any time in [My profile](/profile).\n\n**Usage statistics**: every dataset page view and every download is recorded with its date, without any link to an account, except downloads made on the website by a signed-in member, which are linked to their account. Only data-dz administrators can see these statistics; if you delete your account, your downloads are no longer linked to it."
+          "texte": "**No data is required to browse or download datasets.**\n\nIf you create an account:\n\n- **Account**: your email address; with “Continue with Google, Facebook or GitHub”, your name and profile picture from that service.\n- **Profile** (optional): username, display name, bio, website and avatar. On sign-up, a username is created from the beginning of your email address; you can change it at any time in [My profile](/profile).\n- **Participation**: your votes, favourites, comments, dataset submissions (and the files you upload), your ideas and comments on the New Algeria idea box, and your notifications.\n- **DjazAI**: the questions you ask, sent to get an answer, and the number of questions asked each day. Your conversation history stays **in your browser**: it is not kept on our servers.\n- **Usage statistics**: each dataset page view and each download is recorded with its date, without any link to an account, except for downloads made from the site by a signed-in member, which are linked to their account. Only administrators can see these statistics."
         },
         {
           "id": "purpose",
           "titre": "Why?",
-          "texte": "Only to let you sign in (including sending you confirmation and password reset emails) and to show your public profile.\n\n**No advertising, no data selling, no profiling.**"
+          "texte": "- to sign you in and secure your account (confirmation and password reset emails);\n- to display your public profile and run votes, favourites, comments, submissions and the idea box;\n- to notify you in the app and by email (reply to a submission, new version of a dataset you follow…);\n- to answer your questions with DjazAI;\n- to understand which datasets are useful, to improve the catalogue.\n\nThis processing relies on your consent, given when you create your account, and on the operation of the service you use. **No ads, no data sales, no profiling.**"
         },
         {
           "id": "public",
           "titre": "What is public",
-          "texte": "On your public page (`/members/your-username`), anyone can see your username, display name, bio, website, avatar, sign-up date and, where applicable, your moderator or administrator role.\n\n**Your email address is never shown.**"
+          "texte": "On your public page (`/members/your-username`), anyone can see your username, display name, bio, website, avatar, sign-up date, your role if any, and the datasets you submitted that were published.\n\nYour comments and ideas are public, with your username. **Your email address is never shown.**"
         },
         {
           "id": "providers",
           "titre": "Hosting and service providers",
-          "texte": "The website relies on these services:\n\n- **Supabase**: accounts and database;\n- **Cloudflare**: storage and delivery of data files;\n- **Vercel**: website hosting and anonymous visit statistics (Vercel Analytics, without cookies);\n- **OpenStreetMap**: base map of the globes shown on dataset pages;\n- **Google**: only if you choose “Continue with Google”.\n\nAs with any website, these services receive technical information (IP address, browser type) needed to display pages and serve files. Some of them may process it outside the European Union."
+          "texte": "The site relies on these services, which only receive what they need:\n\n- **Supabase**: accounts, database, avatars and submission files;\n- **Vercel** (United States): website hosting and anonymous, cookie-free visit statistics;\n- **Cloudflare**: storage and delivery of data files;\n- **Resend** (United States): sending emails;\n- **OpenAI** (United States): DjazAI answers. Only your question and the conversation thread are sent; we attach neither your email nor your name. Avoid writing personal information there;\n- **OpenStreetMap**: map backgrounds;\n- **Google, Facebook, GitHub**: only if you choose to sign in with one of them.\n\nAs with any website, these services receive technical information (IP address, browser type) needed to display pages and serve files."
+        },
+        {
+          "id": "transfers",
+          "titre": "Data hosted outside Algeria",
+          "texte": "These providers store and process data on servers **located outside Algeria**, notably in the European Union and the United States. We chose them for their security guarantees (encryption, access control), we limit what is sent to them to the strict minimum, and this transfer falls within the framework provided by Law 18-07.\n\nIf you do not want your data processed abroad, you can keep browsing and downloading datasets **without an account**."
+        },
+        {
+          "id": "security",
+          "titre": "Security",
+          "texte": "- encrypted connections (HTTPS);\n- access restricted by rules enforced by the database: each member only sees and edits what concerns them;\n- submission files kept in a private space, read only by the moderation team;\n- no password is ever stored in plain text.\n\nIn the event of a data breach that may affect you, we notify the competent authority and the people concerned within the time limits set by law."
         },
         {
           "id": "cookies",
           "titre": "Cookies and local storage",
-          "texte": "**No advertising or tracking cookies.**\n\nThe website only keeps in your browser (local storage) what it needs to work: your sign-in session and the language you chose."
+          "texte": "**No advertising or tracking cookies.**\n\nThe site only keeps in your browser (local storage) what it needs to work: your sign-in session, your chosen language and theme, your DjazAI conversation history and a few display preferences. You can clear everything from your browser settings."
         },
         {
           "id": "retention",
           "titre": "How long?",
-          "texte": "Your account data is kept as long as your account exists. When you ask for its deletion, we delete your account, your profile and your avatar."
+          "texte": "Your account data is kept as long as your account exists.\n\nWhen you delete your account: your profile, avatar, votes, favourites, notifications and submissions (with their files) are deleted. Your comments and ideas stay visible **without your name**, so discussions keep their meaning, and your downloads are no longer linked to you in the statistics."
         },
         {
           "id": "rights",
           "titre": "Your rights",
-          "texte": "Under the GDPR, you can at any time:\n\n- **access** your data;\n- **correct** it, directly from [My profile](/profile);\n- ask for the **deletion** of your account and data, simply by writing to [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nWe reply within one month at most. If you believe your rights are not respected, you can contact the French data protection authority, the [CNIL](https://www.cnil.fr)."
+          "texte": "Under Law 18-07 (and the GDPR if you are in the European Union), you can at any time:\n\n- be **informed** of how your data is used (that is what this page is for);\n- **access** your data and get a copy;\n- **correct** it, directly from [My profile](/profile);\n- **object** to processing on legitimate grounds;\n- **delete** your account and your data, directly with the “Delete my account” button in [My profile](/profile), or on request.\n\nTo exercise these rights: [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com). We reply as soon as possible, and within one month at the latest.\n\nIf you believe your rights are not respected, you can contact the **National Authority for the Protection of Personal Data (ANPDP)** in Algeria, or the **CNIL** if you are in France."
         }
       ]
     },
@@ -1495,7 +1510,7 @@
     "misAJour": "Updated",
     "version": "Version",
     "licence": "Licence",
-    "avertissement": "Answers use the available dataset records and previews. Check the sources before reusing data.",
+    "avertissement": "Answers rely on the available dataset pages and previews: check the sources before reusing data. Don't write personal information: your questions are processed by an AI service (OpenAI).",
     "erreurConfiguration": "DjazAI is not configured yet. Please try again later.",
     "erreurLimite": "DjazAI is temporarily unavailable. Please try again shortly.",
     "erreurGenerique": "DjazAI couldn’t answer. Please try again shortly.",
@@ -1802,5 +1817,24 @@
     "effacer": "Back to all of Algeria",
     "estimes": "estimated",
     "erreur": "Boundaries unavailable"
+  },
+  "compte": {
+    "suppression": {
+      "titre": "Delete my account",
+      "explication": "Your profile, avatar, votes, favourites, notifications and submissions will be deleted. Your comments and ideas will stay visible without your name.",
+      "bouton": "Delete my account",
+      "confirmationTitre": "Permanently delete your account?",
+      "detail": "Your profile, avatar, votes, favourites, notifications and submissions (with their files) will be deleted, on data-dz and on New Algeria. Your comments and ideas will stay visible, without your name.",
+      "irreversible": "This cannot be undone.",
+      "tapePseudo": "To confirm, type your username: {{pseudo}}",
+      "annuler": "Cancel",
+      "confirmer": "Delete permanently",
+      "reussie": "Your account has been deleted. Thank you for being part of the journey!",
+      "erreurs": {
+        "admin": "An administrator account cannot be deleted from the site. Write to us at {{email}}.",
+        "indisponible": "Deletion is not available yet. Write to us at {{email}} and we will delete your account.",
+        "inconnue": "Deletion failed. Try again, or write to us at {{email}}."
+      }
+    }
   }
 }

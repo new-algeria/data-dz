@@ -480,47 +480,62 @@
     "confidentialite": {
       "titre": "Règles de confidentialité",
       "metaDescription": "Quelles données data-dz collecte, pourquoi, qui y a accès et comment exercer vos droits.",
-      "resume": "aucune donnée n'est demandée pour consulter ou télécharger les données. Si vous créez un compte, nous gardons le minimum pour vous connecter et afficher votre profil. Pas de publicité, pas de revente.",
+      "resume": "aucune donnée n'est demandée pour consulter ou télécharger les données. Si vous créez un compte, nous gardons le minimum pour faire fonctionner votre espace. Pas de publicité, pas de revente, et vous pouvez supprimer votre compte à tout moment.",
       "sections": [
         {
           "id": "controller",
           "titre": "Qui est responsable ?",
-          "texte": "Le site data-dz est porté par le projet **New Algeria** ([newalgeria.org](https://newalgeria.org)).\n\nPour toute question sur vos données : [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
+          "texte": "Les sites **data-dz** ([data-dz.com](https://www.data-dz.com)) et **New Algeria** ([newalgeria.org](https://newalgeria.org)) sont portés par le projet New Algeria. Ils partagent le même compte et les mêmes règles de confidentialité.\n\nPour toute question sur vos données : [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com)."
+        },
+        {
+          "id": "law",
+          "titre": "Quelles règles appliquons-nous ?",
+          "texte": "Nous traitons vos données dans le respect de la **loi algérienne n° 18-07 du 10 juin 2018** relative à la protection des personnes physiques dans le traitement des données à caractère personnel, telle que modifiée, et, pour les personnes qui se trouvent dans l'Union européenne, du **Règlement général sur la protection des données (RGPD)**.\n\nNous ne collectons que les données nécessaires, pour des finalités précises, et nous ne demandons **aucune donnée sensible** (santé, opinions, origine…)."
         },
         {
           "id": "data",
           "titre": "Quelles données collectons-nous ?",
-          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nNous collectons des données seulement si vous créez un compte :\n\n- votre **adresse email** ;\n- si vous choisissez « Continuer avec Google » : votre **nom** et votre **photo de profil** Google ;\n- les informations **facultatives** que vous ajoutez à votre profil : pseudo, nom affiché, bio, site web et avatar.\n\nÀ l'inscription, un pseudo est créé automatiquement à partir du début de votre adresse email. Il est public : vous pouvez le changer à tout moment dans [Mon profil](/profile).\n\n**Statistiques d'usage** : chaque consultation d'une fiche et chaque téléchargement sont enregistrés avec leur date, sans lien avec un compte, sauf pour un téléchargement fait depuis le site par un membre connecté, qui est rattaché à son compte. Seuls les administrateurs de data-dz peuvent voir ces statistiques ; si vous supprimez votre compte, vos téléchargements n'y sont plus rattachés."
+          "texte": "**Aucune donnée n'est demandée pour consulter ou télécharger les jeux de données.**\n\nSi vous créez un compte :\n\n- **Compte** : votre adresse email ; avec « Continuer avec Google, Facebook ou GitHub », votre nom et votre photo de profil chez ce service.\n- **Profil** (facultatif) : pseudo, nom affiché, bio, site web et avatar. À l'inscription, un pseudo est créé à partir du début de votre adresse email ; vous pouvez le changer à tout moment dans [Mon profil](/profile).\n- **Participation** : vos votes, favoris, commentaires, propositions de données (et les fichiers que vous envoyez), vos idées et commentaires sur la boîte à idées de New Algeria, ainsi que vos notifications.\n- **DjazAI** : les questions que vous posez, envoyées pour obtenir une réponse, et le nombre de questions posées chaque jour. L'historique de vos conversations reste **dans votre navigateur** : il n'est pas conservé sur nos serveurs.\n- **Statistiques d'usage** : chaque consultation d'une fiche et chaque téléchargement sont enregistrés avec leur date, sans lien avec un compte, sauf pour un téléchargement fait depuis le site par un membre connecté, qui est rattaché à son compte. Seuls les administrateurs peuvent voir ces statistiques."
         },
         {
           "id": "purpose",
           "titre": "Pourquoi ?",
-          "texte": "Uniquement pour vous permettre de vous connecter (y compris pour vous envoyer les emails de confirmation et de réinitialisation du mot de passe) et pour afficher votre profil public.\n\n**Pas de publicité, pas de revente de données, pas de profilage.**"
+          "texte": "- vous connecter et sécuriser votre compte (emails de confirmation et de réinitialisation du mot de passe) ;\n- afficher votre profil public et faire fonctionner les votes, favoris, commentaires, propositions et la boîte à idées ;\n- vous prévenir par notification et par email (réponse à une proposition, nouvelle version d'une donnée suivie…) ;\n- répondre à vos questions avec DjazAI ;\n- comprendre quelles données sont utiles, pour améliorer le catalogue.\n\nCes traitements reposent sur votre accord, donné en créant votre compte, et sur le fonctionnement du service que vous utilisez. **Pas de publicité, pas de revente de données, pas de profilage.**"
         },
         {
           "id": "public",
           "titre": "Ce qui est public",
-          "texte": "Sur votre page publique (`/members/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription et, le cas échéant, votre rôle de modérateur ou d'administrateur.\n\n**Votre adresse email n'est jamais affichée.**"
+          "texte": "Sur votre page publique (`/members/votre-pseudo`), tout le monde peut voir votre pseudo, votre nom affiché, votre bio, votre site web, votre avatar, votre date d'inscription, votre rôle le cas échéant et les données que vous avez proposées et qui ont été publiées.\n\nVos commentaires et vos idées sont publics, avec votre pseudo. **Votre adresse email n'est jamais affichée.**"
         },
         {
           "id": "providers",
           "titre": "Hébergement et prestataires",
-          "texte": "Le site s'appuie sur ces services :\n\n- **Supabase** : comptes et base de données ;\n- **Cloudflare** : stockage et diffusion des fichiers de données ;\n- **Vercel** : hébergement du site et statistiques de visite anonymes (Vercel Analytics, sans cookie) ;\n- **OpenStreetMap** : fond de carte des globes affichés sur les fiches de données ;\n- **Google** : uniquement si vous choisissez « Continuer avec Google ».\n\nComme pour tout site web, ces services reçoivent des informations techniques (adresse IP, type de navigateur) nécessaires pour afficher les pages et servir les fichiers. Certains peuvent les traiter en dehors de l'Union européenne."
+          "texte": "Le site s'appuie sur ces services, qui ne reçoivent que ce qui leur est nécessaire :\n\n- **Supabase** : comptes, base de données, avatars et fichiers des propositions ;\n- **Vercel** (États-Unis) : hébergement du site et statistiques de visite anonymes, sans cookie ;\n- **Cloudflare** : stockage et diffusion des fichiers de données ;\n- **Resend** (États-Unis) : envoi des emails ;\n- **OpenAI** (États-Unis) : réponses de DjazAI. Seuls votre question et le fil de la conversation sont transmis ; nous n'y joignons ni votre email ni votre nom. Évitez d'y écrire des informations personnelles ;\n- **OpenStreetMap** : fond des cartes ;\n- **Google, Facebook, GitHub** : seulement si vous choisissez de vous connecter avec l'un d'eux.\n\nComme pour tout site web, ces services reçoivent des informations techniques (adresse IP, type de navigateur) nécessaires pour afficher les pages et servir les fichiers."
+        },
+        {
+          "id": "transfers",
+          "titre": "Données hébergées hors d'Algérie",
+          "texte": "Ces prestataires conservent et traitent les données sur des serveurs **situés hors d'Algérie**, notamment dans l'Union européenne et aux États-Unis. Nous les avons choisis pour leurs garanties de sécurité (chiffrement, contrôle des accès), nous limitons ce qui leur est transmis au strict nécessaire, et ce transfert s'inscrit dans le cadre prévu par la loi 18-07.\n\nSi vous ne souhaitez pas que vos données soient traitées à l'étranger, vous pouvez continuer à consulter et télécharger les données **sans créer de compte**."
+        },
+        {
+          "id": "security",
+          "titre": "Sécurité",
+          "texte": "- connexions chiffrées (HTTPS) ;\n- accès limité par des règles appliquées par la base de données : chaque membre ne voit et ne modifie que ce qui le concerne ;\n- fichiers des propositions rangés dans un espace privé, lus seulement par l'équipe de modération ;\n- aucun mot de passe n'est stocké en clair.\n\nEn cas de violation de données susceptible de vous concerner, nous prévenons l'autorité compétente et les personnes concernées dans les délais prévus par la loi."
         },
         {
           "id": "cookies",
           "titre": "Cookies et stockage local",
-          "texte": "**Pas de cookies publicitaires ni de suivi.**\n\nLe site garde seulement dans votre navigateur (stockage local) ce qui est nécessaire à son fonctionnement : votre session de connexion et la langue que vous avez choisie."
+          "texte": "**Pas de cookies publicitaires ni de suivi.**\n\nLe site garde seulement dans votre navigateur (stockage local) ce qui est nécessaire à son fonctionnement : votre session de connexion, la langue et le thème choisis, l'historique de vos conversations DjazAI et quelques préférences d'affichage. Vous pouvez tout effacer depuis les réglages de votre navigateur."
         },
         {
           "id": "retention",
           "titre": "Combien de temps ?",
-          "texte": "Vos données de compte sont conservées tant que votre compte existe. Quand vous demandez sa suppression, nous supprimons votre compte, votre profil et votre avatar."
+          "texte": "Vos données de compte sont conservées tant que votre compte existe.\n\nQuand vous supprimez votre compte : votre profil, votre avatar, vos votes, favoris, notifications et propositions (avec leurs fichiers) sont supprimés. Vos commentaires et vos idées restent visibles **sans votre nom**, pour que les discussions gardent leur sens, et vos téléchargements ne sont plus rattachés à vous dans les statistiques."
         },
         {
           "id": "rights",
           "titre": "Vos droits",
-          "texte": "Conformément au RGPD, vous pouvez à tout moment :\n\n- **accéder** à vos données ;\n- les **corriger**, directement depuis [Mon profil](/profile) ;\n- demander la **suppression** de votre compte et de vos données, sur simple demande à [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com).\n\nNous répondons dans un délai d'un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez vous adresser à la [CNIL](https://www.cnil.fr)."
+          "texte": "Conformément à la loi 18-07 (et au RGPD si vous êtes dans l'Union européenne), vous pouvez à tout moment :\n\n- être **informé** de l'usage de vos données (c'est l'objet de cette page) ;\n- **accéder** à vos données et en obtenir une copie ;\n- les **corriger**, directement depuis [Mon profil](/profile) ;\n- vous **opposer** à un traitement pour un motif légitime ;\n- **supprimer** votre compte et vos données, directement avec le bouton « Supprimer mon compte » de [Mon profil](/profile), ou sur simple demande.\n\nPour exercer ces droits : [newalgeria.org@gmail.com](mailto:newalgeria.org@gmail.com). Nous répondons dans les meilleurs délais, et au plus tard dans un mois.\n\nSi vous estimez que vos droits ne sont pas respectés, vous pouvez saisir l'**Autorité nationale de protection des données à caractère personnel (ANPDP)** en Algérie, ou la **CNIL** si vous êtes en France."
         }
       ]
     },
@@ -1489,7 +1504,7 @@
     "misAJour": "Mis à jour",
     "version": "Version",
     "licence": "Licence",
-    "avertissement": "Les réponses s’appuient sur les fiches et aperçus disponibles. Vérifie les sources avant de réutiliser une donnée.",
+    "avertissement": "Les réponses s'appuient sur les fiches et aperçus disponibles : vérifie les sources avant de réutiliser une donnée. N'écris pas d'informations personnelles : tes questions sont traitées par un service d'IA (OpenAI).",
     "erreurConfiguration": "DjazAI n’est pas encore configuré. Réessaie plus tard.",
     "erreurLimite": "DjazAI est momentanément indisponible. Réessaie dans un instant.",
     "erreurGenerique": "DjazAI n’a pas pu répondre. Réessaie dans un instant.",
@@ -1796,5 +1811,24 @@
     "effacer": "Revenir à toute l'Algérie",
     "estimes": "estimés",
     "erreur": "Contours indisponibles"
+  },
+  "compte": {
+    "suppression": {
+      "titre": "Supprimer mon compte",
+      "explication": "Ton profil, ton avatar, tes votes, favoris, notifications et propositions seront supprimés. Tes commentaires et idées resteront visibles sans ton nom.",
+      "bouton": "Supprimer mon compte",
+      "confirmationTitre": "Supprimer définitivement ton compte ?",
+      "detail": "Ton profil, ton avatar, tes votes, favoris, notifications et propositions (avec leurs fichiers) seront supprimés, sur data-dz comme sur New Algeria. Tes commentaires et idées resteront visibles, sans ton nom.",
+      "irreversible": "Cette action est définitive.",
+      "tapePseudo": "Pour confirmer, tape ton pseudo : {{pseudo}}",
+      "annuler": "Annuler",
+      "confirmer": "Supprimer définitivement",
+      "reussie": "Ton compte a été supprimé. Merci d'avoir fait partie de l'aventure !",
+      "erreurs": {
+        "admin": "Un compte administrateur ne peut pas être supprimé depuis le site. Écris-nous à {{email}}.",
+        "indisponible": "La suppression n'est pas encore disponible. Écris-nous à {{email}} et nous supprimerons ton compte.",
+        "inconnue": "La suppression n'a pas abouti. Réessaie, ou écris-nous à {{email}}."
+      }
+    }
   }
 }

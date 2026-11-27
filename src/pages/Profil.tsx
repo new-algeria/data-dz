@@ -10,6 +10,7 @@ import { AvatarMembre } from "@/components/AvatarMembre";
 import { MessageAuth } from "@/components/auth/MessageAuth";
 import { EnTeteMembre } from "@/components/membres/FicheMembre";
 import { DonneesProposees } from "@/components/membres/DonneesProposees";
+import { SuppressionCompte } from "@/components/compte/SuppressionCompte";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -413,6 +414,7 @@ const Profil = () => {
                     {t("profil.changerMotDePasse")}
                   </Link>
                 </Button>
+                {utilisateur && <SuppressionCompte idUtilisateur={utilisateur.id} pseudo={profil.pseudo} />}
               </Carte>
             </div>
             {/* Plus large que le formulaire : jusqu'à 3 cartes par ligne sur grand écran, comme le catalogue. */}
