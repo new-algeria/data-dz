@@ -1911,5 +1911,16 @@
     "sousTitre": "تصفّح البيانات، شاهدها على الخريطة واكتشف الجزائر من زاوية جديدة.",
     "sonActiver": "تشغيل الموسيقى",
     "sonCouper": "إيقاف الموسيقى"
+  },
+  "bienvenue": {
+    "choix": "لقد قمت بالاختيار الصحيح",
+    "titre": "مرحبًا",
+    "texte": "بيانات الجزائر أصبحت بين يديك. اصنع بها شيئًا عظيمًا.",
+    "bouton": "← لنستكشف",
+    "plusTard": "لاحقًا",
+    "messageTelechargement": "مرحبًا {{prenom}}! تحميلًا ممتعًا 🎉",
+    "messageTelechargementSansPrenom": "مرحبًا بك في data-dz! تحميلًا ممتعًا 🎉",
+    "message": "مرحبًا {{prenom}}! 🎉",
+    "messageSansPrenom": "مرحبًا بك في data-dz! 🎉"
   }
 }

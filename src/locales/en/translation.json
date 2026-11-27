@@ -1781,5 +1781,16 @@
     "sousTitre": "Browse the data, see it on the map and discover Algeria from a new angle.",
     "sonActiver": "Turn music on",
     "sonCouper": "Mute music"
+  },
+  "bienvenue": {
+    "choix": "You made the right choice",
+    "titre": "Welcome",
+    "texte": "Algeria's data is yours now. Make something great with it.",
+    "bouton": "Start exploring →",
+    "plusTard": "Maybe later",
+    "messageTelechargement": "Welcome {{prenom}}! Enjoy your download 🎉",
+    "messageTelechargementSansPrenom": "Welcome to data-dz! Enjoy your download 🎉",
+    "message": "Welcome {{prenom}}! 🎉",
+    "messageSansPrenom": "Welcome to data-dz! 🎉"
   }
 }

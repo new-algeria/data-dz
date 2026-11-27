@@ -1775,5 +1775,16 @@
     "sousTitre": "Parcours les données, visualise-les sur la carte et découvre l'Algérie sous un nouvel angle.",
     "sonActiver": "Activer la musique",
     "sonCouper": "Couper la musique"
+  },
+  "bienvenue": {
+    "choix": "Tu as fait le bon choix",
+    "titre": "Bienvenue",
+    "texte": "Les données de l'Algérie sont à toi. Fais-en quelque chose de grand.",
+    "bouton": "J'explore →",
+    "plusTard": "Plus tard",
+    "messageTelechargement": "Bienvenue {{prenom}} ! Bon téléchargement 🎉",
+    "messageTelechargementSansPrenom": "Bienvenue sur data-dz ! Bon téléchargement 🎉",
+    "message": "Bienvenue {{prenom}} ! 🎉",
+    "messageSansPrenom": "Bienvenue sur data-dz ! 🎉"
   }
 }
