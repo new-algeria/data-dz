@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DrapeauAlgerie } from "@/components/DrapeauAlgerie";
 import { useAuth } from "@/contexte/ContexteAuth";
 import { cleBienvenue, estNouveauCompte, modeBienvenue, prenomBienvenue } from "@/lib/bienvenue";
 import { feterTelechargement } from "@/lib/confettis";
@@ -77,12 +78,8 @@ export const BienvenueMembre = () => {
           (evenement.currentTarget as HTMLElement | null)?.focus();
         }}
         className="outline-none max-w-[calc(100vw-2rem)] gap-0 overflow-visible rounded-[28px] sm:rounded-[28px] border-border px-6 pb-6 pt-24 text-center sm:max-w-[460px] sm:px-9 [&>button:last-child]:hidden">
-        {/* Liseré aux couleurs du drapeau */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-1.5 overflow-hidden rounded-t-[28px]" aria-hidden>
-          <span className="flex-1 bg-[#006233]" />
-          <span className="flex-1 bg-gray-200 dark:bg-gray-300" />
-          <span className="w-1/6 bg-[#d21034]" />
-        </div>
+        {/* Drapeau de l'Algérie penché sur le coin haut de la carte (côté hampe : à gauche, à droite en arabe). */}
+        <DrapeauAlgerie className="pointer-events-none absolute -top-6 start-6 h-10 w-[60px] -rotate-12 rounded-md shadow-lg rtl:rotate-12 sm:-top-7 sm:start-8 sm:h-12 sm:w-[72px]" />
         <img
           src="/mascotte/fennec.webp"
           alt=""
